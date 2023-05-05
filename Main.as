@@ -62,11 +62,11 @@ void Main() {
             yield();
             continue;
         }
-        auto car        = cast<CSceneVehicleVisState>(VehicleState::ViewingPlayerState());
-        ReactLevel      = uint(car.ReactorBoostLvl);
-        ReactType       = uint(car.ReactorBoostType);
-        SlowMo          = car.BulletTimeNormed;
-        Turbo           = car.IsTurbo;
+        auto car   = cast<CSceneVehicleVisState>(VehicleState::ViewingPlayerState());
+        ReactLevel = uint(car.ReactorBoostLvl);
+        ReactType  = uint(car.ReactorBoostType);
+        SlowMo     = car.BulletTimeNormed;
+        Turbo      = car.IsTurbo;
 
         if      (ReactLevel == 0) ReactLevelText = "none";
         else if (ReactLevel == 1) ReactLevelText = "yellow";
