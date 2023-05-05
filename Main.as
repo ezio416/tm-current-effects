@@ -12,21 +12,23 @@ void Render() {
         app.Editor !is null
     ) return;
 
-    int windowFlags = UI::WindowFlags::AlwaysAutoResize |
+    int WindowFlags = UI::WindowFlags::AlwaysAutoResize |
                       UI::WindowFlags::NoCollapse |
                       UI::WindowFlags::NoDocking |
                       UI::WindowFlags::NoTitleBar;
-    if (!UI::IsOverlayShown()) windowFlags |= UI::WindowFlags::NoInputs;
+    if (!UI::IsOverlayShown()) WindowFlags |= UI::WindowFlags::NoInputs;
 
-    UI::Begin("CurrentEffects", windowFlags);
-    UI::Text(  ForcedAccelColor + Icons::Forward             + " Forced Accel"  + WHITE +
-        "\n" + NoBrakesColor    + Icons::ExclamationTriangle + " No Brakes"     + WHITE +
-        "\n" + NoEngineColor    + Icons::PowerOff            + " No Engine"     + WHITE +
-        "\n" + NoGripColor      + Icons::SnowflakeO          + " No Grip"       + WHITE +
-        "\n" + NoSteerColor     + Icons::ArrowsH             + " No Steering"   + WHITE +
-        "\n" + ReactorColor     + ReactorIcon                + " Reactor Boost" + WHITE +
-        "\n" + SlowMoColor      + Icons::ClockO              + " Slow-Mo"       + WHITE +
-        "\n" + TurboColor       + Icons::ArrowCircleUp       + " Turbo"         + WHITE
+    UI::Begin("Current Effects", WindowFlags);
+    UI::Text(  CruiseColor      + Icons::Road                + " Cruise Control" + WHITE +
+        "\n" + NoEngineColor    + Icons::PowerOff            + " Engine Off"     + WHITE +
+        "\n" + ForcedAccelColor + Icons::Forward             + " Forced Accel"   + WHITE +
+        "\n" + FragileColor     + Icons::ChainBroken         + " Fragile"        + WHITE +
+        "\n" + NoBrakesColor    + Icons::ExclamationTriangle + " No Brakes"      + WHITE +
+        "\n" + NoGripColor      + Icons::SnowflakeO          + " No Grip"        + WHITE +
+        "\n" + NoSteerColor     + Icons::ArrowsH             + " No Steering"    + WHITE +
+        "\n" + ReactorColor     + ReactorIcon                + " Reactor Boost"  + WHITE +
+        "\n" + SlowMoColor      + Icons::ClockO              + " Slow-Mo"        + WHITE +
+        "\n" + TurboColor       + Icons::ArrowCircleUp       + " Turbo"          + WHITE
     );
     UI::End();
 }
@@ -45,8 +47,12 @@ const string RED    = "\\$F00";
 const string WHITE  = "\\$FFF";
 const string YELLOW = "\\$FF0";
 
+// bool   Cruise;
+string CruiseColor = "\\$888";
 bool   ForcedAccel;
 string ForcedAccelColor;
+// bool   Fragile;
+string FragileColor = "\\$888";
 bool   NoBrakes;
 string NoBrakesColor;
 bool   NoEngine;
@@ -55,10 +61,10 @@ bool   NoGrip;
 string NoGripColor;
 bool   NoSteer;
 string NoSteerColor;
+string ReactorColor;
+string ReactorIcon = Icons::Rocket;
 uint   ReactorLevel;
 uint   ReactorType;
-string ReactorColor;
-string ReactorIcon;
 float  SlowMo;
 string SlowMoColor;
 bool   Turbo;
@@ -75,6 +81,7 @@ void Main() {
             yield();
             continue;
         }
+
         auto car     = cast<CSceneVehicleVisState>(VehicleState::ViewingPlayerState());
         ReactorLevel = uint(car.ReactorBoostLvl);
         ReactorType  = uint(car.ReactorBoostType);
@@ -85,16 +92,15 @@ void Main() {
         else if (ReactorLevel == 1) ReactorColor = YELLOW;
         else                        ReactorColor = RED;
 
-        if      (ReactorType == 0)  ReactorIcon  = Icons::Rocket;
-        else if (ReactorType == 1)  ReactorIcon  = Icons::ChevronUp;
-        else                        ReactorIcon  = Icons::ChevronDown;
+        if      (ReactorType == 0) ReactorIcon = Icons::Rocket;
+        else if (ReactorType == 1) ReactorIcon = Icons::ChevronUp;
+        else                       ReactorIcon = Icons::ChevronDown;
 
-        if      (SlowMo == 0)       SlowMoColor  = WHITE;
-        else if (SlowMo > 0.5)      SlowMoColor  = RED;
-        else                        SlowMoColor  = YELLOW;
+        if      (SlowMo == 0)  SlowMoColor = WHITE;
+        else if (SlowMo > 0.5) SlowMoColor = RED;
+        else                   SlowMoColor = YELLOW;
 
-        if      (Turbo)             TurboColor   = GREEN;
-        else                        TurboColor   = WHITE;
+        TurboColor = Turbo ? GREEN : WHITE;
 
         auto app        = cast<CTrackMania>(GetApp());
         auto playground = cast<CSmArenaClient>(app.CurrentPlayground);
@@ -105,20 +111,11 @@ void Main() {
         NoGrip          = Truthy(script.HandicapNoGripDuration);
         NoSteer         = Truthy(script.HandicapNoSteeringDuration);
 
-        if (ForcedAccel) ForcedAccelColor = GREEN;
-        else             ForcedAccelColor = WHITE;
-
-        if (NoBrakes)    NoBrakesColor    = ORANGE;
-        else             NoBrakesColor    = WHITE;
-
-        if (NoEngine)    NoEngineColor    = RED;
-        else             NoEngineColor    = WHITE;
-
-        if (NoGrip)      NoGripColor      = BLUE;
-        else             NoGripColor      = WHITE;
-
-        if (NoSteer)     NoSteerColor     = PURPLE;
-        else             NoSteerColor     = WHITE;
+        ForcedAccelColor = ForcedAccel ? GREEN  : WHITE;
+        NoBrakesColor    = NoBrakes    ? ORANGE : WHITE;
+        NoEngineColor    = NoEngine    ? RED    : WHITE;
+        NoGripColor      = NoGrip      ? BLUE   : WHITE;
+        NoSteerColor     = NoSteer     ? PURPLE : WHITE;
 
         yield();
     }
