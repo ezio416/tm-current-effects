@@ -12,24 +12,26 @@ void Render() {
         app.Editor !is null
     ) return;
 
-    int WindowFlags = UI::WindowFlags::AlwaysAutoResize |
+    int windowFlags = UI::WindowFlags::AlwaysAutoResize |
                       UI::WindowFlags::NoCollapse |
                       UI::WindowFlags::NoDocking |
                       UI::WindowFlags::NoTitleBar;
-    if (!UI::IsOverlayShown()) WindowFlags |= UI::WindowFlags::NoInputs;
+    if (!UI::IsOverlayShown()) windowFlags |= UI::WindowFlags::NoInputs;
 
-    UI::Begin("Current Effects", WindowFlags);
-    UI::Text(  CruiseColor      + Icons::Road                + " Cruise Control" + WHITE +
-        "\n" + NoEngineColor    + Icons::PowerOff            + " Engine Off"     + WHITE +
-        "\n" + ForcedAccelColor + Icons::Forward             + " Forced Accel"   + WHITE +
-        "\n" + FragileColor     + Icons::ChainBroken         + " Fragile"        + WHITE +
-        "\n" + NoBrakesColor    + Icons::ExclamationTriangle + " No Brakes"      + WHITE +
-        "\n" + NoGripColor      + Icons::SnowflakeO          + " No Grip"        + WHITE +
-        "\n" + NoSteerColor     + Icons::ArrowsH             + " No Steering"    + WHITE +
-        "\n" + ReactorColor     + ReactorIcon                + " Reactor Boost"  + WHITE +
-        "\n" + SlowMoColor      + Icons::ClockO              + " Slow-Mo"        + WHITE +
-        "\n" + TurboColor       + Icons::ArrowCircleUp       + " Turbo"          + WHITE
-    );
+    string endl = WHITE + "\n";
+    string text = CruiseColor      + Icons::Road                + " Cruise Control" + endl +
+                + NoEngineColor    + Icons::PowerOff            + " Engine Off"     + endl +
+                + ForcedAccelColor + Icons::Forward             + " Forced Accel"   + endl +
+                + FragileColor     + Icons::ChainBroken         + " Fragile"        + endl +
+                + NoBrakesColor    + Icons::ExclamationTriangle + " No Brakes"      + endl +
+                + NoGripColor      + Icons::SnowflakeO          + " No Grip"        + endl +
+                + NoSteerColor     + Icons::ArrowsH             + " No Steering"    + endl +
+                + ReactorColor     + ReactorIcon                + " Reactor Boost"  + endl;
+          text += SlowMoColor      + Icons::ClockO              + " Slow-Mo"        + endl +
+                + TurboColor       + Icons::ArrowCircleUp       + " Turbo";
+
+    UI::Begin("Current Effects", windowFlags);
+    UI::Text(text);
     UI::End();
 }
 
