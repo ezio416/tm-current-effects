@@ -20,15 +20,15 @@ void Render() {
 
     string endl = WHITE + "\n";
     string text = CruiseColor      + Icons::Road                + " Cruise Control" + endl +
-                + NoEngineColor    + Icons::PowerOff            + " Engine Off"     + endl +
-                + ForcedAccelColor + Icons::Forward             + " Forced Accel"   + endl +
-                + FragileColor     + Icons::ChainBroken         + " Fragile"        + endl +
-                + NoBrakesColor    + Icons::ExclamationTriangle + " No Brakes"      + endl +
-                + NoGripColor      + Icons::SnowflakeO          + " No Grip"        + endl +
-                + NoSteerColor     + Icons::ArrowsH             + " No Steering"    + endl +
-                + ReactorColor     + ReactorIcon                + " Reactor Boost"  + endl;
+                  NoEngineColor    + Icons::PowerOff            + " Engine Off"     + endl +
+                  ForcedAccelColor + Icons::Forward             + " Forced Accel"   + endl +
+                  FragileColor     + Icons::ChainBroken         + " Fragile"        + endl +
+                  NoBrakesColor    + Icons::ExclamationTriangle + " No Brakes"      + endl +
+                  NoGripColor      + Icons::SnowflakeO          + " No Grip"        + endl +
+                  NoSteerColor     + Icons::ArrowsH             + " No Steering"    + endl +
+                  ReactorColor     + ReactorIcon                + " Reactor Boost"  + endl;
           text += SlowMoColor      + Icons::ClockO              + " Slow-Mo"        + endl +
-                + TurboColor       + Icons::ArrowCircleUp       + " Turbo";
+                  TurboColor       + Icons::ArrowCircleUp       + " Turbo";
 
     UI::Begin("Current Effects", windowFlags);
     UI::Text(text);
@@ -75,14 +75,8 @@ string TurboColor;
 void Main() {
     while (true) {
         try {
-            if (VehicleState::GetViewingPlayer() is null) {
-                yield();
-                continue;
-            }
-        } catch {
-            yield();
-            continue;
-        }
+            if (VehicleState::GetViewingPlayer() is null) { yield(); continue; }
+        } catch { yield(); continue; }
 
         auto car     = cast<CSceneVehicleVisState>(VehicleState::ViewingPlayerState());
         ReactorLevel = uint(car.ReactorBoostLvl);
