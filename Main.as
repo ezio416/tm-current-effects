@@ -5,21 +5,21 @@ m 2023-05-04
 
 void Render() {
     auto app = cast<CTrackMania>(GetApp());
-	if (
-		!UI::IsGameUIVisible() ||
+    if (
+        !UI::IsGameUIVisible() ||
         app.RootMap is null ||
         app.RootMap.MapInfo.MapUid == "" ||
         app.Editor !is null
-	) return;
+    ) return;
 
     int windowFlags = UI::WindowFlags::AlwaysAutoResize |
                       UI::WindowFlags::NoCollapse |
                       UI::WindowFlags::NoDocking |
                       UI::WindowFlags::NoTitleBar;
-	if (!UI::IsOverlayShown()) windowFlags |= UI::WindowFlags::NoInputs;
+    if (!UI::IsOverlayShown()) windowFlags |= UI::WindowFlags::NoInputs;
 
     UI::Begin("CurrentEffects", windowFlags);
-	UI::Text(  Icons::Forward             + " ForceAccel:  "    + ForceAccel +
+    UI::Text(  Icons::Forward             + " ForceAccel:  "    + ForceAccel +
         "\n" + Icons::ExclamationTriangle + " NoBrake:     "    + NoBrake +
         "\n" + Icons::PowerOff            + " NoEngine:   "     + NoEngine +
         "\n" + Icons::SnowflakeO          + " NoGrip:       "   + NoGrip +
@@ -29,7 +29,7 @@ void Render() {
         "\n" + Icons::ClockO              + " SlowMo:      "    + SlowMoText +
         "\n" + Icons::ArrowCircleUp       + " Turbo:          " + Turbo
     );
-	UI::End();
+    UI::End();
 }
 
 bool Truthy(uint num) {
@@ -54,11 +54,11 @@ bool   Turbo;
 void Main() {
     while (true) {
         try {
-	        if (VehicleState::GetViewingPlayer() is null) {
+            if (VehicleState::GetViewingPlayer() is null) {
                 yield();
                 continue;
             }
-	    } catch {
+        } catch {
             yield();
             continue;
         }
