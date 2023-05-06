@@ -9,7 +9,8 @@ void Render() {
         !UI::IsGameUIVisible() ||
         app.RootMap is null ||
         app.RootMap.MapInfo.MapUid == "" ||
-        app.Editor !is null
+        app.Editor !is null ||
+        !Show
     ) return;
 
     int windowFlags = UI::WindowFlags::AlwaysAutoResize |
@@ -18,24 +19,20 @@ void Render() {
                       UI::WindowFlags::NoTitleBar;
     if (!UI::IsOverlayShown()) windowFlags |= UI::WindowFlags::NoInputs;
 
-    string endl = DefaultColor + "\n";
-    string text;
-    if (CruiseShow)      text += CruiseColor      + Icons::Road                + " Cruise Control" + endl;
-    if (NoEngineShow)    text += NoEngineColor    + Icons::PowerOff            + " Engine Off"     + endl;
-    if (ForcedAccelShow) text += ForcedAccelColor + Icons::Forward             + " Forced Accel"   + endl;
-    if (FragileShow)     text += FragileColor     + Icons::ChainBroken         + " Fragile"        + endl;
-    if (NoBrakesShow)    text += NoBrakesColor    + Icons::ExclamationTriangle + " No Brakes"      + endl;
-    if (NoGripShow)      text += NoGripColor      + Icons::SnowflakeO          + " No Grip"        + endl;
-    if (NoSteerShow)     text += NoSteerColor     + Icons::ArrowsH             + " No Steering"    + endl;
-    if (ReactorShow)     text += ReactorColor     + ReactorIcon                + " Reactor Boost"  + endl;
-    if (SlowMoShow)      text += SlowMoColor      + Icons::ClockO              + " Slow-Mo"        + endl;
-    if (TurboShow)       text += TurboColor       + Icons::ArrowCircleUp       + " Turbo";
-
-    if (Show) {
-        UI::Begin("Current Effects", windowFlags);
-        UI::Text(text);
-        UI::End();
-    }
+    UI::PushFont(font);
+    UI::Begin("Current Effects", windowFlags);
+    if (CruiseShow)      UI::Text(CruiseColor      + Icons::Road                + "  Cruise Control" + DefaultColor);
+    if (NoEngineShow)    UI::Text(NoEngineColor    + Icons::PowerOff            + "  Engine Off"     + DefaultColor);
+    if (ForcedAccelShow) UI::Text(ForcedAccelColor + Icons::Forward             + "  Forced Accel"   + DefaultColor);
+    if (FragileShow)     UI::Text(FragileColor     + Icons::ChainBroken         + "  Fragile"        + DefaultColor);
+    if (NoBrakesShow)    UI::Text(NoBrakesColor    + Icons::ExclamationTriangle + "  No Brakes"      + DefaultColor);
+    if (NoGripShow)      UI::Text(NoGripColor      + Icons::SnowflakeO          + "  No Grip"        + DefaultColor);
+    if (NoSteerShow)     UI::Text(NoSteerColor     + Icons::ArrowsH             + "  No Steering"    + DefaultColor);
+    if (ReactorShow)     UI::Text(ReactorColor     + ReactorIcon                + "  Reactor Boost"  + DefaultColor);
+    if (SlowMoShow)      UI::Text(SlowMoColor      + Icons::ClockO              + "  Slow-Mo"        + DefaultColor);
+    if (TurboShow)       UI::Text(TurboColor       + Icons::ArrowCircleUp       + "  Turbo");
+    UI::End();
+    UI::PopFont();
 }
 
 bool Truthy(uint num) {
@@ -76,8 +73,12 @@ string SlowMoColor;
 bool   Turbo;
 string TurboColor;
 
+UI::Font@ font = null;
+
 [Setting name="Show Window" category="General"]
 bool Show = true;
+[Setting name="Font Size" category="General" description="change requires plugin reload"]
+int FontSize = 16;
 [Setting name="Cruise Control" category="Toggle Options" description="not working yet"]
 bool CruiseShow = false;
 [Setting name="Engine Off" category="Toggle Options"]
@@ -100,6 +101,8 @@ bool SlowMoShow = true;
 bool TurboShow = true;
 
 void Main() {
+    @font = UI::LoadFont("DroidSans.ttf", FontSize, -1, -1, true, true, true);
+
     while (true) {
         try {
             if (VehicleState::GetViewingPlayer() is null) { yield(); continue; }
