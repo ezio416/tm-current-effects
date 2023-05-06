@@ -42,20 +42,21 @@ bool Truthy(uint num) {
 }
 
 const string BLUE   = "\\$09D";
+const string GRAY   = "\\$888";
 const string GREEN  = "\\$0D2";
-const string ORANGE = "\\$B90";
+const string ORANGE = "\\$F90";
 const string PURPLE = "\\$F0F";
 const string RED    = "\\$F00";
 const string WHITE  = "\\$FFF";
 const string YELLOW = "\\$FF0";
-string DefaultColor = WHITE;
+string DefaultColor = GRAY;
 
 // bool   Cruise;
-string CruiseColor = "\\$888";
+string CruiseColor = DefaultColor;
 bool   ForcedAccel;
 string ForcedAccelColor;
 // bool   Fragile;
-string FragileColor = "\\$888";
+string FragileColor = DefaultColor;
 bool   NoBrakes;
 string NoBrakesColor;
 bool   NoEngine;
