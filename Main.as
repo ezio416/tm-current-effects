@@ -5,11 +5,16 @@ m 2023-05-07
 
 void Render() {
     auto app = cast<CTrackMania>(GetApp());
-    if (
-        !Show ||
-        !UI::IsGameUIVisible() ||
-        app.RootMap is null
-    ) return;
+    try {
+        auto sequence = app.CurrentPlayground.UIConfigs[0].UISequence;
+        if (
+            !Show ||
+            !UI::IsGameUIVisible() ||
+            app.RootMap is null ||
+            sequence == CGamePlaygroundUIConfig::EUISequence::Intro ||
+            (app.Editor !is null && sequence != CGamePlaygroundUIConfig::EUISequence::Playing)
+        ) return;
+    } catch { return; }
 
     int windowFlags = UI::WindowFlags::AlwaysAutoResize |
                       UI::WindowFlags::NoCollapse |
