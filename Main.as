@@ -45,7 +45,7 @@ bool IsSameVehicle(CSceneVehicleVis@ a, CSceneVehicleVis@ b) {
 }
 
 // Will be written out when VehicleState is updated
-array<CSceneVehicleVis@> AllVehicleVisWithoutPB(ISceneVis scene) {
+array<CSceneVehicleVis@> AllVehicleVisWithoutPB(ISceneVis@ scene) {
     auto @vis = VehicleState::GetAllVis(scene);
     if (vis.Length < 3) return vis; // PB ghost already hidden
 
