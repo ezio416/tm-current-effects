@@ -145,9 +145,9 @@ void Main() {
             if (playground is null) throw("");
 
             array<CSceneVehicleVis@> cars;  // annoying workaround - conditional vars are scoped, CSceneVehicleVis is uninstantiable
-            if (playground.GameTerminals[0].UISequence_Current != CGamePlaygroundUIConfig::EUISequence::Playing) {
+            if (playground.UIConfigs[0].UISequence != CGamePlaygroundUIConfig::EUISequence::Playing) {
                 auto @vis = AllVehicleVisWithoutPB(app.GameScene);
-                cars.InsertLast(vis[vis.Length - 1]);
+                cars.InsertLast(vis[vis.Length - 1]);  // latest record clicked is shown (usually, still buggy)
             }
             auto car = (cars.Length > 0) ? cars[0].AsyncState : VehicleState::GetAllVis(app.GameScene)[0].AsyncState;
             if (car is null) {
