@@ -1,6 +1,6 @@
 /*
 c 2023-05-04
-m 2023-05-06
+m 2023-05-07
 */
 
 void Render() {
@@ -29,11 +29,11 @@ void Render() {
     if (ReactorShow)     UI::Text(ReactorColor     + ReactorIcon                + "  Reactor Boost");
     if (SlowMoShow)      UI::Text(SlowMoColor      + Icons::ClockO              + "  Slow-Mo");
     if (TurboShow)       UI::Text(TurboColor       + Icons::ArrowCircleUp       + "  Turbo");
-    UI::Text(test);
     UI::End();
     UI::PopFont();
 }
 
+// I'm well aware this is garbage
 bool IsSameVehicle(CSceneVehicleVis@ a, CSceneVehicleVis@ b) {
     if (a.AsyncState.Dir.x != b.AsyncState.Dir.x) return false;
     if (a.AsyncState.Dir.y != b.AsyncState.Dir.y) return false;
@@ -44,93 +44,25 @@ bool IsSameVehicle(CSceneVehicleVis@ a, CSceneVehicleVis@ b) {
     return true;
 }
 
+// Will be written out when VehicleState is updated
 array<CSceneVehicleVis@> AllVehicleVisWithoutPB(ISceneVis scene) {
     auto @vis = VehicleState::GetAllVis(scene);
-    // print(vis.Length);
-    // vis.Length could be up to 10
-    if (vis.Length < 3) return vis;
+    if (vis.Length < 3) return vis; // PB ghost already hidden
 
-    uint index1;
-    uint index1_final = vis.Length - 2;
-    uint index2;
-    uint index2_temp;
-    for (uint i = 0; i <= index1_final; i++) {
-        index2_temp = i + 1;
-        if (IsSameVehicle(vis[i], vis[index2_temp])) {
-            index1 = i;
-            index2 = index2_temp;
-            break;
-        }
-
-        // for (uint j = index1_final; j >= 0; j--) {
-        //     index2_temp = vis.Length + i - j - 1;
-        //     if (i < j && index2_temp < vis.Length - 1 && IsSameVehicle(vis[i], vis[index2_temp])) {
-        //         // index1 = i;
-        //         // index2 = index2_temp;
-        //         // break;
-        //         vis.RemoveAt(index2);
-        //         vis.RemoveAt(index1);
-        //         return vis;
-        //     }
-        // }
-
-        print(i + " " + vis.Length);
-        index2_temp += 1;
-        if (i < vis.Length - 2) {
-            if (IsSameVehicle(vis[i], vis[index2_temp])) {
-                print("a " + i + " " + index2_temp);
-                index1 = i;
-                index2 = index2_temp;
-                break;
+    for (uint i = 0; i <= vis.Length - 2; i++) {
+        try {
+            for (uint j = i; j <= 6; j++) {
+                if (i < vis.Length - 1) {
+                    if (IsSameVehicle(vis[i], vis[j])) {
+                        vis.RemoveAt(j);
+                        vis.RemoveAt(i);
+                        return vis;
+                    }
+                } else throw("");
             }
-        } else continue;
-        index2_temp += 1;
-        if (i < vis.Length - 3) {
-            if (IsSameVehicle(vis[i], vis[index2_temp])) {
-                print("b " + i + " " + index2_temp);
-                index1 = i;
-                index2 = index2_temp;
-                break;
-            }
-        } else continue;
-        index2_temp += 1;
-        if (i < vis.Length - 4) {
-            if (IsSameVehicle(vis[i], vis[index2_temp])) {
-                print("c " + i + " " + index2_temp);
-                index1 = i;
-                index2 = index2_temp;
-                break;
-            }
-        } else continue;
-        index2_temp += 1;
-        if (i < vis.Length - 5) {
-            if (IsSameVehicle(vis[i], vis[index2_temp])) {
-                print("d " + i + " " + index2_temp);
-                index1 = i;
-                index2 = index2_temp;
-                break;
-            }
-        } else continue;
-        index2_temp += 1;
-        if (i < vis.Length - 6) {
-            if (IsSameVehicle(vis[i], vis[index2_temp])) {
-                print("e " + i + " " + index2_temp);
-                index1 = i;
-                index2 = index2_temp;
-                break;
-            }
-        } else continue;
-        print("hi");
+        } catch {}
     }
-
-    if (index2 > 0) {
-        print("before remove " + vis.Length + ", indeces " + index1 + " " + index2);
-        vis.RemoveAt(index2);
-        vis.RemoveAt(index1);
-    }
-    print("after remove  " + vis.Length);
-    // print(vis[0].AsyncState.GroundDist);
-    return vis;
+    return vis;  // should never happen
 }
 
 bool Truthy(uint num) {
@@ -150,11 +82,11 @@ const string YELLOW = "\\$FF0";
 string DefaultColor = GRAY;
 UI::Font@ font = null;
 
-// bool   Cruise;
+// bool Cruise;
 string CruiseColor = DefaultColor;
 bool   ForcedAccel;
 string ForcedAccelColor;
-// bool   Fragile;
+// bool Fragile;
 string FragileColor = DefaultColor;
 bool   NoBrakes;
 string NoBrakesColor;
@@ -172,8 +104,6 @@ float  SlowMo;
 string SlowMoColor;
 bool   Turbo;
 string TurboColor;
-
-string test;
 
 [Setting name="Show Window" category="General"]
 bool Show = true;
@@ -209,34 +139,13 @@ void Main() {
             auto playground = cast<CSmArenaClient>(app.CurrentPlayground);
             if (playground is null) throw("");
 
-            // auto @vis = VehicleState::GetAllVis(app.GameScene);
-            // auto @vis = AllVehicleVisWithoutPB(app.GameScene);
-            // int index = 0;
-            // if (vis.Length > 1) {
-            //     if (IsSameVehicle(vis[0], vis[1])) {
-            //         index = 2;
-            //     } else if (IsSameVehicle(vis[1], vis[2])) {
-            //         index = 0;
-            //     }
-            //     // test = vis[0].Model.IdName + "  " + vis[1].Model.IdName;
-            //     // index = 2;
-            // }
-            // test = vis.Length + " " + index;
-
-
-            // auto car = vis[0].AsyncState;
-            // uint index;
-            array<CSceneVehicleVis@> cars;
-            if (app.CurrentPlayground.GameTerminals[0].UISequence_Current != CGamePlaygroundUIConfig::EUISequence::Playing) {
-                // print("watching");
+            array<CSceneVehicleVis@> cars;  // annoying workaround - conditional vars are scoped, CSceneVehicleVis is uninstantiable
+            if (playground.GameTerminals[0].UISequence_Current != CGamePlaygroundUIConfig::EUISequence::Playing) {
                 auto @vis = AllVehicleVisWithoutPB(app.GameScene);
                 cars.InsertLast(vis[vis.Length - 1]);
-                // cars.InsertLast(VehicleState::GetAllVis(app.GameScene)[0]);
-            // } else {
             }
-            auto carr = (cars.Length > 0) ? cars[0] : VehicleState::GetAllVis(app.GameScene)[0];
-            // auto carr = cars[0];
-            if (carr is null) {
+            auto car = (cars.Length > 0) ? cars[0].AsyncState : VehicleState::GetAllVis(app.GameScene)[0].AsyncState;
+            if (car is null) {
                 ReactorLevel = 0;
                 ReactorType  = 0;
                 SlowMo       = 0;
@@ -246,12 +155,8 @@ void Main() {
                 NoEngine     = false;
                 NoGrip       = false;
                 NoSteer      = false;
-                // throw("");
-                print(cars.Length + " null carr");
-                yield();
-                continue;
+                throw("");
             }
-            auto car = carr.AsyncState;
             ReactorLevel = uint(car.ReactorBoostLvl);
             ReactorType  = uint(car.ReactorBoostType);
             SlowMo       = car.BulletTimeNormed;
@@ -271,12 +176,12 @@ void Main() {
 
             TurboColor = Turbo ? GREEN : DefaultColor;
 
-            auto script     = cast<CSmScriptPlayer>(playground.Arena.Players[0].ScriptAPI);
-            ForcedAccel     = Truthy(script.HandicapForceGasDuration);
-            NoBrakes        = Truthy(script.HandicapNoBrakesDuration);
-            NoEngine        = Truthy(script.HandicapNoGasDuration);
-            NoGrip          = Truthy(script.HandicapNoGripDuration);
-            NoSteer         = Truthy(script.HandicapNoSteeringDuration);
+            auto script = cast<CSmScriptPlayer>(playground.Arena.Players[0].ScriptAPI);
+            ForcedAccel = Truthy(script.HandicapForceGasDuration);
+            NoBrakes    = Truthy(script.HandicapNoBrakesDuration);
+            NoEngine    = Truthy(script.HandicapNoGasDuration);
+            NoGrip      = Truthy(script.HandicapNoGripDuration);
+            NoSteer     = Truthy(script.HandicapNoSteeringDuration);
 
             ForcedAccelColor = ForcedAccel ? GREEN  : DefaultColor;
             NoBrakesColor    = NoBrakes    ? ORANGE : DefaultColor;
