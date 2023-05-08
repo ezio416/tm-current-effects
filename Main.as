@@ -1,6 +1,6 @@
 /*
 c 2023-05-04
-m 2023-05-07
+m 2023-05-08
 */
 
 void Render() {
@@ -55,17 +55,15 @@ array<CSceneVehicleVis@> AllVehicleVisWithoutPB(ISceneVis@ scene) {
     if (vis.Length < 3) return vis; // PB ghost already hidden
 
     for (uint i = 0; i <= vis.Length - 2; i++) {
-        try {
-            for (uint j = i; j <= 6; j++) {
-                if (i < vis.Length - 1) {
-                    if (IsSameVehicle(vis[i], vis[j])) {
-                        vis.RemoveAt(j);
-                        vis.RemoveAt(i);
-                        return vis;
-                    }
-                } else throw("");
-            }
-        } catch {}
+        for (uint j = i; j <= 6; j++) {
+            if (i < vis.Length - 1) {
+                if (IsSameVehicle(vis[i], vis[j])) {
+                    vis.RemoveAt(j);
+                    vis.RemoveAt(i);
+                    return vis;
+                }
+            } else break;
+        }
     }
     return vis;  // should never happen
 }
@@ -142,7 +140,7 @@ void Main() {
         try {
             auto app = cast<CTrackMania>(GetApp());
             auto playground = cast<CSmArenaClient>(app.CurrentPlayground);
-            if (playground is null) throw("");
+            if (playground is null) throw("null_pg");
 
             array<CSceneVehicleVis@> cars;  // annoying workaround - conditional vars are scoped, CSceneVehicleVis is uninstantiable
             if (playground.UIConfigs[0].UISequence != CGamePlaygroundUIConfig::EUISequence::Playing) {
@@ -160,7 +158,7 @@ void Main() {
                 NoEngine     = false;
                 NoGrip       = false;
                 NoSteer      = false;
-                throw("");
+                throw("null_car");
             }
             ReactorLevel = uint(car.ReactorBoostLvl);
             ReactorType  = uint(car.ReactorBoostType);
