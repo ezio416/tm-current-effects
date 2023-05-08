@@ -1,17 +1,20 @@
 /*
 c 2023-05-04
-m 2023-05-05
+m 2023-05-07
 */
 
 void Render() {
     auto app = cast<CTrackMania>(GetApp());
-    if (
-        !UI::IsGameUIVisible() ||
-        app.RootMap is null ||
-        app.RootMap.MapInfo.MapUid == "" ||
-        app.Editor !is null ||
-        !Show
-    ) return;
+    try {
+        auto sequence = app.CurrentPlayground.UIConfigs[0].UISequence;
+        if (
+            !Show ||
+            !UI::IsGameUIVisible() ||
+            app.RootMap is null ||
+            sequence == CGamePlaygroundUIConfig::EUISequence::Intro ||
+            (app.Editor !is null && sequence != CGamePlaygroundUIConfig::EUISequence::Playing)
+        ) return;
+    } catch { return; }
 
     int windowFlags = UI::WindowFlags::AlwaysAutoResize |
                       UI::WindowFlags::NoCollapse |
@@ -21,18 +24,50 @@ void Render() {
 
     UI::PushFont(font);
     UI::Begin("Current Effects", windowFlags);
-    if (CruiseShow)      UI::Text(CruiseColor      + Icons::Road                + "  Cruise Control" + DefaultColor);
-    if (NoEngineShow)    UI::Text(NoEngineColor    + Icons::PowerOff            + "  Engine Off"     + DefaultColor);
-    if (ForcedAccelShow) UI::Text(ForcedAccelColor + Icons::Forward             + "  Forced Accel"   + DefaultColor);
-    if (FragileShow)     UI::Text(FragileColor     + Icons::ChainBroken         + "  Fragile"        + DefaultColor);
-    if (NoBrakesShow)    UI::Text(NoBrakesColor    + Icons::ExclamationTriangle + "  No Brakes"      + DefaultColor);
-    if (NoGripShow)      UI::Text(NoGripColor      + Icons::SnowflakeO          + "  No Grip"        + DefaultColor);
-    if (NoSteerShow)     UI::Text(NoSteerColor     + Icons::ArrowsH             + "  No Steering"    + DefaultColor);
-    if (ReactorShow)     UI::Text(ReactorColor     + ReactorIcon                + "  Reactor Boost"  + DefaultColor);
-    if (SlowMoShow)      UI::Text(SlowMoColor      + Icons::ClockO              + "  Slow-Mo"        + DefaultColor);
+    if (CruiseShow)      UI::Text(CruiseColor      + Icons::Road                + "  Cruise Control");
+    if (NoEngineShow)    UI::Text(NoEngineColor    + Icons::PowerOff            + "  Engine Off");
+    if (ForcedAccelShow) UI::Text(ForcedAccelColor + Icons::Forward             + "  Forced Accel");
+    if (FragileShow)     UI::Text(FragileColor     + Icons::ChainBroken         + "  Fragile");
+    if (NoBrakesShow)    UI::Text(NoBrakesColor    + Icons::ExclamationTriangle + "  No Brakes");
+    if (NoGripShow)      UI::Text(NoGripColor      + Icons::SnowflakeO          + "  No Grip");
+    if (NoSteerShow)     UI::Text(NoSteerColor     + Icons::ArrowsH             + "  No Steering");
+    if (ReactorShow)     UI::Text(ReactorColor     + ReactorIcon                + "  Reactor Boost");
+    if (SlowMoShow)      UI::Text(SlowMoColor      + Icons::ClockO              + "  Slow-Mo");
     if (TurboShow)       UI::Text(TurboColor       + Icons::ArrowCircleUp       + "  Turbo");
     UI::End();
     UI::PopFont();
+}
+
+// I'm well aware this is garbage
+bool IsSameVehicle(CSceneVehicleVis@ a, CSceneVehicleVis@ b) {
+    if (a.AsyncState.Dir.x != b.AsyncState.Dir.x) return false;
+    if (a.AsyncState.Dir.y != b.AsyncState.Dir.y) return false;
+    if (a.AsyncState.Dir.z != b.AsyncState.Dir.z) return false;
+    if (a.AsyncState.Position.x != b.AsyncState.Position.x) return false;
+    if (a.AsyncState.Position.y != b.AsyncState.Position.y) return false;
+    if (a.AsyncState.Position.z != b.AsyncState.Position.z) return false;
+    return true;
+}
+
+// Will be written out when VehicleState is updated
+array<CSceneVehicleVis@> AllVehicleVisWithoutPB(ISceneVis@ scene) {
+    auto @vis = VehicleState::GetAllVis(scene);
+    if (vis.Length < 3) return vis; // PB ghost already hidden
+
+    for (uint i = 0; i <= vis.Length - 2; i++) {
+        try {
+            for (uint j = i; j <= 6; j++) {
+                if (i < vis.Length - 1) {
+                    if (IsSameVehicle(vis[i], vis[j])) {
+                        vis.RemoveAt(j);
+                        vis.RemoveAt(i);
+                        return vis;
+                    }
+                } else throw("");
+            }
+        } catch {}
+    }
+    return vis;  // should never happen
 }
 
 bool Truthy(uint num) {
@@ -50,12 +85,13 @@ const string RED    = "\\$F00";
 const string WHITE  = "\\$FFF";
 const string YELLOW = "\\$FF0";
 string DefaultColor = GRAY;
+UI::Font@ font = null;
 
-// bool   Cruise;
+// bool Cruise;
 string CruiseColor = DefaultColor;
 bool   ForcedAccel;
 string ForcedAccelColor;
-// bool   Fragile;
+// bool Fragile;
 string FragileColor = DefaultColor;
 bool   NoBrakes;
 string NoBrakesColor;
@@ -73,8 +109,6 @@ float  SlowMo;
 string SlowMoColor;
 bool   Turbo;
 string TurboColor;
-
-UI::Font@ font = null;
 
 [Setting name="Show Window" category="General"]
 bool Show = true;
@@ -106,43 +140,61 @@ void Main() {
 
     while (true) {
         try {
-            if (VehicleState::GetViewingPlayer() is null) { yield(); continue; }
+            auto app = cast<CTrackMania>(GetApp());
+            auto playground = cast<CSmArenaClient>(app.CurrentPlayground);
+            if (playground is null) throw("");
+
+            array<CSceneVehicleVis@> cars;  // annoying workaround - conditional vars are scoped, CSceneVehicleVis is uninstantiable
+            if (playground.UIConfigs[0].UISequence != CGamePlaygroundUIConfig::EUISequence::Playing) {
+                auto @vis = AllVehicleVisWithoutPB(app.GameScene);
+                cars.InsertLast(vis[vis.Length - 1]);  // latest record clicked is shown (usually, still buggy)
+            }
+            auto car = (cars.Length > 0) ? cars[0].AsyncState : VehicleState::GetAllVis(app.GameScene)[0].AsyncState;
+            if (car is null) {
+                ReactorLevel = 0;
+                ReactorType  = 0;
+                SlowMo       = 0;
+                Turbo        = false;
+                ForcedAccel  = false;
+                NoBrakes     = false;
+                NoEngine     = false;
+                NoGrip       = false;
+                NoSteer      = false;
+                throw("");
+            }
+            ReactorLevel = uint(car.ReactorBoostLvl);
+            ReactorType  = uint(car.ReactorBoostType);
+            SlowMo       = car.BulletTimeNormed;
+            Turbo        = car.IsTurbo;
+
+            if      (ReactorLevel == 0) ReactorColor = DefaultColor;
+            else if (ReactorLevel == 1) ReactorColor = YELLOW;
+            else                        ReactorColor = RED;
+
+            if      (ReactorType == 0) ReactorIcon = Icons::Rocket;
+            else if (ReactorType == 1) ReactorIcon = Icons::ChevronUp;
+            else                       ReactorIcon = Icons::ChevronDown;
+
+            if      (SlowMo == 0)  SlowMoColor = DefaultColor;
+            else if (SlowMo > 0.5) SlowMoColor = RED;
+            else                   SlowMoColor = YELLOW;
+
+            TurboColor = Turbo ? GREEN : DefaultColor;
+
+            auto script = cast<CSmScriptPlayer>(playground.Arena.Players[0].ScriptAPI);
+            ForcedAccel = Truthy(script.HandicapForceGasDuration);
+            NoBrakes    = Truthy(script.HandicapNoBrakesDuration);
+            NoEngine    = Truthy(script.HandicapNoGasDuration);
+            NoGrip      = Truthy(script.HandicapNoGripDuration);
+            NoSteer     = Truthy(script.HandicapNoSteeringDuration);
+
+            ForcedAccelColor = ForcedAccel ? GREEN  : DefaultColor;
+            NoBrakesColor    = NoBrakes    ? ORANGE : DefaultColor;
+            NoEngineColor    = NoEngine    ? RED    : DefaultColor;
+            NoGripColor      = NoGrip      ? BLUE   : DefaultColor;
+            NoSteerColor     = NoSteer     ? PURPLE : DefaultColor;
+
         } catch { yield(); continue; }
-
-        auto car     = cast<CSceneVehicleVisState>(VehicleState::ViewingPlayerState());
-        ReactorLevel = uint(car.ReactorBoostLvl);
-        ReactorType  = uint(car.ReactorBoostType);
-        SlowMo       = car.BulletTimeNormed;
-        Turbo        = car.IsTurbo;
-
-        if      (ReactorLevel == 0) ReactorColor = DefaultColor;
-        else if (ReactorLevel == 1) ReactorColor = YELLOW;
-        else                        ReactorColor = RED;
-
-        if      (ReactorType == 0) ReactorIcon = Icons::Rocket;
-        else if (ReactorType == 1) ReactorIcon = Icons::ChevronUp;
-        else                       ReactorIcon = Icons::ChevronDown;
-
-        if      (SlowMo == 0)  SlowMoColor = DefaultColor;
-        else if (SlowMo > 0.5) SlowMoColor = RED;
-        else                   SlowMoColor = YELLOW;
-
-        TurboColor = Turbo ? GREEN : DefaultColor;
-
-        auto app        = cast<CTrackMania>(GetApp());
-        auto playground = cast<CSmArenaClient>(app.CurrentPlayground);
-        auto script     = cast<CSmScriptPlayer>(playground.Arena.Players[0].ScriptAPI);
-        ForcedAccel     = Truthy(script.HandicapForceGasDuration);
-        NoBrakes        = Truthy(script.HandicapNoBrakesDuration);
-        NoEngine        = Truthy(script.HandicapNoGasDuration);
-        NoGrip          = Truthy(script.HandicapNoGripDuration);
-        NoSteer         = Truthy(script.HandicapNoSteeringDuration);
-
-        ForcedAccelColor = ForcedAccel ? GREEN  : DefaultColor;
-        NoBrakesColor    = NoBrakes    ? ORANGE : DefaultColor;
-        NoEngineColor    = NoEngine    ? RED    : DefaultColor;
-        NoGripColor      = NoGrip      ? BLUE   : DefaultColor;
-        NoSteerColor     = NoSteer     ? PURPLE : DefaultColor;
 
         yield();
     }

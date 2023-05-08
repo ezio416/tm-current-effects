@@ -2,7 +2,7 @@
 name     = "Current Effects"
 author   = "Ezio414"
 category = "Overlay"
-version  = "0.2"
+version  = "0.3"
 
 [script]
 dependencies = [ "VehicleState" ]
