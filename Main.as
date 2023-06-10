@@ -24,6 +24,7 @@ void Render() {
 
     UI::PushFont(font);
     UI::Begin("Current Effects", windowFlags);
+    if (PenaltyShow)     UI::Text(PenaltyColor     + Icons::Times               + "  Accel Penalty");
     if (CruiseShow)      UI::Text(CruiseColor      + Icons::Road                + "  Cruise Control");
     if (NoEngineShow)    UI::Text(NoEngineColor    + Icons::PowerOff            + "  Engine Off");
     if (ForcedAccelShow) UI::Text(ForcedAccelColor + Icons::Forward             + "  Forced Accel");
@@ -99,6 +100,8 @@ bool   NoGrip;
 string NoGripColor;
 bool   NoSteer;
 string NoSteerColor;
+// bool   Penalty;
+string PenaltyColor = DefaultColor;
 string ReactorColor;
 string ReactorIcon = Icons::Rocket;
 uint   ReactorLevel;
@@ -108,29 +111,31 @@ string SlowMoColor;
 bool   Turbo;
 string TurboColor;
 
-[Setting name="Show Window" category="General"]
+[Setting category="General" name="Enabled"]
 bool Show = true;
-[Setting name="Font Size" category="General" description="change requires plugin reload"]
-int FontSize = 16;
-[Setting name="Cruise Control" category="Toggle Options" description="not working yet"]
+[Setting category="General" name="Font Size" description="change requires plugin reload"]
+uint FontSize = 16;
+[Setting category="Toggle Options" name="Acceleration Penalty" description="not working yet"]
+bool PenaltyShow = false;
+[Setting category="Toggle Options" name="Cruise Control" description="not working yet"]
 bool CruiseShow = false;
-[Setting name="Engine Off" category="Toggle Options"]
+[Setting category="Toggle Options" name="Engine Off"]
 bool NoEngineShow = true;
-[Setting name="Forced Acceleration" category="Toggle Options"]
+[Setting category="Toggle Options" name="Forced Acceleration"]
 bool ForcedAccelShow = true;
-[Setting name="Fragile" category="Toggle Options" description="not working yet"]
+[Setting category="Toggle Options" name="Fragile" description="not working yet"]
 bool FragileShow = false;
-[Setting name="No Brakes" category="Toggle Options"]
+[Setting category="Toggle Options" name="No Brakes"]
 bool NoBrakesShow = true;
-[Setting name="No Grip" category="Toggle Options"]
+[Setting category="Toggle Options" name="No Grip"]
 bool NoGripShow = true;
-[Setting name="No Steering" category="Toggle Options"]
+[Setting category="Toggle Options" name="No Steering"]
 bool NoSteerShow = true;
-[Setting name="Reactor Boost" category="Toggle Options"]
+[Setting category="Toggle Options" name="Reactor Boost"]
 bool ReactorShow= true;
-[Setting name="Slow-Mo" category="Toggle Options"]
+[Setting category="Toggle Options" name="Slow-Mo"]
 bool SlowMoShow = true;
-[Setting name="Turbo" category="Toggle Options"]
+[Setting category="Toggle Options" name="Turbo"]
 bool TurboShow = true;
 
 void Main() {
@@ -164,6 +169,7 @@ void Main() {
                 NoEngine     = false;
                 NoGrip       = false;
                 NoSteer      = false;
+                // Penalty      = false;
                 throw("null_car");
             }
             ReactorLevel = uint(car.ReactorBoostLvl);
