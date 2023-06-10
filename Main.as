@@ -1,6 +1,6 @@
 /*
 c 2023-05-04
-m 2023-05-08
+m 2023-06-10
 */
 
 void Render() {
@@ -138,16 +138,22 @@ void Main() {
 
     while (true) {
         try {
-            auto app = cast<CTrackMania>(GetApp());
-            auto playground = cast<CSmArenaClient>(app.CurrentPlayground);
+            auto app = cast<CTrackMania@>(GetApp());
+            auto playground = cast<CSmArenaClient@>(app.CurrentPlayground);
             if (playground is null) throw("null_pg");
+            auto serverInfo = cast<CTrackManiaNetworkServerInfo>(app.Network.ServerInfo);
 
             array<CSceneVehicleVis@> cars;  // annoying workaround - conditional vars are scoped, CSceneVehicleVis is uninstantiable
             if (playground.UIConfigs[0].UISequence != CGamePlaygroundUIConfig::EUISequence::Playing) {
                 auto @vis = AllVehicleVisWithoutPB(app.GameScene);
                 cars.InsertLast(vis[vis.Length - 1]);  // latest record clicked is shown (usually, still buggy)
             }
-            auto car = (cars.Length > 0) ? cars[0].AsyncState : VehicleState::GetAllVis(app.GameScene)[0].AsyncState;
+            auto car =
+                (cars.Length > 0) ?
+                    cars[0].AsyncState :
+                    serverInfo.CurGameModeStr.EndsWith("_Online") ?
+                        VehicleState::ViewingPlayerState() :
+                        VehicleState::GetAllVis(app.GameScene)[0].AsyncState;
             if (car is null) {
                 ReactorLevel = 0;
                 ReactorType  = 0;
