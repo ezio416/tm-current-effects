@@ -10,6 +10,9 @@ Displays current effects on your Trackmania 2020 car.
 - Reactor Boost (red/yellow + up/down)
 - Slow-Mo (levels 1 + 2)
 - Turbo (yes/no)
+- Editor playtest
+- Viewing records (kind of)
+- Online
 
 ## Still needed:
 - Acceleration penalty
