@@ -4,7 +4,7 @@ m 2023-06-10
 */
 
 void Render() {
-    auto app = cast<CTrackMania>(GetApp());
+    auto app = cast<CTrackMania@>(GetApp());
     try {
         auto sequence = app.CurrentPlayground.UIConfigs[0].UISequence;
         if (
