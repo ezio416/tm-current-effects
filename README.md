@@ -1,5 +1,5 @@
 # Current Effects
-Openplanet plugin for Trackmania 2020 to display current effects on the car
+Displays current effects on your Trackmania 2020 car.
 
 ## Currently working:
 - Engine Off
@@ -12,6 +12,7 @@ Openplanet plugin for Trackmania 2020 to display current effects on the car
 - Turbo (yes/no)
 
 ## Still needed:
+- Acceleration penalty
 - Cruise Control
 - Fragile
 - Reactor Boost (timer - the entire reason I started this)
