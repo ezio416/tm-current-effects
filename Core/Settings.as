@@ -16,36 +16,36 @@ namespace Settings {
     [Setting category="General" name="Font size" description="change requires plugin reload"]
     uint FontSize = 16;
 
-    [Setting category="Toggle Options" name="Acceleration Penalty" description="not working yet"]
+    [Setting category="Toggles" name="Acceleration Penalty" description="not working yet"]
     bool PenaltyShow = false;
 
-    [Setting category="Toggle Options" name="Cruise Control" description="not working yet"]
+    [Setting category="Toggles" name="Cruise Control" description="not working yet"]
     bool CruiseShow = false;
 
-    [Setting category="Toggle Options" name="Engine Off"]
+    [Setting category="Toggles" name="Engine Off"]
     bool NoEngineShow = true;
 
-    [Setting category="Toggle Options" name="Forced Acceleration"]
+    [Setting category="Toggles" name="Forced Acceleration"]
     bool ForcedAccelShow = true;
 
-    [Setting category="Toggle Options" name="Fragile" description="not working yet"]
+    [Setting category="Toggles" name="Fragile" description="not working yet"]
     bool FragileShow = false;
 
-    [Setting category="Toggle Options" name="No Brakes"]
+    [Setting category="Toggles" name="No Brakes"]
     bool NoBrakesShow = true;
 
-    [Setting category="Toggle Options" name="No Grip"]
+    [Setting category="Toggles" name="No Grip"]
     bool NoGripShow = true;
 
-    [Setting category="Toggle Options" name="No Steering"]
+    [Setting category="Toggles" name="No Steering"]
     bool NoSteerShow = true;
 
-    [Setting category="Toggle Options" name="Reactor Boost"]
+    [Setting category="Toggles" name="Reactor Boost"]
     bool ReactorShow= true;
 
-    [Setting category="Toggle Options" name="Slow-Mo"]
+    [Setting category="Toggles" name="Slow-Mo"]
     bool SlowMoShow = true;
 
-    [Setting category="Toggle Options" name="Turbo"]
+    [Setting category="Toggles" name="Turbo"]
     bool TurboShow = true;
 }
