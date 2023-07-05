@@ -1,6 +1,6 @@
 /*
 c 2023-05-04
-m 2023-06-10
+m 2023-07-04
 */
 
 void Main() {
@@ -83,7 +83,10 @@ void Render() {
         auto sequence = app.CurrentPlayground.UIConfigs[0].UISequence;
         if (
             !Settings::Show ||
-            (sequence != CGamePlaygroundUIConfig::EUISequence::Playing) ||
+            (
+                sequence != CGamePlaygroundUIConfig::EUISequence::Playing &&
+                sequence != CGamePlaygroundUIConfig::EUISequence::UIInteraction  // watching replay
+            ) ||
             (Settings::hideWithGame && !UI::IsGameUIVisible()) ||
             (Settings::hideWithOP && !UI::IsOverlayShown())
         ) return;
