@@ -54,3 +54,12 @@ bool Truthy(uint num) {
         return true;
     return false;
 }
+
+string TurboText(float c) {
+    if (c == 0)  return TurboColor + Icons::ArrowCircleUp + "  Turbo";
+    if (c < 0.2) return TurboColor + Icons::ArrowCircleUp + "  Turb" + DefaultColor + "o";
+    if (c < 0.4) return TurboColor + Icons::ArrowCircleUp + "  Tur" + DefaultColor + "bo";
+    if (c < 0.6) return TurboColor + Icons::ArrowCircleUp + "  Tu" + DefaultColor + "rbo";
+    if (c < 0.8) return TurboColor + Icons::ArrowCircleUp + "  T" + DefaultColor + "urbo";
+    return TurboColor + Icons::ArrowCircleUp + DefaultColor + "  Turbo";
+}

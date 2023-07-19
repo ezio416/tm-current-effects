@@ -50,6 +50,7 @@ void Main() {
             ReactorType  = uint(car.ReactorBoostType);
             SlowMo       = car.SimulationTimeCoef;
             Turbo        = car.IsTurbo;
+            TurboTime    = car.TurboTime;
 
             if      (ReactorLevel == 0) ReactorColor = DefaultColor;
             else if (ReactorLevel == 1) ReactorColor = YELLOW;
@@ -119,7 +120,7 @@ void Render() {
     if (Settings::NoSteerShow)     UI::Text(NoSteerColor     + Icons::ArrowsH             + "  No Steering");
     if (Settings::ReactorShow)     UI::Text(ReactorText(ReactorFinalCountdown));
     if (Settings::SlowMoShow)      UI::Text(SlowMoColor      + Icons::ClockO              + "  Slow-Mo");
-    if (Settings::TurboShow)       UI::Text(TurboColor       + Icons::ArrowCircleUp       + "  Turbo");
+    if (Settings::TurboShow)       UI::Text(TurboText(TurboTime));
     UI::End();
     UI::PopFont();
 }

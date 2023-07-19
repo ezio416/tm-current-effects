@@ -39,3 +39,4 @@ float  SlowMo;
 string SlowMoColor;
 bool   Turbo;
 string TurboColor;
+float  TurboTime;
