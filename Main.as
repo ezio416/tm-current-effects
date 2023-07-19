@@ -13,17 +13,24 @@ void Main() {
             if (playground is null) throw("null_pg");
             auto serverInfo = cast<CTrackManiaNetworkServerInfo@>(app.Network.ServerInfo);
 
-            array<CSceneVehicleVis@> cars;  // annoying workaround - conditional vars are scoped, CSceneVehicleVis is uninstantiable
-            if (playground.UIConfigs[0].UISequence != CGamePlaygroundUIConfig::EUISequence::Playing) {
-                auto @vis = AllVehicleVisWithoutPB(app.GameScene);
-                cars.InsertLast(vis[vis.Length - 1]);  // latest record clicked is shown (usually, still buggy)
+            CSceneVehicleVis@ vis;
+            CSceneVehicleVisState@ car;
+
+            if (playground.UIConfigs[0].UISequence == CGamePlaygroundUIConfig::EUISequence::Playing) {
+                if (serverInfo.CurGameModeStr.EndsWith("_Online")) {
+                    auto player = cast<CSmPlayer@>(playground.GameTerminals[0].GUIPlayer);
+                    @vis = VehicleState::GetVis(app.GameScene, player);
+                    @car = vis.AsyncState;
+                } else {
+                    @vis = VehicleState::GetAllVis(app.GameScene)[0];
+                    @car = vis.AsyncState;
+                }
+            } else {
+                auto @allVis = AllVehicleVisWithoutPB(app.GameScene);
+                @vis = allVis[allVis.Length - 1];
+                @car = vis.AsyncState;  // latest record clicked is shown (usually, still buggy)
             }
-            auto car =
-                (cars.Length > 0) ?
-                    cars[0].AsyncState :
-                    serverInfo.CurGameModeStr.EndsWith("_Online") ?
-                        VehicleState::ViewingPlayerState() :
-                        VehicleState::GetAllVis(app.GameScene)[0].AsyncState;
+
             if (car is null) {
                 ReactorLevel = 0;
                 ReactorType  = 0;
@@ -37,6 +44,9 @@ void Main() {
                 // Penalty      = false;
                 throw("null_car");
             }
+
+            ReactorFinalCountdown = Dev::GetOffsetFloat(vis, 0x3DC);
+
             ReactorLevel = uint(car.ReactorBoostLvl);
             ReactorType  = uint(car.ReactorBoostType);
             SlowMo       = car.SimulationTimeCoef;
@@ -108,7 +118,7 @@ void Render() {
     if (Settings::NoBrakesShow)    UI::Text(NoBrakesColor    + Icons::ExclamationTriangle + "  No Brakes");
     if (Settings::NoGripShow)      UI::Text(NoGripColor      + Icons::SnowflakeO          + "  No Grip");
     if (Settings::NoSteerShow)     UI::Text(NoSteerColor     + Icons::ArrowsH             + "  No Steering");
-    if (Settings::ReactorShow)     UI::Text(ReactorColor     + ReactorIcon                + "  Reactor Boost");
+    if (Settings::ReactorShow)     UI::Text(ReactorText(ReactorFinalCountdown));
     if (Settings::SlowMoShow)      UI::Text(SlowMoColor      + Icons::ClockO              + "  Slow-Mo");
     if (Settings::TurboShow)       UI::Text(TurboColor       + Icons::ArrowCircleUp       + "  Turbo");
     UI::End();

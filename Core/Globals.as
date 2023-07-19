@@ -1,6 +1,6 @@
 /*
 c 2023-06-10
-m 2023-06-10
+m 2023-07-19
 */
 
 const string BLUE   = "\\$09D";
@@ -31,6 +31,7 @@ string NoSteerColor;
 // bool   Penalty;
 string PenaltyColor = DefaultColor;
 string ReactorColor;
+float  ReactorFinalCountdown;
 string ReactorIcon = Icons::Rocket;
 uint   ReactorLevel;
 uint   ReactorType;
