@@ -18,6 +18,6 @@ Displays current effects on your Trackmania 2020 car.
 - Acceleration penalty
 - Cruise Control
 - Fragile
-- Reactor Boost (full 6-second timer - the entire reason I started this)
+- Reactor Boost (full 6-second timer - the only reason I started this)
 - Turbo (red/yellow)
 - More settings (colors, fonts, etc.)
