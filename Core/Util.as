@@ -4,22 +4,22 @@ m 2023-07-19
 */
 
 // Will be written out when VehicleState is updated
-array<CSceneVehicleVis@> AllVehicleVisWithoutPB(ISceneVis@ scene) {
-    auto @vis = VehicleState::GetAllVis(scene);
-    if (vis.Length < 3) return vis; // PB ghost already hidden
+CSceneVehicleVis@[] AllVehicleVisWithoutPB(ISceneVis@ scene) {
+    auto @allVis = VehicleState::GetAllVis(scene);
+    if (allVis.Length < 3) return allVis; // PB ghost already hidden
 
-    for (uint i = 0; i <= vis.Length - 2; i++) {
+    for (uint i = 0; i <= allVis.Length - 2; i++) {
         for (uint j = i; j <= 6; j++) {
-            if (i < vis.Length - 1) {
-                if (IsSameVehicle(vis[i], vis[j])) {
-                    vis.RemoveAt(j);
-                    vis.RemoveAt(i);
-                    return vis;
+            if (i < allVis.Length - 1) {
+                if (IsSameVehicle(allVis[i], allVis[j])) {
+                    allVis.RemoveAt(j);
+                    allVis.RemoveAt(i);
+                    return allVis;
                 }
             } else break;
         }
     }
-    return vis;  // should never happen
+    return allVis;  // should never happen
 }
 
 // I'm well aware this is garbage

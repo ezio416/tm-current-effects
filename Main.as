@@ -20,16 +20,15 @@ void Main() {
                 if (serverInfo.CurGameModeStr.EndsWith("_Online")) {
                     auto player = cast<CSmPlayer@>(playground.GameTerminals[0].GUIPlayer);
                     @vis = VehicleState::GetVis(app.GameScene, player);
-                    @car = vis.AsyncState;
                 } else {
                     @vis = VehicleState::GetAllVis(app.GameScene)[0];
-                    @car = vis.AsyncState;
                 }
             } else {
                 auto @allVis = AllVehicleVisWithoutPB(app.GameScene);
-                @vis = allVis[allVis.Length - 1];
-                @car = vis.AsyncState;  // latest record clicked is shown (usually, still buggy)
+                @vis = allVis[allVis.Length - 1];  // latest record clicked is shown (usually, still buggy)
             }
+
+            @car = vis.AsyncState;
 
             if (car is null) {
                 ReactorLevel = 0;
