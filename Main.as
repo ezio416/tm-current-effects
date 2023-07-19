@@ -1,6 +1,6 @@
 /*
 c 2023-05-04
-m 2023-07-04
+m 2023-07-19
 */
 
 void Main() {
@@ -11,7 +11,7 @@ void Main() {
             auto app = cast<CTrackMania@>(GetApp());
             auto playground = cast<CSmArenaClient@>(app.CurrentPlayground);
             if (playground is null) throw("null_pg");
-            auto serverInfo = cast<CTrackManiaNetworkServerInfo>(app.Network.ServerInfo);
+            auto serverInfo = cast<CTrackManiaNetworkServerInfo@>(app.Network.ServerInfo);
 
             array<CSceneVehicleVis@> cars;  // annoying workaround - conditional vars are scoped, CSceneVehicleVis is uninstantiable
             if (playground.UIConfigs[0].UISequence != CGamePlaygroundUIConfig::EUISequence::Playing) {
@@ -39,7 +39,7 @@ void Main() {
             }
             ReactorLevel = uint(car.ReactorBoostLvl);
             ReactorType  = uint(car.ReactorBoostType);
-            SlowMo       = car.BulletTimeNormed;
+            SlowMo       = car.SimulationTimeCoef;
             Turbo        = car.IsTurbo;
 
             if      (ReactorLevel == 0) ReactorColor = DefaultColor;
@@ -50,13 +50,15 @@ void Main() {
             else if (ReactorType == 1) ReactorIcon = Icons::ChevronUp;
             else                       ReactorIcon = Icons::ChevronDown;
 
-            if      (SlowMo == 0)  SlowMoColor = DefaultColor;
-            else if (SlowMo > 0.5) SlowMoColor = RED;
-            else                   SlowMoColor = YELLOW;
+            if      (SlowMo == 1)        SlowMoColor = DefaultColor;
+            else if (SlowMo == 0.57)     SlowMoColor = GREEN;
+            else if (SlowMo == 0.3249)   SlowMoColor = YELLOW;
+            else if (SlowMo == 0.185193) SlowMoColor = ORANGE;
+            else                         SlowMoColor = RED;
 
             TurboColor = Turbo ? GREEN : DefaultColor;
 
-            auto script = cast<CSmScriptPlayer>(playground.Arena.Players[0].ScriptAPI);
+            auto script = cast<CSmScriptPlayer@>(playground.Arena.Players[0].ScriptAPI);
             ForcedAccel = Truthy(script.HandicapForceGasDuration);
             NoBrakes    = Truthy(script.HandicapNoBrakesDuration);
             NoEngine    = Truthy(script.HandicapNoGasDuration);
