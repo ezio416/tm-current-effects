@@ -1,6 +1,6 @@
 /*
 c 2023-05-04
-m 2023-07-19
+m 2023-07-20
 */
 
 void Main() {
@@ -44,7 +44,8 @@ void Main() {
                 throw("null_car");
             }
 
-            ReactorFinalCountdown = Dev::GetOffsetFloat(vis, 0x3DC);
+            LastTurboLevel        = Dev::GetOffsetUint32(vis, 976);
+            ReactorFinalCountdown = Dev::GetOffsetFloat(vis, 988);
 
             ReactorLevel = uint(car.ReactorBoostLvl);
             ReactorType  = uint(car.ReactorBoostType);
@@ -66,7 +67,16 @@ void Main() {
             else if (SlowMo == 0.185193) SlowMoColor = ORANGE;
             else                         SlowMoColor = RED;
 
-            TurboColor = Turbo ? GREEN : DefaultColor;
+            if (Turbo) {
+                switch (LastTurboLevel) {
+                    case 1: TurboColor = YELLOW; break;
+                    case 2: TurboColor = RED;    break;
+                    case 3: TurboColor = YELLOW; break;  // roulette 1
+                    case 4: TurboColor = CYAN;   break;  // roulette 2
+                    case 5: TurboColor = PURPLE; break;  // roulette 3
+                    default: break;
+                }
+            } else TurboColor = DefaultColor;
 
             auto script = cast<CSmScriptPlayer@>(playground.Arena.Players[0].ScriptAPI);
             ForcedAccel = Truthy(script.HandicapForceGasDuration);
