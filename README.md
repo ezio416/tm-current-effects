@@ -1,7 +1,9 @@
-# Current Effects
-Displays current effects on your Trackmania 2020 car.
-
 ![](image_text.png)
+
+# Current Effects
+The newest Trackmania has a number of special effects that can be applied to your car, including some helpers and many hinderances. It can he hard to keep track of what you currently have, especially in cases of LOL maps.
+
+Showcase: https://youtu.be/0rzvJQJC8gc
 
 ## Currently working:
 - Engine Off
@@ -18,8 +20,8 @@ Displays current effects on your Trackmania 2020 car.
 
 ## Still needed:
 - Acceleration penalty
-- **Cruise Control**
-- **Fragile**
+- ***Cruise Control***
+- ***Fragile***
 - Reactor Boost (full 6-second timer - the only reason I started this)
 - Slow-Mo (timer)
 - More settings (colors, fonts, etc.)
