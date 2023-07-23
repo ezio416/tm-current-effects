@@ -13,6 +13,8 @@ void Main() {
 
     while (true) {
         try {
+            if (!Settings::Show) throw("no_show");
+
             auto app = cast<CTrackMania@>(GetApp());
             auto playground = cast<CSmArenaClient@>(app.CurrentPlayground);
             if (playground is null) throw("null_pg");
