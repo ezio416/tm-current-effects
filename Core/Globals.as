@@ -1,9 +1,10 @@
 /*
 c 2023-06-10
-m 2023-06-10
+m 2023-07-20
 */
 
 const string BLUE   = "\\$09D";
+const string CYAN   = "\\$2FF";
 const string GRAY   = "\\$888";
 const string GREEN  = "\\$0D2";
 const string ORANGE = "\\$F90";
@@ -20,6 +21,7 @@ bool   ForcedAccel;
 string ForcedAccelColor;
 // bool Fragile;
 string FragileColor = DefaultColor;
+uint   LastTurboLevel;
 bool   NoBrakes;
 string NoBrakesColor;
 bool   NoEngine;
@@ -31,6 +33,7 @@ string NoSteerColor;
 // bool   Penalty;
 string PenaltyColor = DefaultColor;
 string ReactorColor;
+float  ReactorFinalCountdown;
 string ReactorIcon = Icons::Rocket;
 uint   ReactorLevel;
 uint   ReactorType;
@@ -38,3 +41,4 @@ float  SlowMo;
 string SlowMoColor;
 bool   Turbo;
 string TurboColor;
+float  TurboTime;

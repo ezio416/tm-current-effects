@@ -1,29 +1,42 @@
 /*
 c 2023-05-04
-m 2023-07-04
+m 2023-07-23
 */
+
+void RenderMenu() {
+    if (UI::MenuItem("\\$F00" + Icons::React + "\\$G Current Effects", "", Settings::Show))
+        Settings::Show = !Settings::Show;
+}
 
 void Main() {
     @font = UI::LoadFont("DroidSans.ttf", Settings::FontSize, -1, -1, true, true, true);
 
     while (true) {
         try {
+            if (!Settings::Show) throw("no_show");
+
             auto app = cast<CTrackMania@>(GetApp());
             auto playground = cast<CSmArenaClient@>(app.CurrentPlayground);
             if (playground is null) throw("null_pg");
-            auto serverInfo = cast<CTrackManiaNetworkServerInfo>(app.Network.ServerInfo);
+            auto serverInfo = cast<CTrackManiaNetworkServerInfo@>(app.Network.ServerInfo);
 
-            array<CSceneVehicleVis@> cars;  // annoying workaround - conditional vars are scoped, CSceneVehicleVis is uninstantiable
-            if (playground.UIConfigs[0].UISequence != CGamePlaygroundUIConfig::EUISequence::Playing) {
-                auto @vis = AllVehicleVisWithoutPB(app.GameScene);
-                cars.InsertLast(vis[vis.Length - 1]);  // latest record clicked is shown (usually, still buggy)
+            CSceneVehicleVis@ vis;
+            CSceneVehicleVisState@ car;
+
+            if (playground.UIConfigs[0].UISequence == CGamePlaygroundUIConfig::EUISequence::Playing) {
+                if (serverInfo.CurGameModeStr.EndsWith("_Online")) {
+                    auto player = cast<CSmPlayer@>(playground.GameTerminals[0].GUIPlayer);
+                    @vis = VehicleState::GetVis(app.GameScene, player);
+                } else {
+                    @vis = VehicleState::GetAllVis(app.GameScene)[0];
+                }
+            } else {
+                auto @allVis = AllVehicleVisWithoutPB(app.GameScene);
+                @vis = allVis[allVis.Length - 1];  // latest record clicked is shown (usually, still buggy)
             }
-            auto car =
-                (cars.Length > 0) ?
-                    cars[0].AsyncState :
-                    serverInfo.CurGameModeStr.EndsWith("_Online") ?
-                        VehicleState::ViewingPlayerState() :
-                        VehicleState::GetAllVis(app.GameScene)[0].AsyncState;
+
+            @car = vis.AsyncState;
+
             if (car is null) {
                 ReactorLevel = 0;
                 ReactorType  = 0;
@@ -37,10 +50,15 @@ void Main() {
                 // Penalty      = false;
                 throw("null_car");
             }
+
+            LastTurboLevel        = Dev::GetOffsetUint32(vis, 976);
+            ReactorFinalCountdown = Dev::GetOffsetFloat(vis, 988);
+
             ReactorLevel = uint(car.ReactorBoostLvl);
             ReactorType  = uint(car.ReactorBoostType);
-            SlowMo       = car.BulletTimeNormed;
+            SlowMo       = car.SimulationTimeCoef;
             Turbo        = car.IsTurbo;
+            TurboTime    = car.TurboTime;
 
             if      (ReactorLevel == 0) ReactorColor = DefaultColor;
             else if (ReactorLevel == 1) ReactorColor = YELLOW;
@@ -50,13 +68,24 @@ void Main() {
             else if (ReactorType == 1) ReactorIcon = Icons::ChevronUp;
             else                       ReactorIcon = Icons::ChevronDown;
 
-            if      (SlowMo == 0)  SlowMoColor = DefaultColor;
-            else if (SlowMo > 0.5) SlowMoColor = RED;
-            else                   SlowMoColor = YELLOW;
+            if      (SlowMo == 1)        SlowMoColor = DefaultColor;
+            else if (SlowMo == 0.57)     SlowMoColor = GREEN;
+            else if (SlowMo == 0.3249)   SlowMoColor = YELLOW;
+            else if (SlowMo == 0.185193) SlowMoColor = ORANGE;
+            else                         SlowMoColor = RED;
 
-            TurboColor = Turbo ? GREEN : DefaultColor;
+            if (Turbo) {
+                switch (LastTurboLevel) {
+                    case 1: TurboColor = YELLOW; break;
+                    case 2: TurboColor = RED;    break;
+                    case 3: TurboColor = YELLOW; break;  // roulette 1
+                    case 4: TurboColor = CYAN;   break;  // roulette 2
+                    case 5: TurboColor = PURPLE; break;  // roulette 3
+                    default: break;
+                }
+            } else TurboColor = DefaultColor;
 
-            auto script = cast<CSmScriptPlayer>(playground.Arena.Players[0].ScriptAPI);
+            auto script = cast<CSmScriptPlayer@>(playground.Arena.Players[0].ScriptAPI);
             ForcedAccel = Truthy(script.HandicapForceGasDuration);
             NoBrakes    = Truthy(script.HandicapNoBrakesDuration);
             NoEngine    = Truthy(script.HandicapNoGasDuration);
@@ -78,6 +107,8 @@ void Main() {
 }
 
 void Render() {
+    if (!Settings::Show) return;
+
     auto app = cast<CTrackMania@>(GetApp());
     try {
         auto sequence = app.CurrentPlayground.UIConfigs[0].UISequence;
@@ -106,9 +137,9 @@ void Render() {
     if (Settings::NoBrakesShow)    UI::Text(NoBrakesColor    + Icons::ExclamationTriangle + "  No Brakes");
     if (Settings::NoGripShow)      UI::Text(NoGripColor      + Icons::SnowflakeO          + "  No Grip");
     if (Settings::NoSteerShow)     UI::Text(NoSteerColor     + Icons::ArrowsH             + "  No Steering");
-    if (Settings::ReactorShow)     UI::Text(ReactorColor     + ReactorIcon                + "  Reactor Boost");
+    if (Settings::ReactorShow)     UI::Text(ReactorText(ReactorFinalCountdown));
     if (Settings::SlowMoShow)      UI::Text(SlowMoColor      + Icons::ClockO              + "  Slow-Mo");
-    if (Settings::TurboShow)       UI::Text(TurboColor       + Icons::ArrowCircleUp       + "  Turbo");
+    if (Settings::TurboShow)       UI::Text(TurboText(TurboTime));
     UI::End();
     UI::PopFont();
 }

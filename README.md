@@ -7,9 +7,9 @@ Displays current effects on your Trackmania 2020 car.
 - No Brakes
 - No Grip
 - No Steering
-- Reactor Boost (red/yellow + up/down)
-- Slow-Mo (levels 1 + 2)
-- Turbo (yes/no)
+- Reactor Boost (red/yellow, up/down, last-second timer)
+- Slow-Mo (all 4 levels)
+- Turbo (all 5 levels, timer)
 - Editor playtest
 - Viewing records (kind of)
 - Online
@@ -18,7 +18,6 @@ Displays current effects on your Trackmania 2020 car.
 - Acceleration penalty
 - Cruise Control
 - Fragile
-- Reactor Boost (timer - the entire reason I started this)
-- Slow-Mo (levels 3 + 4)
-- Turbo (red/yellow)
+- Reactor Boost (full 6-second timer - the only reason I started this)
+- Slow-Mo (timer)
 - More settings (colors, fonts, etc.)
