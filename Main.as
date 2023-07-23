@@ -1,7 +1,12 @@
 /*
 c 2023-05-04
-m 2023-07-20
+m 2023-07-23
 */
+
+void RenderMenu() {
+    if (UI::MenuItem("\\$F00" + Icons::React + "\\$G Current Effects", "", Settings::Show))
+        Settings::Show = !Settings::Show;
+}
 
 void Main() {
     @font = UI::LoadFont("DroidSans.ttf", Settings::FontSize, -1, -1, true, true, true);
@@ -100,6 +105,8 @@ void Main() {
 }
 
 void Render() {
+    if (!Settings::Show) return;
+
     auto app = cast<CTrackMania@>(GetApp());
     try {
         auto sequence = app.CurrentPlayground.UIConfigs[0].UISequence;
