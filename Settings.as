@@ -1,6 +1,6 @@
 /*
 c 2023-06-10
-m 2023-08-03
+m 2023-08-04
 */
 
 [Setting category="General" name="Enabled"]
@@ -12,8 +12,8 @@ bool S_hideWithGame = true;
 [Setting category="General" name="Hide with Openplanet UI"]
 bool S_hideWithOP = false;
 
-[Setting category="General" name="Font size" description="change requires plugin reload"]
-uint S_FontSize = 16;
+[Setting category="General" name="Font style/size"]
+Font S_Font = Font::DroidSansBold_20;
 
 [Setting category="Toggles" name="Acceleration Penalty" description="not working yet"]
 bool S_Penalty = false;

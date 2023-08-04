@@ -3,8 +3,6 @@ c 2023-05-04
 m 2023-08-04
 */
 
-UI::Font@ font = null;
-
 const string BLUE   = "\\$09D";
 const string CYAN   = "\\$2FF";
 const string GRAY   = "\\$888";
@@ -32,7 +30,15 @@ string TurboColor;
 bool replay;
 
 void Main() {
-    @font = UI::LoadFont("DroidSans.ttf", S_FontSize, -1, -1, true, true, true);
+    auto coro = startnew(CoroutineFunc(LoadFonts));
+    while (coro.IsRunning()) yield();
+    ChangeFont();
+}
+
+void OnSettingsChanged() {
+    if (currentFont != S_Font) {
+        ChangeFont();
+    }
 }
 
 void RenderMenu() {
@@ -132,42 +138,42 @@ void Render() {
 
     UI::PushFont(font);
     UI::Begin("Current Effects", windowFlags);
-        if (S_Penalty)  UI::Text(PenaltyColor  + Icons::Times               + "  Accel Penalty");
-        if (S_Cruise)   UI::Text(CruiseColor   + Icons::Road                + "  Cruise Control");
-        if (S_NoEngine) UI::Text(NoEngineColor + Icons::PowerOff            + "  Engine Off");
-        if (S_Forced)   UI::Text(ForcedColor   + Icons::Forward             + "  Forced Accel");
-        if (S_Fragile)  UI::Text(FragileColor  + Icons::ChainBroken         + "  Fragile");
-        if (S_NoBrakes) UI::Text(NoBrakesColor + Icons::ExclamationTriangle + "  No Brakes");
-        if (S_NoGrip)   UI::Text(NoGripColor   + Icons::SnowflakeO          + "  No Grip");
-        if (S_NoSteer)  UI::Text(NoSteerColor  + Icons::ArrowsH             + "  No Steering");
+        if (S_Penalty)  UI::Text(PenaltyColor  + Icons::Times               + iconPadding + "Accel Penalty");
+        if (S_Cruise)   UI::Text(CruiseColor   + Icons::Road                + iconPadding + "Cruise Control");
+        if (S_NoEngine) UI::Text(NoEngineColor + Icons::PowerOff            + iconPadding + "Engine Off");
+        if (S_Forced)   UI::Text(ForcedColor   + Icons::Forward             + iconPadding + "Forced Accel");
+        if (S_Fragile)  UI::Text(FragileColor  + Icons::ChainBroken         + iconPadding + "Fragile");
+        if (S_NoBrakes) UI::Text(NoBrakesColor + Icons::ExclamationTriangle + iconPadding + "No Brakes");
+        if (S_NoGrip)   UI::Text(NoGripColor   + Icons::SnowflakeO          + iconPadding + "No Grip");
+        if (S_NoSteer)  UI::Text(NoSteerColor  + Icons::ArrowsH             + iconPadding + "No Steering");
         if (S_Reactor)  UI::Text(ReactorText(Dev::GetOffsetFloat(state, 380)));
-        if (S_SlowMo)   UI::Text(SlowMoColor   + Icons::ClockO              + "  Slow-Mo");
+        if (S_SlowMo)   UI::Text(SlowMoColor   + Icons::ClockO              + iconPadding + "Slow-Mo");
         if (S_Turbo)    UI::Text(TurboText(state.TurboTime));
     UI::End();
     UI::PopFont();
 }
 
 string ReactorText(float f) {
-    if (f == 0)   return ReactorColor + ReactorIcon + "  Reactor Boost";
-    if (f < 0.09) return ReactorColor + ReactorIcon + "  Reactor Boos" + DefaultColor + "t";
-    if (f < 0.17) return ReactorColor + ReactorIcon + "  Reactor Boo" + DefaultColor + "st";
-    if (f < 0.25) return ReactorColor + ReactorIcon + "  Reactor Bo" + DefaultColor + "ost";
-    if (f < 0.33) return ReactorColor + ReactorIcon + "  Reactor B" + DefaultColor + "oost";
-    if (f < 0.41) return ReactorColor + ReactorIcon + "  Reactor " + DefaultColor + "Boost";
-    if (f < 0.49) return ReactorColor + ReactorIcon + "  Reacto" + DefaultColor + "r Boost";
-    if (f < 0.57) return ReactorColor + ReactorIcon + "  React" + DefaultColor + "or Boost";
-    if (f < 0.65) return ReactorColor + ReactorIcon + "  Reac" + DefaultColor + "tor Boost";
-    if (f < 0.73) return ReactorColor + ReactorIcon + "  Rea" + DefaultColor + "ctor Boost";
-    if (f < 0.81) return ReactorColor + ReactorIcon + "  Re" + DefaultColor + "actor Boost";
-    if (f < 0.89) return ReactorColor + ReactorIcon + "  R" + DefaultColor + "eactor Boost";
-    return ReactorColor + ReactorIcon + DefaultColor + "  Reactor Boost";
+    if (f == 0)   return ReactorColor + ReactorIcon + iconPadding + "Reactor Boost";
+    if (f < 0.09) return ReactorColor + ReactorIcon + iconPadding + "Reactor Boos" + DefaultColor + "t";
+    if (f < 0.17) return ReactorColor + ReactorIcon + iconPadding + "Reactor Boo" + DefaultColor + "st";
+    if (f < 0.25) return ReactorColor + ReactorIcon + iconPadding + "Reactor Bo" + DefaultColor + "ost";
+    if (f < 0.33) return ReactorColor + ReactorIcon + iconPadding + "Reactor B" + DefaultColor + "oost";
+    if (f < 0.41) return ReactorColor + ReactorIcon + iconPadding + "Reactor " + DefaultColor + "Boost";
+    if (f < 0.49) return ReactorColor + ReactorIcon + iconPadding + "Reacto" + DefaultColor + "r Boost";
+    if (f < 0.57) return ReactorColor + ReactorIcon + iconPadding + "React" + DefaultColor + "or Boost";
+    if (f < 0.65) return ReactorColor + ReactorIcon + iconPadding + "Reac" + DefaultColor + "tor Boost";
+    if (f < 0.73) return ReactorColor + ReactorIcon + iconPadding + "Rea" + DefaultColor + "ctor Boost";
+    if (f < 0.81) return ReactorColor + ReactorIcon + iconPadding + "Re" + DefaultColor + "actor Boost";
+    if (f < 0.89) return ReactorColor + ReactorIcon + iconPadding + "R" + DefaultColor + "eactor Boost";
+    return ReactorColor + ReactorIcon + DefaultColor + iconPadding + "Reactor Boost";
 }
 
 string TurboText(float f) {
-    if (f == 0)  return TurboColor + Icons::ArrowCircleUp + "  Turbo";
-    if (f < 0.2) return TurboColor + Icons::ArrowCircleUp + "  Turb" + DefaultColor + "o";
-    if (f < 0.4) return TurboColor + Icons::ArrowCircleUp + "  Tur" + DefaultColor + "bo";
-    if (f < 0.6) return TurboColor + Icons::ArrowCircleUp + "  Tu" + DefaultColor + "rbo";
-    if (f < 0.8) return TurboColor + Icons::ArrowCircleUp + "  T" + DefaultColor + "urbo";
-    return TurboColor + Icons::ArrowCircleUp + DefaultColor + "  Turbo";
+    if (f == 0)  return TurboColor + Icons::ArrowCircleUp + iconPadding + "Turbo";
+    if (f < 0.2) return TurboColor + Icons::ArrowCircleUp + iconPadding + "Turb" + DefaultColor + "o";
+    if (f < 0.4) return TurboColor + Icons::ArrowCircleUp + iconPadding + "Tur" + DefaultColor + "bo";
+    if (f < 0.6) return TurboColor + Icons::ArrowCircleUp + iconPadding + "Tu" + DefaultColor + "rbo";
+    if (f < 0.8) return TurboColor + Icons::ArrowCircleUp + iconPadding + "T" + DefaultColor + "urbo";
+    return TurboColor + Icons::ArrowCircleUp + DefaultColor + iconPadding + "Turbo";
 }
