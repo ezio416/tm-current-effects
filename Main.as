@@ -1,6 +1,6 @@
 /*
 c 2023-05-04
-m 2023-08-03
+m 2023-08-04
 */
 
 UI::Font@ font = null;
@@ -29,6 +29,8 @@ string ReactorIcon;
 string SlowMoColor;
 string TurboColor;
 
+bool replay;
+
 void Main() {
     @font = UI::LoadFont("DroidSans.ttf", S_FontSize, -1, -1, true, true, true);
 }
@@ -47,23 +49,39 @@ void Render() {
     ) return;
 
     auto app = cast<CTrackMania@>(GetApp());
+
     auto playground = cast<CSmArenaClient@>(app.CurrentPlayground);
     if (playground is null) return;
 
     if (
         playground.GameTerminals.Length != 1 ||
-        playground.UIConfigs[0].UISequence != CGamePlaygroundUIConfig::EUISequence::Playing
+        playground.UIConfigs.Length == 0
     ) return;
 
-    auto player = cast<CSmPlayer@>(playground.GameTerminals[0].GUIPlayer);
-    if (player is null) return;
+    auto scene = cast<ISceneVis@>(app.GameScene);
+    if (scene is null) return;
 
-    auto vis = VehicleState::GetVis(app.GameScene, player);
+    CSceneVehicleVis@ vis;
+    auto player = cast<CSmPlayer@>(playground.GameTerminals[0].GUIPlayer);
+    if (player !is null) {
+        @vis = VehicleState::GetVis(scene, player);
+        replay = false;
+    } else {
+        @vis = VehicleState::GetSingularVis(scene);
+        replay = true;
+    }
     if (vis is null) return;
+
     auto state = vis.AsyncState;
 
     auto script = cast<CSmScriptPlayer@>(playground.Arena.Players[0].ScriptAPI);
     if (script is null) return;
+
+    auto sequence = playground.UIConfigs[0].UISequence;
+    if (
+        !(sequence == CGamePlaygroundUIConfig::EUISequence::Playing) &&
+        !(sequence == CGamePlaygroundUIConfig::EUISequence::UIInteraction && replay)
+    ) return;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -78,14 +96,14 @@ void Render() {
     NoSteerColor = script.HandicapNoSteeringDuration > 0 ? PURPLE : DefaultColor;
 
     switch (uint(state.ReactorBoostLvl)) {
-        case 0:  ReactorColor = DefaultColor; break;
-        case 1:  ReactorColor = YELLOW;       break;
-        default: ReactorColor = RED;
+        case 1:  ReactorColor = YELLOW; break;
+        case 2:  ReactorColor = RED;    break;
+        default: ReactorColor = DefaultColor;
     }
     switch (uint(state.ReactorBoostType)) {
-        case 0:  ReactorIcon = Icons::Rocket;
-        case 1:  ReactorIcon = Icons::ChevronUp;
-        default: ReactorIcon = Icons::ChevronDown;
+        case 1:  ReactorIcon = Icons::ChevronUp;   break;
+        case 2:  ReactorIcon = Icons::ChevronDown; break;
+        default: ReactorIcon = Icons::Rocket;
     }
 
     if      (state.SimulationTimeCoef == 1)        SlowMoColor = DefaultColor;
