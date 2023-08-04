@@ -19,16 +19,6 @@ enum Font {
     DroidSansMono_26
 }
 
-// any custom fonts not already used by Openplanet
-void LoadFonts() {
-    UI::Font@ f;
-    @f = UI::LoadFont("DroidSans.ttf",      16, -1, -1, true, true, true); yield();
-    @f = UI::LoadFont("DroidSans-Bold.ttf", 20, -1, -1, true, true, true); yield();
-    @f = UI::LoadFont("DroidSans-Bold.ttf", 26, -1, -1, true, true, true); yield();
-    @f = UI::LoadFont("DroidSansMono.ttf",  20, -1, -1, true, true, true); yield();
-    @f = UI::LoadFont("DroidSansMono.ttf",  26, -1, -1, true, true, true); yield();
-}
-
 void ChangeFont() {
     switch (S_Font) {
         case Font::DroidSans_16:     @font = UI::LoadFont("DroidSans.ttf",      16, -1, -1, true, true, true); iconPadding = "  "; break;

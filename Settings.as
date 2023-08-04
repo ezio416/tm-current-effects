@@ -12,7 +12,7 @@ bool S_hideWithGame = true;
 [Setting category="General" name="Hide with Openplanet UI"]
 bool S_hideWithOP = false;
 
-[Setting category="General" name="Font style/size"]
+[Setting category="General" name="Font style/size" description="loading a font for the first time causes game to hang for a bit"]
 Font S_Font = Font::DroidSansBold_20;
 
 [Setting category="Toggles" name="Acceleration Penalty" description="not working yet"]

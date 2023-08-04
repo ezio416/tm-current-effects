@@ -30,8 +30,6 @@ string TurboColor;
 bool replay;
 
 void Main() {
-    auto coro = startnew(CoroutineFunc(LoadFonts));
-    while (coro.IsRunning()) yield();
     ChangeFont();
 }
 
