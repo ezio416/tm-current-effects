@@ -15,8 +15,8 @@ Showcase: https://youtu.be/0rzvJQJC8gc
 - Slow-Mo (all 4 levels)
 - Turbo (all 5 levels, timer)
 - Editor playtest
-- Viewing records (kind of)
-- Online
+- Viewing replays (only if one is on-screen)
+- Online (playing on servers)
 
 ## Still needed:
 - Acceleration penalty
@@ -24,4 +24,4 @@ Showcase: https://youtu.be/0rzvJQJC8gc
 - ***Fragile***
 - Reactor Boost (full 6-second timer - the only reason I started this)
 - Slow-Mo (timer)
-- More settings (colors, fonts, etc.)
+- More settings (colors, etc.)
