@@ -1,7 +1,7 @@
 ![](image_text.png)
 
 # Current Effects
-The newest Trackmania has a number of special effects that can be applied to your car, including some helpers and many hinderances. It can he hard to keep track of what you currently have, especially in cases of LOL maps.
+The newest Trackmania has a number of special effects that can be applied to your car, including some helpers and many hinderances. It can be hard to keep track of what you currently have, especially in cases of LOL maps.
 
 Showcase: https://youtu.be/0rzvJQJC8gc
 
