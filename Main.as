@@ -78,7 +78,11 @@ void Render() {
 
     auto state = vis.AsyncState;
 
-    auto script = cast<CSmScriptPlayer@>(playground.Arena.Players[0].ScriptAPI);
+    auto arena = cast<CSmArena@>(playground.Arena);
+    if (arena is null) return;
+
+    if (arena.Players.Length == 0) return;
+    auto script = cast<CSmScriptPlayer@>(arena.Players[0].ScriptAPI);
     if (script is null) return;
 
     auto sequence = playground.UIConfigs[0].UISequence;
