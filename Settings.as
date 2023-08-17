@@ -1,6 +1,6 @@
 /*
 c 2023-06-10
-m 2023-08-04
+m 2023-08-17
 */
 
 [Setting category="General" name="Enabled"]
@@ -14,6 +14,8 @@ bool S_hideWithOP = false;
 
 [Setting category="General" name="Font style/size" description="loading a font for the first time causes game to hang for a bit"]
 Font S_Font = Font::DroidSansBold_20;
+
+
 
 [Setting category="Toggles" name="Acceleration Penalty" description="not working yet"]
 bool S_Penalty = false;
