@@ -63,12 +63,15 @@ void RenderEffects(CSceneVehicleVisState@ state, CSmScriptPlayer@ script) {
         }
     }
 
-    int windowFlags = UI::WindowFlags::AlwaysAutoResize |
+    int flags = UI::WindowFlags::AlwaysAutoResize |
                       UI::WindowFlags::NoCollapse |
                       UI::WindowFlags::NoTitleBar;
 
+    if (!UI::IsOverlayShown())
+        flags |= UI::WindowFlags::NoInputs;
+
     UI::PushFont(font);
-    UI::Begin("Current Effects", windowFlags);
+    UI::Begin("Current Effects", flags);
         if (S_Penalty)  UI::Text(PenaltyColor  + Icons::Times               + iconPadding + "Accel Penalty");
         if (S_Cruise)   UI::Text(CruiseColor   + Icons::Road                + iconPadding + "Cruise Control");
         if (S_NoEngine) UI::Text(NoEngineColor + Icons::PowerOff            + iconPadding + "Engine Off");
