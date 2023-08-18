@@ -60,8 +60,8 @@ void RenderEffects(CSceneVehicleVisState@ state) {
     }
 
     int flags = UI::WindowFlags::AlwaysAutoResize |
-                      UI::WindowFlags::NoCollapse |
-                      UI::WindowFlags::NoTitleBar;
+                UI::WindowFlags::NoCollapse |
+                UI::WindowFlags::NoTitleBar;
 
     if (!UI::IsOverlayShown())
         flags |= UI::WindowFlags::NoInputs;
@@ -224,10 +224,10 @@ void SetHandicaps(int sum) {
             break;
         case 6400: case 6401: case 6402:
             NoEngineColor = RED;
-            ForcedColor = DefaultColor;
+            ForcedColor   = DefaultColor;
             NoBrakesColor = DefaultColor;
-            NoSteerColor = PURPLE;
-            NoGripColor = BLUE;
+            NoSteerColor  = PURPLE;
+            NoGripColor   = BLUE;
             break;
         case 7424: case 7425: case 7426:
             NoEngineColor = RED;
