@@ -1,6 +1,6 @@
 /*
 c 2023-05-04
-m 2023-08-17
+m 2023-08-18
 */
 
 bool replay;
@@ -52,14 +52,8 @@ void Render() {
     }
     if (vis is null) return;
 
-    auto state = vis.AsyncState;
-
     auto arena = cast<CSmArena@>(playground.Arena);
     if (arena is null) return;
-
-    if (arena.Players.Length == 0) return;
-    auto script = cast<CSmScriptPlayer@>(arena.Players[0].ScriptAPI);
-    if (script is null) return;
 
     auto sequence = playground.UIConfigs[0].UISequence;
     if (
@@ -67,5 +61,5 @@ void Render() {
         !(sequence == CGamePlaygroundUIConfig::EUISequence::UIInteraction && replay)
     ) return;
 
-    RenderEffects(state, script);
+    RenderEffects(vis.AsyncState);
 }
