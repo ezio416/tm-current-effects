@@ -28,9 +28,7 @@ string SlowMoColor;
 string TurboColor;
 
 void RenderEffects(CSceneVehicleVisState@ state) {
-    auto type = Reflection::GetType("CSceneVehicleVisState");
-    int handicapSum = Dev::GetOffsetInt32(state, type.GetMember("TurboTime").Offset + 12);
-    SetHandicaps(handicapSum);
+    SetHandicaps(Dev::GetOffsetInt32(state, 440));
 
     switch (uint(state.ReactorBoostLvl)) {
         case 1:  ReactorColor = YELLOW; break;
