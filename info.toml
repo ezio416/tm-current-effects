@@ -1,9 +1,9 @@
 [meta]
-name     = "Current Effects"
-author   = "Ezio414"
+name = "Current Effects"
+author = "Ezio"
 category = "Overlay"
-version  = "0.7.0"
-siteid   = 382
+version = "0.8.0"
+siteid = 382
 
 [script]
 dependencies = [ "VehicleState" ]
