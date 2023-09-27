@@ -1,16 +1,16 @@
 /*
 c 2023-06-10
-m 2023-08-17
+m 2023-09-26
 */
 
 [Setting category="General" name="Enabled"]
 bool S_Enabled = true;
 
 [Setting category="General" name="Hide with game UI"]
-bool S_hideWithGame = true;
+bool S_HideWithGame = true;
 
 [Setting category="General" name="Hide with Openplanet UI"]
-bool S_hideWithOP = false;
+bool S_HideWithOP = false;
 
 [Setting category="General" name="Font style/size" description="loading a font for the first time causes game to hang for a bit"]
 Font S_Font = Font::DroidSansBold_20;

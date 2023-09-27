@@ -1,6 +1,6 @@
 /*
 c 2023-05-04
-m 2023-08-18
+m 2023-09-26
 */
 
 bool replay;
@@ -23,14 +23,14 @@ void RenderMenu() {
 void Render() {
     if (
         !S_Enabled ||
-        (S_hideWithGame && !UI::IsGameUIVisible()) ||
-        (S_hideWithOP && !UI::IsOverlayShown()) ||
+        (S_HideWithGame && !UI::IsGameUIVisible()) ||
+        (S_HideWithOP && !UI::IsOverlayShown()) ||
         font is null
     ) return;
 
-    auto app = cast<CTrackMania@>(GetApp());
+    CTrackMania@ app = cast<CTrackMania@>(GetApp());
 
-    auto playground = cast<CSmArenaClient@>(app.CurrentPlayground);
+    CSmArenaClient@ playground = cast<CSmArenaClient@>(app.CurrentPlayground);
     if (playground is null) return;
 
     if (
@@ -38,11 +38,11 @@ void Render() {
         playground.UIConfigs.Length == 0
     ) return;
 
-    auto scene = cast<ISceneVis@>(app.GameScene);
+    ISceneVis@ scene = cast<ISceneVis@>(app.GameScene);
     if (scene is null) return;
 
     CSceneVehicleVis@ vis;
-    auto player = cast<CSmPlayer@>(playground.GameTerminals[0].GUIPlayer);
+    CSmPlayer@ player = cast<CSmPlayer@>(playground.GameTerminals[0].GUIPlayer);
     if (player !is null) {
         @vis = VehicleState::GetVis(scene, player);
         replay = false;
@@ -52,10 +52,10 @@ void Render() {
     }
     if (vis is null) return;
 
-    auto arena = cast<CSmArena@>(playground.Arena);
+    CSmArena@ arena = cast<CSmArena@>(playground.Arena);
     if (arena is null) return;
 
-    auto sequence = playground.UIConfigs[0].UISequence;
+    CGamePlaygroundUIConfig::EUISequence sequence = playground.UIConfigs[0].UISequence;
     if (
         !(sequence == CGamePlaygroundUIConfig::EUISequence::Playing) &&
         !(sequence == CGamePlaygroundUIConfig::EUISequence::UIInteraction && replay)
