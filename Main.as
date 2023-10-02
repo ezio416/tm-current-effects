@@ -61,7 +61,8 @@ void Render() {
     uint respawns = score.NbRespawnsRequested;
     if (respawns > totalRespawns) {
         totalRespawns = respawns;
-        ResetEventEffects(false);
+
+        ResetEventEffects(!(lastEvent == Event::Waypoint && FragileColor == ORANGE));
     }
 
     if (

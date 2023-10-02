@@ -4,6 +4,14 @@ m 2023-10-01
 */
 
 bool intercepting = false;
+Event lastEvent;
+
+enum Event {
+    Reset,
+    Cruise,
+    Fragile,
+    Waypoint
+}
 
 void Intercept() {
     if (!S_Experimental) return;
@@ -59,16 +67,18 @@ void CaptureEvent(const string &in type, MwFastBuffer<wstring> &in data) {
     if (type == "BlockHelper_Event_GameplaySpecial") {
         if (data[0].Contains("Reset")) {
             ResetEventEffects();
+            lastEvent = Event::Reset;
         } else if (data[0].Contains("Cruise")) {
             CruiseColor = BLUE;
+            lastEvent = Event::Cruise;
         } else if (data[0].Contains("Fragile")) {
             FragileColor = ORANGE;
+            lastEvent = Event::Fragile;
         }
-        return;
-    }
-
-    if (type == "TMGame_RaceCheckpoint_Waypoint")
+    } else if (type == "TMGame_RaceCheckpoint_Waypoint") {
         ResetEventEffects(false);
+        lastEvent = Event::Waypoint;
+    }
 }
 
 void ResetEventEffects(bool fragile = true) {
