@@ -59,7 +59,7 @@ void Render() {
     CSmArenaScore@ score = cast<CSmArenaScore@>(script.Score);
     if (score is null) return;
     uint respawns = score.NbRespawnsRequested;
-    if (respawns > totalRespawns) {
+    if (totalRespawns < respawns) {
         totalRespawns = respawns;
         ResetEventEffects(!(lastEvent == Event::Waypoint && FragileColor == ORANGE));
     }
