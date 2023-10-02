@@ -1,18 +1,23 @@
 /*
 c 2023-05-04
-m 2023-09-26
+m 2023-10-01
 */
 
 bool replay;
 
 void Main() {
     ChangeFont();
+    ToggleIntercept();
 }
 
+void OnDisabled()  { ResetIntercept(); }
+void OnDestroyed() { ResetIntercept(); }
+
 void OnSettingsChanged() {
-    if (currentFont != S_Font) {
+    if (currentFont != S_Font)
         ChangeFont();
-    }
+
+    ToggleIntercept();
 }
 
 void RenderMenu() {
