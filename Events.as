@@ -1,17 +1,10 @@
 /*
 c 2023-10-01
-m 2023-10-01
+m 2023-10-02
 */
 
+bool fragileBeforeCp = false;
 bool intercepting = false;
-Event lastEvent;
-
-enum Event {
-    Reset,
-    Cruise,
-    Fragile,
-    Waypoint
-}
 
 void Intercept() {
     if (!S_Experimental) return;
@@ -67,17 +60,14 @@ void CaptureEvent(const string &in type, MwFastBuffer<wstring> &in data) {
     if (type == "BlockHelper_Event_GameplaySpecial") {
         if (data[0].Contains("Reset")) {
             ResetEventEffects();
-            lastEvent = Event::Reset;
         } else if (data[0].Contains("Cruise")) {
             CruiseColor = BLUE;
-            lastEvent = Event::Cruise;
         } else if (data[0].Contains("Fragile")) {
             FragileColor = ORANGE;
-            lastEvent = Event::Fragile;
         }
     } else if (type == "TMGame_RaceCheckpoint_Waypoint") {
+        fragileBeforeCp = FragileColor == ORANGE;
         ResetEventEffects(false);
-        lastEvent = Event::Waypoint;
     }
 }
 

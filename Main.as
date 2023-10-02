@@ -1,6 +1,6 @@
 /*
 c 2023-05-04
-m 2023-10-01
+m 2023-10-02
 */
 
 bool replay;
@@ -53,15 +53,19 @@ void Render() {
 
     CSmScriptPlayer@ script = cast<CSmScriptPlayer@>(arena.Players[0].ScriptAPI);
     if (script is null) return;
-    if (script.CurrentRaceTime < 1)
+    if (script.CurrentRaceTime < 1) {
         ResetEventEffects();
+        fragileBeforeCp = false;
+    }
 
     CSmArenaScore@ score = cast<CSmArenaScore@>(script.Score);
     if (score is null) return;
     uint respawns = score.NbRespawnsRequested;
     if (totalRespawns < respawns) {
         totalRespawns = respawns;
-        ResetEventEffects(!(lastEvent == Event::Waypoint && FragileColor == ORANGE));
+        ResetEventEffects();
+        if (fragileBeforeCp)
+            FragileColor = ORANGE;
     }
 
     if (
