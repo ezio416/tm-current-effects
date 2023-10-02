@@ -18,6 +18,8 @@ Font S_Font = Font::DroidSansBold_20;
 [Setting category="General" name="Enable experimental features" description="warning: may crash your game!"]
 bool S_Experimental = false;
 
+
+
 [Setting category="Toggles" name="Acceleration Penalty" description="not working yet"]
 bool S_Penalty = false;
 
