@@ -1,6 +1,6 @@
 /*
 c 2023-09-26
-m 2023-09-26
+m 2023-10-01
 */
 
 uint16 handicapOffset = 0;
@@ -30,21 +30,21 @@ void SetHandicaps(int sum) {
         case 1024: case 1025: case 1026:
             NoEngineColor = DefaultColor;
             ForcedColor   = DefaultColor;
-            NoBrakesColor = ORANGE;
+            NoBrakesColor = YELLOW;
             NoSteerColor  = DefaultColor;
             NoGripColor   = DefaultColor;
             break;
         case 1280: case 1281: case 1282:
             NoEngineColor = RED;
             ForcedColor   = DefaultColor;
-            NoBrakesColor = ORANGE;
+            NoBrakesColor = YELLOW;
             NoSteerColor  = DefaultColor;
             NoGripColor   = DefaultColor;
             break;
         case 1536: case 1537: case 1538:
             NoEngineColor = DefaultColor;
             ForcedColor   = GREEN;
-            NoBrakesColor = ORANGE;
+            NoBrakesColor = YELLOW;
             NoSteerColor  = DefaultColor;
             NoGripColor   = DefaultColor;
             break;
@@ -65,21 +65,21 @@ void SetHandicaps(int sum) {
         case 3072: case 3073: case 3074:
             NoEngineColor = DefaultColor;
             ForcedColor   = DefaultColor;
-            NoBrakesColor = ORANGE;
+            NoBrakesColor = YELLOW;
             NoSteerColor  = PURPLE;
             NoGripColor   = DefaultColor;
             break;
         case 3328: case 3329: case 3330:
             NoEngineColor = RED;
             ForcedColor   = DefaultColor;
-            NoBrakesColor = ORANGE;
+            NoBrakesColor = YELLOW;
             NoSteerColor  = PURPLE;
             NoGripColor   = DefaultColor;
             break;
         case 3584: case 3585: case 3586:
             NoEngineColor = DefaultColor;
             ForcedColor   = GREEN;
-            NoBrakesColor = ORANGE;
+            NoBrakesColor = YELLOW;
             NoSteerColor  = PURPLE;
             NoGripColor   = DefaultColor;
             break;
@@ -100,28 +100,28 @@ void SetHandicaps(int sum) {
         case 5120: case 5121: case 5122:
             NoEngineColor = DefaultColor;
             ForcedColor   = DefaultColor;
-            NoBrakesColor = ORANGE;
+            NoBrakesColor = YELLOW;
             NoSteerColor  = DefaultColor;
             NoGripColor   = BLUE;
             break;
         case 5376: case 5377: case 5378:
             NoEngineColor = RED;
             ForcedColor   = DefaultColor;
-            NoBrakesColor = ORANGE;
+            NoBrakesColor = YELLOW;
             NoSteerColor  = DefaultColor;
             NoGripColor   = BLUE;
             break;
         case 5632: case 5633: case 5634:
             NoEngineColor = DefaultColor;
             ForcedColor   = GREEN;
-            NoBrakesColor = ORANGE;
+            NoBrakesColor = YELLOW;
             NoSteerColor  = DefaultColor;
             NoGripColor   = BLUE;
             break;
         case 5888: case 5889: case 5890:
             NoEngineColor = RED;
             ForcedColor   = GREEN;
-            NoBrakesColor = ORANGE;
+            NoBrakesColor = YELLOW;
             NoSteerColor  = DefaultColor;
             NoGripColor   = BLUE;
             break;
@@ -142,14 +142,14 @@ void SetHandicaps(int sum) {
         case 7424: case 7425: case 7426:
             NoEngineColor = RED;
             ForcedColor   = DefaultColor;
-            NoBrakesColor = ORANGE;
+            NoBrakesColor = YELLOW;
             NoSteerColor  = PURPLE;
             NoGripColor   = BLUE;
             break;
         case 7680: case 7681: case 7682:
             NoEngineColor = DefaultColor;
             ForcedColor   = GREEN;
-            NoBrakesColor = ORANGE;
+            NoBrakesColor = YELLOW;
             NoSteerColor  = PURPLE;
             NoGripColor   = BLUE;
             break;
