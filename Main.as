@@ -4,6 +4,7 @@ m 2023-10-01
 */
 
 bool replay;
+uint totalRespawns = 0;
 
 void Main() {
     ChangeFont();
@@ -39,6 +40,7 @@ void Render() {
     if (playground is null) {
         if (intercepting)
             ResetIntercept();
+        totalRespawns = 0;
         return;
     }
 
@@ -53,6 +55,14 @@ void Render() {
     if (script is null) return;
     if (script.CurrentRaceTime < 1)
         ResetEventEffects();
+
+    CSmArenaScore@ score = cast<CSmArenaScore@>(script.Score);
+    if (score is null) return;
+    uint respawns = score.NbRespawnsRequested;
+    if (respawns > totalRespawns) {
+        totalRespawns = respawns;
+        ResetEventEffects(false);
+    }
 
     if (
         playground.GameTerminals.Length != 1 ||
