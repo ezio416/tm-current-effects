@@ -1,6 +1,6 @@
 /*
 c 2023-08-17
-m 2023-09-26
+m 2023-10-01
 */
 
 const string BLUE   = "\\$09D";
@@ -69,7 +69,7 @@ void RenderEffects(CSceneVehicleVisState@ state) {
     UI::PushFont(font);
     UI::Begin("Current Effects", flags);
         if (S_Penalty)  UI::Text(PenaltyColor  + Icons::Times               + iconPadding + "Accel Penalty");
-        if (S_Cruise)   UI::Text(CruiseColor   + Icons::Road                + iconPadding + "Cruise Control");
+        if (S_Cruise)   UI::Text(CruiseColor   + Icons::Tachometer          + iconPadding + "Cruise Control");
         if (S_NoEngine) UI::Text(NoEngineColor + Icons::PowerOff            + iconPadding + "Engine Off");
         if (S_Forced)   UI::Text(ForcedColor   + Icons::Forward             + iconPadding + "Forced Accel");
         if (S_Fragile)  UI::Text(FragileColor  + Icons::ChainBroken         + iconPadding + "Fragile");
