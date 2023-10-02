@@ -56,9 +56,23 @@ bool _Intercept(CMwStack &in stack, CMwNod@ nod) {
 }
 
 void CaptureEvent(const string &in type, MwFastBuffer<wstring> &in data) {
-    string s_data;
-    for (uint i = 0; i < data.Length; i++) {
-        s_data += "data[" + i + "]: " + string(data[i]) + " | ";
+    if (type == "BlockHelper_Event_GameplaySpecial") {
+        if (data[0].Contains("Reset")) {
+            ResetEventEffects();
+        } else if (data[0].Contains("Cruise")) {
+            CruiseColor = BLUE;
+        } else if (data[0].Contains("Fragile")) {
+            FragileColor = ORANGE;
+        }
+        return;
     }
-    print(type + " " + s_data);
+
+    if (type == "TMGame_RaceCheckpoint_Waypoint")
+        ResetEventEffects(false);
+}
+
+void ResetEventEffects(bool fragile = true) {
+    CruiseColor = DefaultColor;
+    if (fragile)
+        FragileColor = DefaultColor;
 }
