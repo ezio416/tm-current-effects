@@ -45,6 +45,15 @@ void Render() {
     if (!intercepting)
         Intercept();
 
+    CSmArena@ arena = cast<CSmArena@>(playground.Arena);
+    if (arena is null) return;
+    if (arena.Players.Length == 0) return;
+
+    CSmScriptPlayer@ script = cast<CSmScriptPlayer@>(arena.Players[0].ScriptAPI);
+    if (script is null) return;
+    if (script.CurrentRaceTime < 1)
+        ResetEventEffects();
+
     if (
         playground.GameTerminals.Length != 1 ||
         playground.UIConfigs.Length == 0
@@ -63,9 +72,6 @@ void Render() {
         replay = true;
     }
     if (vis is null) return;
-
-    CSmArena@ arena = cast<CSmArena@>(playground.Arena);
-    if (arena is null) return;
 
     CGamePlaygroundUIConfig::EUISequence sequence = playground.UIConfigs[0].UISequence;
     if (
