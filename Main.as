@@ -7,7 +7,7 @@ bool replay;
 
 void Main() {
     ChangeFont();
-    ToggleIntercept();
+    Intercept();
 }
 
 void OnDisabled()  { ResetIntercept(); }
@@ -36,7 +36,14 @@ void Render() {
     CTrackMania@ app = cast<CTrackMania@>(GetApp());
 
     CSmArenaClient@ playground = cast<CSmArenaClient@>(app.CurrentPlayground);
-    if (playground is null) return;
+    if (playground is null) {
+        if (intercepting)
+            ResetIntercept();
+        return;
+    }
+
+    if (!intercepting)
+        Intercept();
 
     if (
         playground.GameTerminals.Length != 1 ||

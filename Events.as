@@ -11,6 +11,7 @@ void Intercept() {
         warn("Intercept called, but it's already running!");
         return;
     }
+    if (GetApp().CurrentPlayground is null) return;
 
     trace("Intercept starting for \"LayerCustomEvent\"");
     try {
