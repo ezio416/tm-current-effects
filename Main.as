@@ -90,7 +90,7 @@ void Render() {
     CGamePlaygroundUIConfig::EUISequence sequence = playground.UIConfigs[0].UISequence;
     if (
         !(sequence == CGamePlaygroundUIConfig::EUISequence::Playing) &&
-        !(sequence == CGamePlaygroundUIConfig::EUISequence::UIInteraction && replay)
+        !(sequence == CGamePlaygroundUIConfig::EUISequence::EndRound && replay)
     ) return;
 
     RenderEffects(vis.AsyncState);

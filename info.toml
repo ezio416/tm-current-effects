@@ -2,7 +2,7 @@
 name = "Current Effects"
 author = "Ezio"
 category = "Overlay"
-version = "0.9.0"
+version = "0.9.1"
 siteid = 382
 
 [script]
