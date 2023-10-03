@@ -57,7 +57,7 @@ bool _Intercept(CMwStack &in stack, CMwNod@ nod) {
 }
 
 void CaptureEvent(const string &in type, MwFastBuffer<wstring> &in data) {
-    if (type == "BlockHelper_Event_GameplaySpecial") {
+    if (type == "BlockHelper_Event_GameplaySpecial") {  // only works while playing
         if (data[0].Contains("Reset")) {
             ResetEventEffects();
         } else if (data[0].Contains("Cruise")) {
@@ -65,7 +65,7 @@ void CaptureEvent(const string &in type, MwFastBuffer<wstring> &in data) {
         } else if (data[0].Contains("Fragile")) {
             FragileColor = ORANGE;
         }
-    } else if (type == "TMGame_RaceCheckpoint_Waypoint") {
+    } else if (type == "TMGame_RaceCheckpoint_Waypoint") {  // works while spectating?
         fragileBeforeCp = FragileColor == ORANGE;
         ResetEventEffects(false);
     }

@@ -4,6 +4,7 @@ m 2023-10-02
 */
 
 bool replay;
+bool spectating;
 uint totalRespawns = 0;
 
 void Main() {
@@ -92,6 +93,15 @@ void Render() {
         !(sequence == CGamePlaygroundUIConfig::EUISequence::Playing) &&
         !(sequence == CGamePlaygroundUIConfig::EUISequence::EndRound && replay)
     ) return;
+
+    CGamePlaygroundInterface@ pgInterface = cast<CGamePlaygroundInterface@>(playground.Interface);
+    if (pgInterface is null) return;
+    CGameScriptHandlerPlaygroundInterface@ handler = cast<CGameScriptHandlerPlaygroundInterface@>(pgInterface.ManialinkScriptHandler);
+    if (handler is null) return;
+    CGamePlaygroundClientScriptAPI@ pgAPI = cast<CGamePlaygroundClientScriptAPI@>(handler.Playground);
+    if (pgAPI is null) return;
+
+    spectating = pgAPI.IsSpectator;
 
     RenderEffects(vis.AsyncState);
 }

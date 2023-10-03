@@ -31,15 +31,6 @@ string TurboColor;
 
 void RenderEffects(CSceneVehicleVisState@ state) {
     SetHandicaps(GetHandicapSum(state));
-    if (replay) {
-        CruiseColor   = DisabledColor;
-        NoEngineColor = DisabledColor;
-        ForcedColor   = DisabledColor;
-        FragileColor  = DisabledColor;
-        NoBrakesColor = DisabledColor;
-        NoGripColor   = DisabledColor;
-        NoSteerColor  = DisabledColor;
-    }
 
     switch (uint(state.ReactorBoostLvl)) {
         case 1:  ReactorColor = YELLOW; break;
@@ -70,6 +61,22 @@ void RenderEffects(CSceneVehicleVisState@ state) {
             case 5: TurboColor = PURPLE; break;  // roulette 3
             default:                     break;
         }
+    }
+
+    if (replay) {
+        CruiseColor   = DisabledColor;
+        NoEngineColor = DisabledColor;
+        ForcedColor   = DisabledColor;
+        FragileColor  = DisabledColor;
+        NoBrakesColor = DisabledColor;
+        NoGripColor   = DisabledColor;
+        NoSteerColor  = DisabledColor;
+    }
+
+    if (spectating) {
+        CruiseColor  = DisabledColor;
+        FragileColor = DisabledColor;
+        TurboColor   = DisabledColor;
     }
 
     int flags = UI::WindowFlags::AlwaysAutoResize |
