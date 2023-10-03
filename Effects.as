@@ -1,18 +1,20 @@
 /*
 c 2023-08-17
-m 2023-10-01
+m 2023-10-02
 */
 
-const string BLUE   = "\\$09D";
-const string CYAN   = "\\$2FF";
-const string GRAY   = "\\$888";
-const string GREEN  = "\\$0D2";
-const string ORANGE = "\\$F90";
-const string PURPLE = "\\$F0F";
-const string RED    = "\\$F00";
-const string WHITE  = "\\$FFF";
-const string YELLOW = "\\$FF0";
-string DefaultColor = GRAY;
+const string BLUE    = "\\$09D";
+const string CYAN    = "\\$2FF";
+const string DGRAY   = "\\$444";
+const string GRAY    = "\\$888";
+const string GREEN   = "\\$0D2";
+const string ORANGE  = "\\$F90";
+const string PURPLE  = "\\$F0F";
+const string RED     = "\\$F00";
+const string WHITE   = "\\$FFF";
+const string YELLOW  = "\\$FF0";
+string DefaultColor  = GRAY;
+string DisabledColor = DGRAY;
 
 string PenaltyColor = DefaultColor;
 string CruiseColor = DefaultColor;
@@ -29,6 +31,15 @@ string TurboColor;
 
 void RenderEffects(CSceneVehicleVisState@ state) {
     SetHandicaps(GetHandicapSum(state));
+    if (replay) {
+        CruiseColor   = DisabledColor;
+        NoEngineColor = DisabledColor;
+        ForcedColor   = DisabledColor;
+        FragileColor  = DisabledColor;
+        NoBrakesColor = DisabledColor;
+        NoGripColor   = DisabledColor;
+        NoSteerColor  = DisabledColor;
+    }
 
     switch (uint(state.ReactorBoostLvl)) {
         case 1:  ReactorColor = YELLOW; break;
@@ -41,11 +52,13 @@ void RenderEffects(CSceneVehicleVisState@ state) {
         default: ReactorIcon = Icons::Rocket;
     }
 
-    if      (state.SimulationTimeCoef == 1)        SlowMoColor = DefaultColor;
-    else if (state.SimulationTimeCoef == 0.57)     SlowMoColor = GREEN;
-    else if (state.SimulationTimeCoef == 0.3249)   SlowMoColor = YELLOW;
-    else if (state.SimulationTimeCoef == 0.185193) SlowMoColor = ORANGE;
-    else                                           SlowMoColor = RED;
+    switch (uint(state.SimulationTimeCoef * 100)) {
+        case 100:         SlowMoColor = DefaultColor; break;
+        case 56: case 57: SlowMoColor = GREEN;        break;
+        case 32:          SlowMoColor = YELLOW;       break;
+        case 18:          SlowMoColor = ORANGE;       break;
+        default:          SlowMoColor = RED;
+    }
 
     TurboColor = DefaultColor;
     if (state.IsTurbo) {
