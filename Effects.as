@@ -71,9 +71,7 @@ void RenderEffects(CSceneVehicleVisState@ state) {
         NoBrakesColor = DisabledColor;
         NoGripColor   = DisabledColor;
         NoSteerColor  = DisabledColor;
-    }
-
-    if (spectating) {
+    } else if (spectating) {
         CruiseColor  = DisabledColor;
         FragileColor = DisabledColor;
         TurboColor   = DisabledColor;
