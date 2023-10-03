@@ -1,18 +1,24 @@
 /*
 c 2023-05-04
-m 2023-09-26
+m 2023-10-02
 */
 
 bool replay;
+uint totalRespawns = 0;
 
 void Main() {
     ChangeFont();
+    Intercept();
 }
 
+void OnDisabled()  { ResetIntercept(); }
+void OnDestroyed() { ResetIntercept(); }
+
 void OnSettingsChanged() {
-    if (currentFont != S_Font) {
+    if (currentFont != S_Font)
         ChangeFont();
-    }
+
+    ToggleIntercept();
 }
 
 void RenderMenu() {
@@ -31,7 +37,36 @@ void Render() {
     CTrackMania@ app = cast<CTrackMania@>(GetApp());
 
     CSmArenaClient@ playground = cast<CSmArenaClient@>(app.CurrentPlayground);
-    if (playground is null) return;
+    if (playground is null) {
+        if (intercepting)
+            ResetIntercept();
+        totalRespawns = 0;
+        return;
+    }
+
+    if (!intercepting)
+        Intercept();
+
+    CSmArena@ arena = cast<CSmArena@>(playground.Arena);
+    if (arena is null) return;
+    if (arena.Players.Length == 0) return;
+
+    CSmScriptPlayer@ script = cast<CSmScriptPlayer@>(arena.Players[0].ScriptAPI);
+    if (script is null) return;
+    if (script.CurrentRaceTime < 1) {
+        ResetEventEffects();
+        fragileBeforeCp = false;
+    }
+
+    CSmArenaScore@ score = cast<CSmArenaScore@>(script.Score);
+    if (score is null) return;
+    uint respawns = score.NbRespawnsRequested;
+    if (totalRespawns < respawns) {
+        totalRespawns = respawns;
+        ResetEventEffects();
+        if (fragileBeforeCp)
+            FragileColor = ORANGE;
+    }
 
     if (
         playground.GameTerminals.Length != 1 ||
@@ -51,9 +86,6 @@ void Render() {
         replay = true;
     }
     if (vis is null) return;
-
-    CSmArena@ arena = cast<CSmArena@>(playground.Arena);
-    if (arena is null) return;
 
     CGamePlaygroundUIConfig::EUISequence sequence = playground.UIConfigs[0].UISequence;
     if (
