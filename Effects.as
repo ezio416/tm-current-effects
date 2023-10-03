@@ -16,7 +16,7 @@ const string YELLOW  = "\\$FF0";
 string DefaultColor  = GRAY;
 string DisabledColor = DGRAY;
 
-string PenaltyColor = DefaultColor;
+string PenaltyColor = DisabledColor;
 string CruiseColor = DefaultColor;
 string NoEngineColor;
 string ForcedColor;
