@@ -92,6 +92,7 @@ void RenderEffects(CSceneVehicleVisState@ state) {
 #if TMNEXT
         if (S_Cruise)   UI::Text(CruiseColor   + Icons::Tachometer          + iconPadding + "Cruise Control");
         if (S_NoEngine) UI::Text(NoEngineColor + Icons::PowerOff            + iconPadding + "Engine Off");
+        if (S_Forced)   UI::Text(ForcedColor   + Icons::Forward             + iconPadding + "Forced Accel");
         if (S_Fragile)  UI::Text(FragileColor  + Icons::ChainBroken         + iconPadding + "Fragile");
 #elif MP4
         if (S_NoEngine) UI::Text(NoEngineColor + Icons::PowerOff            + iconPadding + "Free Wheeling");
