@@ -1,58 +1,72 @@
 /*
 c 2023-10-01
-m 2023-10-02
+m 2023-10-19
 */
 
 bool fragileBeforeCp = false;
 bool intercepting = false;
 
 void Intercept() {
-    if (!S_Experimental) return;
+#if TMNEXT
+    if (!S_Experimental)
+        return;
+
     if (intercepting) {
         warn("Intercept called, but it's already running!");
         return;
     }
-    if (GetApp().CurrentPlayground is null) return;
+
+    if (GetApp().CurrentPlayground is null)
+        return;
 
     trace("Intercept starting for \"LayerCustomEvent\"");
+
     try {
         Dev::InterceptProc("CGameManiaApp", "LayerCustomEvent", _Intercept);
         intercepting = true;
     } catch {
         warn("Intercept error: " + getExceptionInfo());
     }
+#endif
 }
 
 void ResetIntercept() {
+#if TMNEXT
     if (!intercepting) {
         warn("ResetIntercept called, but Intercept isn't running!");
         return;
     }
 
     trace("Intercept ending for \"LayerCustomEvent\"");
+
     try {
         Dev::ResetInterceptProc("CGameManiaApp", "LayerCustomEvent");
         intercepting = false;
     } catch {
         warn("ResetIntercept error: " + getExceptionInfo());
     }
+#endif
 }
 
 void ToggleIntercept() {
+#if TMNEXT
     if (S_Experimental && !intercepting) {
         Intercept();
         return;
     }
 
-    if (!S_Experimental && intercepting) {
+    if (!S_Experimental && intercepting)
         ResetIntercept();
-        return;
-    }
+#endif
 }
 
 bool _Intercept(CMwStack &in stack, CMwNod@ nod) {
-    try   { CaptureEvent(stack.CurrentWString(1), stack.CurrentBufferWString()); }
-    catch { warn("Exception in Intercept: " + getExceptionInfo()); }
+    try {
+        CaptureEvent(stack.CurrentWString(1), stack.CurrentBufferWString());
+    } catch {
+        warn("Exception in Intercept: " + getExceptionInfo());
+    }
+
     return true;
 }
 
@@ -73,6 +87,7 @@ void CaptureEvent(const string &in type, MwFastBuffer<wstring> &in data) {
 
 void ResetEventEffects(bool fragile = true) {
     CruiseColor = DefaultColor;
+
     if (fragile)
         FragileColor = DefaultColor;
 }

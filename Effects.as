@@ -1,6 +1,6 @@
 /*
 c 2023-08-17
-m 2023-10-02
+m 2023-10-19
 */
 
 const string BLUE    = "\\$09D";
@@ -16,7 +16,6 @@ const string YELLOW  = "\\$FF0";
 string DefaultColor  = GRAY;
 string DisabledColor = DGRAY;
 
-string PenaltyColor = DisabledColor;
 string CruiseColor = DefaultColor;
 string NoEngineColor;
 string ForcedColor;
@@ -32,6 +31,7 @@ string TurboColor;
 void RenderEffects(CSceneVehicleVisState@ state) {
     SetHandicaps(GetHandicapSum(state));
 
+#if TMNEXT
     switch (uint(state.ReactorBoostLvl)) {
         case 1:  ReactorColor = YELLOW; break;
         case 2:  ReactorColor = RED;    break;
@@ -76,6 +76,9 @@ void RenderEffects(CSceneVehicleVisState@ state) {
         FragileColor = DisabledColor;
         TurboColor   = DisabledColor;
     }
+#elif MP4
+    TurboColor = state.TurboActive ? GREEN : DefaultColor;
+#endif
 
     int flags = UI::WindowFlags::AlwaysAutoResize |
                 UI::WindowFlags::NoCollapse |
@@ -86,17 +89,26 @@ void RenderEffects(CSceneVehicleVisState@ state) {
 
     UI::PushFont(font);
     UI::Begin("Current Effects", flags);
-        if (S_Penalty)  UI::Text(PenaltyColor  + Icons::Times               + iconPadding + "Accel Penalty");
+#if TMNEXT
         if (S_Cruise)   UI::Text(CruiseColor   + Icons::Tachometer          + iconPadding + "Cruise Control");
         if (S_NoEngine) UI::Text(NoEngineColor + Icons::PowerOff            + iconPadding + "Engine Off");
+#endif
         if (S_Forced)   UI::Text(ForcedColor   + Icons::Forward             + iconPadding + "Forced Accel");
+#if TMNEXT
         if (S_Fragile)  UI::Text(FragileColor  + Icons::ChainBroken         + iconPadding + "Fragile");
+#elif MP4
+        if (S_NoEngine) UI::Text(NoEngineColor + Icons::PowerOff            + iconPadding + "Free Wheeling");
+#endif
         if (S_NoBrakes) UI::Text(NoBrakesColor + Icons::ExclamationTriangle + iconPadding + "No Brakes");
         if (S_NoGrip)   UI::Text(NoGripColor   + Icons::SnowflakeO          + iconPadding + "No Grip");
         if (S_NoSteer)  UI::Text(NoSteerColor  + Icons::ArrowsH             + iconPadding + "No Steering");
+#if TMNEXT
         if (S_Reactor)  UI::Text(ReactorText(VehicleState::GetReactorFinalTimer(state)));
         if (S_SlowMo)   UI::Text(SlowMoColor   + Icons::ClockO              + iconPadding + "Slow-Mo");
         if (S_Turbo)    UI::Text(TurboText(state.TurboTime));
+#elif MP4
+        if (S_Turbo)    UI::Text(TurboColor    + Icons::ArrowCircleUp       + iconPadding + "Turbo");
+#endif
     UI::End();
     UI::PopFont();
 }

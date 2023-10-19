@@ -1,6 +1,6 @@
 /*
 c 2023-05-04
-m 2023-10-02
+m 2023-10-19
 */
 
 bool replay;
@@ -30,14 +30,20 @@ void RenderMenu() {
 void Render() {
     if (
         !S_Enabled ||
+        font is null ||
         (S_HideWithGame && !UI::IsGameUIVisible()) ||
-        (S_HideWithOP && !UI::IsOverlayShown()) ||
-        font is null
-    ) return;
+        (S_HideWithOP && !UI::IsOverlayShown())
+    )
+        return;
 
     CTrackMania@ app = cast<CTrackMania@>(GetApp());
 
+#if TMNEXT
     CSmArenaClient@ playground = cast<CSmArenaClient@>(app.CurrentPlayground);
+#elif MP4
+    CGamePlayground@ playground = cast<CGamePlayground@>(app.CurrentPlayground);
+#endif
+
     if (playground is null) {
         if (intercepting)
             ResetIntercept();
@@ -45,22 +51,33 @@ void Render() {
         return;
     }
 
+#if TMNEXT
     if (!intercepting)
         Intercept();
 
     CSmArena@ arena = cast<CSmArena@>(playground.Arena);
-    if (arena is null) return;
-    if (arena.Players.Length == 0) return;
+
+    if (arena is null)
+        return;
+
+    if (arena.Players.Length == 0)
+        return;
 
     CSmScriptPlayer@ script = cast<CSmScriptPlayer@>(arena.Players[0].ScriptAPI);
-    if (script is null) return;
+
+    if (script is null)
+        return;
+
     if (script.CurrentRaceTime < 1) {
         ResetEventEffects();
         fragileBeforeCp = false;
     }
 
     CSmArenaScore@ score = cast<CSmArenaScore@>(script.Score);
-    if (score is null) return;
+
+    if (score is null)
+        return;
+
     uint respawns = score.NbRespawnsRequested;
     if (totalRespawns < respawns) {
         totalRespawns = respawns;
@@ -68,16 +85,29 @@ void Render() {
         if (fragileBeforeCp)
             FragileColor = ORANGE;
     }
+#endif
 
     if (
         playground.GameTerminals.Length != 1 ||
         playground.UIConfigs.Length == 0
-    ) return;
+    )
+        return;
 
+#if TMNEXT
     ISceneVis@ scene = cast<ISceneVis@>(app.GameScene);
-    if (scene is null) return;
+#elif MP4
+    CGameScene@ scene = cast<CGameScene@>(app.GameScene);
+#endif
 
+    if (scene is null)
+        return;
+
+#if TMNEXT
     CSceneVehicleVis@ vis;
+#elif MP4
+    CSceneVehicleVisState@ vis;
+#endif
+
     CSmPlayer@ player = cast<CSmPlayer@>(playground.GameTerminals[0].GUIPlayer);
     if (player !is null) {
         @vis = VehicleState::GetVis(scene, player);
@@ -86,22 +116,32 @@ void Render() {
         @vis = VehicleState::GetSingularVis(scene);
         replay = true;
     }
-    if (vis is null) return;
+
+    if (vis is null)
+        return;
 
     CGamePlaygroundUIConfig::EUISequence sequence = playground.UIConfigs[0].UISequence;
     if (
         !(sequence == CGamePlaygroundUIConfig::EUISequence::Playing) &&
         !(sequence == CGamePlaygroundUIConfig::EUISequence::EndRound && replay)
-    ) return;
+    )
+        return;
 
+#if TMNEXT
     CGamePlaygroundInterface@ pgInterface = cast<CGamePlaygroundInterface@>(playground.Interface);
-    if (pgInterface is null) return;
+    if (pgInterface is null)
+        return;
+
     CGameScriptHandlerPlaygroundInterface@ handler = cast<CGameScriptHandlerPlaygroundInterface@>(pgInterface.ManialinkScriptHandler);
-    if (handler is null) return;
+    if (handler is null)
+        return;
+
     CGamePlaygroundClientScriptAPI@ pgAPI = cast<CGamePlaygroundClientScriptAPI@>(handler.Playground);
-    if (pgAPI is null) return;
+    if (pgAPI is null)
+        return;
 
     spectating = pgAPI.IsSpectator;
+#endif
 
     RenderEffects(vis.AsyncState);
 }
