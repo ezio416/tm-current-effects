@@ -25,17 +25,19 @@ bool S_Cruise = false;
 
 [Setting category="Toggles" name="Engine Off"]
 bool S_NoEngine = true;
-#endif
 
 [Setting category="Toggles" name="Forced Acceleration"]
 bool S_Forced = true;
 
-#if TMNEXT
 [Setting category="Toggles" name="Fragile" description="experimental - may not work!"]
 bool S_Fragile = false;
+
 #elif MP4
 [Setting category="Toggles" name="Free Wheeling"]
 bool S_NoEngine = true;
+
+[Setting category="Toggles" name="Fullspeed Ahead"]
+bool S_Forced = true;
 #endif
 
 [Setting category="Toggles" name="No Brakes"]
