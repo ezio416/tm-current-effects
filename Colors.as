@@ -5,6 +5,8 @@ m 2023-10-22
 
 int64 lastAllColorsSwap = 0;
 
+#if TMNEXT
+
 string GetCruiseColor() {
     switch (cruise) {
         case -1: return disabledColor;
@@ -12,6 +14,8 @@ string GetCruiseColor() {
         default: return cruiseColor;
     }
 }
+
+#endif
 
 string GetForcedColor() {
     switch (forced) {
@@ -21,6 +25,8 @@ string GetForcedColor() {
     }
 }
 
+#if TMNEXT
+
 string GetFragileColor() {
     switch (fragile) {
         case -1: return disabledColor;
@@ -28,6 +34,8 @@ string GetFragileColor() {
         default: return fragileColor;
     }
 }
+
+#endif
 
 string GetNoBrakesColor() {
     switch (noBrakes) {
@@ -61,6 +69,8 @@ string GetNoSteerColor() {
     }
 }
 
+#if TMNEXT
+
 string GetReactorColor() {
     switch (reactor) {
         case -1: return disabledColor;
@@ -85,25 +95,32 @@ string GetTurboColor() {
     switch (turbo) {
         case -1: return disabledColor;
         case  0: return offColor;
-
-#if TMNEXT
-
         case  1: return turbo1Color;
         case  2: return turbo2Color;
         case  3: return turbo3Color;
         case  4: return turbo4Color;
         default: return turbo5Color;
-
-#elif MP4
-
-        default: return turboColor;
-
-#endif
     }
 }
 
+#elif MP4
+
+string GetTurboColor() {
+    switch (turbo) {
+        case  0: return offColor;
+        default: return turboColor;
+    }
+}
+
+#endif
+
 void SetColors() {
+#if TMNEXT
+
     disabledColor = Text::FormatOpenplanetColor(S_DisabledColor);
+
+#endif
+
     offColor      = Text::FormatOpenplanetColor(S_OffColor);
 
     forcedColor   = Text::FormatOpenplanetColor(S_ForcedColor);

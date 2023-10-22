@@ -17,14 +17,14 @@ int    turbo    = 0;
 
 void RenderEffects(CSceneVehicleVisState@ state) {
     if (!S_ShowAll) {
+        SetHandicaps(GetHandicapSum(state));
+
+#if TMNEXT
+
         if (S_Reset) {
             ResetEventEffects();
             S_Reset = false;
         }
-
-        SetHandicaps(GetHandicapSum(state));
-
-#if TMNEXT
 
         reactor = int(state.ReactorBoostLvl);
 
@@ -117,6 +117,8 @@ void RenderEffects(CSceneVehicleVisState@ state) {
     UI::PopFont();
 }
 
+#if TMNEXT
+
 string GetReactorText(float f) {
     if (f == 0)   return GetReactorColor() + reactorIcon + iconPadding + "Reactor Boost";
     if (f < 0.09) return GetReactorColor() + reactorIcon + iconPadding + "Reactor Boos" + offColor + "t";
@@ -141,3 +143,5 @@ string GetTurboText(float f) {
     if (f < 0.8) return GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "T" + offColor + "urbo";
     return GetTurboColor() + Icons::ArrowCircleUp + offColor + iconPadding + "Turbo";
 }
+
+#endif

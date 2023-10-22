@@ -18,10 +18,10 @@ Font S_Font = Font::DroidSansBold_20;
 [Setting category="General" name="Enable all effects" description="helps with choosing custom colors"]
 bool S_ShowAll = false;
 
+#if TMNEXT
+
 [Setting category="General" name="Reset all effects" description="Cruise Control/Fragile may get stuck, just click this once"]
 bool S_Reset = false;
-
-#if TMNEXT
 
 [Setting category="General" name="Try experimental features" description="warning - may crash your game!"]
 bool S_Experimental = false;
@@ -76,11 +76,12 @@ bool S_Turbo = true;
 vec3 S_OffColor = vec3(0.5f, 0.5f, 0.5f);
 string offColor;
 
-[Setting category="Colors" name="Effect Unsupported" description="i.e. when spectating, only some effects can be seen" color]
-vec3 S_DisabledColor = vec3(0.3f, 0.3f, 0.3f);
 string disabledColor;
 
 #if TMNEXT
+
+[Setting category="Colors" name="Effect Unsupported" description="i.e. when spectating, only some effects can be seen" color]
+vec3 S_DisabledColor = vec3(0.3f, 0.3f, 0.3f);
 
 [Setting category="Colors" name="Cruise Control" color]
 vec3 S_CruiseColor = vec3(0.226f, 0.564f, 1.0f);
