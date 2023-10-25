@@ -121,6 +121,16 @@ void Render() {
         replay = true;
     }
 
+#if MP4
+
+    if (vis is null) {
+        CSceneVehicleVisState@[] states = VehicleState::GetAllVis(scene);
+        if (states.Length > 0)
+            @vis = states[0];
+    }
+
+#endif
+
     if (vis is null)
         return;
 
