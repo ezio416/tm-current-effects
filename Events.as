@@ -1,6 +1,6 @@
 /*
 c 2023-10-01
-m 2023-10-19
+m 2023-10-22
 */
 
 bool fragileBeforeCp = false;
@@ -15,6 +15,8 @@ void Intercept() {
         warn("Intercept called, but it's already running!");
         return;
     }
+
+    ResetEventEffects();
 
     if (GetApp().CurrentPlayground is null)
         return;
@@ -75,19 +77,19 @@ void CaptureEvent(const string &in type, MwFastBuffer<wstring> &in data) {
         if (data[0].Contains("Reset")) {
             ResetEventEffects();
         } else if (data[0].Contains("Cruise")) {
-            CruiseColor = BLUE;
+            cruise = 1;
         } else if (data[0].Contains("Fragile")) {
-            FragileColor = ORANGE;
+            fragile = 1;
         }
     } else if (type == "TMGame_RaceCheckpoint_Waypoint") {  // works while spectating?
-        fragileBeforeCp = FragileColor == ORANGE;
+        fragileBeforeCp = fragile == 1;
         ResetEventEffects(false);
     }
 }
 
-void ResetEventEffects(bool fragile = true) {
-    CruiseColor = DefaultColor;
+void ResetEventEffects(bool resetFragile = true) {
+    cruise = 0;
 
-    if (fragile)
-        FragileColor = DefaultColor;
+    if (resetFragile)
+        fragile = 0;
 }

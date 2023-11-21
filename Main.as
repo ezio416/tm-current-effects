@@ -1,6 +1,6 @@
 /*
 c 2023-05-04
-m 2023-10-19
+m 2023-10-24
 */
 
 bool replay;
@@ -9,6 +9,7 @@ uint totalRespawns = 0;
 
 void Main() {
     ChangeFont();
+    SetColors();
     Intercept();
 }
 
@@ -19,6 +20,7 @@ void OnSettingsChanged() {
     if (currentFont != S_Font)
         ChangeFont();
 
+    SetColors();
     ToggleIntercept();
 }
 
@@ -52,6 +54,7 @@ void Render() {
     }
 
 #if TMNEXT
+
     if (!intercepting)
         Intercept();
 
@@ -83,8 +86,9 @@ void Render() {
         totalRespawns = respawns;
         ResetEventEffects();
         if (fragileBeforeCp)
-            FragileColor = ORANGE;
+            fragile = 1;
     }
+
 #endif
 
     if (
@@ -117,6 +121,16 @@ void Render() {
         replay = true;
     }
 
+#if MP4
+
+    if (vis is null) {
+        CSceneVehicleVisState@[] states = VehicleState::GetAllVis(scene);
+        if (states.Length > 0)
+            @vis = states[0];
+    }
+
+#endif
+
     if (vis is null)
         return;
 
@@ -128,6 +142,7 @@ void Render() {
         return;
 
 #if TMNEXT
+
     CGamePlaygroundInterface@ pgInterface = cast<CGamePlaygroundInterface@>(playground.Interface);
     if (pgInterface is null)
         return;
@@ -141,6 +156,7 @@ void Render() {
         return;
 
     spectating = pgAPI.IsSpectator;
+
 #endif
 
     RenderEffects(vis.AsyncState);
