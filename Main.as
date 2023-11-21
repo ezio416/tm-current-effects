@@ -1,6 +1,6 @@
 /*
 c 2023-05-04
-m 2023-10-24
+m 2023-11-21
 */
 
 bool replay;
@@ -72,8 +72,9 @@ void Render() {
         return;
 
     if (script.CurrentRaceTime < 1) {
-        ResetEventEffects();
+        ResetEventEffects(true, true);
         fragileBeforeCp = false;
+        snowBeforeCp = false;
     }
 
     CSmArenaScore@ score = cast<CSmArenaScore@>(script.Score);
@@ -84,9 +85,11 @@ void Render() {
     uint respawns = score.NbRespawnsRequested;
     if (totalRespawns < respawns) {
         totalRespawns = respawns;
-        ResetEventEffects();
+        ResetEventEffects(true, true);
         if (fragileBeforeCp)
             fragile = 1;
+        if (snowBeforeCp)
+            snow = 1;
     }
 
 #endif

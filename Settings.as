@@ -1,6 +1,6 @@
 /*
 c 2023-06-10
-m 2023-10-22
+m 2023-11-21
 */
 
 [Setting category="General" name="Enabled"]
@@ -20,7 +20,7 @@ bool S_ShowAll = false;
 
 #if TMNEXT
 
-[Setting category="General" name="Reset all effects" description="Cruise Control/Fragile may get stuck, just click this once"]
+[Setting category="General" name="Reset all effects" description="Cruise Control/Fragile/Snow Car may get stuck, just click this once"]
 bool S_Reset = false;
 
 [Setting category="General" name="Try experimental features" description="warning - may crash your game!"]
@@ -65,6 +65,9 @@ bool S_Reactor= true;
 
 [Setting category="Toggles" name="Slow-Mo"]
 bool S_SlowMo = true;
+
+[Setting category="Toggles" name="Snow Car" description="experimental - may not work!"]
+bool S_Snow = true;
 
 #endif
 
@@ -148,6 +151,10 @@ string slowMo3Color;
 [Setting category="Colors" name="Slow-Mo 4" color]
 vec3 S_SlowMo4Color = vec3(1.0f, 0.0f, 0.0f);
 string slowMo4Color;
+
+[Setting category="Colors" name="Snow Car" color]
+vec3 S_SnowColor = vec3(0.0f, 1.0f, 1.0f);
+string snowColor;
 
 [Setting category="Colors" name="Turbo 1 (yellow)" color]
 vec3 S_Turbo1Color = vec3(1.0f, 1.0f, 0.0f);

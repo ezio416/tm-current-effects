@@ -1,6 +1,6 @@
 /*
 c 2023-10-21
-m 2023-10-22
+m 2023-11-21
 */
 
 int64 lastAllColorsSwap = 0;
@@ -91,6 +91,14 @@ string GetSlowMoColor() {
     }
 }
 
+string GetSnowColor() {
+    switch (snow) {
+        case -1: return disabledColor;
+        case  0: return offColor;
+        default: return snowColor;
+    }
+}
+
 string GetTurboColor() {
     switch (turbo) {
         case -1: return disabledColor;
@@ -139,6 +147,7 @@ void SetColors() {
     slowMo2Color  = Text::FormatOpenplanetColor(S_SlowMo2Color);
     slowMo3Color  = Text::FormatOpenplanetColor(S_SlowMo3Color);
     slowMo4Color  = Text::FormatOpenplanetColor(S_SlowMo4Color);
+    snowColor     = Text::FormatOpenplanetColor(S_SnowColor);
     turbo1Color   = Text::FormatOpenplanetColor(S_Turbo1Color);
     turbo2Color   = Text::FormatOpenplanetColor(S_Turbo2Color);
     turbo3Color   = Text::FormatOpenplanetColor(S_Turbo3Color);
@@ -163,6 +172,7 @@ void ShowAllColors() {
 
     cruise = 1;
     fragile = 1;
+    snow = 1;
 
     int64 now = Time::Stamp;
 

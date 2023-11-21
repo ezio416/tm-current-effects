@@ -1,6 +1,6 @@
 /*
 c 2023-08-17
-m 2023-10-22
+m 2023-11-21
 */
 
 int    cruise   = 0;
@@ -13,6 +13,7 @@ int    noSteer  = 0;
 int    reactor  = 0;
 string reactorIcon;
 int    slowmo   = 0;
+int    snow     = 0;
 int    turbo    = 0;
 
 void RenderEffects(CSceneVehicleVisState@ state) {
@@ -22,7 +23,7 @@ void RenderEffects(CSceneVehicleVisState@ state) {
 #if TMNEXT
 
         if (S_Reset) {
-            ResetEventEffects();
+            ResetEventEffects(true, true);
             S_Reset = false;
         }
 
@@ -55,13 +56,16 @@ void RenderEffects(CSceneVehicleVisState@ state) {
             noEngine = -1;
             noGrip   = -1;
             noSteer  = -1;
+            snow     = -1;
         } else if (spectating) {
             cruise   = -1;
             fragile  = -1;
+            snow     = -1;
             turbo    = -1;
         } else if (!S_Experimental) {
             cruise   = -1;
             fragile  = -1;
+            snow     = -1;
         }
 
 #elif MP4
@@ -105,6 +109,7 @@ void RenderEffects(CSceneVehicleVisState@ state) {
 
         if (S_Reactor)  UI::Text(GetReactorText(VehicleState::GetReactorFinalTimer(state)));
         if (S_SlowMo)   UI::Text(GetSlowMoColor() + Icons::ClockO + iconPadding + "Slow-Mo");
+        if (S_Snow)     UI::Text(GetSnowColor() + Icons::Truck + iconPadding + "Snow Car");
         if (S_Turbo)    UI::Text(GetTurboText(state.TurboTime));
 
 #elif MP4
