@@ -1,13 +1,15 @@
 /*
 c 2023-05-04
-m 2023-11-21
+m 2023-11-26
 */
 
+string loginLocal = GetLocalLogin();
 bool replay;
 bool spectating;
 uint totalRespawns = 0;
 
 void Main() {
+    startnew(CacheLocalLogin);
     ChangeFont();
     SetColors();
     Intercept();
@@ -158,9 +160,20 @@ void Render() {
     if (pgAPI is null)
         return;
 
-    spectating = pgAPI.IsSpectator;
+    CSmPlayer@ ViewingPlayer = VehicleState::GetViewingPlayer();
+    spectating = ((ViewingPlayer is null ? "" : ViewingPlayer.ScriptAPI.Login) != loginLocal) && !replay;
 
 #endif
 
     RenderEffects(vis.AsyncState);
+}
+
+// from "Auto-hide Opponents" plugin - https://github.com/XertroV/tm-autohide-opponents
+void CacheLocalLogin() {
+    while (true) {
+        sleep(100);
+        loginLocal = GetLocalLogin();
+        if (loginLocal.Length > 10)
+            break;
+    }
 }
