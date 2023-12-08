@@ -1,8 +1,9 @@
 /*
 c 2023-05-04
-m 2023-11-26
+m 2023-12-07
 */
 
+bool alwaysSnow = false;  // to change when starting as CarSnow is no longer broken
 string loginLocal = GetLocalLogin();
 bool replay;
 bool spectating;
@@ -40,15 +41,30 @@ void Render() {
     )
         return;
 
-    CTrackMania@ app = cast<CTrackMania@>(GetApp());
+    CTrackMania@ App = cast<CTrackMania@>(GetApp());
 
 #if TMNEXT
-    CSmArenaClient@ playground = cast<CSmArenaClient@>(app.CurrentPlayground);
+
+    CGameCtnChallenge@ Map = App.RootMap;
+    if (Map is null) {
+        alwaysSnow = false;
+        return;
+    }
+
+    if (Map.VehicleName.GetName() == "CarSnow") {
+        alwaysSnow = true;
+        snow = 1;
+    }
+
+    CSmArenaClient@ Playground = cast<CSmArenaClient@>(App.CurrentPlayground);
+
 #elif MP4
-    CGamePlayground@ playground = cast<CGamePlayground@>(app.CurrentPlayground);
+
+    CGamePlayground@ Playground = cast<CGamePlayground@>(App.CurrentPlayground);
+
 #endif
 
-    if (playground is null) {
+    if (Playground is null) {
         if (intercepting)
             ResetIntercept();
         totalRespawns = 0;
@@ -60,31 +76,31 @@ void Render() {
     if (!intercepting)
         Intercept();
 
-    CSmArena@ arena = cast<CSmArena@>(playground.Arena);
+    CSmArena@ Arena = cast<CSmArena@>(Playground.Arena);
 
-    if (arena is null)
+    if (Arena is null)
         return;
 
-    if (arena.Players.Length == 0)
+    if (Arena.Players.Length == 0)
         return;
 
-    CSmScriptPlayer@ script = cast<CSmScriptPlayer@>(arena.Players[0].ScriptAPI);
+    CSmScriptPlayer@ Script = cast<CSmScriptPlayer@>(Arena.Players[0].ScriptAPI);
 
-    if (script is null)
+    if (Script is null)
         return;
 
-    if (script.CurrentRaceTime < 1) {
+    if (Script.CurrentRaceTime < 1) {
         ResetEventEffects(true, true);
         fragileBeforeCp = false;
         snowBeforeCp = false;
     }
 
-    CSmArenaScore@ score = cast<CSmArenaScore@>(script.Score);
+    CSmArenaScore@ Score = cast<CSmArenaScore@>(Script.Score);
 
-    if (score is null)
+    if (Score is null)
         return;
 
-    uint respawns = score.NbRespawnsRequested;
+    uint respawns = Score.NbRespawnsRequested;
     if (totalRespawns < respawns) {
         totalRespawns = respawns;
         ResetEventEffects(true, true);
@@ -97,18 +113,18 @@ void Render() {
 #endif
 
     if (
-        playground.GameTerminals.Length != 1 ||
-        playground.UIConfigs.Length == 0
+        Playground.GameTerminals.Length != 1 ||
+        Playground.UIConfigs.Length == 0
     )
         return;
 
 #if TMNEXT
-    ISceneVis@ scene = cast<ISceneVis@>(app.GameScene);
+    ISceneVis@ Scene = cast<ISceneVis@>(App.GameScene);
 #elif MP4
-    CGameScene@ scene = cast<CGameScene@>(app.GameScene);
+    CGameScene@ Scene = cast<CGameScene@>(App.GameScene);
 #endif
 
-    if (scene is null)
+    if (Scene is null)
         return;
 
 #if TMNEXT
@@ -117,19 +133,19 @@ void Render() {
     CSceneVehicleVisState@ vis;
 #endif
 
-    CSmPlayer@ player = cast<CSmPlayer@>(playground.GameTerminals[0].GUIPlayer);
-    if (player !is null) {
-        @vis = VehicleState::GetVis(scene, player);
+    CSmPlayer@ Player = cast<CSmPlayer@>(Playground.GameTerminals[0].GUIPlayer);
+    if (Player !is null) {
+        @vis = VehicleState::GetVis(Scene, Player);
         replay = false;
     } else {
-        @vis = VehicleState::GetSingularVis(scene);
+        @vis = VehicleState::GetSingularVis(Scene);
         replay = true;
     }
 
 #if MP4
 
     if (vis is null) {
-        CSceneVehicleVisState@[] states = VehicleState::GetAllVis(scene);
+        CSceneVehicleVisState@[] states = VehicleState::GetAllVis(Scene);
         if (states.Length > 0)
             @vis = states[0];
     }
@@ -139,26 +155,26 @@ void Render() {
     if (vis is null)
         return;
 
-    CGamePlaygroundUIConfig::EUISequence sequence = playground.UIConfigs[0].UISequence;
+    CGamePlaygroundUIConfig::EUISequence Sequence = Playground.UIConfigs[0].UISequence;
     if (
-        !(sequence == CGamePlaygroundUIConfig::EUISequence::Playing) &&
-        !(sequence == CGamePlaygroundUIConfig::EUISequence::EndRound && replay)
+        !(Sequence == CGamePlaygroundUIConfig::EUISequence::Playing) &&
+        !(Sequence == CGamePlaygroundUIConfig::EUISequence::EndRound && replay)
     )
         return;
 
 #if TMNEXT
 
-    CGamePlaygroundInterface@ pgInterface = cast<CGamePlaygroundInterface@>(playground.Interface);
-    if (pgInterface is null)
-        return;
+    // CGamePlaygroundInterface@ pgInterface = cast<CGamePlaygroundInterface@>(Playground.Interface);
+    // if (pgInterface is null)
+    //     return;
 
-    CGameScriptHandlerPlaygroundInterface@ handler = cast<CGameScriptHandlerPlaygroundInterface@>(pgInterface.ManialinkScriptHandler);
-    if (handler is null)
-        return;
+    // CGameScriptHandlerPlaygroundInterface@ Handler = cast<CGameScriptHandlerPlaygroundInterface@>(pgInterface.ManialinkScriptHandler);
+    // if (Handler is null)
+    //     return;
 
-    CGamePlaygroundClientScriptAPI@ pgAPI = cast<CGamePlaygroundClientScriptAPI@>(handler.Playground);
-    if (pgAPI is null)
-        return;
+    // CGamePlaygroundClientScriptAPI@ PgAPI = cast<CGamePlaygroundClientScriptAPI@>(Handler.Playground);
+    // if (PgAPI is null)
+    //     return;
 
     CSmPlayer@ ViewingPlayer = VehicleState::GetViewingPlayer();
     spectating = ((ViewingPlayer is null ? "" : ViewingPlayer.ScriptAPI.Login) != loginLocal) && !replay;

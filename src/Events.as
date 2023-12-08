@@ -1,6 +1,6 @@
 /*
 c 2023-10-01
-m 2023-11-21
+m 2023-12-07
 */
 
 bool fragileBeforeCp = false;
@@ -83,7 +83,7 @@ void CaptureEvent(const string &in type, MwFastBuffer<wstring> &in data) {
             fragile = 1;
         } else if (data[0].Contains("Snow")) {
             snow = 1;
-        } else if (data[0].Contains("Stadium")) {
+        } else if (data[0].Contains("Stadium") && !alwaysSnow) {
             snow = 0;
         }
     } else if (type == "TMGame_RaceCheckpoint_Waypoint") {  // works while spectating?
@@ -98,7 +98,7 @@ void ResetEventEffects(bool resetFragile = true, bool resetSnow = false) {
 
     if (resetFragile)
         fragile = 0;
-    
-    if (resetSnow)
+
+    if (resetSnow && !alwaysSnow)
         snow = 0;
 }
