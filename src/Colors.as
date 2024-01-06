@@ -1,7 +1,5 @@
-/*
-c 2023-10-21
-m 2023-11-21
-*/
+// c 2023-10-21
+// m 2024-01-05
 
 int64 lastAllColorsSwap = 0;
 
@@ -71,6 +69,14 @@ string GetNoSteerColor() {
 
 #if TMNEXT
 
+string GetPenaltyColor() {
+    switch (penalty) {
+        case -1: return disabledColor;
+        case  0: return offColor;
+        default: return penaltyColor;
+    }
+}
+
 string GetReactorColor() {
     switch (reactor) {
         case -1: return disabledColor;
@@ -123,14 +129,7 @@ string GetTurboColor() {
 #endif
 
 void SetColors() {
-#if TMNEXT
-
-    disabledColor = Text::FormatOpenplanetColor(S_DisabledColor);
-
-#endif
-
     offColor      = Text::FormatOpenplanetColor(S_OffColor);
-
     forcedColor   = Text::FormatOpenplanetColor(S_ForcedColor);
     noBrakesColor = Text::FormatOpenplanetColor(S_NoBrakesColor);
     noEngineColor = Text::FormatOpenplanetColor(S_NoEngineColor);
@@ -139,8 +138,10 @@ void SetColors() {
 
 #if TMNEXT
 
+    disabledColor = Text::FormatOpenplanetColor(S_DisabledColor);
     cruiseColor   = Text::FormatOpenplanetColor(S_CruiseColor);
     fragileColor  = Text::FormatOpenplanetColor(S_FragileColor);
+    penaltyColor  = Text::FormatOpenplanetColor(S_PenaltyColor);
     reactor1Color = Text::FormatOpenplanetColor(S_Reactor1Color);
     reactor2Color = Text::FormatOpenplanetColor(S_Reactor2Color);
     slowMo1Color  = Text::FormatOpenplanetColor(S_SlowMo1Color);
@@ -159,6 +160,7 @@ void SetColors() {
     turboColor = Text::FormatOpenplanetColor(S_TurboColor);
 
 #endif
+
 }
 
 void ShowAllColors() {
@@ -210,4 +212,5 @@ void ShowAllColors() {
     turbo = 1;
 
 #endif
+
 }

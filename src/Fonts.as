@@ -1,11 +1,9 @@
-/*
-c 2023-08-04
-m 2023-08-04
-*/
+// c 2023-08-04
+// m 2024-01-05
 
 UI::Font@ font;
-Font currentFont = S_Font;
-string iconPadding = "";
+Font      currentFont   = S_Font;
+string    iconPadding = "";
 
 enum Font {
     DroidSans_16,
@@ -32,5 +30,6 @@ void ChangeFont() {
         case Font::DroidSansMono_26: @font = UI::LoadFont("DroidSansMono.ttf",  26, -1, -1, true, true, true); iconPadding = " ";  break;
         default: break;
     }
+
     currentFont = S_Font;
 }

@@ -1,7 +1,5 @@
-/*
-c 2023-09-26
-m 2023-10-21
-*/
+// c 2023-09-26
+// m 2024-01-05
 
 uint16 handicapOffset = 0;
 
@@ -23,11 +21,8 @@ int GetHandicapSum(CSceneVehicleVisState@ state) {
     return Dev::GetOffsetInt32(state, handicapOffset);
 
 #elif MP4
-
     return int(state.ActiveEffects);
-
 #endif
-
 }
 
 void SetHandicaps(int sum) {
@@ -294,5 +289,4 @@ void SetHandicaps(int sum) {
     }
 
 #endif
-
 }

@@ -1,7 +1,5 @@
-/*
-c 2023-06-10
-m 2023-11-21
-*/
+// c 2023-06-10
+// m 2024-01-05
 
 [Setting category="General" name="Enabled"]
 bool S_Enabled = true;
@@ -26,6 +24,9 @@ bool S_Reset = false;
 [Setting category="General" name="Try experimental features" description="warning - may crash your game!"]
 bool S_Experimental = false;
 
+
+[Setting category="Toggles" name="Acceleration Penalty" description="experimental - may not work!"]
+bool S_Penalty = false;
 
 [Setting category="Toggles" name="Cruise Control" description="experimental - may not work!"]
 bool S_Cruise = false;
@@ -85,6 +86,10 @@ string disabledColor;
 
 [Setting category="Colors" name="Effect Unsupported" description="i.e. when spectating, only some effects can be seen" color]
 vec3 S_DisabledColor = vec3(0.3f, 0.3f, 0.3f);
+
+[Setting category="Colors" name="Acceleration Penalty" color]
+vec3 S_PenaltyColor = vec3(1.0f, 0.0f, 0.0f);
+string penaltyColor;
 
 [Setting category="Colors" name="Cruise Control" color]
 vec3 S_CruiseColor = vec3(0.226f, 0.564f, 1.0f);
