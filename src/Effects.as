@@ -60,7 +60,7 @@ void RenderEffects(CSceneVehicleVisState@ state) {
             noSteer  = -1;
             snow     = -1;
         } else if (spectating) {
-            // cruise   = -1;  // untested, leave enabled for now
+            cruise   = -1;
             fragile  = -1;
             snow     = -1;
             turbo    = -1;
