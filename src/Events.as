@@ -71,8 +71,6 @@ void CaptureEvent(const string &in type, MwFastBuffer<wstring> &in data) {
     if (type == "BlockHelper_Event_GameplaySpecial") {  // only works while playing
         if (data[0].Contains("Reset"))
             ResetEventEffects();
-        else if (data[0].Contains("Cruise"))
-            cruise = 1;
         else if (data[0].Contains("Fragile"))
             fragile = 1;
         else if (data[0].Contains("Snow"))
@@ -82,15 +80,11 @@ void CaptureEvent(const string &in type, MwFastBuffer<wstring> &in data) {
     } else if (type == "TMGame_RaceCheckpoint_Waypoint") {  // works while spectating?
         fragileBeforeCp = fragile == 1;
         snowBeforeCp = snow == 1;
-        ResetEventEffects(false);
     }
 }
 
-void ResetEventEffects(bool resetFragile = true, bool resetSnow = false) {
-    cruise = 0;
-
-    if (resetFragile)
-        fragile = 0;
+void ResetEventEffects(bool resetSnow = false) {
+    fragile = 0;
 
     if (resetSnow && !alwaysSnow)
         snow = 0;

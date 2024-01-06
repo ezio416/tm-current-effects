@@ -22,9 +22,11 @@ void RenderEffects(CSceneVehicleVisState@ state) {
 #if TMNEXT
 
         if (S_Reset) {
-            ResetEventEffects(true, true);
             S_Reset = false;
+            ResetEventEffects(true);
         }
+
+        cruise = GetCruiseSpeed(state) > 0 ? 1 : 0;
 
         penalty = S_Experimental && (GetPenalty1(state) > 0 || GetPenalty2(state) > 0 || GetPenalty3(state) > 0) ? 1 : 0;
 
@@ -50,7 +52,6 @@ void RenderEffects(CSceneVehicleVisState@ state) {
             turbo = int(VehicleState::GetLastTurboLevel(state));
 
         if (replay) {
-            cruise   = -1;
             forced   = -1;
             fragile  = -1;
             noBrakes = -1;
@@ -59,12 +60,11 @@ void RenderEffects(CSceneVehicleVisState@ state) {
             noSteer  = -1;
             snow     = -1;
         } else if (spectating) {
-            cruise   = -1;
+            // cruise   = -1;  // untested, leave enabled for now
             fragile  = -1;
             snow     = -1;
             turbo    = -1;
         } else if (!S_Experimental) {
-            cruise   = -1;
             fragile  = -1;
             penalty  = -1;
             snow     = -1;
@@ -152,6 +152,28 @@ string GetTurboText(float f) {
     return GetTurboColor() + Icons::ArrowCircleUp + offColor + iconPadding + "Turbo";
 }
 
+uint16 cruiseOffset = 0;
+
+int GetCruiseSpeed(CSceneVehicleVisState@ state) {
+    if (cruiseOffset == 0) {
+        const Reflection::MwClassInfo@ type = Reflection::GetType("CSceneVehicleVisState");
+
+        if (type is null) {
+            error("Unable to find reflection info for CSceneVehicleVisState!");
+            return 0;
+        }
+
+        cruiseOffset = type.GetMember("FrontSpeed").Offset + 12;
+    }
+
+    int ret = Dev::GetOffsetInt32(state, cruiseOffset);
+
+    // if (ret > 0)
+    //     print("cruise: " + ret);
+
+    return ret;
+}
+
 uint16 penalty1Offset = 0;
 
 int GetPenalty1(CSceneVehicleVisState@ state) {  // front/back impact strength? 0 - 16,843,009
@@ -169,7 +191,7 @@ int GetPenalty1(CSceneVehicleVisState@ state) {  // front/back impact strength? 
     int ret = Dev::GetOffsetInt32(state, penalty1Offset);
 
     // if (ret > 0)
-    //     print("p1: " + tostring(ret));
+    //     print("penalty 1: " + tostring(ret));
 
     return ret;
 }
@@ -191,7 +213,7 @@ int GetPenalty2(CSceneVehicleVisState@ state) {  // back impact? 0 - 1
     int ret = Dev::GetOffsetInt32(state, penalty2Offset);
 
     // if (ret > 0)
-    //     print("p2:" + tostring(ret));
+    //     print("penalty 2:" + tostring(ret));
 
     return ret;
 }
@@ -213,7 +235,7 @@ int GetPenalty3(CSceneVehicleVisState@ state) {  // any impact? 0 - ~1,065,000,0
     int ret = Dev::GetOffsetInt32(state, penalty3Offset);
 
     // if (ret > 0)
-    //     print("p3: " + tostring(ret));
+    //     print("penalty 3: " + tostring(ret));
 
     return ret;
 }

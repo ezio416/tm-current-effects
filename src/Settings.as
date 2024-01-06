@@ -28,8 +28,8 @@ bool S_Experimental = false;
 [Setting category="Toggles" name="Acceleration Penalty" description="experimental - may not work!"]
 bool S_Penalty = false;
 
-[Setting category="Toggles" name="Cruise Control" description="experimental - may not work!"]
-bool S_Cruise = false;
+[Setting category="Toggles" name="Cruise Control"]
+bool S_Cruise = true;
 
 [Setting category="Toggles" name="Engine Off"]
 bool S_NoEngine = true;

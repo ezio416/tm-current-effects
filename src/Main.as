@@ -92,7 +92,7 @@ void Render() {
         return;
 
     if (ScriptPlayer.CurrentRaceTime < 1) {
-        ResetEventEffects(true, true);
+        ResetEventEffects(true);
         fragileBeforeCp = false;
         snowBeforeCp = false;
     }
@@ -105,7 +105,7 @@ void Render() {
 
     if (totalRespawns < respawns) {
         totalRespawns = respawns;
-        ResetEventEffects(true, true);
+        ResetEventEffects(true);
 
         if (fragileBeforeCp)
             fragile = 1;
