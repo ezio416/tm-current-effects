@@ -108,6 +108,11 @@ void Render() {
             snow = 1;
     }
 
+#elif MP4
+
+    if (Playground is null)
+        return;
+
 #endif
 
     if (
