@@ -50,9 +50,23 @@ void Render() {
     CTrackMania@ App = cast<CTrackMania@>(GetApp());
 
 #if MP4
+
     CGamePlayground@ Playground = App.CurrentPlayground;
+
+    if (Playground is null)
+        return;
+
 #elif TMNEXT
+
     CSmArenaClient@ Playground = cast<CSmArenaClient@>(App.CurrentPlayground);
+
+    if (Playground is null) {
+        if (intercepting)
+            ResetIntercept();
+
+        totalRespawns = 0;
+        return;
+    }
 
     CGameCtnChallenge@ Map = App.RootMap;
     if (Map is null) {
@@ -63,14 +77,6 @@ void Render() {
     if (Map.VehicleName.GetName() == "CarSnow") {
         alwaysSnow = true;
         snow = 1;
-    }
-
-    if (Playground is null) {
-        if (intercepting)
-            ResetIntercept();
-
-        totalRespawns = 0;
-        return;
     }
 
     if (!intercepting)
@@ -107,11 +113,6 @@ void Render() {
         if (snowBeforeCp)
             snow = 1;
     }
-
-#elif MP4
-
-    if (Playground is null)
-        return;
 
 #endif
 
