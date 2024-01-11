@@ -72,18 +72,18 @@ void Tab_State() {
         return;
     }
 
+    bool meExists = false;
+
     CSceneVehicleVis@[] AllVis = VehicleState::GetAllVis(Scene);
 
+    CSmPlayer@ Player = cast<CSmPlayer@>(Playground.GameTerminals[0].GUIPlayer);
+    CSceneVehicleVis@ MyVis = Player !is null ? VehicleState::GetVis(Scene, Player) : VehicleState::GetSingularVis(Scene);
+    if (MyVis !is null) {
+        AllVis.InsertAt(0, MyVis);
+        meExists = true;
+    }
+
     UI::BeginTabBar("##state-tabs");
-        bool meExists = false;
-
-        CSmPlayer@ Player = cast<CSmPlayer@>(Playground.GameTerminals[0].GUIPlayer);
-        CSceneVehicleVis@ MyVis = Player !is null ? VehicleState::GetVis(Scene, Player) : VehicleState::GetSingularVis(Scene);
-        if (MyVis !is null) {
-            AllVis.InsertAt(0, MyVis);
-            meExists = true;
-        }
-
         for (uint i = 0; i < AllVis.Length; i++) {
             CSceneVehicleVis@ Vis = AllVis[i];
             CSceneVehicleVisState@ State = Vis.AsyncState;
