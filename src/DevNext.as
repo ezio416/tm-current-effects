@@ -9,11 +9,12 @@ string version;
 
 // offsets for which a value is known
 const int[] knownVisOffsets = {
-    0, 348, 352, 356, 360, 364, 368
+    0, 348, 352, 356, 360, 364, 368, 376, 384, 388, 392, 396, 400, 404, 408, 412, 416, 544, 552, 560, 568, 580, 592, 664
 };
 
 // offsets for which a value is known, but there's uncertainty in exactly what it represents
 const int[] observedVisOffsets = {
+    456, 460, 464, 480, 484, 488, 504, 508, 512, 528, 532, 536, 548, 556, 564, 572, 596
 };
 
 // offsets for which a value is known
@@ -98,7 +99,7 @@ void Tab_Vis() {
         meExists = true;
     }
 
-    UI::TextWrapped("This tab is only for values which are not in CSceneVehicleVisState.");
+    UI::TextWrapped("This tab is mainly only for values that have not been found directly in CSceneVehicleVisState, or are in different locations.");
 
     UI::BeginTabBar("##vis-tabs");
         for (uint i = 0; i < AllVis.Length; i++) {
@@ -157,7 +158,96 @@ void RenderVisApiValues(CSceneVehicleVis@ Vis) {
 }
 
 void RenderVisOffsetValues(CSceneVehicleVis@ Vis) {
-    ;
+    UI::TextWrapped("Variables marked " + YELLOW + "yellow\\$G have been observed but are uncertain.");
+
+    string[][] values;
+    values.InsertLast(VisOffsetValue(Vis, 348, "Position",          DataType::Vec3));
+    values.InsertLast(VisOffsetValue(Vis, 360, "WorldVel",          DataType::Vec3));
+    values.InsertLast(VisOffsetValue(Vis, 376, "IsWheelsBurning",   DataType::Bool));
+    values.InsertLast(VisOffsetValue(Vis, 384, "FLIcing01",         DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 388, "FRIcing01",         DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 392, "RRIcing01",         DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 396, "RLIcing01",         DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 400, "FLSlipCoef",        DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 404, "FRSlipCoef",        DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 408, "RRSlipCoef",        DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 412, "RLSlipCoef",        DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 416, "InputGasPedal",     DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 456, "FL???",             DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 460, "FL???",             DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 464, "FL???",             DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 480, "FR???",             DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 484, "FR???",             DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 488, "FR???",             DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 504, "RR???",             DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 508, "RR???",             DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 512, "RR???",             DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 528, "RL???",             DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 532, "RL???",             DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 536, "RL???",             DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 544, "InputIsBraking",    DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 548, "BrakingCoefStrong", DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 552, "HasReactor",        DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 556, "Reactor???",        DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 560, "HasYellowReactor",  DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 564, "YellowReactor???",  DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 568, "HasRedReactor",     DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 572, "RedReactor???",     DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 580, "Turbo",             DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 592, "InputIsBraking",    DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 596, "BrakingCoefWeak",   DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 664, "SpoilerOpenNormed", DataType::Float));
+
+    if (UI::BeginTable("##vis-offset-value-table", 5, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+        UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+        UI::TableSetupScrollFreeze(0, 1);
+        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Variable",     UI::TableColumnFlags::WidthFixed, 250.0f);
+        UI::TableSetupColumn("Type",         UI::TableColumnFlags::WidthFixed, 90.0f);
+        UI::TableSetupColumn("Value");
+        UI::TableHeadersRow();
+
+        UI::ListClipper clipper(values.Length);
+        while (clipper.Step()) {
+            for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                UI::TableNextRow();
+                UI::TableNextColumn(); UI::Text(values[i][0]);
+                UI::TableNextColumn(); UI::Text(values[i][1]);
+                UI::TableNextColumn(); UI::Text(values[i][2]);
+                UI::TableNextColumn(); UI::Text(values[i][3]);
+                UI::TableNextColumn(); UI::Text(values[i][4]);
+            }
+        }
+
+        UI::PopStyleColor();
+        UI::EndTable();
+    }
+}
+
+string[] VisOffsetValue(CSceneVehicleVis@ Vis, int offset, const string &in name, DataType type, bool known = true) {
+    string value;
+
+    switch (type) {
+        case DataType::Bool:   value = Round(    Dev::GetOffsetInt8  (Vis, offset) == 1); break;
+        case DataType::Int8:   value = Round(    Dev::GetOffsetInt8  (Vis, offset));      break;
+        case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8 (Vis, offset));      break;
+        case DataType::Int16:  value = Round(    Dev::GetOffsetInt16 (Vis, offset));      break;
+        case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(Vis, offset));      break;
+        case DataType::Int32:  value = Round(    Dev::GetOffsetInt32 (Vis, offset));      break;
+        case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(Vis, offset));      break;
+        case DataType::Int64:  value = Round(    Dev::GetOffsetInt64 (Vis, offset));      break;
+        case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(Vis, offset));      break;
+        case DataType::Float:  value = Round(    Dev::GetOffsetFloat (Vis, offset));      break;
+        case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2  (Vis, offset));      break;
+        case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3  (Vis, offset));      break;
+        case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4  (Vis, offset));      break;
+        case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4  (Vis, offset));      break;
+        default:;
+    }
+
+    return { tostring(offset), IntToHex(offset), (known ? "" : YELLOW) + name, tostring(type), value };
 }
 
 void RenderVisOffsets(CSceneVehicleVis@ Vis) {
