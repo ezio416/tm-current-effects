@@ -9,13 +9,13 @@ string version;
 
 // offsets for which a value is known
 const int[] knownVisOffsets = {
-    0, 312, 316, 320, 324, 328, 332, 336, 340, 344, 348, 352, 356, 360, 364, 368, 376, 384, 388, 392, 396, 400,
+    0, 140, 144, 312, 316, 320, 324, 328, 332, 336, 340, 344, 348, 352, 356, 360, 364, 368, 372, 376, 384, 388, 392, 396, 400,
     404, 408, 412, 416, 544, 552, 560, 568, 580, 592, 652, 656, 660, 664, 668, 672
 };
 
 // offsets for which a value is known, but there's uncertainty in exactly what it represents
 const int[] observedVisOffsets = {
-    456, 460, 464, 480, 484, 488, 504, 508, 512, 528, 532, 536, 548, 556, 564, 572, 596
+    124, 128, 456, 460, 464, 480, 484, 488, 504, 508, 512, 528, 532, 536, 548, 556, 564, 572, 596
 };
 
 // offsets for which a value is known
@@ -166,12 +166,17 @@ void RenderVisOffsetValues(CSceneVehicleVis@ Vis) {
     UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
 
     string[][] values;
+    values.InsertLast(VisOffsetValue(Vis, 0,   "VehicleId",          DataType::Int32));
+    values.InsertLast(VisOffsetValue(Vis, 140, "LinearHue",          DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 144, "LinearHue",          DataType::Float));
+
     values.InsertLast({"312,324,336", "0x138,144,150", "Left", "Vec3", Round(vec3(Dev::GetOffsetFloat(Vis, 312), Dev::GetOffsetFloat(Vis, 324), Dev::GetOffsetFloat(Vis, 336)))});
     values.InsertLast({"316,328,340", "0x13C,148,154", "Up",   "Vec3", Round(vec3(Dev::GetOffsetFloat(Vis, 316), Dev::GetOffsetFloat(Vis, 328), Dev::GetOffsetFloat(Vis, 340)))});
     values.InsertLast({"320,332,344", "0x140,14C,158", "Dir",  "Vec3", Round(vec3(Dev::GetOffsetFloat(Vis, 320), Dev::GetOffsetFloat(Vis, 332), Dev::GetOffsetFloat(Vis, 344)))});
 
     values.InsertLast(VisOffsetValue(Vis, 348, "Position",           DataType::Vec3));
     values.InsertLast(VisOffsetValue(Vis, 360, "WorldVel",           DataType::Vec3));
+    values.InsertLast(VisOffsetValue(Vis, 372, "NbRespawnsOrResets", DataType::Int32));
     values.InsertLast(VisOffsetValue(Vis, 376, "IsWheelsBurning",    DataType::Bool));
     values.InsertLast(VisOffsetValue(Vis, 384, "FLIcing01",          DataType::Float));
     values.InsertLast(VisOffsetValue(Vis, 388, "FRIcing01",          DataType::Float));
