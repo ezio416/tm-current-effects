@@ -36,6 +36,39 @@ enum DataType {
     Enum
 }
 
+enum ContactState1 {
+    Air                     = 0,
+    Ground                  = 8,
+    TopContactWheels        = 16,
+    TopContact              = 24,
+    WheelsBurning           = 40,
+    TopContactWheelsBurning = 56
+}
+
+enum ContactState2 {
+    Air            = -64,
+    Falling        = -63,
+    ReactorRaising = -60,
+    ReactorFalling = -59,
+    Ground         = -48,
+    ReactorGround  = -40
+}
+
+shared enum FallingState {
+    FallingAir    = 0,
+    FallingWater  = 2,
+    RestingGround = 4,
+    RestingWater  = 6,
+    GlidingGround = 8
+}
+
+enum TurboState {
+    SelfFalse   = 8,
+    SelfTrue    = 9,
+    ReplayFalse = 28,
+    ReplayTrue  = 29
+}
+
 string IntToHex(int i) {
     return "0x" + Text::Format("%X", i);
 }

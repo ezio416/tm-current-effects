@@ -1,5 +1,5 @@
 // c 2024-01-09
-// m 2024-01-10
+// m 2024-01-11
 
 #if SIG_DEVELOPER && TMNEXT
 
@@ -9,16 +9,17 @@ string version;
 
 // offsets for which a value is known
 const int[] knownStateOffsets = {
-    16, 20, 24, 32, 80, 84, 88, 92, 96, 100, 116, 120, 128,
+    0, 16, 20, 24, 32, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84, 88, 92, 96, 100, 116, 120, 128, 136, 138, 139,
     168, 172, 176, 180, 184, 185, 188, 192, 196, 200, 204, 208,  // FL
     212, 216, 220, 224, 228, 229, 232, 236, 240, 244, 248, 252,  // FR
     256, 260, 264, 268, 272, 273, 276, 280, 284, 288, 292, 296,  // RR
     300, 304, 308, 312, 316, 317, 320, 324, 328, 332, 336, 340,  // RL
-    368, 372, 376, 380, 381, 384, 388, 392, 396, 400, 404, 408, 420, 428, 436
+    368, 372, 376, 380, 381, 384, 388, 392, 396, 400, 404, 408, 420, 428, 436, 440, 456, 460, 464, 468, 472, 536, 560, 564, 568, 572, 576, 788, 792, 796, 800, 804, 808
 };
 
 // offsets for which a value is known, but there's uncertainty in exactly what it represents
 const int[] observedStateOffsets = {
+    12, 104, 108, 112, 556, 612, 812
 };
 
 // game versions for which the offsets in this file are valid
@@ -58,6 +59,12 @@ void Tab_State() {
         return;
     }
 
+    if (Playground.GameTerminals.Length == 0) {
+        UI::Text(RED + "no GameTerminals");
+        UI::EndTabItem();
+        return;
+    }
+
     ISceneVis@ Scene = cast<ISceneVis@>(App.GameScene);
     if (Scene is null) {
         UI::Text(RED + "null Scene");
@@ -65,10 +72,11 @@ void Tab_State() {
         return;
     }
 
+    CSceneVehicleVis@[] AllVis = VehicleState::GetAllVis(Scene);
+
     UI::BeginTabBar("##state-tabs");
         bool meExists = false;
 
-        CSceneVehicleVis@[] AllVis = VehicleState::GetAllVis(Scene);
         CSmPlayer@ Player = cast<CSmPlayer@>(Playground.GameTerminals[0].GUIPlayer);
         CSceneVehicleVis@ MyVis = Player !is null ? VehicleState::GetVis(Scene, Player) : VehicleState::GetSingularVis(Scene);
         if (MyVis !is null) {
@@ -114,90 +122,90 @@ void Tab_State() {
 }
 
 void RenderStateApiValues(CSceneVehicleVisState@ State) {
-    UI::TextWrapped("Variables marked " + YELLOW + "yellow\\$G are from VehicleState.");
+    UI::TextWrapped("Variables marked " + CYAN + "cyan\\$G are from VehicleState.");
 
     string[][] values;
-    values.InsertLast({"AirBrakeNormed",             "Float",   Round(    State.AirBrakeNormed)});
-    values.InsertLast({"BulletTimeNormed",           "Float",   Round(    State.BulletTimeNormed)});
-    values.InsertLast({"CamGrpStates",               "Unknown", "unknown new type"});
-    values.InsertLast({"CurGear",                    "Uint",    RoundUint(State.CurGear)});
-    values.InsertLast({"Dir",                        "Vec3",    Round(    State.Dir)});
-    values.InsertLast({"DiscontinuityCount",         "Uint8",   RoundUint(State.DiscontinuityCount)});
-    values.InsertLast({"EngineOn",                   "Bool",    Round(    State.EngineOn)});
-    values.InsertLast({YELLOW + "EngineRPM",         "Float",   Round(    VehicleState::GetRPM(State))});
-    values.InsertLast({"FLBreakNormedCoef",          "Float",   Round(    State.FLBreakNormedCoef)});
-    values.InsertLast({"FLDamperLen",                "Float",   Round(    State.FLDamperLen)});
-    values.InsertLast({YELLOW + "FLDirt",            "Float",   Round(    VehicleState::GetWheelDirt(State, 0))});
-    values.InsertLast({"FLGroundContactMaterial",    "Enum",    tostring( State.FLGroundContactMaterial)});
-    values.InsertLast({"FLIcing01",                  "Float",   Round(    State.FLIcing01)});
-    values.InsertLast({"FLSlipCoef",                 "Float",   Round(    State.FLSlipCoef)});
-    values.InsertLast({"FLSteerAngle",               "Float",   Round(    State.FLSteerAngle)});
-    values.InsertLast({"FLTireWear01",               "Float",   Round(    State.FLTireWear01)});
-    values.InsertLast({"FLWheelRot",                 "Float",   Round(    State.FLWheelRot)});
-    values.InsertLast({"FLWheelRotSpeed",            "Float",   Round(    State.FLWheelRotSpeed)});
-    values.InsertLast({"FRBreakNormedCoef",          "Float",   Round(    State.FRBreakNormedCoef)});
-    values.InsertLast({"FRDamperLen",                "Float",   Round(    State.FRDamperLen)});
-    values.InsertLast({YELLOW + "FRDirt",            "Float",   Round(    VehicleState::GetWheelDirt(State, 1))});
-    values.InsertLast({"FRGroundContactMaterial",    "Enum",    tostring( State.FRGroundContactMaterial)});
-    values.InsertLast({"FRIcing01",                  "Float",   Round(    State.FRIcing01)});
-    values.InsertLast({"FRSlipCoef",                 "Float",   Round(    State.FRSlipCoef)});
-    values.InsertLast({"FRSteerAngle",               "Float",   Round(    State.FRSteerAngle)});
-    values.InsertLast({"FrontSpeed",                 "Float",   Round(    State.FrontSpeed)});
-    values.InsertLast({"FRTireWear01",               "Float",   Round(    State.FRTireWear01)});
-    values.InsertLast({"FRWheelRot",                 "Float",   Round(    State.FRWheelRot)});
-    values.InsertLast({"FRWheelRotSpeed",            "Float",   Round(    State.FRWheelRotSpeed)});
-    values.InsertLast({"GroundDist",                 "Float",   Round(    State.GroundDist)});
-    values.InsertLast({"InputBrakePedal",            "Float",   Round(    State.InputBrakePedal)});
-    values.InsertLast({"InputGasPedal",              "Float",   Round(    State.InputGasPedal)});
-    values.InsertLast({"InputIsBraking",             "Bool",    Round(    State.InputIsBraking)});
-    values.InsertLast({"InputSteer",                 "Float",   Round(    State.InputSteer)});
-    values.InsertLast({"InputVertical",              "Float",   Round(    State.InputVertical)});
-    values.InsertLast({"IsGroundContact",            "Bool",    Round(    State.IsGroundContact)});
-    values.InsertLast({"IsReactorGroundMode",        "Bool",    Round(    State.IsReactorGroundMode)});
-    values.InsertLast({"IsTopContact",               "Bool",    Round(    State.IsTopContact)});
-    values.InsertLast({"IsTurbo",                    "Bool",    Round(    State.IsTurbo)});
-    values.InsertLast({"IsWheelsBurning",            "Bool",    Round(    State.IsWheelsBurning)});
-    values.InsertLast({YELLOW + "LastTurboLevel",    "Enum",    tostring( VehicleState::GetLastTurboLevel(State))});
-    values.InsertLast({"Left",                       "Vec3",    Round(    State.Left)});
-    values.InsertLast({"Position",                   "Vec3",    Round(    State.Position)});
-    values.InsertLast({"RaceStartTime",              "Uint",    RoundUint(State.RaceStartTime)});
-    values.InsertLast({"ReactorAirControl",          "Vec3",    Round(    State.ReactorAirControl)});
-    values.InsertLast({"ReactorBoostLvl",            "Enum",    tostring( State.ReactorBoostLvl)});
-    values.InsertLast({"ReactorBoostType",           "Enum",    tostring( State.ReactorBoostType)});
-    values.InsertLast({YELLOW + "ReactorFinalTimer", "Float",   Round(    VehicleState::GetReactorFinalTimer(State))});
-    values.InsertLast({"ReactorInputsX",             "Bool",    Round(    State.ReactorInputsX)});
-    values.InsertLast({"RLBreakNormedCoef",          "Float",   Round(    State.RLBreakNormedCoef)});
-    values.InsertLast({"RLDamperLen",                "Float",   Round(    State.RLDamperLen)});
-    values.InsertLast({YELLOW + "RLDirt",            "Float",   Round(    VehicleState::GetWheelDirt(State, 2))});
-    values.InsertLast({"RLGroundContactMaterial",    "Enum",    tostring( State.RLGroundContactMaterial)});
-    values.InsertLast({"RLIcing01",                  "Float",   Round(    State.RLIcing01)});
-    values.InsertLast({"RLSlipCoef",                 "Float",   Round(    State.RLSlipCoef)});
-    values.InsertLast({"RLSteerAngle",               "Float",   Round(    State.RLSteerAngle)});
-    values.InsertLast({"RLTireWear01",               "Float",   Round(    State.RLTireWear01)});
-    values.InsertLast({"RLWheelRot",                 "Float",   Round(    State.RLWheelRot)});
-    values.InsertLast({"RLWheelRotSpeed",            "Float",   Round(    State.RLWheelRotSpeed)});
-    values.InsertLast({"RRBreakNormedCoef",          "Float",   Round(    State.RRBreakNormedCoef)});
-    values.InsertLast({"RRDamperLen",                "Float",   Round(    State.RRDamperLen)});
-    values.InsertLast({YELLOW + "RRDirt",            "Float",   Round(    VehicleState::GetWheelDirt(State, 3))});
-    values.InsertLast({"RRGroundContactMaterial",    "Enum",    tostring( State.RRGroundContactMaterial)});
-    values.InsertLast({"RRIcing01",                  "Float",   Round(    State.RRIcing01)});
-    values.InsertLast({"RRSlipCoef",                 "Float",   Round(    State.RRSlipCoef)});
-    values.InsertLast({"RRSteerAngle",               "Float",   Round(    State.RRSteerAngle)});
-    values.InsertLast({"RRTireWear01",               "Float",   Round(    State.RRTireWear01)});
-    values.InsertLast({"RRWheelRot",                 "Float",   Round(    State.RRWheelRot)});
-    values.InsertLast({"RRWheelRotSpeed",            "Float",   Round(    State.RRWheelRotSpeed)});
-    values.InsertLast({YELLOW + "SideSpeed",         "Float",   Round(    VehicleState::GetSideSpeed(State))});
-    values.InsertLast({"SimulationTimeCoef",         "Float",   Round(    State.SimulationTimeCoef)});
-    values.InsertLast({"SpoilerOpenNormed",          "Float",   Round(    State.SpoilerOpenNormed)});
-    values.InsertLast({"TurboTime",                  "Float",   Round(    State.TurboTime)});
-    values.InsertLast({"Up",                         "Vec3",    Round(    State.Up)});
-    values.InsertLast({"WaterImmersionCoef",         "Float",   Round(    State.WaterImmersionCoef)});
-    values.InsertLast({"WaterOverDistNormed",        "Float",   Round(    State.WaterOverDistNormed)});
-    values.InsertLast({"WaterOverSurfacePos",        "Vec3",    Round(    State.WaterOverSurfacePos)});
-    values.InsertLast({"WetnessValue01",             "Float",   Round(    State.WetnessValue01)});
-    values.InsertLast({"WingsOpenNormed",            "Float",   Round(    State.WingsOpenNormed)});
-    values.InsertLast({"WorldCarUp",                 "Vec3",    Round(    State.WorldCarUp)});
-    values.InsertLast({"WorldVel",                   "Vec3",    Round(    State.WorldVel)});
+    values.InsertLast({"AirBrakeNormed",           "Float",   Round(    State.AirBrakeNormed)});
+    values.InsertLast({"BulletTimeNormed",         "Float",   Round(    State.BulletTimeNormed)});
+    values.InsertLast({"CamGrpStates",             "Unknown", "unknown new type"});
+    values.InsertLast({"CurGear",                  "Uint",    RoundUint(State.CurGear)});
+    values.InsertLast({"Dir",                      "Vec3",    Round(    State.Dir)});
+    values.InsertLast({"DiscontinuityCount",       "Uint8",   RoundUint(State.DiscontinuityCount)});
+    values.InsertLast({"EngineOn",                 "Bool",    Round(    State.EngineOn)});
+    values.InsertLast({CYAN + "EngineRPM",         "Float",   Round(    VehicleState::GetRPM(State))});
+    values.InsertLast({"FLBreakNormedCoef",        "Float",   Round(    State.FLBreakNormedCoef)});
+    values.InsertLast({"FLDamperLen",              "Float",   Round(    State.FLDamperLen)});
+    values.InsertLast({CYAN + "FLDirt",            "Float",   Round(    VehicleState::GetWheelDirt(State, 0))});
+    values.InsertLast({"FLGroundContactMaterial",  "Enum",    tostring( State.FLGroundContactMaterial)});
+    values.InsertLast({"FLIcing01",                "Float",   Round(    State.FLIcing01)});
+    values.InsertLast({"FLSlipCoef",               "Float",   Round(    State.FLSlipCoef)});
+    values.InsertLast({"FLSteerAngle",             "Float",   Round(    State.FLSteerAngle)});
+    values.InsertLast({"FLTireWear01",             "Float",   Round(    State.FLTireWear01)});
+    values.InsertLast({"FLWheelRot",               "Float",   Round(    State.FLWheelRot)});
+    values.InsertLast({"FLWheelRotSpeed",          "Float",   Round(    State.FLWheelRotSpeed)});
+    values.InsertLast({"FRBreakNormedCoef",        "Float",   Round(    State.FRBreakNormedCoef)});
+    values.InsertLast({"FRDamperLen",              "Float",   Round(    State.FRDamperLen)});
+    values.InsertLast({CYAN + "FRDirt",            "Float",   Round(    VehicleState::GetWheelDirt(State, 1))});
+    values.InsertLast({"FRGroundContactMaterial",  "Enum",    tostring( State.FRGroundContactMaterial)});
+    values.InsertLast({"FRIcing01",                "Float",   Round(    State.FRIcing01)});
+    values.InsertLast({"FRSlipCoef",               "Float",   Round(    State.FRSlipCoef)});
+    values.InsertLast({"FRSteerAngle",             "Float",   Round(    State.FRSteerAngle)});
+    values.InsertLast({"FrontSpeed",               "Float",   Round(    State.FrontSpeed)});
+    values.InsertLast({"FRTireWear01",             "Float",   Round(    State.FRTireWear01)});
+    values.InsertLast({"FRWheelRot",               "Float",   Round(    State.FRWheelRot)});
+    values.InsertLast({"FRWheelRotSpeed",          "Float",   Round(    State.FRWheelRotSpeed)});
+    values.InsertLast({"GroundDist",               "Float",   Round(    State.GroundDist)});
+    values.InsertLast({"InputBrakePedal",          "Float",   Round(    State.InputBrakePedal)});
+    values.InsertLast({"InputGasPedal",            "Float",   Round(    State.InputGasPedal)});
+    values.InsertLast({"InputIsBraking",           "Bool",    Round(    State.InputIsBraking)});
+    values.InsertLast({"InputSteer",               "Float",   Round(    State.InputSteer)});
+    values.InsertLast({"InputVertical",            "Float",   Round(    State.InputVertical)});
+    values.InsertLast({"IsGroundContact",          "Bool",    Round(    State.IsGroundContact)});
+    values.InsertLast({"IsReactorGroundMode",      "Bool",    Round(    State.IsReactorGroundMode)});
+    values.InsertLast({"IsTopContact",             "Bool",    Round(    State.IsTopContact)});
+    values.InsertLast({"IsTurbo",                  "Bool",    Round(    State.IsTurbo)});
+    values.InsertLast({"IsWheelsBurning",          "Bool",    Round(    State.IsWheelsBurning)});
+    values.InsertLast({CYAN + "LastTurboLevel",    "Enum",    tostring( VehicleState::GetLastTurboLevel(State))});
+    values.InsertLast({"Left",                     "Vec3",    Round(    State.Left)});
+    values.InsertLast({"Position",                 "Vec3",    Round(    State.Position)});
+    values.InsertLast({"RaceStartTime",            "Uint",    RoundUint(State.RaceStartTime)});
+    values.InsertLast({"ReactorAirControl",        "Vec3",    Round(    State.ReactorAirControl)});
+    values.InsertLast({"ReactorBoostLvl",          "Enum",    tostring( State.ReactorBoostLvl)});
+    values.InsertLast({"ReactorBoostType",         "Enum",    tostring( State.ReactorBoostType)});
+    values.InsertLast({CYAN + "ReactorFinalTimer", "Float",   Round(    VehicleState::GetReactorFinalTimer(State))});
+    values.InsertLast({"ReactorInputsX",           "Bool",    Round(    State.ReactorInputsX)});
+    values.InsertLast({"RLBreakNormedCoef",        "Float",   Round(    State.RLBreakNormedCoef)});
+    values.InsertLast({"RLDamperLen",              "Float",   Round(    State.RLDamperLen)});
+    values.InsertLast({CYAN + "RLDirt",            "Float",   Round(    VehicleState::GetWheelDirt(State, 2))});
+    values.InsertLast({"RLGroundContactMaterial",  "Enum",    tostring( State.RLGroundContactMaterial)});
+    values.InsertLast({"RLIcing01",                "Float",   Round(    State.RLIcing01)});
+    values.InsertLast({"RLSlipCoef",               "Float",   Round(    State.RLSlipCoef)});
+    values.InsertLast({"RLSteerAngle",             "Float",   Round(    State.RLSteerAngle)});
+    values.InsertLast({"RLTireWear01",             "Float",   Round(    State.RLTireWear01)});
+    values.InsertLast({"RLWheelRot",               "Float",   Round(    State.RLWheelRot)});
+    values.InsertLast({"RLWheelRotSpeed",          "Float",   Round(    State.RLWheelRotSpeed)});
+    values.InsertLast({"RRBreakNormedCoef",        "Float",   Round(    State.RRBreakNormedCoef)});
+    values.InsertLast({"RRDamperLen",              "Float",   Round(    State.RRDamperLen)});
+    values.InsertLast({CYAN + "RRDirt",            "Float",   Round(    VehicleState::GetWheelDirt(State, 3))});
+    values.InsertLast({"RRGroundContactMaterial",  "Enum",    tostring( State.RRGroundContactMaterial)});
+    values.InsertLast({"RRIcing01",                "Float",   Round(    State.RRIcing01)});
+    values.InsertLast({"RRSlipCoef",               "Float",   Round(    State.RRSlipCoef)});
+    values.InsertLast({"RRSteerAngle",             "Float",   Round(    State.RRSteerAngle)});
+    values.InsertLast({"RRTireWear01",             "Float",   Round(    State.RRTireWear01)});
+    values.InsertLast({"RRWheelRot",               "Float",   Round(    State.RRWheelRot)});
+    values.InsertLast({"RRWheelRotSpeed",          "Float",   Round(    State.RRWheelRotSpeed)});
+    values.InsertLast({CYAN + "SideSpeed",         "Float",   Round(    VehicleState::GetSideSpeed(State))});
+    values.InsertLast({"SimulationTimeCoef",       "Float",   Round(    State.SimulationTimeCoef)});
+    values.InsertLast({"SpoilerOpenNormed",        "Float",   Round(    State.SpoilerOpenNormed)});
+    values.InsertLast({"TurboTime",                "Float",   Round(    State.TurboTime)});
+    values.InsertLast({"Up",                       "Vec3",    Round(    State.Up)});
+    values.InsertLast({"WaterImmersionCoef",       "Float",   Round(    State.WaterImmersionCoef)});
+    values.InsertLast({"WaterOverDistNormed",      "Float",   Round(    State.WaterOverDistNormed)});
+    values.InsertLast({"WaterOverSurfacePos",      "Vec3",    Round(    State.WaterOverSurfacePos)});
+    values.InsertLast({"WetnessValue01",           "Float",   Round(    State.WetnessValue01)});
+    values.InsertLast({"WingsOpenNormed",          "Float",   Round(    State.WingsOpenNormed)});
+    values.InsertLast({"WorldCarUp",               "Vec3",    Round(    State.WorldCarUp)});
+    values.InsertLast({"WorldVel",                 "Vec3",    Round(    State.WorldVel)});
 
     if (UI::BeginTable("##state-api-value-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
@@ -227,15 +235,25 @@ void RenderStateOffsetValues(CSceneVehicleVisState@ State) {
     UI::TextWrapped("Variables marked " + YELLOW + "yellow\\$G have been observed but are uncertain.");
 
     string[][] values;
+    values.InsertLast(StateOffsetValue(State, 0,   "VehicleId",               DataType::Int32));
     values.InsertLast(StateOffsetValue(State, 16,  "InputSteer",              DataType::Float));
     values.InsertLast(StateOffsetValue(State, 20,  "InputGasPedal",           DataType::Float));
     values.InsertLast(StateOffsetValue(State, 24,  "InputBrakePedal",         DataType::Float));
     values.InsertLast(StateOffsetValue(State, 32,  "InputIsBraking",          DataType::Bool));
+
+    values.InsertLast({"44,56,68", "0x2C,38,44", "Left", "Vec3", Round(vec3(Dev::GetOffsetFloat(State, 44), Dev::GetOffsetFloat(State, 56), Dev::GetOffsetFloat(State, 68)))});
+    values.InsertLast({"48,60,72", "0x30,3C,48", "Up",   "Vec3", Round(vec3(Dev::GetOffsetFloat(State, 48), Dev::GetOffsetFloat(State, 60), Dev::GetOffsetFloat(State, 72)))});
+    values.InsertLast({"52,64,76", "0x34,40,4C", "Dir",  "Vec3", Round(vec3(Dev::GetOffsetFloat(State, 52), Dev::GetOffsetFloat(State, 64), Dev::GetOffsetFloat(State, 76)))});
+
     values.InsertLast(StateOffsetValue(State, 80,  "Position",                DataType::Vec3));
     values.InsertLast(StateOffsetValue(State, 92,  "WorldVel",                DataType::Vec3));
     values.InsertLast(StateOffsetValue(State, 116, "FrontSpeed",              DataType::Float));
     values.InsertLast(StateOffsetValue(State, 120, "SideSpeed",               DataType::Float));
     values.InsertLast(StateOffsetValue(State, 128, "CruiseDisplaySpeed",      DataType::Int32));
+
+    values.InsertLast({"136", "0x88", "ContactState1", "Enum", tostring(ContactState1(Dev::GetOffsetInt8(State, 136)))});
+    values.InsertLast({"138", "0x8A", "ContactState2", "Enum", tostring(ContactState2(Dev::GetOffsetInt8(State, 138)))});
+    values.InsertLast({"139", "0x8B", "IsTurbo",       "Enum", tostring(TurboState   (Dev::GetOffsetInt8(State, 139)))});
 
     values.InsertLast(StateOffsetValue(State, 168, "FLDamperLen",             DataType::Float));
     values.InsertLast(StateOffsetValue(State, 172, "FLWheelRot",              DataType::Float));
@@ -289,16 +307,33 @@ void RenderStateOffsetValues(CSceneVehicleVisState@ State) {
     values.InsertLast(StateOffsetValue(State, 336, "RLBreakNormedCoef",       DataType::Float));
     values.InsertLast(StateOffsetValue(State, 340, "RLFalling",               DataType::Enum));
 
-    values.InsertLast(StateOffsetValue(State, 368, "LastTurboLevel",          DataType::Enum));
-    values.InsertLast(StateOffsetValue(State, 372, "ReactorBoostLvl",         DataType::Enum));
-    values.InsertLast(StateOffsetValue(State, 376, "ReactorBoostType",        DataType::Enum));
+    values.InsertLast({"368", "0x170", "LastTurboLevel",   "Enum", tostring(VehicleState::TurboLevel        (Dev::GetOffsetInt8(State, 368)))});
+    values.InsertLast({"372", "0x174", "ReactorBoostLvl",  "Enum", tostring(ESceneVehicleVisReactorBoostLvl (Dev::GetOffsetInt8(State, 372)))});
+    values.InsertLast({"376", "0x178", "ReactorBoostType", "Enum", tostring(ESceneVehicleVisReactorBoostType(Dev::GetOffsetInt8(State, 376)))});
+
     values.InsertLast(StateOffsetValue(State, 380, "ReactorFinalTimer",       DataType::Float));
     values.InsertLast(StateOffsetValue(State, 384, "ReactorAirControl",       DataType::Vec3));
     values.InsertLast(StateOffsetValue(State, 396, "Up",                      DataType::Vec3));
     values.InsertLast(StateOffsetValue(State, 408, "EngineRPM",               DataType::Float));
     values.InsertLast(StateOffsetValue(State, 420, "CurGear",                 DataType::Uint32));
     values.InsertLast(StateOffsetValue(State, 428, "TurboTime",               DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 436, "RaceStartTime",           DataType::Int32));
+    values.InsertLast(StateOffsetValue(State, 436, "RaceStartTime",           DataType::Uint32));
+    values.InsertLast(StateOffsetValue(State, 440, "HandicapSum",             DataType::Int32));
+    values.InsertLast(StateOffsetValue(State, 456, "LinearHue",               DataType::Float));
+    values.InsertLast(StateOffsetValue(State, 460, "LinearHue",               DataType::Float));
+    values.InsertLast(StateOffsetValue(State, 464, "LinearHueRed",            DataType::Float));
+    values.InsertLast(StateOffsetValue(State, 468, "LinearHueGreen",          DataType::Float));
+    values.InsertLast(StateOffsetValue(State, 472, "LinearHueBlue",           DataType::Float));
+    values.InsertLast(StateOffsetValue(State, 536, "GroundDist",              DataType::Float));
+    values.InsertLast(StateOffsetValue(State, 560, "SimulationTimeCoef",      DataType::Float));
+    values.InsertLast(StateOffsetValue(State, 564, "BulletTimeNormed",        DataType::Float));
+    values.InsertLast(StateOffsetValue(State, 568, "AirBrakeNormed",          DataType::Float));
+    values.InsertLast(StateOffsetValue(State, 572, "SpoilerOpenNormed",       DataType::Float));
+    values.InsertLast(StateOffsetValue(State, 576, "WingsOpenNormed",         DataType::Float));
+    values.InsertLast(StateOffsetValue(State, 788, "WaterImmersionCoef",      DataType::Float));
+    values.InsertLast(StateOffsetValue(State, 792, "WaterOverDistNormed",     DataType::Float));
+    values.InsertLast(StateOffsetValue(State, 796, "WaterOverSurfacePos",     DataType::Vec3));
+    values.InsertLast(StateOffsetValue(State, 808, "WetnessValue01",          DataType::Float));
 
     // values.InsertLast(StateOffsetValue(State, 376, "IsWheelsBurning",   DataType::Bool));
     // values.InsertLast(StateOffsetValue(State, 548, "BrakingCoefStrong", DataType::Float, false));
@@ -311,7 +346,6 @@ void RenderStateOffsetValues(CSceneVehicleVisState@ State) {
     // values.InsertLast(StateOffsetValue(State, 580, "Turbo",             DataType::Float));
     // values.InsertLast(StateOffsetValue(State, 592, "InputIsBraking",    DataType::Float));
     // values.InsertLast(StateOffsetValue(State, 596, "BrakingCoefWeak",   DataType::Float, false));
-    // values.InsertLast(StateOffsetValue(State, 664, "SpoilerOpenNormed", DataType::Float));
 
     if (UI::BeginTable("##state-offset-value-table", 5, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
@@ -344,16 +378,7 @@ void RenderStateOffsetValues(CSceneVehicleVisState@ State) {
 string[] StateOffsetValue(CSceneVehicleVisState@ State, int offset, const string &in name, DataType type, bool known = true) {
     string value;
 
-    if (name == "LastTurboLevel") {
-        int8 num = Dev::GetOffsetInt8(State, offset);
-        value = Round(num) + " " + tostring(VehicleState::TurboLevel(num));
-    } else if (name == "ReactorBoostLvl") {
-        int8 num = Dev::GetOffsetInt8(State, offset);
-        value = Round(num) + " " + tostring(ESceneVehicleVisReactorBoostLvl(num));
-    } else if (name == "ReactorBoostType") {
-        int8 num = Dev::GetOffsetInt8(State, offset);
-        value = Round(num) + " " + tostring(ESceneVehicleVisReactorBoostType(num));
-    } else if (name.EndsWith("GroundContactMaterial")) {
+    if (name.EndsWith("GroundContactMaterial")) {
         int8 num = Dev::GetOffsetInt8(State, offset);
         value = Round(num) + " " + tostring(EPlugSurfaceMaterialId(num));
     } else if (name.EndsWith("GroundContactEffect")) {
@@ -361,7 +386,7 @@ string[] StateOffsetValue(CSceneVehicleVisState@ State, int offset, const string
         value = Round(num) + " " + tostring(EPlugSurfaceGameplayId(num));
     } else if (name.EndsWith("Falling")) {
         int8 num = Dev::GetOffsetInt8(State, offset);
-        value = Round(num) + " " + tostring(VehicleState::FallingState(num));
+        value = Round(num) + " " + tostring(FallingState(num));
     } else {
         switch (type) {
             case DataType::Bool:   value = Round(    Dev::GetOffsetInt8  (State, offset) == 1); break;
