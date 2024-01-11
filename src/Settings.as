@@ -193,8 +193,14 @@ string turboColor;
 [Setting category="Dev" name="Show dev window"]
 bool S_Dev = false;
 
-[Setting category="Dev" name="Show dev window toggle in menu"]
+[Setting category="Dev" name="Show toggle in menu"]
 bool S_MenuDev = false;
+
+[Setting category="Dev" name="Show/hide with game UI"]
+bool S_DevHideWithGame = true;
+
+[Setting category="Dev" name="Show/hide with Openplanet UI"]
+bool S_DevHideWithOP = false;
 
 [Setting category="Dev" name="Float precision" min=0 max=9]
 uint S_Precision = 3;

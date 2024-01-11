@@ -1,12 +1,11 @@
 // c 2023-05-04
-// m 2024-01-10
+// m 2024-01-11
 
 bool   alwaysSnow    = false;  // to change when starting as CarSnow is no longer broken
 string loginLocal;
 bool   replay;
 bool   spectating;
 string title         = "\\$F00" + Icons::React + "\\$G Current Effects";
-string titleDev      = "\\$F00" + Icons::Bug + "\\$G Current Effects (Developer)";
 uint   totalRespawns = 0;
 
 void RenderMenu() {

@@ -38,6 +38,7 @@ enum DataType {
 
 enum ContactState1 {
     Air                     = 0,
+    Unknown                 = 4,
     Ground                  = 8,
     TopContactWheels        = 16,
     TopContact              = 24,

@@ -4,8 +4,17 @@
 #if SIG_DEVELOPER && TMNEXT
 
 bool   gameVersionValid = false;
-string offsetSearch;
+string titleDev         = title + " (Developer)";
 string version;
+
+// offsets for which a value is known
+const int[] knownVisOffsets = {
+    0, 348, 352, 356, 360, 364, 368
+};
+
+// offsets for which a value is known, but there's uncertainty in exactly what it represents
+const int[] observedVisOffsets = {
+};
 
 // offsets for which a value is known
 const int[] knownStateOffsets = {
@@ -33,7 +42,12 @@ void InitDevNext() {
 }
 
 void RenderDevNext() {
-    if (!S_Dev || version.Length == 0)
+    if (
+        !S_Dev ||
+        version.Length == 0 ||
+        (S_DevHideWithGame && !UI::IsGameUIVisible()) ||
+        (S_DevHideWithOP && !UI::IsOverlayShown())
+    )
         return;
 
     UI::Begin(titleDev, S_Dev, UI::WindowFlags::None);
@@ -41,9 +55,166 @@ void RenderDevNext() {
             UI::TextWrapped(RED + "Game version " + version + " not marked valid! Values may be wrong.");
 
         UI::BeginTabBar("##dev-tabs");
+            Tab_Vis();
             Tab_State();
         UI::EndTabBar();
     UI::End();
+}
+
+void Tab_Vis() {
+    if (!UI::BeginTabItem("CSceneVehicleVis"))
+        return;
+
+    CTrackMania@ App = cast<CTrackMania@>(GetApp());
+
+    CSmArenaClient@ Playground = cast<CSmArenaClient@>(App.CurrentPlayground);
+    if (Playground is null) {
+        UI::Text(RED + "null Playground");
+        UI::EndTabItem();
+        return;
+    }
+
+    if (Playground.GameTerminals.Length == 0) {
+        UI::Text(RED + "no GameTerminals");
+        UI::EndTabItem();
+        return;
+    }
+
+    ISceneVis@ Scene = cast<ISceneVis@>(App.GameScene);
+    if (Scene is null) {
+        UI::Text(RED + "null Scene");
+        UI::EndTabItem();
+        return;
+    }
+
+    bool meExists = false;
+
+    CSceneVehicleVis@[] AllVis = VehicleState::GetAllVis(Scene);
+
+    CSmPlayer@ Player = cast<CSmPlayer@>(Playground.GameTerminals[0].GUIPlayer);
+    CSceneVehicleVis@ MyVis = Player !is null ? VehicleState::GetVis(Scene, Player) : VehicleState::GetSingularVis(Scene);
+    if (MyVis !is null) {
+        AllVis.InsertAt(0, MyVis);
+        meExists = true;
+    }
+
+    UI::TextWrapped("This tab is only for values which are not in CSceneVehicleVisState.");
+
+    UI::BeginTabBar("##vis-tabs");
+        for (uint i = 0; i < AllVis.Length; i++) {
+            CSceneVehicleVis@ Vis = AllVis[i];
+
+            if (UI::BeginTabItem(i == 0 && meExists ? Icons::User + " Me" : i + "_" + Vis.Model.Id.GetName())) {
+                UI::BeginTabBar("##vis-tabs-single");
+
+                if (UI::BeginTabItem("API Values")) {
+                    try   { RenderVisApiValues(Vis); }
+                    catch { UI::Text("error: " + getExceptionInfo()); }
+
+                    UI::EndTabItem();
+                }
+
+                if (UI::BeginTabItem("Offset Values")) {
+                    try   { RenderVisOffsetValues(Vis); }
+                    catch { UI::Text("error: " + getExceptionInfo()); }
+
+                    UI::EndTabItem();
+                }
+
+                if (UI::BeginTabItem("Offsets")) {
+                    try   { RenderVisOffsets(Vis); }
+                    catch { UI::Text("error: " + getExceptionInfo()); }
+
+                    UI::EndTabItem();
+                }
+
+                UI::EndTabBar();
+                UI::EndTabItem();
+            }
+        }
+    UI::EndTabBar();
+    UI::EndTabItem();
+}
+
+void RenderVisApiValues(CSceneVehicleVis@ Vis) {
+    if (UI::BeginTable("##vis-api-value-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+        UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+        UI::TableSetupScrollFreeze(0, 1);
+        UI::TableSetupColumn("Variable", UI::TableColumnFlags::WidthFixed, 250.0f);
+        UI::TableSetupColumn("Type",     UI::TableColumnFlags::WidthFixed, 90.0f);
+        UI::TableSetupColumn("Value");
+        UI::TableHeadersRow();
+
+        UI::TableNextRow();
+        UI::TableNextColumn(); UI::Text("Turbo");
+        UI::TableNextColumn(); UI::Text("Float");
+        UI::TableNextColumn(); UI::Text(Round(Vis.Turbo));
+
+        UI::PopStyleColor();
+        UI::EndTable();
+    }
+}
+
+void RenderVisOffsetValues(CSceneVehicleVis@ Vis) {
+    ;
+}
+
+void RenderVisOffsets(CSceneVehicleVis@ Vis) {
+    UI::TextWrapped("If you go much further than a few thousand, there is a small, but non-zero chance your game could crash.");
+    UI::TextWrapped("Offsets marked white are known, " + YELLOW + "yellow\\$G are somewhat known, and " + RED + "red\\$G are unknown.");
+    UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
+
+    if (UI::BeginTable("##vis-offset-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+        UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+        UI::TableSetupScrollFreeze(0, 1);
+        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Value (" + tostring(S_OffsetType) + ")");
+        UI::TableHeadersRow();
+
+        UI::ListClipper clipper((S_OffsetMax / S_OffsetSkip) + 1);
+        while (clipper.Step()) {
+            for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                int offset = i * S_OffsetSkip;
+                string color = knownVisOffsets.Find(offset) > -1 ? "" : (observedVisOffsets.Find(offset) > -1) ? YELLOW : RED;
+
+                UI::TableNextRow();
+                UI::TableNextColumn();
+                UI::Text(color + offset);
+
+                UI::TableNextColumn();
+                UI::Text(color + IntToHex(offset));
+
+                UI::TableNextColumn();
+                try {
+                    switch (S_OffsetType) {
+                        case DataType::Bool:   UI::Text(Round(    Dev::GetOffsetInt8  (Vis, offset) == 1)); break;
+                        case DataType::Int8:   UI::Text(Round(    Dev::GetOffsetInt8  (Vis, offset)));      break;
+                        case DataType::Uint8:  UI::Text(RoundUint(Dev::GetOffsetUint8 (Vis, offset)));      break;
+                        case DataType::Int16:  UI::Text(Round(    Dev::GetOffsetInt16 (Vis, offset)));      break;
+                        case DataType::Uint16: UI::Text(RoundUint(Dev::GetOffsetUint16(Vis, offset)));      break;
+                        case DataType::Int32:  UI::Text(Round(    Dev::GetOffsetInt32 (Vis, offset)));      break;
+                        case DataType::Uint32: UI::Text(RoundUint(Dev::GetOffsetUint32(Vis, offset)));      break;
+                        case DataType::Int64:  UI::Text(Round(    Dev::GetOffsetInt64 (Vis, offset)));      break;
+                        case DataType::Uint64: UI::Text(RoundUint(Dev::GetOffsetUint64(Vis, offset)));      break;
+                        case DataType::Float:  UI::Text(Round(    Dev::GetOffsetFloat (Vis, offset)));      break;
+                        case DataType::Vec2:   UI::Text(Round(    Dev::GetOffsetVec2  (Vis, offset)));      break;
+                        case DataType::Vec3:   UI::Text(Round(    Dev::GetOffsetVec3  (Vis, offset)));      break;
+                        case DataType::Vec4:   UI::Text(Round(    Dev::GetOffsetVec4  (Vis, offset)));      break;
+                        case DataType::Iso4:   UI::Text(Round(    Dev::GetOffsetIso4  (Vis, offset)));      break;
+                        default:               UI::Text("Unsupported!");
+                    }
+                } catch {
+                    UI::Text(YELLOW + getExceptionInfo());
+                }
+            }
+        }
+    }
+
+    UI::PopStyleColor();
+    UI::EndTable();
 }
 
 void Tab_State() {
@@ -122,7 +293,7 @@ void Tab_State() {
 }
 
 void RenderStateApiValues(CSceneVehicleVisState@ State) {
-    UI::TextWrapped("Variables marked " + CYAN + "cyan\\$G are from VehicleState.");
+    UI::TextWrapped("Variables marked " + CYAN + "cyan\\$G are from the VehicleState plugin.");
 
     string[][] values;
     values.InsertLast({"AirBrakeNormed",           "Float",   Round(    State.AirBrakeNormed)});
