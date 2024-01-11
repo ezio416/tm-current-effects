@@ -212,9 +212,6 @@ void RenderVisOffsetValues(CSceneVehicleVis@ Vis) {
     values.InsertLast(VisOffsetValue(Vis, 668, "WingsOpenDesired",   DataType::Float));
     values.InsertLast(VisOffsetValue(Vis, 672, "WingsOpenNormed",    DataType::Float));
 
-    // values.InsertLast(StateOffsetValue(State, 548, "BrakingCoefStrong", DataType::Float, false));
-    // values.InsertLast(StateOffsetValue(State, 596, "BrakingCoefWeak",   DataType::Float, false));
-
     if (UI::BeginTable("##vis-offset-value-table", 5, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
 
