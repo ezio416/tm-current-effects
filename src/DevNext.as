@@ -10,12 +10,12 @@ string version;
 // offsets for which a value is known
 const int[] knownVisOffsets = {
     0, 140, 144, 312, 316, 320, 324, 328, 332, 336, 340, 344, 348, 352, 356, 360, 364, 368, 372, 376, 384, 388, 392, 396, 400,
-    404, 408, 412, 416, 544, 552, 560, 568, 580, 592, 652, 656, 660, 664, 668, 672
+    404, 408, 412, 416, 544, 580, 592, 652, 656, 660, 664, 668, 672
 };
 
 // offsets for which a value is known, but there's uncertainty in exactly what it represents
 const int[] observedVisOffsets = {
-    124, 128, 456, 460, 464, 480, 484, 488, 504, 508, 512, 528, 532, 536, 548, 556, 564, 572, 596
+    124, 128, 456, 460, 464, 480, 484, 488, 504, 508, 512, 528, 532, 536, 548, 552, 556, 564, 560, 568, 572, 576, 584, 588, 596
 };
 
 // offsets for which a value is known
@@ -174,48 +174,51 @@ void RenderVisOffsetValues(CSceneVehicleVis@ Vis) {
     values.InsertLast({"316,328,340", "0x13C,148,154", "Up",   "Vec3", Round(vec3(Dev::GetOffsetFloat(Vis, 316), Dev::GetOffsetFloat(Vis, 328), Dev::GetOffsetFloat(Vis, 340)))});
     values.InsertLast({"320,332,344", "0x140,14C,158", "Dir",  "Vec3", Round(vec3(Dev::GetOffsetFloat(Vis, 320), Dev::GetOffsetFloat(Vis, 332), Dev::GetOffsetFloat(Vis, 344)))});
 
-    values.InsertLast(VisOffsetValue(Vis, 348, "Position",           DataType::Vec3));
-    values.InsertLast(VisOffsetValue(Vis, 360, "WorldVel",           DataType::Vec3));
-    values.InsertLast(VisOffsetValue(Vis, 372, "NbRespawnsOrResets", DataType::Int32));
-    values.InsertLast(VisOffsetValue(Vis, 376, "IsWheelsBurning",    DataType::Bool));
-    values.InsertLast(VisOffsetValue(Vis, 384, "FLIcing01",          DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 388, "FRIcing01",          DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 392, "RRIcing01",          DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 396, "RLIcing01",          DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 400, "FLSlipCoef",         DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 404, "FRSlipCoef",         DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 408, "RRSlipCoef",         DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 412, "RLSlipCoef",         DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 416, "InputGasPedal",      DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 456, "FL???",              DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 460, "FL???",              DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 464, "FL???",              DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 480, "FR???",              DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 484, "FR???",              DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 488, "FR???",              DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 504, "RR???",              DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 508, "RR???",              DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 512, "RR???",              DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 528, "RL???",              DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 532, "RL???",              DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 536, "RL???",              DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 544, "InputIsBraking",     DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 548, "BrakingCoefStrong",  DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 552, "HasReactor",         DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 556, "Reactor???",         DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 560, "HasYellowReactor",   DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 564, "YellowReactor???",   DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 568, "HasRedReactor",      DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 572, "RedReactor???",      DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 580, "Turbo",              DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 592, "InputIsBraking",     DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 596, "BrakingCoefWeak",    DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 652, "AirBrakeDesired",    DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 656, "AirBrakeNormed",     DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 660, "SpoilerOpenDesired", DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 664, "SpoilerOpenNormed",  DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 668, "WingsOpenDesired",   DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 672, "WingsOpenNormed",    DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 348, "Position",             DataType::Vec3));
+    values.InsertLast(VisOffsetValue(Vis, 360, "WorldVel",             DataType::Vec3));
+    values.InsertLast(VisOffsetValue(Vis, 372, "NbRespawnsOrResets",   DataType::Int32));
+    values.InsertLast(VisOffsetValue(Vis, 376, "IsWheelsBurning",      DataType::Bool));
+    values.InsertLast(VisOffsetValue(Vis, 384, "FLIcing01",            DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 388, "FRIcing01",            DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 392, "RRIcing01",            DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 396, "RLIcing01",            DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 400, "FLSlipCoef",           DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 404, "FRSlipCoef",           DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 408, "RRSlipCoef",           DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 412, "RLSlipCoef",           DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 416, "InputGasPedal",        DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 456, "FL???",                DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 460, "FL???",                DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 464, "FL???",                DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 480, "FR???",                DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 484, "FR???",                DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 488, "FR???",                DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 504, "RR???",                DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 508, "RR???",                DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 512, "RR???",                DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 528, "RL???",                DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 532, "RL???",                DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 536, "RL???",                DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 544, "InputIsBraking",       DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 548, "BrakingCoefStrong",    DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 552, "ReactorDesired",       DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 556, "Reactor",              DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 560, "YellowReactorDesired", DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 564, "YellowReactor",        DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 568, "RedReactorDesired",    DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 572, "RedReactor",           DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 576, "TurboDesired",         DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 580, "Turbo",                DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 584, "TurboDesired",         DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 588, "Turbo",                DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 592, "InputIsBraking",       DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 596, "BrakingCoefWeak",      DataType::Float, false));
+    values.InsertLast(VisOffsetValue(Vis, 652, "AirBrakeDesired",      DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 656, "AirBrakeNormed",       DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 660, "SpoilerOpenDesired",   DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 664, "SpoilerOpenNormed",    DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 668, "WingsOpenDesired",     DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 672, "WingsOpenNormed",      DataType::Float));
 
     if (UI::BeginTable("##vis-offset-value-table", 5, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
