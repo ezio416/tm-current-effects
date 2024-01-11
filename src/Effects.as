@@ -15,9 +15,9 @@ int    slowmo   = 0;
 int    snow     = 0;
 int    turbo    = 0;
 
-void RenderEffects(CSceneVehicleVisState@ state) {
+void RenderEffects(CSceneVehicleVisState@ State) {
     if (!S_ShowAll) {
-        SetHandicaps(GetHandicapSum(state));
+        SetHandicaps(GetHandicapSum(State));
 
 #if TMNEXT
 
@@ -26,19 +26,19 @@ void RenderEffects(CSceneVehicleVisState@ state) {
             ResetEventEffects(true);
         }
 
-        cruise = GetCruiseSpeed(state) != 0 ? 1 : 0;
+        cruise = GetCruiseSpeed(State) != 0 ? 1 : 0;
 
-        penalty = S_Experimental && (GetPenalty1(state) > 0 || GetPenalty2(state) > 0 || GetPenalty3(state) > 0) ? 1 : 0;
+        penalty = S_Experimental && (GetPenalty1(State) > 0 || GetPenalty2(State) > 0 || GetPenalty3(State) > 0) ? 1 : 0;
 
-        reactor = int(state.ReactorBoostLvl);
+        reactor = int(State.ReactorBoostLvl);
 
-        switch (int(state.ReactorBoostType)) {
+        switch (int(State.ReactorBoostType)) {
             case 1:  reactorIcon = Icons::ChevronUp;   break;
             case 2:  reactorIcon = Icons::ChevronDown; break;
             default: reactorIcon = Icons::Rocket;
         }
 
-        switch (int(state.SimulationTimeCoef * 100)) {
+        switch (int(State.SimulationTimeCoef * 100)) {
             case 100: slowmo = 0; break;
             case 56:
             case 57:  slowmo = 1; break;
@@ -48,8 +48,8 @@ void RenderEffects(CSceneVehicleVisState@ state) {
         }
 
         turbo = 0;
-        if (state.IsTurbo)
-            turbo = int(VehicleState::GetLastTurboLevel(state));
+        if (State.IsTurbo)
+            turbo = int(VehicleState::GetLastTurboLevel(State));
 
         if (replay) {
             forced   = -1;
@@ -72,7 +72,7 @@ void RenderEffects(CSceneVehicleVisState@ state) {
 
 #elif MP4
 
-        turbo = state.TurboActive ? 1 : 0;
+        turbo = State.TurboActive ? 1 : 0;
 
 #endif
 
@@ -110,10 +110,10 @@ void RenderEffects(CSceneVehicleVisState@ state) {
 
 #if TMNEXT
 
-        if (S_Reactor)  UI::Text(GetReactorText(VehicleState::GetReactorFinalTimer(state)));
+        if (S_Reactor)  UI::Text(GetReactorText(VehicleState::GetReactorFinalTimer(State)));
         if (S_SlowMo)   UI::Text(GetSlowMoColor() + Icons::ClockO + iconPadding + "Slow-Mo");
         if (S_Snow)     UI::Text(GetSnowColor()   + Icons::Truck  + iconPadding + "Snow Car");
-        if (S_Turbo)    UI::Text(GetTurboText(state.TurboTime));
+        if (S_Turbo)    UI::Text(GetTurboText(State.TurboTime));
 
 #elif MP4
 
