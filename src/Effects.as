@@ -1,5 +1,5 @@
 // c 2023-08-17
-// m 2024-01-05
+// m 2024-01-11
 
 int    cruise   = 0;
 int    forced   = 0;
@@ -26,7 +26,7 @@ void RenderEffects(CSceneVehicleVisState@ state) {
             ResetEventEffects(true);
         }
 
-        cruise = GetCruiseSpeed(state) > 0 ? 1 : 0;
+        cruise = GetCruiseSpeed(state) != 0 ? 1 : 0;
 
         penalty = S_Experimental && (GetPenalty1(state) > 0 || GetPenalty2(state) > 0 || GetPenalty3(state) > 0) ? 1 : 0;
 
