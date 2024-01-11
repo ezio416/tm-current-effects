@@ -1,5 +1,5 @@
 // c 2024-01-10
-// m 2024-01-10
+// m 2024-01-11
 
 #if SIG_DEVELOPER && TMNEXT
 
@@ -46,6 +46,7 @@ enum ContactState1 {
 }
 
 enum ContactState2 {
+    Unknown        = -104,
     Air            = -64,
     Falling        = -63,
     ReactorRaising = -60,
