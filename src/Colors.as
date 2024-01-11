@@ -1,5 +1,5 @@
 // c 2023-10-21
-// m 2024-01-05
+// m 2024-01-11
 
 int64 lastAllColorsSwap = 0;
 
@@ -174,6 +174,7 @@ void ShowAllColors() {
 
     cruise = 1;
     fragile = 1;
+    penalty = 1;
     snow = 1;
 
     int64 now = Time::Stamp;

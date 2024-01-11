@@ -1,5 +1,5 @@
 // c 2023-06-10
-// m 2024-01-10
+// m 2024-01-11
 
 [Setting category="General" name="Enabled"]
 bool S_Enabled = true;
@@ -18,7 +18,7 @@ bool S_ShowAll = false;
 
 #if TMNEXT
 
-[Setting category="General" name="Reset all effects" description="Cruise Control/Fragile/Snow Car may get stuck, just click this once"]
+[Setting category="General" name="Reset all effects" description="Accel Penalty/Fragile/Snow Car may get stuck, just click this once"]
 bool S_Reset = false;
 
 [Setting category="General" name="Try experimental features" description="warning - may crash your game!"]
@@ -68,7 +68,7 @@ bool S_Reactor= true;
 bool S_SlowMo = true;
 
 [Setting category="Toggles" name="Snow Car" description="experimental - may not work!"]
-bool S_Snow = true;
+bool S_Snow = false;
 
 #endif
 
