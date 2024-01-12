@@ -778,8 +778,8 @@ void RenderPlayerApiValues(CSmPlayer@ Player) {
     values.InsertLast({"EdClan",                                "Uint32", Round(Player.EdClan)});
     values.InsertLast({"EndTime",                               "Int32",  Round(Player.EndTime)});
     values.InsertLast({"Flags",                                 "Uint8",  Round(Player.Flags)});
-    values.InsertLast({"Id.Value",                              "Uint32", Round(Player.Id.Value)});
     values.InsertLast({"Id.GetName()",                          "String",       Player.Id.GetName()});
+    values.InsertLast({"Id.Value",                              "Uint32", Round(Player.Id.Value)});
     values.InsertLast({"IdName",                                "String",       Player.IdName});
     values.InsertLast({"LinearHue",                             "Float",  Round(Player.LinearHue)});
     values.InsertLast({"LinearHueSrgb",                         "Vec3",   Round(Player.LinearHueSrgb)});
@@ -906,6 +906,52 @@ void RenderScoreApiValues(CSmArenaScore@ Score) {
     UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
 
     string[][] values;
+    values.InsertLast({"DamageInflicted",            "Uint32", Round(Score.DamageInflicted)});
+    values.InsertLast({"DamageInflicted_Ed",         "Uint32", Round(Score.DamageInflicted_Ed)});
+    values.InsertLast({"Id.GetName()",               "String",       Score.Id.GetName()});
+    values.InsertLast({"Id.Value",                   "Uint32", Round(Score.Id.Value)});
+    values.InsertLast({"IdName",                     "String",       Score.IdName});
+    values.InsertLast({"IsRegisteredForLadderMatch", "Bool",   Round(Score.IsRegisteredForLadderMatch)});
+    values.InsertLast({"LadderClan",                 "Uint32", Round(Score.LadderClan)});
+    values.InsertLast({"LadderMatchScoreValue",      "Float",  Round(Score.LadderMatchScoreValue)});
+    values.InsertLast({"LadderRankSortValue",        "Int32",  Round(Score.LadderRankSortValue)});
+    values.InsertLast({"LadderScore",                "Float",  Round(Score.LadderScore)});
+    values.InsertLast({"NbEliminationsInflicted",    "Uint32", Round(Score.NbEliminationsInflicted)});
+    values.InsertLast({"NbEliminationsInflicted_Ed", "Uint32", Round(Score.NbEliminationsInflicted_Ed)});
+    values.InsertLast({"NbEliminationsTaken",        "Uint32", Round(Score.NbEliminationsTaken)});
+    values.InsertLast({"NbEliminationsTaken_Ed",     "Uint32", Round(Score.NbEliminationsTaken_Ed)});
+    values.InsertLast({"NbEliminationsTaken",        "Uint32", Round(Score.NbEliminationsTaken)});
+    values.InsertLast({"NbRespawnsRequested",        "Uint32", Round(Score.NbRespawnsRequested)});
+    values.InsertLast({"Points",                     "Int32",  Round(Score.Points)});
+    values.InsertLast({"RoundPoints",                "Int32",  Round(Score.RoundPoints)});
+    values.InsertLast({"TeamNum",                    "Uint32", Round(Score.TeamNum)});
+    // values.InsertLast({"BestLapTimes",  "MwSArrat<Uint32>", tostring(Score.BestLapTimes)});
+    // values.InsertLast({"BestRaceTimes", "MwSArrat<Uint32>", tostring(Score.BestRaceTimes)});
+    // values.InsertLast({"PrevLapTimes",  "MwSArrat<Uint32>", tostring(Score.PrevLapTimes)});
+    // values.InsertLast({"PrevRaceTimes", "MwSArrat<Uint32>", tostring(Score.PrevRaceTimes)});
+
+    if (UI::BeginTable("##score-api-value-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+        UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+        UI::TableSetupScrollFreeze(0, 1);
+        UI::TableSetupColumn("Variable", UI::TableColumnFlags::WidthFixed, 280.0f);
+        UI::TableSetupColumn("Type",     UI::TableColumnFlags::WidthFixed, 90.0f);
+        UI::TableSetupColumn("Value");
+        UI::TableHeadersRow();
+
+        UI::ListClipper clipper(values.Length);
+        while (clipper.Step()) {
+            for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                UI::TableNextRow();
+                UI::TableNextColumn(); UI::Text(values[i][0]);
+                UI::TableNextColumn(); UI::Text(values[i][1]);
+                UI::TableNextColumn(); UI::Text(values[i][2]);
+            }
+        }
+
+        UI::PopStyleColor();
+        UI::EndTable();
+    }
 }
 
 void RenderScoreOffsetValues(CSmArenaScore@ Score) {
@@ -1046,7 +1092,7 @@ void Tab_User() {
     for (uint i = 0; i < Arena.Players.Length; i++)
         Players.Add(Arena.Players[i]);
 
-    UI::TextWrapped(ORANGE + "CTrackManiaPlayerInfo\\$G is a part of " + ORANGE + "CSmPlayer\\$G.");
+    UI::TextWrapped(ORANGE + "CTrackManiaPlayerInfo\\$G is a part of " + ORANGE + "CSmPlayer\\$G and " + ORANGE + "CSmPlayer.Score\\$G.");
 
     UI::BeginTabBar("##user-tabs", UI::TabBarFlags::FittingPolicyScroll | UI::TabBarFlags::TabListPopupButton);
         for (uint i = 0; i < Players.Length; i++) {
