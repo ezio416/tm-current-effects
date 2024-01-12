@@ -957,7 +957,8 @@ void RenderScoreApiValues(CSmArenaScore@ Score) {
     }
 }
 
-void RenderScoreApiArrays(CSmArenaScore@ Score) {  // these arrays (MsWArray<uint>) don't actually seem to populate
+void RenderScoreApiArrays(CSmArenaScore@ Score) {
+    UI::TextWrapped("These arrays of type " + ORANGE + "MsWArray<uint>\\$G don't actually seem to populate from my testing.");
     UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
 
     UI::BeginTabBar("##score-api-arrays");
