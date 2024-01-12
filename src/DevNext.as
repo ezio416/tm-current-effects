@@ -42,6 +42,7 @@ const string[] validGameVersions = {
 void InitDevNext() {
     version = GetApp().SystemPlatform.ExeVersion;
     gameVersionValid = validGameVersions.Find(version) > -1;
+    S_OffsetTabs = false;
 }
 
 void RenderDevNext() {
@@ -60,6 +61,10 @@ void RenderDevNext() {
         UI::BeginTabBar("##dev-tabs");
             Tab_Vis();
             Tab_State();
+            Tab_Player();
+            Tab_Score();
+            Tab_Script();
+            Tab_User();
         UI::EndTabBar();
     UI::End();
 }
@@ -101,13 +106,14 @@ void Tab_Vis() {
         meExists = true;
     }
 
-    UI::TextWrapped("This tab is mainly only for values that have not been found directly in CSceneVehicleVisState, or are in different locations.");
+    UI::TextWrapped(ORANGE + "CSceneVehicleVis\\$G's are part of " + ORANGE + "App.GameScene\\$G, and are accessible with the VehicleState plugin.");
+    UI::TextWrapped("This tab is mainly only for values that have not been found directly in " + ORANGE + "CSceneVehicleVisState\\$G, or are in different locations.");
 
-    UI::BeginTabBar("##vis-tabs");
+    UI::BeginTabBar("##vis-tabs", UI::TabBarFlags::FittingPolicyScroll | UI::TabBarFlags::TabListPopupButton);
         for (uint i = 0; i < AllVis.Length; i++) {
             CSceneVehicleVis@ Vis = AllVis[i];
 
-            if (UI::BeginTabItem(i == 0 && meExists ? Icons::User + " Me" : i + "_" + Vis.Model.Id.GetName())) {
+            if (UI::BeginTabItem(i == 0 && meExists ? Icons::Eye + " Viewing" : tostring(i))) {
                 UI::BeginTabBar("##vis-tabs-single");
 
                 if (UI::BeginTabItem("API Values")) {
@@ -117,14 +123,14 @@ void Tab_Vis() {
                     UI::EndTabItem();
                 }
 
-                if (UI::BeginTabItem("Offset Values")) {
+                if (S_OffsetTabs && UI::BeginTabItem("Offset Values")) {
                     try   { RenderVisOffsetValues(Vis); }
                     catch { UI::Text("error: " + getExceptionInfo()); }
 
                     UI::EndTabItem();
                 }
 
-                if (UI::BeginTabItem("Offsets")) {
+                if (S_OffsetTabs && UI::BeginTabItem("Raw Offsets")) {
                     try   { RenderVisOffsets(Vis); }
                     catch { UI::Text("error: " + getExceptionInfo()); }
 
@@ -248,30 +254,6 @@ void RenderVisOffsetValues(CSceneVehicleVis@ Vis) {
     }
 }
 
-string[] VisOffsetValue(CSceneVehicleVis@ Vis, int offset, const string &in name, DataType type, bool known = true) {
-    string value;
-
-    switch (type) {
-        case DataType::Bool:   value = Round(    Dev::GetOffsetInt8  (Vis, offset) == 1); break;
-        case DataType::Int8:   value = Round(    Dev::GetOffsetInt8  (Vis, offset));      break;
-        case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8 (Vis, offset));      break;
-        case DataType::Int16:  value = Round(    Dev::GetOffsetInt16 (Vis, offset));      break;
-        case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(Vis, offset));      break;
-        case DataType::Int32:  value = Round(    Dev::GetOffsetInt32 (Vis, offset));      break;
-        case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(Vis, offset));      break;
-        case DataType::Int64:  value = Round(    Dev::GetOffsetInt64 (Vis, offset));      break;
-        case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(Vis, offset));      break;
-        case DataType::Float:  value = Round(    Dev::GetOffsetFloat (Vis, offset));      break;
-        case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2  (Vis, offset));      break;
-        case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3  (Vis, offset));      break;
-        case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4  (Vis, offset));      break;
-        case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4  (Vis, offset));      break;
-        default:;
-    }
-
-    return { tostring(offset), IntToHex(offset), (known ? "" : YELLOW) + name, tostring(type), value };
-}
-
 void RenderVisOffsets(CSceneVehicleVis@ Vis) {
     UI::TextWrapped("If you go much further than a few thousand, there is a small, but non-zero chance your game could crash.");
     UI::TextWrapped("Offsets marked white are known, " + YELLOW + "yellow\\$G are somewhat known, and " + RED + "red\\$G are unknown.");
@@ -366,12 +348,14 @@ void Tab_State() {
         meExists = true;
     }
 
-    UI::BeginTabBar("##state-tabs");
+    UI::TextWrapped(ORANGE + "CSceneVehicleVisState\\$G is a part of " + ORANGE + "CSceneVehicleVis\\$G.");
+
+    UI::BeginTabBar("##state-tabs", UI::TabBarFlags::FittingPolicyScroll | UI::TabBarFlags::TabListPopupButton);
         for (uint i = 0; i < AllVis.Length; i++) {
             CSceneVehicleVis@ Vis = AllVis[i];
             CSceneVehicleVisState@ State = Vis.AsyncState;
 
-            if (UI::BeginTabItem(i == 0 && meExists ? Icons::User + " Me" : i + "_" + Vis.Model.Id.GetName())) {
+            if (UI::BeginTabItem(i == 0 && meExists ? Icons::Eye + " Viewing" : tostring(i))) {
                 UI::BeginTabBar("##state-tabs-single");
 
                 if (UI::BeginTabItem("API Values")) {
@@ -381,14 +365,14 @@ void Tab_State() {
                     UI::EndTabItem();
                 }
 
-                if (UI::BeginTabItem("Offset Values")) {
+                if (S_OffsetTabs && UI::BeginTabItem("Offset Values")) {
                     try   { RenderStateOffsetValues(State); }
                     catch { UI::Text("error: " + getExceptionInfo()); }
 
                     UI::EndTabItem();
                 }
 
-                if (UI::BeginTabItem("Offsets")) {
+                if (S_OffsetTabs && UI::BeginTabItem("Raw Offsets")) {
                     try   { RenderStateOffsets(State); }
                     catch { UI::Text("error: " + getExceptionInfo()); }
 
@@ -412,7 +396,7 @@ void RenderStateApiValues(CSceneVehicleVisState@ State) {
     values.InsertLast({"AirBrakeNormed",           "Float",   Round(    State.AirBrakeNormed)});
     values.InsertLast({"BulletTimeNormed",         "Float",   Round(    State.BulletTimeNormed)});
     values.InsertLast({"CamGrpStates",             "Unknown", "unknown new type"});
-    values.InsertLast({"CurGear",                  "Uint",    RoundUint(State.CurGear)});
+    values.InsertLast({"CurGear",                  "Uint32",  RoundUint(State.CurGear)});
     values.InsertLast({"Dir",                      "Vec3",    Round(    State.Dir)});
     values.InsertLast({"DiscontinuityCount",       "Uint8",   RoundUint(State.DiscontinuityCount)});
     values.InsertLast({"EngineOn",                 "Bool",    Round(    State.EngineOn)});
@@ -452,7 +436,7 @@ void RenderStateApiValues(CSceneVehicleVisState@ State) {
     values.InsertLast({CYAN + "LastTurboLevel",    "Enum",    tostring( VehicleState::GetLastTurboLevel(State))});
     values.InsertLast({"Left",                     "Vec3",    Round(    State.Left)});
     values.InsertLast({"Position",                 "Vec3",    Round(    State.Position)});
-    values.InsertLast({"RaceStartTime",            "Uint",    RoundUint(State.RaceStartTime)});
+    values.InsertLast({"RaceStartTime",            "Uint32",  RoundUint(State.RaceStartTime)});
     values.InsertLast({"ReactorAirControl",        "Vec3",    Round(    State.ReactorAirControl)});
     values.InsertLast({"ReactorBoostLvl",          "Enum",    tostring( State.ReactorBoostLvl)});
     values.InsertLast({"ReactorBoostType",         "Enum",    tostring( State.ReactorBoostType)});
@@ -648,41 +632,6 @@ void RenderStateOffsetValues(CSceneVehicleVisState@ State) {
     }
 }
 
-string[] StateOffsetValue(CSceneVehicleVisState@ State, int offset, const string &in name, DataType type, bool known = true) {
-    string value;
-
-    if (name.EndsWith("GroundContactMaterial")) {
-        int8 num = Dev::GetOffsetInt8(State, offset);
-        value = Round(num) + " " + tostring(EPlugSurfaceMaterialId(num));
-    } else if (name.EndsWith("GroundContactEffect")) {
-        int8 num = Dev::GetOffsetInt8(State, offset);
-        value = Round(num) + " " + tostring(EPlugSurfaceGameplayId(num));
-    } else if (name.EndsWith("Falling")) {
-        int8 num = Dev::GetOffsetInt8(State, offset);
-        value = Round(num) + " " + tostring(FallingState(num));
-    } else {
-        switch (type) {
-            case DataType::Bool:   value = Round(    Dev::GetOffsetInt8  (State, offset) == 1); break;
-            case DataType::Int8:   value = Round(    Dev::GetOffsetInt8  (State, offset));      break;
-            case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8 (State, offset));      break;
-            case DataType::Int16:  value = Round(    Dev::GetOffsetInt16 (State, offset));      break;
-            case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(State, offset));      break;
-            case DataType::Int32:  value = Round(    Dev::GetOffsetInt32 (State, offset));      break;
-            case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(State, offset));      break;
-            case DataType::Int64:  value = Round(    Dev::GetOffsetInt64 (State, offset));      break;
-            case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(State, offset));      break;
-            case DataType::Float:  value = Round(    Dev::GetOffsetFloat (State, offset));      break;
-            case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2  (State, offset));      break;
-            case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3  (State, offset));      break;
-            case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4  (State, offset));      break;
-            case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4  (State, offset));      break;
-            default:;
-        }
-    }
-
-    return { tostring(offset), IntToHex(offset), (known ? "" : YELLOW) + name, tostring(type), value };
-}
-
 void RenderStateOffsets(CSceneVehicleVisState@ State) {
     UI::TextWrapped("If you go much further than a few thousand, there is a small, but non-zero chance your game could crash.");
     UI::TextWrapped("Offsets marked white are known, " + YELLOW + "yellow\\$G are somewhat known, and " + RED + "red\\$G are unknown.");
@@ -738,6 +687,498 @@ void RenderStateOffsets(CSceneVehicleVisState@ State) {
 
     UI::PopStyleColor();
     UI::EndTable();
+}
+
+void Tab_Player() {
+    if (!UI::BeginTabItem("CSmPlayer"))
+        return;
+
+    CTrackMania@ App = cast<CTrackMania@>(GetApp());
+
+    CSmArenaClient@ Playground = cast<CSmArenaClient@>(App.CurrentPlayground);
+    if (Playground is null) {
+        UI::Text(RED + "null Playground");
+        UI::EndTabItem();
+        return;
+    }
+
+    if (Playground.GameTerminals.Length == 0) {
+        UI::Text(RED + "no GameTerminals");
+        UI::EndTabItem();
+        return;
+    }
+
+    CSmPlayer@ MyPlayer = cast<CSmPlayer@>(Playground.GameTerminals[0].GUIPlayer);
+    if (MyPlayer is null) {
+        UI::Text(RED + "null MyPlayer");
+        UI::EndTabItem();
+        return;
+    }
+
+    CSmArena@ Arena = Playground.Arena;
+    if (Arena is null) {
+        UI::Text(RED + "null Arena");
+        UI::EndTabItem();
+        return;
+    }
+
+    MwFastBuffer<CSmPlayer@> Players;
+    Players.Add(MyPlayer);
+
+    for (uint i = 0; i < Arena.Players.Length; i++)
+        Players.Add(Arena.Players[i]);
+
+    UI::TextWrapped(ORANGE + "CSmPlayer\\$Gs can be found at " + ORANGE + "App.CurrentPlayground.Arena.Players\\$G.");
+    UI::TextWrapped("The current player (self) can also be found at " + ORANGE + "App.CurrentPlayground.GameTerminals[0].{ControlledPlayer/GUIPlayer}\\$G.");
+    UI::TextWrapped("This tab is mainly only for values that have not been found directly in its sub-objects, or are in different locations.");
+
+    UI::BeginTabBar("##player-tabs", UI::TabBarFlags::FittingPolicyScroll | UI::TabBarFlags::TabListPopupButton);
+        for (uint i = 0; i < Players.Length; i++) {
+            CSmPlayer@ Player = Players[i];
+
+            if (UI::BeginTabItem(i == 0 ? Icons::User + " Me" : i + "_" + Player.User.Name)) {
+                UI::BeginTabBar("##player-tabs-single");
+
+                if (UI::BeginTabItem("API Values")) {
+                    try   { RenderPlayerApiValues(Player); }
+                    catch { UI::Text("error: " + getExceptionInfo()); }
+
+                    UI::EndTabItem();
+                }
+
+                if (S_OffsetTabs && UI::BeginTabItem("Offset Values")) {
+                    try   { RenderPlayerOffsetValues(Player); }
+                    catch { UI::Text("error: " + getExceptionInfo()); }
+
+                    UI::EndTabItem();
+                }
+
+                if (S_OffsetTabs && UI::BeginTabItem("Raw Offsets")) {
+                    try   { RenderPlayerOffsets(Player); }
+                    catch { UI::Text("error: " + getExceptionInfo()); }
+
+                    UI::EndTabItem();
+                }
+
+                UI::EndTabBar();
+                UI::EndTabItem();
+            }
+        }
+    UI::EndTabBar();
+    UI::EndTabItem();
+}
+
+void RenderPlayerApiValues(CSmPlayer@ Player) {
+    UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
+
+    string[][] values;
+    values.InsertLast({"CurrentLaunchedRespawnLandmarkIndex",   "Uint32", Round(Player.CurrentLaunchedRespawnLandmarkIndex)});
+    values.InsertLast({"CurrentStoppedRespawnLandmarkIndex",    "Uint32", Round(Player.CurrentStoppedRespawnLandmarkIndex)});
+    values.InsertLast({"GetCurrentEntityID()",                  "Uint32", Round(Player.GetCurrentEntityID())});
+    values.InsertLast({"EdClan",                                "Uint32", Round(Player.EdClan)});
+    values.InsertLast({"EndTime",                               "Int32",  Round(Player.EndTime)});
+    values.InsertLast({"Flags",                                 "Uint8",  Round(Player.Flags)});
+    values.InsertLast({"Id.Value",                              "Uint32", Round(Player.Id.Value)});
+    values.InsertLast({"Id.GetName()",                          "String",       Player.Id.GetName()});
+    values.InsertLast({"IdName",                                "String",       Player.IdName});
+    values.InsertLast({"LinearHue",                             "Float",  Round(Player.LinearHue)});
+    values.InsertLast({"LinearHueSrgb",                         "Vec3",   Round(Player.LinearHueSrgb)});
+    values.InsertLast({"SkippedInputs",                         "Bool",   Round(Player.SkippedInputs)});
+    values.InsertLast({"SpawnableObjectModelIndex",             "Uint32", Round(Player.SpawnableObjectModelIndex)});
+    values.InsertLast({"SpawnIndex",                            "Int32",  Round(Player.SpawnIndex)});
+    values.InsertLast({"Speaking",                              "Bool",   Round(Player.Speaking)});
+    values.InsertLast({"StartTime",                             "Int32",  Round(Player.StartTime)});
+    values.InsertLast({"TrustClientSimu",                       "Bool",   Round(Player.TrustClientSimu)});
+    values.InsertLast({"TrustClientSimu_Client_IsTrustedState", "Bool",   Round(Player.TrustClientSimu_Client_IsTrustedState)});
+    values.InsertLast({"TrustClientSimu_ServerOverrideCount",   "Uint32", Round(Player.TrustClientSimu_ServerOverrideCount)});
+    values.InsertLast({"UseDelayedVisuals",                     "Bool",   Round(Player.UseDelayedVisuals)});
+
+    if (UI::BeginTable("##player-api-value-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+        UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+        UI::TableSetupScrollFreeze(0, 1);
+        UI::TableSetupColumn("Variable", UI::TableColumnFlags::WidthFixed, 400.0f);
+        UI::TableSetupColumn("Type",     UI::TableColumnFlags::WidthFixed, 90.0f);
+        UI::TableSetupColumn("Value");
+        UI::TableHeadersRow();
+
+        UI::ListClipper clipper(values.Length);
+        while (clipper.Step()) {
+            for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                UI::TableNextRow();
+                UI::TableNextColumn(); UI::Text(values[i][0]);
+                UI::TableNextColumn(); UI::Text(values[i][1]);
+                UI::TableNextColumn(); UI::Text(values[i][2]);
+            }
+        }
+
+        UI::PopStyleColor();
+        UI::EndTable();
+    }
+}
+
+void RenderPlayerOffsetValues(CSmPlayer@ Player) {
+    ;
+}
+
+void RenderPlayerOffsets(CSmPlayer@ Player) {
+    ;
+}
+
+void Tab_Score() {
+    if (!UI::BeginTabItem("CSmArenaScore"))
+        return;
+
+    CTrackMania@ App = cast<CTrackMania@>(GetApp());
+
+    CSmArenaClient@ Playground = cast<CSmArenaClient@>(App.CurrentPlayground);
+    if (Playground is null) {
+        UI::Text(RED + "null Playground");
+        UI::EndTabItem();
+        return;
+    }
+
+    if (Playground.GameTerminals.Length == 0) {
+        UI::Text(RED + "no GameTerminals");
+        UI::EndTabItem();
+        return;
+    }
+
+    CSmPlayer@ MyPlayer = cast<CSmPlayer@>(Playground.GameTerminals[0].GUIPlayer);
+    if (MyPlayer is null) {
+        UI::Text(RED + "null MyPlayer");
+        UI::EndTabItem();
+        return;
+    }
+
+    CSmArena@ Arena = Playground.Arena;
+    if (Arena is null) {
+        UI::Text(RED + "null Arena");
+        UI::EndTabItem();
+        return;
+    }
+
+    MwFastBuffer<CSmPlayer@> Players;
+    Players.Add(MyPlayer);
+
+    for (uint i = 0; i < Arena.Players.Length; i++)
+        Players.Add(Arena.Players[i]);
+
+    UI::TextWrapped(ORANGE + "CSmArenaScore\\$G is a part of " + ORANGE + "CSmPlayer\\$G.");
+
+    UI::BeginTabBar("##score-tabs", UI::TabBarFlags::FittingPolicyScroll | UI::TabBarFlags::TabListPopupButton);
+        for (uint i = 0; i < Players.Length; i++) {
+            CSmPlayer@ Player = Players[i];
+
+            if (UI::BeginTabItem(i == 0 ? Icons::User + " Me" : i + "_" + Player.User.Name)) {
+                UI::BeginTabBar("##score-tabs-single");
+
+                if (UI::BeginTabItem("API Values")) {
+                    try   { RenderScoreApiValues(Player.Score); }
+                    catch { UI::Text("error: " + getExceptionInfo()); }
+
+                    UI::EndTabItem();
+                }
+
+                if (S_OffsetTabs && UI::BeginTabItem("Offset Values")) {
+                    try   { RenderScoreOffsetValues(Player.Score); }
+                    catch { UI::Text("error: " + getExceptionInfo()); }
+
+                    UI::EndTabItem();
+                }
+
+                if (S_OffsetTabs && UI::BeginTabItem("Raw Offsets")) {
+                    try   { RenderScoreOffsets(Player.Score); }
+                    catch { UI::Text("error: " + getExceptionInfo()); }
+
+                    UI::EndTabItem();
+                }
+
+                UI::EndTabBar();
+                UI::EndTabItem();
+            }
+        }
+    UI::EndTabBar();
+    UI::EndTabItem();
+}
+
+void RenderScoreApiValues(CSmArenaScore@ Score) {
+    UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
+
+    string[][] values;
+}
+
+void RenderScoreOffsetValues(CSmArenaScore@ Score) {
+    ;
+}
+
+void RenderScoreOffsets(CSmArenaScore@ Score) {
+    ;
+}
+
+void Tab_Script() {
+    if (!UI::BeginTabItem("CSmScriptPlayer"))
+        return;
+
+    CTrackMania@ App = cast<CTrackMania@>(GetApp());
+
+    CSmArenaClient@ Playground = cast<CSmArenaClient@>(App.CurrentPlayground);
+    if (Playground is null) {
+        UI::Text(RED + "null Playground");
+        UI::EndTabItem();
+        return;
+    }
+
+    if (Playground.GameTerminals.Length == 0) {
+        UI::Text(RED + "no GameTerminals");
+        UI::EndTabItem();
+        return;
+    }
+
+    CSmPlayer@ MyPlayer = cast<CSmPlayer@>(Playground.GameTerminals[0].GUIPlayer);
+    if (MyPlayer is null) {
+        UI::Text(RED + "null MyPlayer");
+        UI::EndTabItem();
+        return;
+    }
+
+    CSmArena@ Arena = Playground.Arena;
+    if (Arena is null) {
+        UI::Text(RED + "null Arena");
+        UI::EndTabItem();
+        return;
+    }
+
+    MwFastBuffer<CSmPlayer@> Players;
+    Players.Add(MyPlayer);
+
+    for (uint i = 0; i < Arena.Players.Length; i++)
+        Players.Add(Arena.Players[i]);
+
+    UI::TextWrapped(ORANGE + "CSmScriptPlayer\\$G is a part of " + ORANGE + "CSmPlayer\\$G.");
+
+    UI::BeginTabBar("##script-tabs", UI::TabBarFlags::FittingPolicyScroll | UI::TabBarFlags::TabListPopupButton);
+        for (uint i = 0; i < Players.Length; i++) {
+            CSmPlayer@ Player = Players[i];
+
+            if (UI::BeginTabItem(i == 0 ? Icons::User + " Me" : i + "_" + Player.User.Name)) {
+                UI::BeginTabBar("##script-tabs-single");
+
+                if (UI::BeginTabItem("API Values")) {
+                    try   { RenderScriptApiValues(cast<CSmScriptPlayer@>(Player.ScriptAPI)); }
+                    catch { UI::Text("error: " + getExceptionInfo()); }
+
+                    UI::EndTabItem();
+                }
+
+                if (S_OffsetTabs && UI::BeginTabItem("Offset Values")) {
+                    try   { RenderScriptOffsetValues(cast<CSmScriptPlayer@>(Player.ScriptAPI)); }
+                    catch { UI::Text("error: " + getExceptionInfo()); }
+
+                    UI::EndTabItem();
+                }
+
+                if (S_OffsetTabs && UI::BeginTabItem("Raw Offsets")) {
+                    try   { RenderScriptOffsets(cast<CSmScriptPlayer@>(Player.ScriptAPI)); }
+                    catch { UI::Text("error: " + getExceptionInfo()); }
+
+                    UI::EndTabItem();
+                }
+
+                UI::EndTabBar();
+                UI::EndTabItem();
+            }
+        }
+    UI::EndTabBar();
+    UI::EndTabItem();
+}
+
+void RenderScriptApiValues(CSmScriptPlayer@ Script) {
+    UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
+
+    string[][] values;
+}
+
+void RenderScriptOffsetValues(CSmScriptPlayer@ Script) {
+    ;
+}
+
+void RenderScriptOffsets(CSmScriptPlayer@ Script) {
+    ;
+}
+
+void Tab_User() {
+    if (!UI::BeginTabItem("CTrackManiaPlayerInfo"))
+        return;
+
+    CTrackMania@ App = cast<CTrackMania@>(GetApp());
+
+    CSmArenaClient@ Playground = cast<CSmArenaClient@>(App.CurrentPlayground);
+    if (Playground is null) {
+        UI::Text(RED + "null Playground");
+        UI::EndTabItem();
+        return;
+    }
+
+    if (Playground.GameTerminals.Length == 0) {
+        UI::Text(RED + "no GameTerminals");
+        UI::EndTabItem();
+        return;
+    }
+
+    CSmPlayer@ MyPlayer = cast<CSmPlayer@>(Playground.GameTerminals[0].GUIPlayer);
+    if (MyPlayer is null) {
+        UI::Text(RED + "null MyPlayer");
+        UI::EndTabItem();
+        return;
+    }
+
+    CSmArena@ Arena = Playground.Arena;
+    if (Arena is null) {
+        UI::Text(RED + "null Arena");
+        UI::EndTabItem();
+        return;
+    }
+
+    MwFastBuffer<CSmPlayer@> Players;
+    Players.Add(MyPlayer);
+
+    for (uint i = 0; i < Arena.Players.Length; i++)
+        Players.Add(Arena.Players[i]);
+
+    UI::TextWrapped(ORANGE + "CTrackManiaPlayerInfo\\$G is a part of " + ORANGE + "CSmPlayer\\$G.");
+
+    UI::BeginTabBar("##user-tabs", UI::TabBarFlags::FittingPolicyScroll | UI::TabBarFlags::TabListPopupButton);
+        for (uint i = 0; i < Players.Length; i++) {
+            CSmPlayer@ Player = Players[i];
+
+            if (UI::BeginTabItem(i == 0 ? Icons::User + " Me" : i + "_" + Player.User.Name)) {
+                UI::BeginTabBar("##user-tabs-single");
+
+                if (UI::BeginTabItem("API Values")) {
+                    try   { RenderUserApiValues(cast<CTrackManiaPlayerInfo@>(Player.User)); }
+                    catch { UI::Text("error: " + getExceptionInfo()); }
+
+                    UI::EndTabItem();
+                }
+
+                if (S_OffsetTabs && UI::BeginTabItem("Offset Values")) {
+                    try   { RenderUserOffsetValues(cast<CTrackManiaPlayerInfo@>(Player.User)); }
+                    catch { UI::Text("error: " + getExceptionInfo()); }
+
+                    UI::EndTabItem();
+                }
+
+                if (S_OffsetTabs && UI::BeginTabItem("Raw Offsets")) {
+                    try   { RenderUserOffsets(cast<CTrackManiaPlayerInfo@>(Player.User)); }
+                    catch { UI::Text("error: " + getExceptionInfo()); }
+
+                    UI::EndTabItem();
+                }
+
+                UI::EndTabBar();
+                UI::EndTabItem();
+            }
+        }
+    UI::EndTabBar();
+    UI::EndTabItem();
+}
+
+void RenderUserApiValues(CTrackManiaPlayerInfo@ User) {
+    UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
+
+    string[][] values;
+}
+
+void RenderUserOffsetValues(CTrackManiaPlayerInfo@ User) {
+    ;
+}
+
+void RenderUserOffsets(CTrackManiaPlayerInfo@ User) {
+    ;
+}
+
+string[] VisOffsetValue(CSceneVehicleVis@ Vis, int offset, const string &in name, DataType type, bool known = true) {
+    string value;
+
+    switch (type) {
+        case DataType::Bool:   value = Round(    Dev::GetOffsetInt8  (Vis, offset) == 1); break;
+        case DataType::Int8:   value = Round(    Dev::GetOffsetInt8  (Vis, offset));      break;
+        case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8 (Vis, offset));      break;
+        case DataType::Int16:  value = Round(    Dev::GetOffsetInt16 (Vis, offset));      break;
+        case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(Vis, offset));      break;
+        case DataType::Int32:  value = Round(    Dev::GetOffsetInt32 (Vis, offset));      break;
+        case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(Vis, offset));      break;
+        case DataType::Int64:  value = Round(    Dev::GetOffsetInt64 (Vis, offset));      break;
+        case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(Vis, offset));      break;
+        case DataType::Float:  value = Round(    Dev::GetOffsetFloat (Vis, offset));      break;
+        case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2  (Vis, offset));      break;
+        case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3  (Vis, offset));      break;
+        case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4  (Vis, offset));      break;
+        case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4  (Vis, offset));      break;
+        default:;
+    }
+
+    return { tostring(offset), IntToHex(offset), (known ? "" : YELLOW) + name, tostring(type), value };
+}
+
+string[] StateOffsetValue(CSceneVehicleVisState@ State, int offset, const string &in name, DataType type, bool known = true) {
+    string value;
+
+    if (name.EndsWith("GroundContactMaterial")) {
+        int8 num = Dev::GetOffsetInt8(State, offset);
+        value = Round(num) + " " + tostring(EPlugSurfaceMaterialId(num));
+    } else if (name.EndsWith("GroundContactEffect")) {
+        int8 num = Dev::GetOffsetInt8(State, offset);
+        value = Round(num) + " " + tostring(EPlugSurfaceGameplayId(num));
+    } else if (name.EndsWith("Falling")) {
+        int8 num = Dev::GetOffsetInt8(State, offset);
+        value = Round(num) + " " + tostring(FallingState(num));
+    } else {
+        switch (type) {
+            case DataType::Bool:   value = Round(    Dev::GetOffsetInt8  (State, offset) == 1); break;
+            case DataType::Int8:   value = Round(    Dev::GetOffsetInt8  (State, offset));      break;
+            case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8 (State, offset));      break;
+            case DataType::Int16:  value = Round(    Dev::GetOffsetInt16 (State, offset));      break;
+            case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(State, offset));      break;
+            case DataType::Int32:  value = Round(    Dev::GetOffsetInt32 (State, offset));      break;
+            case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(State, offset));      break;
+            case DataType::Int64:  value = Round(    Dev::GetOffsetInt64 (State, offset));      break;
+            case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(State, offset));      break;
+            case DataType::Float:  value = Round(    Dev::GetOffsetFloat (State, offset));      break;
+            case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2  (State, offset));      break;
+            case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3  (State, offset));      break;
+            case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4  (State, offset));      break;
+            case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4  (State, offset));      break;
+            default:;
+        }
+    }
+
+    return { tostring(offset), IntToHex(offset), (known ? "" : YELLOW) + name, tostring(type), value };
+}
+
+string[] NodOffsetValue(CMwNod@ Nod, int offset, const string &in name, DataType type, bool known = true) {
+    string value;
+
+    switch (type) {
+        case DataType::Bool:   value = Round(    Dev::GetOffsetInt8  (Nod, offset) == 1); break;
+        case DataType::Int8:   value = Round(    Dev::GetOffsetInt8  (Nod, offset));      break;
+        case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8 (Nod, offset));      break;
+        case DataType::Int16:  value = Round(    Dev::GetOffsetInt16 (Nod, offset));      break;
+        case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(Nod, offset));      break;
+        case DataType::Int32:  value = Round(    Dev::GetOffsetInt32 (Nod, offset));      break;
+        case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(Nod, offset));      break;
+        case DataType::Int64:  value = Round(    Dev::GetOffsetInt64 (Nod, offset));      break;
+        case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(Nod, offset));      break;
+        case DataType::Float:  value = Round(    Dev::GetOffsetFloat (Nod, offset));      break;
+        case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2  (Nod, offset));      break;
+        case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3  (Nod, offset));      break;
+        case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4  (Nod, offset));      break;
+        case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4  (Nod, offset));      break;
+        default:;
+    }
+
+    return { tostring(offset), IntToHex(offset), (known ? "" : YELLOW) + name, tostring(type), value };
 }
 
 #endif

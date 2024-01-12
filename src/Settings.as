@@ -205,6 +205,9 @@ bool S_DevHideWithOP = false;
 [Setting category="Dev" name="Float precision" min=0 max=9]
 uint S_Precision = 3;
 
+[Setting category="Dev" name="Show offset tabs" description="disabled upon plugin reload for safety"]
+bool S_OffsetTabs = false;
+
 [Setting category="Dev" name="Offset data type"]
 DataType S_OffsetType = DataType::Int32;
 
