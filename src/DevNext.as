@@ -172,59 +172,59 @@ void RenderVisOffsetValues(CSceneVehicleVis@ Vis) {
     UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
 
     string[][] values;
-    values.InsertLast(VisOffsetValue(Vis, 0,   "VehicleId",            DataType::Int32));
-    values.InsertLast(VisOffsetValue(Vis, 140, "LinearHue",            DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 144, "LinearHue",            DataType::Float));
+    values.InsertLast(OffsetValue(Vis, 0,   "VehicleId",            DataType::Int32));
+    values.InsertLast(OffsetValue(Vis, 140, "LinearHue",            DataType::Float));
+    values.InsertLast(OffsetValue(Vis, 144, "LinearHue",            DataType::Float));
 
     values.InsertLast({"312,324,336", "0x138,144,150", "Left", "Vec3", Round(vec3(Dev::GetOffsetFloat(Vis, 312), Dev::GetOffsetFloat(Vis, 324), Dev::GetOffsetFloat(Vis, 336)))});
     values.InsertLast({"316,328,340", "0x13C,148,154", "Up",   "Vec3", Round(vec3(Dev::GetOffsetFloat(Vis, 316), Dev::GetOffsetFloat(Vis, 328), Dev::GetOffsetFloat(Vis, 340)))});
     values.InsertLast({"320,332,344", "0x140,14C,158", "Dir",  "Vec3", Round(vec3(Dev::GetOffsetFloat(Vis, 320), Dev::GetOffsetFloat(Vis, 332), Dev::GetOffsetFloat(Vis, 344)))});
 
-    values.InsertLast(VisOffsetValue(Vis, 348, "Position",             DataType::Vec3));
-    values.InsertLast(VisOffsetValue(Vis, 360, "WorldVel",             DataType::Vec3));
-    values.InsertLast(VisOffsetValue(Vis, 372, "NbRespawnsOrResets",   DataType::Int32));
-    values.InsertLast(VisOffsetValue(Vis, 376, "IsWheelsBurning",      DataType::Bool));
-    values.InsertLast(VisOffsetValue(Vis, 384, "FLIcing01",            DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 388, "FRIcing01",            DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 392, "RRIcing01",            DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 396, "RLIcing01",            DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 400, "FLSlipCoef",           DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 404, "FRSlipCoef",           DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 408, "RRSlipCoef",           DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 412, "RLSlipCoef",           DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 416, "InputGasPedal",        DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 456, "FL???",                DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 460, "FL???",                DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 464, "FL???",                DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 480, "FR???",                DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 484, "FR???",                DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 488, "FR???",                DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 504, "RR???",                DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 508, "RR???",                DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 512, "RR???",                DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 528, "RL???",                DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 532, "RL???",                DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 536, "RL???",                DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 544, "InputIsBraking",       DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 548, "BrakingCoefStrong",    DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 552, "ReactorDesired",       DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 556, "Reactor",              DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 560, "YellowReactorDesired", DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 564, "YellowReactor",        DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 568, "RedReactorDesired",    DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 572, "RedReactor",           DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 576, "TurboDesired",         DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 580, "Turbo",                DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 584, "TurboDesired",         DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 588, "Turbo",                DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 592, "InputIsBraking",       DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 596, "BrakingCoefWeak",      DataType::Float, false));
-    values.InsertLast(VisOffsetValue(Vis, 652, "AirBrakeDesired",      DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 656, "AirBrakeNormed",       DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 660, "SpoilerOpenDesired",   DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 664, "SpoilerOpenNormed",    DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 668, "WingsOpenDesired",     DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 672, "WingsOpenNormed",      DataType::Float));
+    values.InsertLast(OffsetValue(Vis, 348, "Position",             DataType::Vec3));
+    values.InsertLast(OffsetValue(Vis, 360, "WorldVel",             DataType::Vec3));
+    values.InsertLast(OffsetValue(Vis, 372, "NbRespawnsOrResets",   DataType::Int32));
+    values.InsertLast(OffsetValue(Vis, 376, "IsWheelsBurning",      DataType::Bool));
+    values.InsertLast(OffsetValue(Vis, 384, "FLIcing01",            DataType::Float));
+    values.InsertLast(OffsetValue(Vis, 388, "FRIcing01",            DataType::Float));
+    values.InsertLast(OffsetValue(Vis, 392, "RRIcing01",            DataType::Float));
+    values.InsertLast(OffsetValue(Vis, 396, "RLIcing01",            DataType::Float));
+    values.InsertLast(OffsetValue(Vis, 400, "FLSlipCoef",           DataType::Float));
+    values.InsertLast(OffsetValue(Vis, 404, "FRSlipCoef",           DataType::Float));
+    values.InsertLast(OffsetValue(Vis, 408, "RRSlipCoef",           DataType::Float));
+    values.InsertLast(OffsetValue(Vis, 412, "RLSlipCoef",           DataType::Float));
+    values.InsertLast(OffsetValue(Vis, 416, "InputGasPedal",        DataType::Float));
+    values.InsertLast(OffsetValue(Vis, 456, "FL???",                DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 460, "FL???",                DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 464, "FL???",                DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 480, "FR???",                DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 484, "FR???",                DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 488, "FR???",                DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 504, "RR???",                DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 508, "RR???",                DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 512, "RR???",                DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 528, "RL???",                DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 532, "RL???",                DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 536, "RL???",                DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 544, "InputIsBraking",       DataType::Float));
+    values.InsertLast(OffsetValue(Vis, 548, "BrakingCoefStrong",    DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 552, "ReactorDesired",       DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 556, "Reactor",              DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 560, "YellowReactorDesired", DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 564, "YellowReactor",        DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 568, "RedReactorDesired",    DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 572, "RedReactor",           DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 576, "TurboDesired",         DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 580, "Turbo",                DataType::Float));
+    values.InsertLast(OffsetValue(Vis, 584, "TurboDesired",         DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 588, "Turbo",                DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 592, "InputIsBraking",       DataType::Float));
+    values.InsertLast(OffsetValue(Vis, 596, "BrakingCoefWeak",      DataType::Float, false));
+    values.InsertLast(OffsetValue(Vis, 652, "AirBrakeDesired",      DataType::Float));
+    values.InsertLast(OffsetValue(Vis, 656, "AirBrakeNormed",       DataType::Float));
+    values.InsertLast(OffsetValue(Vis, 660, "SpoilerOpenDesired",   DataType::Float));
+    values.InsertLast(OffsetValue(Vis, 664, "SpoilerOpenNormed",    DataType::Float));
+    values.InsertLast(OffsetValue(Vis, 668, "WingsOpenDesired",     DataType::Float));
+    values.InsertLast(OffsetValue(Vis, 672, "WingsOpenNormed",      DataType::Float));
 
     if (UI::BeginTable("##vis-offset-value-table", 5, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
@@ -504,105 +504,105 @@ void RenderStateOffsetValues(CSceneVehicleVisState@ State) {
     UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
 
     string[][] values;
-    values.InsertLast(StateOffsetValue(State, 0,   "VehicleId",               DataType::Int32));
-    values.InsertLast(StateOffsetValue(State, 16,  "InputSteer",              DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 20,  "InputGasPedal",           DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 24,  "InputBrakePedal",         DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 32,  "InputIsBraking",          DataType::Bool));
+    values.InsertLast(OffsetValue(State, 0,   "VehicleId",               DataType::Int32));
+    values.InsertLast(OffsetValue(State, 16,  "InputSteer",              DataType::Float));
+    values.InsertLast(OffsetValue(State, 20,  "InputGasPedal",           DataType::Float));
+    values.InsertLast(OffsetValue(State, 24,  "InputBrakePedal",         DataType::Float));
+    values.InsertLast(OffsetValue(State, 32,  "InputIsBraking",          DataType::Bool));
 
     values.InsertLast({"44,56,68", "0x2C,38,44", "Left", "Vec3", Round(vec3(Dev::GetOffsetFloat(State, 44), Dev::GetOffsetFloat(State, 56), Dev::GetOffsetFloat(State, 68)))});
     values.InsertLast({"48,60,72", "0x30,3C,48", "Up",   "Vec3", Round(vec3(Dev::GetOffsetFloat(State, 48), Dev::GetOffsetFloat(State, 60), Dev::GetOffsetFloat(State, 72)))});
     values.InsertLast({"52,64,76", "0x34,40,4C", "Dir",  "Vec3", Round(vec3(Dev::GetOffsetFloat(State, 52), Dev::GetOffsetFloat(State, 64), Dev::GetOffsetFloat(State, 76)))});
 
-    values.InsertLast(StateOffsetValue(State, 80,  "Position",                DataType::Vec3));
-    values.InsertLast(StateOffsetValue(State, 92,  "WorldVel",                DataType::Vec3));
-    values.InsertLast(StateOffsetValue(State, 116, "FrontSpeed",              DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 120, "SideSpeed",               DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 128, "CruiseDisplaySpeed",      DataType::Int32));
+    values.InsertLast(OffsetValue(State, 80,  "Position",                DataType::Vec3));
+    values.InsertLast(OffsetValue(State, 92,  "WorldVel",                DataType::Vec3));
+    values.InsertLast(OffsetValue(State, 116, "FrontSpeed",              DataType::Float));
+    values.InsertLast(OffsetValue(State, 120, "SideSpeed",               DataType::Float));
+    values.InsertLast(OffsetValue(State, 128, "CruiseDisplaySpeed",      DataType::Int32));
 
     values.InsertLast({"136", "0x88", "ContactState1", "Enum", tostring(ContactState1(Dev::GetOffsetInt8(State, 136)))});
     values.InsertLast({"138", "0x8A", "ContactState2", "Enum", tostring(ContactState2(Dev::GetOffsetInt8(State, 138)))});
     values.InsertLast({"139", "0x8B", "IsTurbo",       "Enum", tostring(TurboState   (Dev::GetOffsetInt8(State, 139)))});
 
-    values.InsertLast(StateOffsetValue(State, 168, "FLDamperLen",             DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 172, "FLWheelRot",              DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 176, "FLWheelRotSpeed",         DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 180, "FLSteerAngle",            DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 184, "FLGroundContactMaterial", DataType::Enum));
-    values.InsertLast(StateOffsetValue(State, 185, "FLGroundContactEffect",   DataType::Enum));
-    values.InsertLast(StateOffsetValue(State, 188, "FLSlipCoef",              DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 192, "FLDirt",                  DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 196, "FLIcing01",               DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 200, "FLTireWear01",            DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 204, "FLBreakNormedCoef",       DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 208, "FLFalling",               DataType::Enum));
+    values.InsertLast(OffsetValue(State, 168, "FLDamperLen",             DataType::Float));
+    values.InsertLast(OffsetValue(State, 172, "FLWheelRot",              DataType::Float));
+    values.InsertLast(OffsetValue(State, 176, "FLWheelRotSpeed",         DataType::Float));
+    values.InsertLast(OffsetValue(State, 180, "FLSteerAngle",            DataType::Float));
+    values.InsertLast(OffsetValue(State, 184, "FLGroundContactMaterial", DataType::Enum));
+    values.InsertLast(OffsetValue(State, 185, "FLGroundContactEffect",   DataType::Enum));
+    values.InsertLast(OffsetValue(State, 188, "FLSlipCoef",              DataType::Float));
+    values.InsertLast(OffsetValue(State, 192, "FLDirt",                  DataType::Float));
+    values.InsertLast(OffsetValue(State, 196, "FLIcing01",               DataType::Float));
+    values.InsertLast(OffsetValue(State, 200, "FLTireWear01",            DataType::Float));
+    values.InsertLast(OffsetValue(State, 204, "FLBreakNormedCoef",       DataType::Float));
+    values.InsertLast(OffsetValue(State, 208, "FLFalling",               DataType::Enum));
 
-    values.InsertLast(StateOffsetValue(State, 212, "FRDamperLen",             DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 216, "FRWheelRot",              DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 220, "FRWheelRotSpeed",         DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 224, "FRSteerAngle",            DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 228, "FRGroundContactMaterial", DataType::Enum));
-    values.InsertLast(StateOffsetValue(State, 229, "FRGroundContactEffect",   DataType::Enum));
-    values.InsertLast(StateOffsetValue(State, 232, "FRSlipCoef",              DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 236, "FRDirt",                  DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 240, "FRIcing01",               DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 244, "FRTireWear01",            DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 248, "FRBreakNormedCoef",       DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 252, "FRFalling",               DataType::Enum));
+    values.InsertLast(OffsetValue(State, 212, "FRDamperLen",             DataType::Float));
+    values.InsertLast(OffsetValue(State, 216, "FRWheelRot",              DataType::Float));
+    values.InsertLast(OffsetValue(State, 220, "FRWheelRotSpeed",         DataType::Float));
+    values.InsertLast(OffsetValue(State, 224, "FRSteerAngle",            DataType::Float));
+    values.InsertLast(OffsetValue(State, 228, "FRGroundContactMaterial", DataType::Enum));
+    values.InsertLast(OffsetValue(State, 229, "FRGroundContactEffect",   DataType::Enum));
+    values.InsertLast(OffsetValue(State, 232, "FRSlipCoef",              DataType::Float));
+    values.InsertLast(OffsetValue(State, 236, "FRDirt",                  DataType::Float));
+    values.InsertLast(OffsetValue(State, 240, "FRIcing01",               DataType::Float));
+    values.InsertLast(OffsetValue(State, 244, "FRTireWear01",            DataType::Float));
+    values.InsertLast(OffsetValue(State, 248, "FRBreakNormedCoef",       DataType::Float));
+    values.InsertLast(OffsetValue(State, 252, "FRFalling",               DataType::Enum));
 
-    values.InsertLast(StateOffsetValue(State, 256, "RRDamperLen",             DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 260, "RRWheelRot",              DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 264, "RRWheelRotSpeed",         DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 268, "RRSteerAngle",            DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 272, "RRGroundContactMaterial", DataType::Enum));
-    values.InsertLast(StateOffsetValue(State, 273, "RRGroundContactEffect",   DataType::Enum));
-    values.InsertLast(StateOffsetValue(State, 276, "RRSlipCoef",              DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 280, "RRDirt",                  DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 284, "RRIcing01",               DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 288, "RRTireWear01",            DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 292, "RRBreakNormedCoef",       DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 296, "RRFalling",               DataType::Enum));
+    values.InsertLast(OffsetValue(State, 256, "RRDamperLen",             DataType::Float));
+    values.InsertLast(OffsetValue(State, 260, "RRWheelRot",              DataType::Float));
+    values.InsertLast(OffsetValue(State, 264, "RRWheelRotSpeed",         DataType::Float));
+    values.InsertLast(OffsetValue(State, 268, "RRSteerAngle",            DataType::Float));
+    values.InsertLast(OffsetValue(State, 272, "RRGroundContactMaterial", DataType::Enum));
+    values.InsertLast(OffsetValue(State, 273, "RRGroundContactEffect",   DataType::Enum));
+    values.InsertLast(OffsetValue(State, 276, "RRSlipCoef",              DataType::Float));
+    values.InsertLast(OffsetValue(State, 280, "RRDirt",                  DataType::Float));
+    values.InsertLast(OffsetValue(State, 284, "RRIcing01",               DataType::Float));
+    values.InsertLast(OffsetValue(State, 288, "RRTireWear01",            DataType::Float));
+    values.InsertLast(OffsetValue(State, 292, "RRBreakNormedCoef",       DataType::Float));
+    values.InsertLast(OffsetValue(State, 296, "RRFalling",               DataType::Enum));
 
-    values.InsertLast(StateOffsetValue(State, 300, "RLDamperLen",             DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 304, "RLWheelRot",              DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 308, "RLWheelRotSpeed",         DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 312, "RLSteerAngle",            DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 316, "RLGroundContactMaterial", DataType::Enum));
-    values.InsertLast(StateOffsetValue(State, 317, "RLGroundContactEffect",   DataType::Enum));
-    values.InsertLast(StateOffsetValue(State, 320, "RLSlipCoef",              DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 324, "RLDirt",                  DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 328, "RLIcing01",               DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 332, "RLTireWear01",            DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 336, "RLBreakNormedCoef",       DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 340, "RLFalling",               DataType::Enum));
+    values.InsertLast(OffsetValue(State, 300, "RLDamperLen",             DataType::Float));
+    values.InsertLast(OffsetValue(State, 304, "RLWheelRot",              DataType::Float));
+    values.InsertLast(OffsetValue(State, 308, "RLWheelRotSpeed",         DataType::Float));
+    values.InsertLast(OffsetValue(State, 312, "RLSteerAngle",            DataType::Float));
+    values.InsertLast(OffsetValue(State, 316, "RLGroundContactMaterial", DataType::Enum));
+    values.InsertLast(OffsetValue(State, 317, "RLGroundContactEffect",   DataType::Enum));
+    values.InsertLast(OffsetValue(State, 320, "RLSlipCoef",              DataType::Float));
+    values.InsertLast(OffsetValue(State, 324, "RLDirt",                  DataType::Float));
+    values.InsertLast(OffsetValue(State, 328, "RLIcing01",               DataType::Float));
+    values.InsertLast(OffsetValue(State, 332, "RLTireWear01",            DataType::Float));
+    values.InsertLast(OffsetValue(State, 336, "RLBreakNormedCoef",       DataType::Float));
+    values.InsertLast(OffsetValue(State, 340, "RLFalling",               DataType::Enum));
 
     values.InsertLast({"368", "0x170", "LastTurboLevel",   "Enum", tostring(VehicleState::TurboLevel        (Dev::GetOffsetInt8(State, 368)))});
     values.InsertLast({"372", "0x174", "ReactorBoostLvl",  "Enum", tostring(ESceneVehicleVisReactorBoostLvl (Dev::GetOffsetInt8(State, 372)))});
     values.InsertLast({"376", "0x178", "ReactorBoostType", "Enum", tostring(ESceneVehicleVisReactorBoostType(Dev::GetOffsetInt8(State, 376)))});
 
-    values.InsertLast(StateOffsetValue(State, 380, "ReactorFinalTimer",       DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 384, "ReactorAirControl",       DataType::Vec3));
-    values.InsertLast(StateOffsetValue(State, 396, "Up",                      DataType::Vec3));
-    values.InsertLast(StateOffsetValue(State, 408, "EngineRPM",               DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 420, "CurGear",                 DataType::Uint32));
-    values.InsertLast(StateOffsetValue(State, 428, "TurboTime",               DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 436, "RaceStartTime",           DataType::Uint32));
-    values.InsertLast(StateOffsetValue(State, 440, "HandicapSum",             DataType::Int32));
-    values.InsertLast(StateOffsetValue(State, 456, "LinearHue",               DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 460, "LinearHue",               DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 464, "LinearHueRed",            DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 468, "LinearHueGreen",          DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 472, "LinearHueBlue",           DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 536, "GroundDist",              DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 560, "SimulationTimeCoef",      DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 564, "BulletTimeNormed",        DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 568, "AirBrakeNormed",          DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 572, "SpoilerOpenNormed",       DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 576, "WingsOpenNormed",         DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 788, "WaterImmersionCoef",      DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 792, "WaterOverDistNormed",     DataType::Float));
-    values.InsertLast(StateOffsetValue(State, 796, "WaterOverSurfacePos",     DataType::Vec3));
-    values.InsertLast(StateOffsetValue(State, 808, "WetnessValue01",          DataType::Float));
+    values.InsertLast(OffsetValue(State, 380, "ReactorFinalTimer",       DataType::Float));
+    values.InsertLast(OffsetValue(State, 384, "ReactorAirControl",       DataType::Vec3));
+    values.InsertLast(OffsetValue(State, 396, "Up",                      DataType::Vec3));
+    values.InsertLast(OffsetValue(State, 408, "EngineRPM",               DataType::Float));
+    values.InsertLast(OffsetValue(State, 420, "CurGear",                 DataType::Uint32));
+    values.InsertLast(OffsetValue(State, 428, "TurboTime",               DataType::Float));
+    values.InsertLast(OffsetValue(State, 436, "RaceStartTime",           DataType::Uint32));
+    values.InsertLast(OffsetValue(State, 440, "HandicapSum",             DataType::Int32));
+    values.InsertLast(OffsetValue(State, 456, "LinearHue",               DataType::Float));
+    values.InsertLast(OffsetValue(State, 460, "LinearHue",               DataType::Float));
+    values.InsertLast(OffsetValue(State, 464, "LinearHueRed",            DataType::Float));
+    values.InsertLast(OffsetValue(State, 468, "LinearHueGreen",          DataType::Float));
+    values.InsertLast(OffsetValue(State, 472, "LinearHueBlue",           DataType::Float));
+    values.InsertLast(OffsetValue(State, 536, "GroundDist",              DataType::Float));
+    values.InsertLast(OffsetValue(State, 560, "SimulationTimeCoef",      DataType::Float));
+    values.InsertLast(OffsetValue(State, 564, "BulletTimeNormed",        DataType::Float));
+    values.InsertLast(OffsetValue(State, 568, "AirBrakeNormed",          DataType::Float));
+    values.InsertLast(OffsetValue(State, 572, "SpoilerOpenNormed",       DataType::Float));
+    values.InsertLast(OffsetValue(State, 576, "WingsOpenNormed",         DataType::Float));
+    values.InsertLast(OffsetValue(State, 788, "WaterImmersionCoef",      DataType::Float));
+    values.InsertLast(OffsetValue(State, 792, "WaterOverDistNormed",     DataType::Float));
+    values.InsertLast(OffsetValue(State, 796, "WaterOverSurfacePos",     DataType::Vec3));
+    values.InsertLast(OffsetValue(State, 808, "WetnessValue01",          DataType::Float));
 
     if (UI::BeginTable("##state-offset-value-table", 5, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
@@ -817,13 +817,9 @@ void RenderPlayerApiValues(CSmPlayer@ Player) {
     }
 }
 
-void RenderPlayerOffsetValues(CSmPlayer@ Player) {
-    ;
-}
+void RenderPlayerOffsetValues(CSmPlayer@ Player) { }
 
-void RenderPlayerOffsets(CSmPlayer@ Player) {
-    ;
-}
+void RenderPlayerOffsets(CSmPlayer@ Player) { }
 
 void Tab_Score() {
     if (!UI::BeginTabItem("CSmArenaScore"))
@@ -1065,13 +1061,9 @@ void RenderScoreApiArrays(CSmArenaScore@ Score) {
     UI::EndTabBar();
 }
 
-void RenderScoreOffsetValues(CSmArenaScore@ Score) {
-    ;
-}
+void RenderScoreOffsetValues(CSmArenaScore@ Score) { }
 
-void RenderScoreOffsets(CSmArenaScore@ Score) {
-    ;
-}
+void RenderScoreOffsets(CSmArenaScore@ Score) { }
 
 void Tab_Script() {
     if (!UI::BeginTabItem("CSmScriptPlayer"))
@@ -1417,13 +1409,9 @@ void RenderScriptApiArrays(CSmScriptPlayer@ Script) {
     UI::EndTabBar();
 }
 
-void RenderScriptOffsetValues(CSmScriptPlayer@ Script) {
-    ;
-}
+void RenderScriptOffsetValues(CSmScriptPlayer@ Script) { }
 
-void RenderScriptOffsets(CSmScriptPlayer@ Script) {
-    ;
-}
+void RenderScriptOffsets(CSmScriptPlayer@ Script) { }
 
 void Tab_User() {
     if (!UI::BeginTabItem("CTrackManiaPlayerInfo"))
@@ -1480,6 +1468,13 @@ void Tab_User() {
                     UI::EndTabItem();
                 }
 
+                if (UI::BeginTabItem("API Arrays")) {
+                    try   { RenderUserApiArrays(cast<CTrackManiaPlayerInfo@>(Player.User)); }
+                    catch { UI::Text("error: " + getExceptionInfo()); }
+
+                    UI::EndTabItem();
+                }
+
                 if (S_OffsetTabs && UI::BeginTabItem("Offset Values")) {
                     try   { RenderUserOffsetValues(cast<CTrackManiaPlayerInfo@>(Player.User)); }
                     catch { UI::Text("error: " + getExceptionInfo()); }
@@ -1506,97 +1501,154 @@ void RenderUserApiValues(CTrackManiaPlayerInfo@ User) {
     UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
 
     string[][] values;
-}
+    values.InsertLast({"AvatarDisplayName",               "WString", string(   User.AvatarDisplayName)});
+    values.InsertLast({"AvatarUrl",                       "String",            User.AvatarUrl});
+    values.InsertLast({"BroadcastTVLogin",                "String",            User.BroadcastTVLogin});
+    values.InsertLast({"ChallengeSequenceNumber",         "Uint32",  RoundUint(User.ChallengeSequenceNumber)});
+    values.InsertLast({"Character_SkinOptions",           "String",            User.Character_SkinOptions});
+    values.InsertLast({"ClubLink",                        "String",            User.ClubLink});
+    values.InsertLast({"ClubTag",                         "WString", string(   User.ClubTag)});
+    values.InsertLast({"Color",                           "Vec3",    Round(    User.Color)});
+    values.InsertLast({"ColorblindModeEnabled",           "Bool",    Round(    User.ColorblindModeEnabled)});
+    values.InsertLast({"CountryFlagUrl",                  "String",            User.CountryFlagUrl});
+    values.InsertLast({"CountryPath",                     "WString", string(   User.CountryPath)});
+    values.InsertLast({"CustomDataDeactivated",           "Bool",    Round(    User.CustomDataDeactivated)});
+    values.InsertLast({"DbgClientUId",                    "Uint32",  RoundUint(User.DbgClientUId)});
+    values.InsertLast({"Description",                     "WString", string(   User.Description)});
+    values.InsertLast({"DownloadRate",                    "Uint32",  RoundUint(User.DownloadRate)});
+    values.InsertLast({"Echelon",                         "Enum",    tostring( User.Echelon)});
+    values.InsertLast({"EnableHomologation",              "Bool",    Round(    User.EnableHomologation)});
+    values.InsertLast({"FameStars",                       "Uint",    RoundUint(User.FameStars)});
+    values.InsertLast({"ForcedSpectator",                 "Bool",    Round(    User.ForcedSpectator)});
+    values.InsertLast({"GameStateName",                   "String",            User.GameStateName});
+    values.InsertLast({"HackCamHmdDisabled",              "Bool",    Round(    User.HackCamHmdDisabled)});
+    values.InsertLast({"HornDisplayName",                 "WString", string(   User.HornDisplayName)});
+    values.InsertLast({"Id.GetName()",                    "String",            User.Id.GetName()});
+    values.InsertLast({"Id.Value",                        "Uint32",  RoundUint(User.Id.Value)});
+    values.InsertLast({"IdName",                          "String",            User.IdName});
+    values.InsertLast({"IsBeginner",                      "Bool",    Round(    User.IsBeginner)});
+    values.InsertLast({"IsConnectedToMasterServer",       "Bool",    Round(    User.IsConnectedToMasterServer)});
+    values.InsertLast({"IsFakeUser",                      "Bool",    Round(    User.IsFakeUser)});
+    values.InsertLast({"IsFirstPartyDisplayName",         "Bool",    Round(    User.IsFirstPartyDisplayName)});
+    values.InsertLast({"LadderPoints",                    "Float",   Round(    User.LadderPoints)});
+    values.InsertLast({"LadderRank",                      "Uint32",  RoundUint(User.LadderRank)});
+    values.InsertLast({"LadderTotal",                     "Uint32",  RoundUint(User.LadderTotal)});
+    values.InsertLast({"LadderZoneFlagUrl",               "String",            User.LadderZoneFlagUrl});
+    values.InsertLast({"LadderZoneName",                  "WString", string(   User.LadderZoneName)});
+    values.InsertLast({"Language",                        "String",            User.Language});
+    values.InsertLast({"LatestNetUpdate",                 "Uint32",  RoundUint(User.LatestNetUpdate)});
+    values.InsertLast({"LightTrailLinearHue",             "Float",   Round(    User.LightTrailLinearHue)});
+    values.InsertLast({"Live_HasRetrieveTimeLeft",        "Bool",    Round(    User.Live_HasRetrieveTimeLeft)});
+    values.InsertLast({"Live_IsRegisteredToMasterServer", "Bool",    Round(    User.Live_IsRegisteredToMasterServer)});
+    values.InsertLast({"Live_RetrievingTimeLeft",         "Bool",    Round(    User.Live_RetrievingTimeLeft)});
+    values.InsertLast({"Live_Updating",                   "Bool",    Round(    User.Live_Updating)});
+    values.InsertLast({"Live_UpdateLastTime",             "Uint32",  RoundUint(User.Live_UpdateLastTime)});
+    values.InsertLast({"LiveUpdate_Counter",              "Uint32",  RoundUint(User.LiveUpdate_Counter)});
+    values.InsertLast({"Login",                           "String",            User.Login});
+    values.InsertLast({"Model_CarSport_SkinName",         "WString", string(   User.Model_CarSport_SkinName)});
+    values.InsertLast({"Model_CarSport_SkinUrl",          "String",            User.Model_CarSport_SkinUrl});
+    values.InsertLast({"Model_CharacterPilot_SkinName",   "WString", string(   User.Model_CharacterPilot_SkinName)});
+    values.InsertLast({"Model_CharacterPilot_SkinUrl",    "String",            User.Model_CharacterPilot_SkinUrl});
+    values.InsertLast({"Name",                            "WString", string(   User.Name)});
+    values.InsertLast({"NbSpectators",                    "Uint32",  RoundUint(User.NbSpectators)});
+    values.InsertLast({"NextEchelonPercent",              "Uint32",  RoundUint(User.NextEchelonPercent)});
+    values.InsertLast({"PlayerType",                      "Enum",    tostring( User.PlayerType)});
+    values.InsertLast({"PlaygroundRoundNum",              "Uint32",  RoundUint(User.PlaygroundRoundNum)});
+    values.InsertLast({"PlaygroundTeamRequested",         "Uint32",  RoundUint(User.PlaygroundTeamRequested)});
+    values.InsertLast({"Prestige_SkinOptions",            "String",            User.Prestige_SkinOptions});
+    values.InsertLast({"ReferenceScore",                  "Float",   Round(    User.ReferenceScore)});
+    values.InsertLast({"RequestedClan",                   "Uint32",  RoundUint(User.RequestedClan)});
+    values.InsertLast({"RequestsSpectate",                "Bool",    Round(    User.RequestsSpectate)});
+    values.InsertLast({"SpectatorMode",                   "Enum",    tostring( User.SpectatorMode)});
+    values.InsertLast({"State",                           "Uint32",  RoundUint(User.State)});
+    values.InsertLast({"SteamUserId",                     "String",            User.SteamUserId});
+    values.InsertLast({"StereoDisplayMode",               "Enum",    tostring( User.StereoDisplayMode)});
+    values.InsertLast({"StrLadderDraws",                  "String",            User.StrLadderDraws});
+    values.InsertLast({"StrLadderLastPoints",             "String",            User.StrLadderLastPoints});
+    values.InsertLast({"StrLadderLosses",                 "String",            User.StrLadderLosses});
+    values.InsertLast({"StrLadderNbrTeams",               "String",            User.StrLadderNbrTeams});
+    values.InsertLast({"StrLadderRanking",                "WString", string(   User.StrLadderRanking)});
+    values.InsertLast({"StrLadderRankingSimple",          "WString", string(   User.StrLadderRankingSimple)});
+    values.InsertLast({"StrLadderScore",                  "String",            User.StrLadderScore});
+    values.InsertLast({"StrLadderScoreRounded",           "String",            User.StrLadderScoreRounded});
+    values.InsertLast({"StrLadderTeamName",               "String",            User.StrLadderTeamName});
+    values.InsertLast({"StrLadderTeamRanking",            "String",            User.StrLadderTeamRanking});
+    values.InsertLast({"StrLadderTeamRankingSimple",      "String",            User.StrLadderTeamRankingSimple});
+    values.InsertLast({"StrLadderWins",                   "String",            User.StrLadderWins});
+    values.InsertLast({"Trigram",                         "String",            User.Trigram});
+    values.InsertLast({"UploadRate",                      "Uint32",  RoundUint(User.UploadRate)});
 
-void RenderUserOffsetValues(CTrackManiaPlayerInfo@ User) {
-    ;
-}
-
-void RenderUserOffsets(CTrackManiaPlayerInfo@ User) {
-    ;
-}
-
-string[] VisOffsetValue(CSceneVehicleVis@ Vis, int offset, const string &in name, DataType type, bool known = true) {
-    string value;
-
-    switch (type) {
-        case DataType::Bool:   value = Round(    Dev::GetOffsetInt8  (Vis, offset) == 1); break;
-        case DataType::Int8:   value = Round(    Dev::GetOffsetInt8  (Vis, offset));      break;
-        case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8 (Vis, offset));      break;
-        case DataType::Int16:  value = Round(    Dev::GetOffsetInt16 (Vis, offset));      break;
-        case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(Vis, offset));      break;
-        case DataType::Int32:  value = Round(    Dev::GetOffsetInt32 (Vis, offset));      break;
-        case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(Vis, offset));      break;
-        case DataType::Int64:  value = Round(    Dev::GetOffsetInt64 (Vis, offset));      break;
-        case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(Vis, offset));      break;
-        case DataType::Float:  value = Round(    Dev::GetOffsetFloat (Vis, offset));      break;
-        case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2  (Vis, offset));      break;
-        case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3  (Vis, offset));      break;
-        case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4  (Vis, offset));      break;
-        case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4  (Vis, offset));      break;
-        default:;
+    if (User.VoiceChat is null)
+        values.InsertLast({"VoiceChat", "Object", RED + "null"});
+    else {
+        values.InsertLast({"VoiceChat.Id.GetName()",      "String",            User.VoiceChat.Id.GetName()});
+        values.InsertLast({"VoiceChat.Id.Value",          "Uint32",  RoundUint(User.VoiceChat.Id.Value)});
+        values.InsertLast({"VoiceChat.IdName",            "String",            User.VoiceChat.IdName});
+        values.InsertLast({"VoiceChat.IsConnected",       "Bool",    Round(    User.VoiceChat.IsConnected)});
+        values.InsertLast({"VoiceChat.IsLocal",           "Bool",    Round(    User.VoiceChat.IsLocal)});
+        values.InsertLast({"VoiceChat.IsMuted",           "Bool",    Round(    User.VoiceChat.IsMuted)});
+        values.InsertLast({"VoiceChat.IsSpeaking",        "Bool",    Round(    User.VoiceChat.IsSpeaking)});
+        values.InsertLast({"VoiceChat.MuteChangePending", "Bool",    Round(    User.VoiceChat.MuteChangePending)});
+        values.InsertLast({"VoiceChat.MuteSetting",       "Enum",    tostring( User.VoiceChat.MuteSetting)});
+        values.InsertLast({"VoiceChat.Supported",         "Bool",    Round(    User.VoiceChat.Supported)});
     }
 
-    return { tostring(offset), IntToHex(offset), (known ? "" : YELLOW) + name, tostring(type), value };
-}
+    values.InsertLast({"WebServicesUserId",               "String",            User.WebServicesUserId});
+    values.InsertLast({"WishSpectator",                   "Bool",    Round(    User.WishSpectator)});
+    values.InsertLast({"ZoneBitmap",                      "Object",            User.ZoneBitmap is null ? RED + "null" : GREEN + "valid (unimplemented here)"});
+    values.InsertLast({"ZoneFlagUrl",                     "String",            User.ZoneFlagUrl});
 
-string[] StateOffsetValue(CSceneVehicleVisState@ State, int offset, const string &in name, DataType type, bool known = true) {
-    string value;
+    if (User.ZoneLeague is null)
+        values.InsertLast({"ZoneLeague", "Object", RED + "null"});
+    else {
+        values.InsertLast({"ZoneLeague.Description",      "WString", string(   User.ZoneLeague.Description)});
+        values.InsertLast({"ZoneLeague.Id.GetName()",     "String",            User.ZoneLeague.Id.GetName()});
+        values.InsertLast({"ZoneLeague.Id.Value",         "Uint32",  RoundUint(User.ZoneLeague.Id.Value)});
+        values.InsertLast({"ZoneLeague.IdName",           "String",            User.ZoneLeague.IdName});
+        values.InsertLast({"ZoneLeague.IsGroup",          "Bool",    Round(    User.ZoneLeague.IsGroup)});
+        values.InsertLast({"ZoneLeague.Login",            "String",            User.ZoneLeague.Login});
+        values.InsertLast({"ZoneLeague.Name",             "WString", string(   User.ZoneLeague.Name)});
+        values.InsertLast({"ZoneLeague.Path",             "WString", string(   User.ZoneLeague.Path)});
+    }
 
-    if (name.EndsWith("GroundContactMaterial")) {
-        int8 num = Dev::GetOffsetInt8(State, offset);
-        value = Round(num) + " " + tostring(EPlugSurfaceMaterialId(num));
-    } else if (name.EndsWith("GroundContactEffect")) {
-        int8 num = Dev::GetOffsetInt8(State, offset);
-        value = Round(num) + " " + tostring(EPlugSurfaceGameplayId(num));
-    } else if (name.EndsWith("Falling")) {
-        int8 num = Dev::GetOffsetInt8(State, offset);
-        value = Round(num) + " " + tostring(FallingState(num));
-    } else {
-        switch (type) {
-            case DataType::Bool:   value = Round(    Dev::GetOffsetInt8  (State, offset) == 1); break;
-            case DataType::Int8:   value = Round(    Dev::GetOffsetInt8  (State, offset));      break;
-            case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8 (State, offset));      break;
-            case DataType::Int16:  value = Round(    Dev::GetOffsetInt16 (State, offset));      break;
-            case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(State, offset));      break;
-            case DataType::Int32:  value = Round(    Dev::GetOffsetInt32 (State, offset));      break;
-            case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(State, offset));      break;
-            case DataType::Int64:  value = Round(    Dev::GetOffsetInt64 (State, offset));      break;
-            case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(State, offset));      break;
-            case DataType::Float:  value = Round(    Dev::GetOffsetFloat (State, offset));      break;
-            case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2  (State, offset));      break;
-            case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3  (State, offset));      break;
-            case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4  (State, offset));      break;
-            case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4  (State, offset));      break;
-            default:;
+    values.InsertLast({"ZonePath",                        "WString", string(   User.ZonePath)});
+
+    if (UI::BeginTable("##user-api-value-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+        UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+        UI::TableSetupScrollFreeze(0, 1);
+        UI::TableSetupColumn("Variable", UI::TableColumnFlags::WidthFixed, 280.0f);
+        UI::TableSetupColumn("Type",     UI::TableColumnFlags::WidthFixed, 90.0f);
+        UI::TableSetupColumn("Value");
+        UI::TableHeadersRow();
+
+        UI::ListClipper clipper(values.Length);
+        while (clipper.Step()) {
+            for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                UI::TableNextRow();
+                UI::TableNextColumn(); UI::Text(values[i][0]);
+                UI::TableNextColumn(); UI::Text(values[i][1]);
+                UI::TableNextColumn(); UI::Text(values[i][2]);
+            }
         }
-    }
 
-    return { tostring(offset), IntToHex(offset), (known ? "" : YELLOW) + name, tostring(type), value };
+        UI::PopStyleColor();
+        UI::EndTable();
+    }
 }
 
-string[] NodOffsetValue(CMwNod@ Nod, int offset, const string &in name, DataType type, bool known = true) {
-    string value;
-
-    switch (type) {
-        case DataType::Bool:   value = Round(    Dev::GetOffsetInt8  (Nod, offset) == 1); break;
-        case DataType::Int8:   value = Round(    Dev::GetOffsetInt8  (Nod, offset));      break;
-        case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8 (Nod, offset));      break;
-        case DataType::Int16:  value = Round(    Dev::GetOffsetInt16 (Nod, offset));      break;
-        case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(Nod, offset));      break;
-        case DataType::Int32:  value = Round(    Dev::GetOffsetInt32 (Nod, offset));      break;
-        case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(Nod, offset));      break;
-        case DataType::Int64:  value = Round(    Dev::GetOffsetInt64 (Nod, offset));      break;
-        case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(Nod, offset));      break;
-        case DataType::Float:  value = Round(    Dev::GetOffsetFloat (Nod, offset));      break;
-        case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2  (Nod, offset));      break;
-        case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3  (Nod, offset));      break;
-        case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4  (Nod, offset));      break;
-        case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4  (Nod, offset));      break;
-        default:;
-    }
-
-    return { tostring(offset), IntToHex(offset), (known ? "" : YELLOW) + name, tostring(type), value };
+void RenderUserApiArrays(CTrackManiaPlayerInfo@ User) {
+    // values.InsertLast("", "", Round(User.AlliesConnected));
+    // values.InsertLast("", "", Round(User.Tags_Comments));
+    // values.InsertLast("", "", Round(User.Tags_Deliverer));
+    // values.InsertLast("", "", Round(User.Tags_Favored_Indices));
+    // values.InsertLast("", "", Round(User.Tags_Id));
+    // values.InsertLast("", "", Round(User.Tags_Type));
+    // values.InsertLast("", "", Round(User.ZoneIdPath));
 }
+
+void RenderUserOffsetValues(CTrackManiaPlayerInfo@ User) { }
+
+void RenderUserOffsets(CTrackManiaPlayerInfo@ User) { }
 
 #endif

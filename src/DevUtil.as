@@ -114,4 +114,87 @@ string RoundUint(uint num) {  // separate function else a uint gets converted to
     return (num == 0 ? WHITE : GREEN) + num;
 }
 
+string[] OffsetValue(CMwNod@ Nod, int offset, const string &in name, DataType type, bool known = true) {
+    string value;
+
+    switch (type) {
+        case DataType::Bool:   value = Round(    Dev::GetOffsetInt8  (Nod, offset) == 1); break;
+        case DataType::Int8:   value = Round(    Dev::GetOffsetInt8  (Nod, offset));      break;
+        case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8 (Nod, offset));      break;
+        case DataType::Int16:  value = Round(    Dev::GetOffsetInt16 (Nod, offset));      break;
+        case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(Nod, offset));      break;
+        case DataType::Int32:  value = Round(    Dev::GetOffsetInt32 (Nod, offset));      break;
+        case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(Nod, offset));      break;
+        case DataType::Int64:  value = Round(    Dev::GetOffsetInt64 (Nod, offset));      break;
+        case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(Nod, offset));      break;
+        case DataType::Float:  value = Round(    Dev::GetOffsetFloat (Nod, offset));      break;
+        case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2  (Nod, offset));      break;
+        case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3  (Nod, offset));      break;
+        case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4  (Nod, offset));      break;
+        case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4  (Nod, offset));      break;
+        default:;
+    }
+
+    return { tostring(offset), IntToHex(offset), (known ? "" : YELLOW) + name, tostring(type), value };
+}
+
+string[] OffsetValue(CSceneVehicleVis@ Vis, int offset, const string &in name, DataType type, bool known = true) {
+    string value;
+
+    switch (type) {
+        case DataType::Bool:   value = Round(    Dev::GetOffsetInt8  (Vis, offset) == 1); break;
+        case DataType::Int8:   value = Round(    Dev::GetOffsetInt8  (Vis, offset));      break;
+        case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8 (Vis, offset));      break;
+        case DataType::Int16:  value = Round(    Dev::GetOffsetInt16 (Vis, offset));      break;
+        case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(Vis, offset));      break;
+        case DataType::Int32:  value = Round(    Dev::GetOffsetInt32 (Vis, offset));      break;
+        case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(Vis, offset));      break;
+        case DataType::Int64:  value = Round(    Dev::GetOffsetInt64 (Vis, offset));      break;
+        case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(Vis, offset));      break;
+        case DataType::Float:  value = Round(    Dev::GetOffsetFloat (Vis, offset));      break;
+        case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2  (Vis, offset));      break;
+        case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3  (Vis, offset));      break;
+        case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4  (Vis, offset));      break;
+        case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4  (Vis, offset));      break;
+        default:;
+    }
+
+    return { tostring(offset), IntToHex(offset), (known ? "" : YELLOW) + name, tostring(type), value };
+}
+
+string[] OffsetValue(CSceneVehicleVisState@ State, int offset, const string &in name, DataType type, bool known = true) {
+    string value;
+
+    if (name.EndsWith("GroundContactMaterial")) {
+        int8 num = Dev::GetOffsetInt8(State, offset);
+        value = Round(num) + " " + tostring(EPlugSurfaceMaterialId(num));
+    } else if (name.EndsWith("GroundContactEffect")) {
+        int8 num = Dev::GetOffsetInt8(State, offset);
+        value = Round(num) + " " + tostring(EPlugSurfaceGameplayId(num));
+    } else if (name.EndsWith("Falling")) {
+        int8 num = Dev::GetOffsetInt8(State, offset);
+        value = Round(num) + " " + tostring(FallingState(num));
+    } else {
+        switch (type) {
+            case DataType::Bool:   value = Round(    Dev::GetOffsetInt8  (State, offset) == 1); break;
+            case DataType::Int8:   value = Round(    Dev::GetOffsetInt8  (State, offset));      break;
+            case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8 (State, offset));      break;
+            case DataType::Int16:  value = Round(    Dev::GetOffsetInt16 (State, offset));      break;
+            case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(State, offset));      break;
+            case DataType::Int32:  value = Round(    Dev::GetOffsetInt32 (State, offset));      break;
+            case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(State, offset));      break;
+            case DataType::Int64:  value = Round(    Dev::GetOffsetInt64 (State, offset));      break;
+            case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(State, offset));      break;
+            case DataType::Float:  value = Round(    Dev::GetOffsetFloat (State, offset));      break;
+            case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2  (State, offset));      break;
+            case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3  (State, offset));      break;
+            case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4  (State, offset));      break;
+            case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4  (State, offset));      break;
+            default:;
+        }
+    }
+
+    return { tostring(offset), IntToHex(offset), (known ? "" : YELLOW) + name, tostring(type), value };
+}
+
 #endif
