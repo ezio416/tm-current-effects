@@ -1,5 +1,5 @@
 // c 2023-05-04
-// m 2024-01-05
+// m 2024-01-12
 
 bool   alwaysSnow    = false;  // to change when starting as CarSnow is no longer broken
 string loginLocal    = GetLocalLogin();
@@ -44,8 +44,12 @@ void Render() {
         font is null ||
         (S_HideWithGame && !UI::IsGameUIVisible()) ||
         (S_HideWithOP && !UI::IsOverlayShown())
-    )
+    ) {
+        reactorLevel = 0;
+        reactorType = 0;
+        turbo = 0;
         return;
+    }
 
     CTrackMania@ App = cast<CTrackMania@>(GetApp());
 
