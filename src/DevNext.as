@@ -169,7 +169,7 @@ void RenderVisApiValues(CSceneVehicleVis@ Vis) {
 
 void RenderVisOffsetValues(CSceneVehicleVis@ Vis) {
     UI::TextWrapped("Variables marked " + YELLOW + "yellow\\$G have been observed but are uncertain.");
-    UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
+    UI::TextWrapped("Values marked white are 0/enums/strings, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
 
     string[][] values;
     values.InsertLast(OffsetValue(Vis, 0,   "VehicleId",            DataType::Int32));
@@ -257,7 +257,7 @@ void RenderVisOffsetValues(CSceneVehicleVis@ Vis) {
 void RenderVisOffsets(CSceneVehicleVis@ Vis) {
     UI::TextWrapped("If you go much further than a few thousand, there is a small, but non-zero chance your game could crash.");
     UI::TextWrapped("Offsets marked white are known, " + YELLOW + "yellow\\$G are somewhat known, and " + RED + "red\\$G are unknown.");
-    UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
+    UI::TextWrapped("Values marked white are 0/enums/strings, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
 
     if (UI::BeginTable("##vis-offset-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
@@ -390,7 +390,7 @@ void Tab_State() {
 
 void RenderStateApiValues(CSceneVehicleVisState@ State) {
     UI::TextWrapped("Variables marked " + CYAN + "cyan\\$G are from the VehicleState plugin.");
-    UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
+    UI::TextWrapped("Values marked white are 0/enums/strings, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
 
     string[][] values;
     values.InsertLast({"AirBrakeNormed",           "Float",   Round(    State.AirBrakeNormed)});
@@ -501,7 +501,7 @@ void RenderStateApiValues(CSceneVehicleVisState@ State) {
 
 void RenderStateOffsetValues(CSceneVehicleVisState@ State) {
     UI::TextWrapped("Variables marked " + YELLOW + "yellow\\$G have been observed but are uncertain.");
-    UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
+    UI::TextWrapped("Values marked white are 0/enums/strings, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
 
     string[][] values;
     values.InsertLast(OffsetValue(State, 0,   "VehicleId",               DataType::Int32));
@@ -635,7 +635,7 @@ void RenderStateOffsetValues(CSceneVehicleVisState@ State) {
 void RenderStateOffsets(CSceneVehicleVisState@ State) {
     UI::TextWrapped("If you go much further than a few thousand, there is a small, but non-zero chance your game could crash.");
     UI::TextWrapped("Offsets marked white are known, " + YELLOW + "yellow\\$G are somewhat known, and " + RED + "red\\$G are unknown.");
-    UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
+    UI::TextWrapped("Values marked white are 0/enums/strings, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
 
     if (UI::BeginTable("##state-offset-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
@@ -769,7 +769,7 @@ void Tab_Player() {
 }
 
 void RenderPlayerApiValues(CSmPlayer@ Player) {
-    UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
+    UI::TextWrapped("Values marked white are 0/enums/strings, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
 
     string[][] values;
     values.InsertLast({"CurrentLaunchedRespawnLandmarkIndex",   "Uint32", RoundUint(Player.CurrentLaunchedRespawnLandmarkIndex)});
@@ -906,7 +906,7 @@ void Tab_Score() {
 }
 
 void RenderScoreApiValues(CSmArenaScore@ Score) {
-    UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
+    UI::TextWrapped("Values marked white are 0/enums/strings, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
 
     string[][] values;
     values.InsertLast({"DamageInflicted",            "Uint32", RoundUint(Score.DamageInflicted)});
@@ -955,7 +955,7 @@ void RenderScoreApiValues(CSmArenaScore@ Score) {
 
 void RenderScoreApiArrays(CSmArenaScore@ Score) {
     UI::TextWrapped("These arrays of type " + ORANGE + "MsWArray<uint>\\$G don't actually seem to populate from my testing.");
-    UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
+    UI::TextWrapped("Values marked white are 0/enums/strings, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
 
     UI::BeginTabBar("##score-api-arrays");
         if (UI::BeginTabItem("BestLapTimes")) {
@@ -1151,7 +1151,7 @@ void Tab_Script() {
 
 void RenderScriptApiValues(CSmScriptPlayer@ Script) {
     UI::TextWrapped("Most things here are remnants from Shootmania and serve no purpose in Trackmania.");
-    UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true/valid, and " + RED + "red\\$G are negative/false/null/empty.");
+    UI::TextWrapped("Values marked white are 0/enums/strings, " + GREEN + " green\\$G are positive/true/valid, and " + RED + "red\\$G are negative/false/null/empty.");
 
     string[][] values;
     values.InsertLast({"AccelCoef",                    "Float",   Round(    Script.AccelCoef)});
@@ -1303,7 +1303,7 @@ void RenderScriptApiValues(CSmScriptPlayer@ Script) {
 
 void RenderScriptApiArrays(CSmScriptPlayer@ Script) {
     UI::TextWrapped("These arrays of type " + ORANGE + "MwFastBuffer<uint>\\$G don't actually seem to populate from my testing.");
-    UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
+    UI::TextWrapped("Values marked white are 0/enums/strings, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
 
     UI::BeginTabBar("##script-api-arrays");
         if (UI::BeginTabItem("CurrentLapWaypointTimes")) {
@@ -1498,7 +1498,7 @@ void Tab_User() {
 }
 
 void RenderUserApiValues(CTrackManiaPlayerInfo@ User) {
-    UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
+    UI::TextWrapped("Values marked white are 0/enums/strings, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
 
     string[][] values;
     values.InsertLast({"AvatarDisplayName",               "WString", string(   User.AvatarDisplayName)});
@@ -1638,13 +1638,13 @@ void RenderUserApiValues(CTrackManiaPlayerInfo@ User) {
 }
 
 void RenderUserApiArrays(CTrackManiaPlayerInfo@ User) {
-    // values.InsertLast("", "", Round(User.AlliesConnected));
-    // values.InsertLast("", "", Round(User.Tags_Comments));
-    // values.InsertLast("", "", Round(User.Tags_Deliverer));
-    // values.InsertLast("", "", Round(User.Tags_Favored_Indices));
-    // values.InsertLast("", "", Round(User.Tags_Id));
-    // values.InsertLast("", "", Round(User.Tags_Type));
-    // values.InsertLast("", "", Round(User.ZoneIdPath));
+    // User.AlliesConnected
+    // User.Tags_Comments
+    // User.Tags_Deliverer
+    // User.Tags_Favored_Indices
+    // User.Tags_Id
+    // User.Tags_Type
+    // User.ZoneIdPath
 }
 
 void RenderUserOffsetValues(CTrackManiaPlayerInfo@ User) { }
