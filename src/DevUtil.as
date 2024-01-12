@@ -71,6 +71,10 @@ enum TurboState {
     ReplayTrue  = 29
 }
 
+void HelpTextPosNeg() {
+    UI::TextWrapped("Values marked white are 0/enums/strings, " + GREEN + " green\\$G are positive/true/valid, and " + RED + "red\\$G are negative/false/null/empty.");
+}
+
 string IntToHex(int i) {
     return "0x" + Text::Format("%X", i);
 }
