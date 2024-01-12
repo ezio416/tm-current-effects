@@ -147,6 +147,7 @@ void Tab_Vis() {
 
 void RenderVisApiValues(CSceneVehicleVis@ Vis) {
     HelpTextPosNeg();
+    HelpTextClickCopy();
 
     if (UI::BeginTable("##vis-api-value-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
@@ -160,7 +161,11 @@ void RenderVisApiValues(CSceneVehicleVis@ Vis) {
         UI::TableNextRow();
         UI::TableNextColumn(); UI::Text("Turbo");
         UI::TableNextColumn(); UI::Text("Float");
-        UI::TableNextColumn(); UI::Text(Round(Vis.Turbo));
+
+        string value = Round(Vis.Turbo);
+        UI::TableNextColumn();
+        if (UI::Selectable(value, false))
+            IO::SetClipboard(value);
 
         UI::PopStyleColor();
         UI::EndTable();
@@ -170,6 +175,7 @@ void RenderVisApiValues(CSceneVehicleVis@ Vis) {
 void RenderVisOffsetValues(CSceneVehicleVis@ Vis) {
     UI::TextWrapped("Variables marked " + YELLOW + "yellow\\$G have been observed but are uncertain.");
     HelpTextPosNeg();
+    HelpTextClickCopy();
 
     string[][] values;
     values.InsertLast(OffsetValue(Vis, 0,   "VehicleId",            DataType::Int32));
@@ -245,7 +251,10 @@ void RenderVisOffsetValues(CSceneVehicleVis@ Vis) {
                 UI::TableNextColumn(); UI::Text(values[i][1]);
                 UI::TableNextColumn(); UI::Text(values[i][2]);
                 UI::TableNextColumn(); UI::Text(values[i][3]);
-                UI::TableNextColumn(); UI::Text(values[i][4]);
+
+                UI::TableNextColumn();
+                if (UI::Selectable(values[i][4], false))
+                    IO::SetClipboard(values[i][4]);
             }
         }
 
@@ -258,6 +267,7 @@ void RenderVisOffsets(CSceneVehicleVis@ Vis) {
     UI::TextWrapped("If you go much further than a few thousand, there is a small, but non-zero chance your game could crash.");
     UI::TextWrapped("Offsets marked white are known, " + YELLOW + "yellow\\$G are somewhat known, and " + RED + "red\\$G are unknown.");
     HelpTextPosNeg();
+    HelpTextClickCopy();
 
     if (UI::BeginTable("##vis-offset-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
@@ -281,28 +291,31 @@ void RenderVisOffsets(CSceneVehicleVis@ Vis) {
                 UI::TableNextColumn();
                 UI::Text(color + IntToHex(offset));
 
-                UI::TableNextColumn();
+                string value;
                 try {
                     switch (S_OffsetType) {
-                        case DataType::Bool:   UI::Text(Round(    Dev::GetOffsetInt8(  Vis, offset) == 1)); break;
-                        case DataType::Int8:   UI::Text(Round(    Dev::GetOffsetInt8(  Vis, offset)));      break;
-                        case DataType::Uint8:  UI::Text(RoundUint(Dev::GetOffsetUint8( Vis, offset)));      break;
-                        case DataType::Int16:  UI::Text(Round(    Dev::GetOffsetInt16( Vis, offset)));      break;
-                        case DataType::Uint16: UI::Text(RoundUint(Dev::GetOffsetUint16(Vis, offset)));      break;
-                        case DataType::Int32:  UI::Text(Round(    Dev::GetOffsetInt32( Vis, offset)));      break;
-                        case DataType::Uint32: UI::Text(RoundUint(Dev::GetOffsetUint32(Vis, offset)));      break;
-                        case DataType::Int64:  UI::Text(Round(    Dev::GetOffsetInt64( Vis, offset)));      break;
-                        case DataType::Uint64: UI::Text(RoundUint(Dev::GetOffsetUint64(Vis, offset)));      break;
-                        case DataType::Float:  UI::Text(Round(    Dev::GetOffsetFloat( Vis, offset)));      break;
-                        case DataType::Vec2:   UI::Text(Round(    Dev::GetOffsetVec2(  Vis, offset)));      break;
-                        case DataType::Vec3:   UI::Text(Round(    Dev::GetOffsetVec3(  Vis, offset)));      break;
-                        case DataType::Vec4:   UI::Text(Round(    Dev::GetOffsetVec4(  Vis, offset)));      break;
-                        case DataType::Iso4:   UI::Text(Round(    Dev::GetOffsetIso4(  Vis, offset)));      break;
-                        default:               UI::Text("Unsupported!");
+                        case DataType::Bool:   value = Round(    Dev::GetOffsetInt8(  Vis, offset) == 1); break;
+                        case DataType::Int8:   value = Round(    Dev::GetOffsetInt8(  Vis, offset));      break;
+                        case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8( Vis, offset));      break;
+                        case DataType::Int16:  value = Round(    Dev::GetOffsetInt16( Vis, offset));      break;
+                        case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(Vis, offset));      break;
+                        case DataType::Int32:  value = Round(    Dev::GetOffsetInt32( Vis, offset));      break;
+                        case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(Vis, offset));      break;
+                        case DataType::Int64:  value = Round(    Dev::GetOffsetInt64( Vis, offset));      break;
+                        case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(Vis, offset));      break;
+                        case DataType::Float:  value = Round(    Dev::GetOffsetFloat( Vis, offset));      break;
+                        case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2(  Vis, offset));      break;
+                        case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3(  Vis, offset));      break;
+                        case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4(  Vis, offset));      break;
+                        case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4(  Vis, offset));      break;
+                        default:               value = "Unsupported!";
                     }
                 } catch {
-                    UI::Text(YELLOW + getExceptionInfo());
+                    value = YELLOW + getExceptionInfo();
                 }
+                UI::TableNextColumn();
+                if (UI::Selectable(value, false))
+                    IO::SetClipboard(value);
             }
         }
     }
@@ -391,11 +404,12 @@ void Tab_State() {
 void RenderStateApiValues(CSceneVehicleVisState@ State) {
     UI::TextWrapped("Variables marked " + CYAN + "cyan\\$G are from the VehicleState plugin.");
     HelpTextPosNeg();
+    HelpTextClickCopy();
 
     string[][] values;
     values.InsertLast({"AirBrakeNormed",           "Float",   Round(    State.AirBrakeNormed)});
     values.InsertLast({"BulletTimeNormed",         "Float",   Round(    State.BulletTimeNormed)});
-    values.InsertLast({"CamGrpStates",             "Unknown", "unknown new type"});
+    values.InsertLast({"CamGrpStates",             "???",     RED + "unknown new type"});
     values.InsertLast({"CurGear",                  "Uint32",  RoundUint(State.CurGear)});
     values.InsertLast({"Dir",                      "Vec3",    Round(    State.Dir)});
     values.InsertLast({"DiscontinuityCount",       "Uint8",   RoundUint(State.DiscontinuityCount)});
@@ -490,7 +504,10 @@ void RenderStateApiValues(CSceneVehicleVisState@ State) {
                 UI::TableNextRow();
                 UI::TableNextColumn(); UI::Text(values[i][0]);
                 UI::TableNextColumn(); UI::Text(values[i][1]);
-                UI::TableNextColumn(); UI::Text(values[i][2]);
+
+                UI::TableNextColumn();
+                if (UI::Selectable(values[i][2], false))
+                    IO::SetClipboard(values[i][2]);
             }
         }
 
@@ -502,6 +519,7 @@ void RenderStateApiValues(CSceneVehicleVisState@ State) {
 void RenderStateOffsetValues(CSceneVehicleVisState@ State) {
     UI::TextWrapped("Variables marked " + YELLOW + "yellow\\$G have been observed but are uncertain.");
     HelpTextPosNeg();
+    HelpTextClickCopy();
 
     string[][] values;
     values.InsertLast(OffsetValue(State, 0,   "VehicleId",               DataType::Int32));
@@ -623,7 +641,10 @@ void RenderStateOffsetValues(CSceneVehicleVisState@ State) {
                 UI::TableNextColumn(); UI::Text(values[i][1]);
                 UI::TableNextColumn(); UI::Text(values[i][2]);
                 UI::TableNextColumn(); UI::Text(values[i][3]);
-                UI::TableNextColumn(); UI::Text(values[i][4]);
+
+                UI::TableNextColumn();
+                if (UI::Selectable(values[i][4], false))
+                    IO::SetClipboard(values[i][4]);
             }
         }
 
@@ -636,6 +657,7 @@ void RenderStateOffsets(CSceneVehicleVisState@ State) {
     UI::TextWrapped("If you go much further than a few thousand, there is a small, but non-zero chance your game could crash.");
     UI::TextWrapped("Offsets marked white are known, " + YELLOW + "yellow\\$G are somewhat known, and " + RED + "red\\$G are unknown.");
     HelpTextPosNeg();
+    HelpTextClickCopy();
 
     if (UI::BeginTable("##state-offset-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
@@ -659,28 +681,31 @@ void RenderStateOffsets(CSceneVehicleVisState@ State) {
                 UI::TableNextColumn();
                 UI::Text(color + IntToHex(offset));
 
-                UI::TableNextColumn();
+                string value;
                 try {
                     switch (S_OffsetType) {
-                        case DataType::Bool:   UI::Text(Round(    Dev::GetOffsetInt8(  State, offset) == 1)); break;
-                        case DataType::Int8:   UI::Text(Round(    Dev::GetOffsetInt8(  State, offset)));      break;
-                        case DataType::Uint8:  UI::Text(RoundUint(Dev::GetOffsetUint8( State, offset)));      break;
-                        case DataType::Int16:  UI::Text(Round(    Dev::GetOffsetInt16( State, offset)));      break;
-                        case DataType::Uint16: UI::Text(RoundUint(Dev::GetOffsetUint16(State, offset)));      break;
-                        case DataType::Int32:  UI::Text(Round(    Dev::GetOffsetInt32( State, offset)));      break;
-                        case DataType::Uint32: UI::Text(RoundUint(Dev::GetOffsetUint32(State, offset)));      break;
-                        case DataType::Int64:  UI::Text(Round(    Dev::GetOffsetInt64( State, offset)));      break;
-                        case DataType::Uint64: UI::Text(RoundUint(Dev::GetOffsetUint64(State, offset)));      break;
-                        case DataType::Float:  UI::Text(Round(    Dev::GetOffsetFloat( State, offset)));      break;
-                        case DataType::Vec2:   UI::Text(Round(    Dev::GetOffsetVec2(  State, offset)));      break;
-                        case DataType::Vec3:   UI::Text(Round(    Dev::GetOffsetVec3(  State, offset)));      break;
-                        case DataType::Vec4:   UI::Text(Round(    Dev::GetOffsetVec4(  State, offset)));      break;
-                        case DataType::Iso4:   UI::Text(Round(    Dev::GetOffsetIso4(  State, offset)));      break;
-                        default:               UI::Text("Unsupported!");
+                        case DataType::Bool:   value = Round(    Dev::GetOffsetInt8(  State, offset) == 1); break;
+                        case DataType::Int8:   value = Round(    Dev::GetOffsetInt8(  State, offset));      break;
+                        case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8( State, offset));      break;
+                        case DataType::Int16:  value = Round(    Dev::GetOffsetInt16( State, offset));      break;
+                        case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(State, offset));      break;
+                        case DataType::Int32:  value = Round(    Dev::GetOffsetInt32( State, offset));      break;
+                        case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(State, offset));      break;
+                        case DataType::Int64:  value = Round(    Dev::GetOffsetInt64( State, offset));      break;
+                        case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(State, offset));      break;
+                        case DataType::Float:  value = Round(    Dev::GetOffsetFloat( State, offset));      break;
+                        case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2(  State, offset));      break;
+                        case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3(  State, offset));      break;
+                        case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4(  State, offset));      break;
+                        case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4(  State, offset));      break;
+                        default:               value = "Unsupported!";
                     }
                 } catch {
                     UI::Text(YELLOW + getExceptionInfo());
                 }
+                UI::TableNextColumn();
+                if (UI::Selectable(value, false))
+                    IO::SetClipboard(value);
             }
         }
     }
@@ -770,6 +795,7 @@ void Tab_Player() {
 
 void RenderPlayerApiValues(CSmPlayer@ Player) {
     HelpTextPosNeg();
+    HelpTextClickCopy();
 
     string[][] values;
     values.InsertLast({"CurrentLaunchedRespawnLandmarkIndex",   "Uint32", RoundUint(Player.CurrentLaunchedRespawnLandmarkIndex)});
@@ -808,7 +834,10 @@ void RenderPlayerApiValues(CSmPlayer@ Player) {
                 UI::TableNextRow();
                 UI::TableNextColumn(); UI::Text(values[i][0]);
                 UI::TableNextColumn(); UI::Text(values[i][1]);
-                UI::TableNextColumn(); UI::Text(values[i][2]);
+
+                UI::TableNextColumn();
+                if (UI::Selectable(values[i][2], false))
+                    IO::SetClipboard(values[i][2]);
             }
         }
 
@@ -907,6 +936,7 @@ void Tab_Score() {
 
 void RenderScoreApiValues(CSmArenaScore@ Score) {
     HelpTextPosNeg();
+    HelpTextClickCopy();
 
     string[][] values;
     values.InsertLast({"DamageInflicted",            "Uint32", RoundUint(Score.DamageInflicted)});
@@ -944,7 +974,10 @@ void RenderScoreApiValues(CSmArenaScore@ Score) {
                 UI::TableNextRow();
                 UI::TableNextColumn(); UI::Text(values[i][0]);
                 UI::TableNextColumn(); UI::Text(values[i][1]);
-                UI::TableNextColumn(); UI::Text(values[i][2]);
+
+                UI::TableNextColumn();
+                if (UI::Selectable(values[i][2], false))
+                    IO::SetClipboard(values[i][2]);
             }
         }
 
@@ -956,6 +989,7 @@ void RenderScoreApiValues(CSmArenaScore@ Score) {
 void RenderScoreApiArrays(CSmArenaScore@ Score) {
     UI::TextWrapped("These arrays of type " + ORANGE + "MsWArray<uint>\\$G don't actually seem to populate from my testing.");
     HelpTextPosNeg();
+    HelpTextClickCopy();
 
     UI::BeginTabBar("##score-api-arrays");
         if (UI::BeginTabItem("BestLapTimes")) {
@@ -973,8 +1007,16 @@ void RenderScoreApiArrays(CSmArenaScore@ Score) {
                     for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
                         UI::TableNextRow();
                         UI::TableNextColumn(); UI::Text(tostring(i));
-                        UI::TableNextColumn(); UI::Text(tostring(Score.BestLapTimes[i]));
-                        UI::TableNextColumn(); UI::Text(Time::Format(Score.BestLapTimes[i]));
+
+                        string value = tostring(Score.BestLapTimes[i]);
+                        UI::TableNextColumn();
+                        if (UI::Selectable(value, false))
+                            IO::SetClipboard(value);
+
+                        value = Time::Format(Score.BestLapTimes[i]);
+                        UI::TableNextColumn();
+                        if (UI::Selectable(value, false))
+                            IO::SetClipboard(value);
                     }
                 }
 
@@ -998,8 +1040,16 @@ void RenderScoreApiArrays(CSmArenaScore@ Score) {
                     for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
                         UI::TableNextRow();
                         UI::TableNextColumn(); UI::Text(tostring(i));
-                        UI::TableNextColumn(); UI::Text(tostring(Score.BestRaceTimes[i]));
-                        UI::TableNextColumn(); UI::Text(Time::Format(Score.BestRaceTimes[i]));
+
+                        string value = tostring(Score.BestRaceTimes[i]);
+                        UI::TableNextColumn();
+                        if (UI::Selectable(value, false))
+                            IO::SetClipboard(value);
+
+                        value = Time::Format(Score.BestRaceTimes[i]);
+                        UI::TableNextColumn();
+                        if (UI::Selectable(value, false))
+                            IO::SetClipboard(value);
                     }
                 }
 
@@ -1023,8 +1073,16 @@ void RenderScoreApiArrays(CSmArenaScore@ Score) {
                     for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
                         UI::TableNextRow();
                         UI::TableNextColumn(); UI::Text(tostring(i));
-                        UI::TableNextColumn(); UI::Text(tostring(Score.PrevLapTimes[i]));
-                        UI::TableNextColumn(); UI::Text(Time::Format(Score.PrevLapTimes[i]));
+
+                        string value = tostring(Score.PrevLapTimes[i]);
+                        UI::TableNextColumn();
+                        if (UI::Selectable(value, false))
+                            IO::SetClipboard(value);
+
+                        value = Time::Format(Score.PrevLapTimes[i]);
+                        UI::TableNextColumn();
+                        if (UI::Selectable(value, false))
+                            IO::SetClipboard(value);
                     }
                 }
 
@@ -1048,8 +1106,16 @@ void RenderScoreApiArrays(CSmArenaScore@ Score) {
                     for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
                         UI::TableNextRow();
                         UI::TableNextColumn(); UI::Text(tostring(i));
-                        UI::TableNextColumn(); UI::Text(tostring(Score.PrevRaceTimes[i]));
-                        UI::TableNextColumn(); UI::Text(Time::Format(Score.PrevRaceTimes[i]));
+
+                        string value = tostring(Score.PrevRaceTimes[i]);
+                        UI::TableNextColumn();
+                        if (UI::Selectable(value, false))
+                            IO::SetClipboard(value);
+
+                        value = Time::Format(Score.PrevRaceTimes[i]);
+                        UI::TableNextColumn();
+                        if (UI::Selectable(value, false))
+                            IO::SetClipboard(value);
                     }
                 }
 
@@ -1152,6 +1218,7 @@ void Tab_Script() {
 void RenderScriptApiValues(CSmScriptPlayer@ Script) {
     UI::TextWrapped("Most things here are remnants from Shootmania and serve no purpose in Trackmania.");
     HelpTextPosNeg();
+    HelpTextClickCopy();
 
     string[][] values;
     values.InsertLast({"AccelCoef",                    "Float",   Round(    Script.AccelCoef)});
@@ -1292,7 +1359,10 @@ void RenderScriptApiValues(CSmScriptPlayer@ Script) {
                 UI::TableNextRow();
                 UI::TableNextColumn(); UI::Text(values[i][0]);
                 UI::TableNextColumn(); UI::Text(values[i][1]);
-                UI::TableNextColumn(); UI::Text(values[i][2]);
+
+                UI::TableNextColumn();
+                if (UI::Selectable(values[i][2], false))
+                    IO::SetClipboard(values[i][2]);
             }
         }
 
@@ -1304,6 +1374,7 @@ void RenderScriptApiValues(CSmScriptPlayer@ Script) {
 void RenderScriptApiArrays(CSmScriptPlayer@ Script) {
     UI::TextWrapped("These arrays of type " + ORANGE + "MwFastBuffer<uint>\\$G don't actually seem to populate from my testing.");
     HelpTextPosNeg();
+    HelpTextClickCopy();
 
     UI::BeginTabBar("##script-api-arrays");
         if (UI::BeginTabItem("CurrentLapWaypointTimes")) {
@@ -1321,8 +1392,16 @@ void RenderScriptApiArrays(CSmScriptPlayer@ Script) {
                     for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
                         UI::TableNextRow();
                         UI::TableNextColumn(); UI::Text(tostring(i));
-                        UI::TableNextColumn(); UI::Text(tostring(Script.CurrentLapWaypointTimes[i]));
-                        UI::TableNextColumn(); UI::Text(Time::Format(Script.CurrentLapWaypointTimes[i]));
+
+                        string value = tostring(Script.CurrentLapWaypointTimes[i]);
+                        UI::TableNextColumn();
+                        if (UI::Selectable(value, false))
+                            IO::SetClipboard(value);
+
+                        value = Time::Format(Script.CurrentLapWaypointTimes[i]);
+                        UI::TableNextColumn();
+                        if (UI::Selectable(value, false))
+                            IO::SetClipboard(value);
                     }
                 }
 
@@ -1346,8 +1425,16 @@ void RenderScriptApiArrays(CSmScriptPlayer@ Script) {
                     for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
                         UI::TableNextRow();
                         UI::TableNextColumn(); UI::Text(tostring(i));
-                        UI::TableNextColumn(); UI::Text(tostring(Script.LapWaypointTimes[i]));
-                        UI::TableNextColumn(); UI::Text(Time::Format(Script.LapWaypointTimes[i]));
+
+                        string value = tostring(Script.LapWaypointTimes[i]);
+                        UI::TableNextColumn();
+                        if (UI::Selectable(value, false))
+                            IO::SetClipboard(value);
+
+                        value = Time::Format(Script.LapWaypointTimes[i]);
+                        UI::TableNextColumn();
+                        if (UI::Selectable(value, false))
+                            IO::SetClipboard(value);
                     }
                 }
 
@@ -1371,8 +1458,16 @@ void RenderScriptApiArrays(CSmScriptPlayer@ Script) {
                     for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
                         UI::TableNextRow();
                         UI::TableNextColumn(); UI::Text(tostring(i));
-                        UI::TableNextColumn(); UI::Text(tostring(Script.PreviousLapWaypointTimes[i]));
-                        UI::TableNextColumn(); UI::Text(Time::Format(Script.PreviousLapWaypointTimes[i]));
+
+                        string value = tostring(Script.PreviousLapWaypointTimes[i]);
+                        UI::TableNextColumn();
+                        if (UI::Selectable(value, false))
+                            IO::SetClipboard(value);
+
+                        value = Time::Format(Script.PreviousLapWaypointTimes[i]);
+                        UI::TableNextColumn();
+                        if (UI::Selectable(value, false))
+                            IO::SetClipboard(value);
                     }
                 }
 
@@ -1396,8 +1491,16 @@ void RenderScriptApiArrays(CSmScriptPlayer@ Script) {
                     for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
                         UI::TableNextRow();
                         UI::TableNextColumn(); UI::Text(tostring(i));
-                        UI::TableNextColumn(); UI::Text(tostring(Script.RaceWaypointTimes[i]));
-                        UI::TableNextColumn(); UI::Text(Time::Format(Script.RaceWaypointTimes[i]));
+
+                        string value = tostring(Script.RaceWaypointTimes[i]);
+                        UI::TableNextColumn();
+                        if (UI::Selectable(value, false))
+                            IO::SetClipboard(value);
+
+                        value = Time::Format(Script.RaceWaypointTimes[i]);
+                        UI::TableNextColumn();
+                        if (UI::Selectable(value, false))
+                            IO::SetClipboard(value);
                     }
                 }
 
@@ -1499,6 +1602,7 @@ void Tab_User() {
 
 void RenderUserApiValues(CTrackManiaPlayerInfo@ User) {
     HelpTextPosNeg();
+    HelpTextClickCopy();
 
     string[][] values;
     values.InsertLast({"AvatarDisplayName",               "WString", string(   User.AvatarDisplayName)});
@@ -1628,7 +1732,10 @@ void RenderUserApiValues(CTrackManiaPlayerInfo@ User) {
                 UI::TableNextRow();
                 UI::TableNextColumn(); UI::Text(values[i][0]);
                 UI::TableNextColumn(); UI::Text(values[i][1]);
-                UI::TableNextColumn(); UI::Text(values[i][2]);
+
+                UI::TableNextColumn();
+                if (UI::Selectable(values[i][2], false))
+                    IO::SetClipboard(values[i][2]);
             }
         }
 

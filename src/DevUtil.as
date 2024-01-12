@@ -71,6 +71,10 @@ enum TurboState {
     ReplayTrue  = 29
 }
 
+void HelpTextClickCopy() {
+    UI::TextWrapped("Click on any value to copy it to your clipboard.");
+}
+
 void HelpTextPosNeg() {
     UI::TextWrapped("Values marked white are 0/enums/strings, " + GREEN + " green\\$G are positive/true/valid, and " + RED + "red\\$G are negative/false/null/empty.");
 }
