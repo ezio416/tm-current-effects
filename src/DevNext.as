@@ -702,19 +702,6 @@ void Tab_Player() {
         return;
     }
 
-    if (Playground.GameTerminals.Length == 0) {
-        UI::Text(RED + "no GameTerminals");
-        UI::EndTabItem();
-        return;
-    }
-
-    CSmPlayer@ MyPlayer = cast<CSmPlayer@>(Playground.GameTerminals[0].GUIPlayer);
-    if (MyPlayer is null) {
-        UI::Text(RED + "null MyPlayer");
-        UI::EndTabItem();
-        return;
-    }
-
     CSmArena@ Arena = Playground.Arena;
     if (Arena is null) {
         UI::Text(RED + "null Arena");
@@ -722,13 +709,26 @@ void Tab_Player() {
         return;
     }
 
+    if (Playground.GameTerminals.Length == 0) {
+        UI::Text(RED + "no GameTerminals");
+        UI::EndTabItem();
+        return;
+    }
+
+    CSmPlayer@ GUIPlayer = cast<CSmPlayer@>(Playground.GameTerminals[0].GUIPlayer);
+    if (GUIPlayer is null) {
+        UI::Text(RED + "null GUIPlayer");
+        UI::EndTabItem();
+        return;
+    }
+
     MwFastBuffer<CSmPlayer@> Players;
-    Players.Add(MyPlayer);
+    Players.Add(GUIPlayer);
 
     for (uint i = 0; i < Arena.Players.Length; i++)
         Players.Add(Arena.Players[i]);
 
-    UI::TextWrapped(ORANGE + "CSmPlayer\\$Gs can be found at " + ORANGE + "App.CurrentPlayground.Arena.Players\\$G.");
+    UI::TextWrapped(ORANGE + "CSmPlayer\\$Gs can be found at " + ORANGE + "App.CurrentPlayground.Players\\$G and " + ORANGE + "App.CurrentPlayground.Arena.Players\\$G.");
     UI::TextWrapped("The current player (self) can also be found at " + ORANGE + "App.CurrentPlayground.GameTerminals[0].{ControlledPlayer/GUIPlayer}\\$G.");
     UI::TextWrapped("This tab is mainly only for values that have not been found directly in its sub-objects, or are in different locations.");
 
@@ -838,19 +838,6 @@ void Tab_Score() {
         return;
     }
 
-    if (Playground.GameTerminals.Length == 0) {
-        UI::Text(RED + "no GameTerminals");
-        UI::EndTabItem();
-        return;
-    }
-
-    CSmPlayer@ MyPlayer = cast<CSmPlayer@>(Playground.GameTerminals[0].GUIPlayer);
-    if (MyPlayer is null) {
-        UI::Text(RED + "null MyPlayer");
-        UI::EndTabItem();
-        return;
-    }
-
     CSmArena@ Arena = Playground.Arena;
     if (Arena is null) {
         UI::Text(RED + "null Arena");
@@ -858,8 +845,21 @@ void Tab_Score() {
         return;
     }
 
+    if (Playground.GameTerminals.Length == 0) {
+        UI::Text(RED + "no GameTerminals");
+        UI::EndTabItem();
+        return;
+    }
+
+    CSmPlayer@ GUIPlayer = cast<CSmPlayer@>(Playground.GameTerminals[0].GUIPlayer);
+    if (GUIPlayer is null) {
+        UI::Text(RED + "null GUIPlayer");
+        UI::EndTabItem();
+        return;
+    }
+
     MwFastBuffer<CSmPlayer@> Players;
-    Players.Add(MyPlayer);
+    Players.Add(GUIPlayer);
 
     for (uint i = 0; i < Arena.Players.Length; i++)
         Players.Add(Arena.Players[i]);
@@ -875,6 +875,13 @@ void Tab_Score() {
 
                 if (UI::BeginTabItem("API Values")) {
                     try   { RenderScoreApiValues(Player.Score); }
+                    catch { UI::Text("error: " + getExceptionInfo()); }
+
+                    UI::EndTabItem();
+                }
+
+                if (UI::BeginTabItem("API Arrays")) {
+                    try   { RenderScoreApiArrays(Player.Score); }
                     catch { UI::Text("error: " + getExceptionInfo()); }
 
                     UI::EndTabItem();
@@ -925,10 +932,6 @@ void RenderScoreApiValues(CSmArenaScore@ Score) {
     values.InsertLast({"Points",                     "Int32",  Round(Score.Points)});
     values.InsertLast({"RoundPoints",                "Int32",  Round(Score.RoundPoints)});
     values.InsertLast({"TeamNum",                    "Uint32", Round(Score.TeamNum)});
-    // values.InsertLast({"BestLapTimes",  "MwSArrat<Uint32>", tostring(Score.BestLapTimes)});
-    // values.InsertLast({"BestRaceTimes", "MwSArrat<Uint32>", tostring(Score.BestRaceTimes)});
-    // values.InsertLast({"PrevLapTimes",  "MwSArrat<Uint32>", tostring(Score.PrevLapTimes)});
-    // values.InsertLast({"PrevRaceTimes", "MwSArrat<Uint32>", tostring(Score.PrevRaceTimes)});
 
     if (UI::BeginTable("##score-api-value-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
@@ -954,6 +957,113 @@ void RenderScoreApiValues(CSmArenaScore@ Score) {
     }
 }
 
+void RenderScoreApiArrays(CSmArenaScore@ Score) {  // these arrays (MsWArray<uint>) don't actually seem to populate
+    UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
+
+    UI::BeginTabBar("##score-api-arrays");
+        if (UI::BeginTabItem("BestLapTimes")) {
+            if (UI::BeginTable("##score-api-bestlap-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+                UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+                UI::TableSetupScrollFreeze(0, 1);
+                UI::TableSetupColumn("Lap");
+                UI::TableSetupColumn("Time (Uint32)");
+                UI::TableSetupColumn("Time (Formatted)");
+                UI::TableHeadersRow();
+
+                UI::ListClipper clipper(Score.BestLapTimes.Length);
+                while (clipper.Step()) {
+                    for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                        UI::TableNextRow();
+                        UI::TableNextColumn(); UI::Text(tostring(i));
+                        UI::TableNextColumn(); UI::Text(tostring(Score.BestLapTimes[i]));
+                        UI::TableNextColumn(); UI::Text(Time::Format(Score.BestLapTimes[i]));
+                    }
+                }
+
+                UI::PopStyleColor();
+                UI::EndTable();
+            }
+            UI::EndTabItem();
+        }
+        if (UI::BeginTabItem("BestRaceTimes")) {
+            if (UI::BeginTable("##score-api-bestrace-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+                UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+                UI::TableSetupScrollFreeze(0, 1);
+                UI::TableSetupColumn("Race");
+                UI::TableSetupColumn("Time (Uint32)");
+                UI::TableSetupColumn("Time (Formatted)");
+                UI::TableHeadersRow();
+
+                UI::ListClipper clipper(Score.BestRaceTimes.Length);
+                while (clipper.Step()) {
+                    for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                        UI::TableNextRow();
+                        UI::TableNextColumn(); UI::Text(tostring(i));
+                        UI::TableNextColumn(); UI::Text(tostring(Score.BestRaceTimes[i]));
+                        UI::TableNextColumn(); UI::Text(Time::Format(Score.BestRaceTimes[i]));
+                    }
+                }
+
+                UI::PopStyleColor();
+                UI::EndTable();
+            }
+            UI::EndTabItem();
+        }
+        if (UI::BeginTabItem("PrevLapTimes")) {
+            if (UI::BeginTable("##score-api-bestrace-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+                UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+                UI::TableSetupScrollFreeze(0, 1);
+                UI::TableSetupColumn("Lap");
+                UI::TableSetupColumn("Time (Uint32)");
+                UI::TableSetupColumn("Time (Formatted)");
+                UI::TableHeadersRow();
+
+                UI::ListClipper clipper(Score.PrevLapTimes.Length);
+                while (clipper.Step()) {
+                    for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                        UI::TableNextRow();
+                        UI::TableNextColumn(); UI::Text(tostring(i));
+                        UI::TableNextColumn(); UI::Text(tostring(Score.PrevLapTimes[i]));
+                        UI::TableNextColumn(); UI::Text(Time::Format(Score.PrevLapTimes[i]));
+                    }
+                }
+
+                UI::PopStyleColor();
+                UI::EndTable();
+            }
+            UI::EndTabItem();
+        }
+        if (UI::BeginTabItem("PrevRaceTimes")) {
+            if (UI::BeginTable("##score-api-bestrace-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+                UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+                UI::TableSetupScrollFreeze(0, 1);
+                UI::TableSetupColumn("Race");
+                UI::TableSetupColumn("Time (Uint32)");
+                UI::TableSetupColumn("Time (Formatted)");
+                UI::TableHeadersRow();
+
+                UI::ListClipper clipper(Score.PrevRaceTimes.Length);
+                while (clipper.Step()) {
+                    for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                        UI::TableNextRow();
+                        UI::TableNextColumn(); UI::Text(tostring(i));
+                        UI::TableNextColumn(); UI::Text(tostring(Score.PrevRaceTimes[i]));
+                        UI::TableNextColumn(); UI::Text(Time::Format(Score.PrevRaceTimes[i]));
+                    }
+                }
+
+                UI::PopStyleColor();
+                UI::EndTable();
+            }
+            UI::EndTabItem();
+        }
+    UI::EndTabBar();
+}
+
 void RenderScoreOffsetValues(CSmArenaScore@ Score) {
     ;
 }
@@ -975,19 +1085,6 @@ void Tab_Script() {
         return;
     }
 
-    if (Playground.GameTerminals.Length == 0) {
-        UI::Text(RED + "no GameTerminals");
-        UI::EndTabItem();
-        return;
-    }
-
-    CSmPlayer@ MyPlayer = cast<CSmPlayer@>(Playground.GameTerminals[0].GUIPlayer);
-    if (MyPlayer is null) {
-        UI::Text(RED + "null MyPlayer");
-        UI::EndTabItem();
-        return;
-    }
-
     CSmArena@ Arena = Playground.Arena;
     if (Arena is null) {
         UI::Text(RED + "null Arena");
@@ -995,8 +1092,21 @@ void Tab_Script() {
         return;
     }
 
+    if (Playground.GameTerminals.Length == 0) {
+        UI::Text(RED + "no GameTerminals");
+        UI::EndTabItem();
+        return;
+    }
+
+    CSmPlayer@ GUIPlayer = cast<CSmPlayer@>(Playground.GameTerminals[0].GUIPlayer);
+    if (GUIPlayer is null) {
+        UI::Text(RED + "null GUIPlayer");
+        UI::EndTabItem();
+        return;
+    }
+
     MwFastBuffer<CSmPlayer@> Players;
-    Players.Add(MyPlayer);
+    Players.Add(GUIPlayer);
 
     for (uint i = 0; i < Arena.Players.Length; i++)
         Players.Add(Arena.Players[i]);
@@ -1066,19 +1176,6 @@ void Tab_User() {
         return;
     }
 
-    if (Playground.GameTerminals.Length == 0) {
-        UI::Text(RED + "no GameTerminals");
-        UI::EndTabItem();
-        return;
-    }
-
-    CSmPlayer@ MyPlayer = cast<CSmPlayer@>(Playground.GameTerminals[0].GUIPlayer);
-    if (MyPlayer is null) {
-        UI::Text(RED + "null MyPlayer");
-        UI::EndTabItem();
-        return;
-    }
-
     CSmArena@ Arena = Playground.Arena;
     if (Arena is null) {
         UI::Text(RED + "null Arena");
@@ -1086,8 +1183,21 @@ void Tab_User() {
         return;
     }
 
+    if (Playground.GameTerminals.Length == 0) {
+        UI::Text(RED + "no GameTerminals");
+        UI::EndTabItem();
+        return;
+    }
+
+    CSmPlayer@ GUIPlayer = cast<CSmPlayer@>(Playground.GameTerminals[0].GUIPlayer);
+    if (GUIPlayer is null) {
+        UI::Text(RED + "null GUIPlayer");
+        UI::EndTabItem();
+        return;
+    }
+
     MwFastBuffer<CSmPlayer@> Players;
-    Players.Add(MyPlayer);
+    Players.Add(GUIPlayer);
 
     for (uint i = 0; i < Arena.Players.Length; i++)
         Players.Add(Arena.Players[i]);
