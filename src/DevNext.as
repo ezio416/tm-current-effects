@@ -172,9 +172,9 @@ void RenderVisOffsetValues(CSceneVehicleVis@ Vis) {
     UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
 
     string[][] values;
-    values.InsertLast(VisOffsetValue(Vis, 0,   "VehicleId",          DataType::Int32));
-    values.InsertLast(VisOffsetValue(Vis, 140, "LinearHue",          DataType::Float));
-    values.InsertLast(VisOffsetValue(Vis, 144, "LinearHue",          DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 0,   "VehicleId",            DataType::Int32));
+    values.InsertLast(VisOffsetValue(Vis, 140, "LinearHue",            DataType::Float));
+    values.InsertLast(VisOffsetValue(Vis, 144, "LinearHue",            DataType::Float));
 
     values.InsertLast({"312,324,336", "0x138,144,150", "Left", "Vec3", Round(vec3(Dev::GetOffsetFloat(Vis, 312), Dev::GetOffsetFloat(Vis, 324), Dev::GetOffsetFloat(Vis, 336)))});
     values.InsertLast({"316,328,340", "0x13C,148,154", "Up",   "Vec3", Round(vec3(Dev::GetOffsetFloat(Vis, 316), Dev::GetOffsetFloat(Vis, 328), Dev::GetOffsetFloat(Vis, 340)))});
@@ -284,20 +284,20 @@ void RenderVisOffsets(CSceneVehicleVis@ Vis) {
                 UI::TableNextColumn();
                 try {
                     switch (S_OffsetType) {
-                        case DataType::Bool:   UI::Text(Round(    Dev::GetOffsetInt8  (Vis, offset) == 1)); break;
-                        case DataType::Int8:   UI::Text(Round(    Dev::GetOffsetInt8  (Vis, offset)));      break;
-                        case DataType::Uint8:  UI::Text(RoundUint(Dev::GetOffsetUint8 (Vis, offset)));      break;
-                        case DataType::Int16:  UI::Text(Round(    Dev::GetOffsetInt16 (Vis, offset)));      break;
+                        case DataType::Bool:   UI::Text(Round(    Dev::GetOffsetInt8(  Vis, offset) == 1)); break;
+                        case DataType::Int8:   UI::Text(Round(    Dev::GetOffsetInt8(  Vis, offset)));      break;
+                        case DataType::Uint8:  UI::Text(RoundUint(Dev::GetOffsetUint8( Vis, offset)));      break;
+                        case DataType::Int16:  UI::Text(Round(    Dev::GetOffsetInt16( Vis, offset)));      break;
                         case DataType::Uint16: UI::Text(RoundUint(Dev::GetOffsetUint16(Vis, offset)));      break;
-                        case DataType::Int32:  UI::Text(Round(    Dev::GetOffsetInt32 (Vis, offset)));      break;
+                        case DataType::Int32:  UI::Text(Round(    Dev::GetOffsetInt32( Vis, offset)));      break;
                         case DataType::Uint32: UI::Text(RoundUint(Dev::GetOffsetUint32(Vis, offset)));      break;
-                        case DataType::Int64:  UI::Text(Round(    Dev::GetOffsetInt64 (Vis, offset)));      break;
+                        case DataType::Int64:  UI::Text(Round(    Dev::GetOffsetInt64( Vis, offset)));      break;
                         case DataType::Uint64: UI::Text(RoundUint(Dev::GetOffsetUint64(Vis, offset)));      break;
-                        case DataType::Float:  UI::Text(Round(    Dev::GetOffsetFloat (Vis, offset)));      break;
-                        case DataType::Vec2:   UI::Text(Round(    Dev::GetOffsetVec2  (Vis, offset)));      break;
-                        case DataType::Vec3:   UI::Text(Round(    Dev::GetOffsetVec3  (Vis, offset)));      break;
-                        case DataType::Vec4:   UI::Text(Round(    Dev::GetOffsetVec4  (Vis, offset)));      break;
-                        case DataType::Iso4:   UI::Text(Round(    Dev::GetOffsetIso4  (Vis, offset)));      break;
+                        case DataType::Float:  UI::Text(Round(    Dev::GetOffsetFloat( Vis, offset)));      break;
+                        case DataType::Vec2:   UI::Text(Round(    Dev::GetOffsetVec2(  Vis, offset)));      break;
+                        case DataType::Vec3:   UI::Text(Round(    Dev::GetOffsetVec3(  Vis, offset)));      break;
+                        case DataType::Vec4:   UI::Text(Round(    Dev::GetOffsetVec4(  Vis, offset)));      break;
+                        case DataType::Iso4:   UI::Text(Round(    Dev::GetOffsetIso4(  Vis, offset)));      break;
                         default:               UI::Text("Unsupported!");
                     }
                 } catch {
@@ -662,20 +662,20 @@ void RenderStateOffsets(CSceneVehicleVisState@ State) {
                 UI::TableNextColumn();
                 try {
                     switch (S_OffsetType) {
-                        case DataType::Bool:   UI::Text(Round(    Dev::GetOffsetInt8  (State, offset) == 1)); break;
-                        case DataType::Int8:   UI::Text(Round(    Dev::GetOffsetInt8  (State, offset)));      break;
-                        case DataType::Uint8:  UI::Text(RoundUint(Dev::GetOffsetUint8 (State, offset)));      break;
-                        case DataType::Int16:  UI::Text(Round(    Dev::GetOffsetInt16 (State, offset)));      break;
+                        case DataType::Bool:   UI::Text(Round(    Dev::GetOffsetInt8(  State, offset) == 1)); break;
+                        case DataType::Int8:   UI::Text(Round(    Dev::GetOffsetInt8(  State, offset)));      break;
+                        case DataType::Uint8:  UI::Text(RoundUint(Dev::GetOffsetUint8( State, offset)));      break;
+                        case DataType::Int16:  UI::Text(Round(    Dev::GetOffsetInt16( State, offset)));      break;
                         case DataType::Uint16: UI::Text(RoundUint(Dev::GetOffsetUint16(State, offset)));      break;
-                        case DataType::Int32:  UI::Text(Round(    Dev::GetOffsetInt32 (State, offset)));      break;
+                        case DataType::Int32:  UI::Text(Round(    Dev::GetOffsetInt32( State, offset)));      break;
                         case DataType::Uint32: UI::Text(RoundUint(Dev::GetOffsetUint32(State, offset)));      break;
-                        case DataType::Int64:  UI::Text(Round(    Dev::GetOffsetInt64 (State, offset)));      break;
+                        case DataType::Int64:  UI::Text(Round(    Dev::GetOffsetInt64( State, offset)));      break;
                         case DataType::Uint64: UI::Text(RoundUint(Dev::GetOffsetUint64(State, offset)));      break;
-                        case DataType::Float:  UI::Text(Round(    Dev::GetOffsetFloat (State, offset)));      break;
-                        case DataType::Vec2:   UI::Text(Round(    Dev::GetOffsetVec2  (State, offset)));      break;
-                        case DataType::Vec3:   UI::Text(Round(    Dev::GetOffsetVec3  (State, offset)));      break;
-                        case DataType::Vec4:   UI::Text(Round(    Dev::GetOffsetVec4  (State, offset)));      break;
-                        case DataType::Iso4:   UI::Text(Round(    Dev::GetOffsetIso4  (State, offset)));      break;
+                        case DataType::Float:  UI::Text(Round(    Dev::GetOffsetFloat( State, offset)));      break;
+                        case DataType::Vec2:   UI::Text(Round(    Dev::GetOffsetVec2(  State, offset)));      break;
+                        case DataType::Vec3:   UI::Text(Round(    Dev::GetOffsetVec3(  State, offset)));      break;
+                        case DataType::Vec4:   UI::Text(Round(    Dev::GetOffsetVec4(  State, offset)));      break;
+                        case DataType::Iso4:   UI::Text(Round(    Dev::GetOffsetIso4(  State, offset)));      break;
                         default:               UI::Text("Unsupported!");
                     }
                 } catch {
@@ -772,26 +772,26 @@ void RenderPlayerApiValues(CSmPlayer@ Player) {
     UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
 
     string[][] values;
-    values.InsertLast({"CurrentLaunchedRespawnLandmarkIndex",   "Uint32", Round(Player.CurrentLaunchedRespawnLandmarkIndex)});
-    values.InsertLast({"CurrentStoppedRespawnLandmarkIndex",    "Uint32", Round(Player.CurrentStoppedRespawnLandmarkIndex)});
-    values.InsertLast({"GetCurrentEntityID()",                  "Uint32", Round(Player.GetCurrentEntityID())});
-    values.InsertLast({"EdClan",                                "Uint32", Round(Player.EdClan)});
-    values.InsertLast({"EndTime",                               "Int32",  Round(Player.EndTime)});
-    values.InsertLast({"Flags",                                 "Uint8",  Round(Player.Flags)});
-    values.InsertLast({"Id.GetName()",                          "String",       Player.Id.GetName()});
-    values.InsertLast({"Id.Value",                              "Uint32", Round(Player.Id.Value)});
-    values.InsertLast({"IdName",                                "String",       Player.IdName});
-    values.InsertLast({"LinearHue",                             "Float",  Round(Player.LinearHue)});
-    values.InsertLast({"LinearHueSrgb",                         "Vec3",   Round(Player.LinearHueSrgb)});
-    values.InsertLast({"SkippedInputs",                         "Bool",   Round(Player.SkippedInputs)});
-    values.InsertLast({"SpawnableObjectModelIndex",             "Uint32", Round(Player.SpawnableObjectModelIndex)});
-    values.InsertLast({"SpawnIndex",                            "Int32",  Round(Player.SpawnIndex)});
-    values.InsertLast({"Speaking",                              "Bool",   Round(Player.Speaking)});
-    values.InsertLast({"StartTime",                             "Int32",  Round(Player.StartTime)});
-    values.InsertLast({"TrustClientSimu",                       "Bool",   Round(Player.TrustClientSimu)});
-    values.InsertLast({"TrustClientSimu_Client_IsTrustedState", "Bool",   Round(Player.TrustClientSimu_Client_IsTrustedState)});
-    values.InsertLast({"TrustClientSimu_ServerOverrideCount",   "Uint32", Round(Player.TrustClientSimu_ServerOverrideCount)});
-    values.InsertLast({"UseDelayedVisuals",                     "Bool",   Round(Player.UseDelayedVisuals)});
+    values.InsertLast({"CurrentLaunchedRespawnLandmarkIndex",   "Uint32", RoundUint(Player.CurrentLaunchedRespawnLandmarkIndex)});
+    values.InsertLast({"CurrentStoppedRespawnLandmarkIndex",    "Uint32", RoundUint(Player.CurrentStoppedRespawnLandmarkIndex)});
+    values.InsertLast({"GetCurrentEntityID()",                  "Uint32", RoundUint(Player.GetCurrentEntityID())});
+    values.InsertLast({"EdClan",                                "Uint32", RoundUint(Player.EdClan)});
+    values.InsertLast({"EndTime",                               "Int32",  Round(    Player.EndTime)});
+    values.InsertLast({"Flags",                                 "Uint8",  RoundUint(Player.Flags)});
+    values.InsertLast({"Id.GetName()",                          "String",           Player.Id.GetName()});
+    values.InsertLast({"Id.Value",                              "Uint32", RoundUint(Player.Id.Value)});
+    values.InsertLast({"IdName",                                "String",           Player.IdName});
+    values.InsertLast({"LinearHue",                             "Float",  Round(    Player.LinearHue)});
+    values.InsertLast({"LinearHueSrgb",                         "Vec3",   Round(    Player.LinearHueSrgb)});
+    values.InsertLast({"SkippedInputs",                         "Bool",   Round(    Player.SkippedInputs)});
+    values.InsertLast({"SpawnableObjectModelIndex",             "Uint32", RoundUint(Player.SpawnableObjectModelIndex)});
+    values.InsertLast({"SpawnIndex",                            "Int32",  Round(    Player.SpawnIndex)});
+    values.InsertLast({"Speaking",                              "Bool",   Round(    Player.Speaking)});
+    values.InsertLast({"StartTime",                             "Int32",  Round(    Player.StartTime)});
+    values.InsertLast({"TrustClientSimu",                       "Bool",   Round(    Player.TrustClientSimu)});
+    values.InsertLast({"TrustClientSimu_Client_IsTrustedState", "Bool",   Round(    Player.TrustClientSimu_Client_IsTrustedState)});
+    values.InsertLast({"TrustClientSimu_ServerOverrideCount",   "Uint32", RoundUint(Player.TrustClientSimu_ServerOverrideCount)});
+    values.InsertLast({"UseDelayedVisuals",                     "Bool",   Round(    Player.UseDelayedVisuals)});
 
     if (UI::BeginTable("##player-api-value-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
@@ -913,25 +913,25 @@ void RenderScoreApiValues(CSmArenaScore@ Score) {
     UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
 
     string[][] values;
-    values.InsertLast({"DamageInflicted",            "Uint32", Round(Score.DamageInflicted)});
-    values.InsertLast({"DamageInflicted_Ed",         "Uint32", Round(Score.DamageInflicted_Ed)});
-    values.InsertLast({"Id.GetName()",               "String",       Score.Id.GetName()});
-    values.InsertLast({"Id.Value",                   "Uint32", Round(Score.Id.Value)});
-    values.InsertLast({"IdName",                     "String",       Score.IdName});
-    values.InsertLast({"IsRegisteredForLadderMatch", "Bool",   Round(Score.IsRegisteredForLadderMatch)});
-    values.InsertLast({"LadderClan",                 "Uint32", Round(Score.LadderClan)});
-    values.InsertLast({"LadderMatchScoreValue",      "Float",  Round(Score.LadderMatchScoreValue)});
-    values.InsertLast({"LadderRankSortValue",        "Int32",  Round(Score.LadderRankSortValue)});
-    values.InsertLast({"LadderScore",                "Float",  Round(Score.LadderScore)});
-    values.InsertLast({"NbEliminationsInflicted",    "Uint32", Round(Score.NbEliminationsInflicted)});
-    values.InsertLast({"NbEliminationsInflicted_Ed", "Uint32", Round(Score.NbEliminationsInflicted_Ed)});
-    values.InsertLast({"NbEliminationsTaken",        "Uint32", Round(Score.NbEliminationsTaken)});
-    values.InsertLast({"NbEliminationsTaken_Ed",     "Uint32", Round(Score.NbEliminationsTaken_Ed)});
-    values.InsertLast({"NbEliminationsTaken",        "Uint32", Round(Score.NbEliminationsTaken)});
-    values.InsertLast({"NbRespawnsRequested",        "Uint32", Round(Score.NbRespawnsRequested)});
-    values.InsertLast({"Points",                     "Int32",  Round(Score.Points)});
-    values.InsertLast({"RoundPoints",                "Int32",  Round(Score.RoundPoints)});
-    values.InsertLast({"TeamNum",                    "Uint32", Round(Score.TeamNum)});
+    values.InsertLast({"DamageInflicted",            "Uint32", RoundUint(Score.DamageInflicted)});
+    values.InsertLast({"DamageInflicted_Ed",         "Uint32", RoundUint(Score.DamageInflicted_Ed)});
+    values.InsertLast({"Id.GetName()",               "String",           Score.Id.GetName()});
+    values.InsertLast({"Id.Value",                   "Uint32", RoundUint(Score.Id.Value)});
+    values.InsertLast({"IdName",                     "String",           Score.IdName});
+    values.InsertLast({"IsRegisteredForLadderMatch", "Bool",   Round(    Score.IsRegisteredForLadderMatch)});
+    values.InsertLast({"LadderClan",                 "Uint32", RoundUint(Score.LadderClan)});
+    values.InsertLast({"LadderMatchScoreValue",      "Float",  Round(    Score.LadderMatchScoreValue)});
+    values.InsertLast({"LadderRankSortValue",        "Int32",  Round(    Score.LadderRankSortValue)});
+    values.InsertLast({"LadderScore",                "Float",  Round(    Score.LadderScore)});
+    values.InsertLast({"NbEliminationsInflicted",    "Uint32", RoundUint(Score.NbEliminationsInflicted)});
+    values.InsertLast({"NbEliminationsInflicted_Ed", "Uint32", RoundUint(Score.NbEliminationsInflicted_Ed)});
+    values.InsertLast({"NbEliminationsTaken",        "Uint32", RoundUint(Score.NbEliminationsTaken)});
+    values.InsertLast({"NbEliminationsTaken_Ed",     "Uint32", RoundUint(Score.NbEliminationsTaken_Ed)});
+    values.InsertLast({"NbEliminationsTaken",        "Uint32", RoundUint(Score.NbEliminationsTaken)});
+    values.InsertLast({"NbRespawnsRequested",        "Uint32", RoundUint(Score.NbRespawnsRequested)});
+    values.InsertLast({"Points",                     "Int32",  Round(    Score.Points)});
+    values.InsertLast({"RoundPoints",                "Int32",  Round(    Score.RoundPoints)});
+    values.InsertLast({"TeamNum",                    "Uint32", RoundUint(Score.TeamNum)});
 
     if (UI::BeginTable("##score-api-value-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
@@ -1013,7 +1013,7 @@ void RenderScoreApiArrays(CSmArenaScore@ Score) {
             UI::EndTabItem();
         }
         if (UI::BeginTabItem("PrevLapTimes")) {
-            if (UI::BeginTable("##score-api-bestrace-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+            if (UI::BeginTable("##score-api-prevlap-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
                 UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
 
                 UI::TableSetupScrollFreeze(0, 1);
@@ -1038,7 +1038,7 @@ void RenderScoreApiArrays(CSmArenaScore@ Score) {
             UI::EndTabItem();
         }
         if (UI::BeginTabItem("PrevRaceTimes")) {
-            if (UI::BeginTable("##score-api-bestrace-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+            if (UI::BeginTable("##score-api-prevrace-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
                 UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
 
                 UI::TableSetupScrollFreeze(0, 1);
@@ -1128,6 +1128,13 @@ void Tab_Script() {
                     UI::EndTabItem();
                 }
 
+                if (UI::BeginTabItem("API Arrays")) {
+                    try   { RenderScriptApiArrays(cast<CSmScriptPlayer@>(Player.ScriptAPI)); }
+                    catch { UI::Text("error: " + getExceptionInfo()); }
+
+                    UI::EndTabItem();
+                }
+
                 if (S_OffsetTabs && UI::BeginTabItem("Offset Values")) {
                     try   { RenderScriptOffsetValues(cast<CSmScriptPlayer@>(Player.ScriptAPI)); }
                     catch { UI::Text("error: " + getExceptionInfo()); }
@@ -1151,9 +1158,263 @@ void Tab_Script() {
 }
 
 void RenderScriptApiValues(CSmScriptPlayer@ Script) {
-    UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
+    UI::TextWrapped("Most things here are remnants from Shootmania and serve no purpose in Trackmania.");
+    UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true/valid, and " + RED + "red\\$G are negative/false/null/empty.");
 
     string[][] values;
+    values.InsertLast({"AccelCoef",                    "Float",   Round(    Script.AccelCoef)});
+    values.InsertLast({"ActionWheelSelectedSlotIndex", "Uint32",  RoundUint(Script.ActionWheelSelectedSlotIndex)});
+    values.InsertLast({"AdherenceCoef",                "Float",   Round(    Script.AdherenceCoef)});
+    values.InsertLast({"AimDirection",                 "Vec3",    Round(    Script.AimDirection)});
+    values.InsertLast({"AimPitch",                     "Float",   Round(    Script.AimPitch)});
+    values.InsertLast({"AimRoll",                      "Float",   Round(    Script.AimRoll)});
+    values.InsertLast({"AimYaw",                       "Float",   Round(    Script.AimYaw)});
+    values.InsertLast({"AllowProgressiveJump",         "Bool",    Round(    Script.AllowProgressiveJump)});
+    values.InsertLast({"AllowWallJump",                "Bool",    Round(    Script.AllowWallJump)});
+    values.InsertLast({"AmmoGain",                     "Float",   Round(    Script.AmmoGain)});
+    values.InsertLast({"AmmoPower",                    "Float",   Round(    Script.AmmoPower)});
+    values.InsertLast({"Armor",                        "Uint32",  RoundUint(Script.Armor)});
+    values.InsertLast({"ArmorGain",                    "Uint32",  RoundUint(Script.ArmorGain)});
+    values.InsertLast({"ArmorMax",                     "Uint32",  RoundUint(Script.ArmorMax)});
+    values.InsertLast({"ArmorPower",                   "Float",   Round(    Script.ArmorPower)});
+    values.InsertLast({"ArmorReplenishGain",           "Uint32",  RoundUint(Script.ArmorReplenishGain)});
+    values.InsertLast({"AutoSwitchWeapon",             "Bool",    Round(    Script.AutoSwitchWeapon)});
+    values.InsertLast({"CapturedLandmark",             "Object",            Script.CapturedLandmark is null ? RED + "null" : GREEN + "valid (unimplemented here)"});
+    values.InsertLast({"ControlCoef",                  "Float",   Round(    Script.ControlCoef)});
+    values.InsertLast({"CurAmmo",                      "Uint32",  RoundUint(Script.CurAmmo)});
+    values.InsertLast({"CurAmmoMax",                   "Uint32",  RoundUint(Script.CurAmmoMax)});
+    values.InsertLast({"CurAmmoUnit",                  "Uint32",  RoundUint(Script.CurAmmoUnit)});
+    values.InsertLast({"CurrentClan",                  "Int32",   Round(    Script.CurrentClan)});
+    values.InsertLast({"CurrentLapNumber",             "Uint32",  RoundUint(Script.CurrentLapNumber)});
+    values.InsertLast({"CurrentLapTime",               "Int32",   Round(    Script.CurrentLapTime)});
+    values.InsertLast({"CurrentRaceTime",              "Int32",   Round(    Script.CurrentRaceTime)});
+    values.InsertLast({"CurWeapon",                    "Uint32",  RoundUint(Script.CurWeapon)});
+    values.InsertLast({"DisplaySpeed",                 "Uint32",  RoundUint(Script.DisplaySpeed)});
+    values.InsertLast({"Distance",                     "Float",   Round(    Script.Distance)});
+    values.InsertLast({"Dossard",                      "String",            Script.Dossard});
+    values.InsertLast({"Dossard_Color",                "Vec3",    Round(    Script.Dossard_Color)});
+    values.InsertLast({"Dossard_Number",               "String",            Script.Dossard_Number});
+    values.InsertLast({"Dossard_Trigram",              "String",            Script.Dossard_Trigram});
+    values.InsertLast({"Driver",                       "Object",            Script.Driver is null ? RED + "null" : GREEN + "valid (unimplemented here)"});
+    values.InsertLast({"EndTime",                      "Int32",   Round(    Script.EndTime)});
+    values.InsertLast({"Energy",                       "Float",   Round(    Script.Energy)});
+    values.InsertLast({"EnergyLevel",                  "Float",   Round(    Script.EnergyLevel)});
+    values.InsertLast({"EngineCurGear",                "Int32",   Round(    Script.EngineCurGear)});
+    values.InsertLast({"EngineRpm",                    "Float",   Round(    Script.EngineRpm)});
+    values.InsertLast({"EngineTurboRatio",             "Float",   Round(    Script.EngineTurboRatio)});
+    values.InsertLast({"FlyingDistance",               "Float",   Round(    Script.FlyingDistance)});
+    values.InsertLast({"FlyingDuration",               "Uint32",  RoundUint(Script.FlyingDuration)});
+    values.InsertLast({"ForceColor",                   "Vec3",    Round(    Script.ForceColor)});
+    values.InsertLast({"ForceLinearHue",               "Float",   Round(    Script.ForceLinearHue)});
+    values.InsertLast({"ForceModelId.GetName()",       "String",            Script.ForceModelId.GetName()});
+    values.InsertLast({"ForceModelId.Value",           "Uint32",  RoundUint(Script.ForceModelId.Value)});
+    values.InsertLast({"GetLinearHue",                 "Float",   Round(    Script.GetLinearHue)});
+    values.InsertLast({"GravityCoef",                  "Float",   Round(    Script.GravityCoef)});
+    values.InsertLast({"HandicapForceGasDuration",     "Uint32",  RoundUint(Script.HandicapForceGasDuration)});
+    values.InsertLast({"HandicapNoBrakesDuration",     "Uint32",  RoundUint(Script.HandicapNoBrakesDuration)});
+    values.InsertLast({"HandicapNoGasDuration",        "Uint32",  RoundUint(Script.HandicapNoGasDuration)});
+    values.InsertLast({"HandicapNoGripDuration",       "Uint32",  RoundUint(Script.HandicapNoGripDuration)});
+    values.InsertLast({"HandicapNoSteeringDuration",   "Uint32",  RoundUint(Script.HandicapNoSteeringDuration)});
+    values.InsertLast({"HasShield",                    "Bool",    Round(    Script.HasShield)});
+    values.InsertLast({"Id.GetName()",                 "String",            Script.Id.GetName()});
+    values.InsertLast({"Id.Value",                     "Uint32",  RoundUint(Script.Id.Value)});
+    values.InsertLast({"IdleDuration",                 "Uint32",  RoundUint(Script.IdleDuration)});
+    values.InsertLast({"IdName",                       "String",            Script.IdName});
+    values.InsertLast({"InputGasPedal",                "Float",   Round(    Script.InputGasPedal)});
+    values.InsertLast({"InputIsBraking",               "Bool",    Round(    Script.InputIsBraking)});
+    values.InsertLast({"InputSteer",                   "Float",   Round(    Script.InputSteer)});
+    values.InsertLast({"IsAttractorActivable",         "Bool",    Round(    Script.IsAttractorActivable)});
+    values.InsertLast({"IsBot",                        "Bool",    Round(    Script.IsBot)});
+    values.InsertLast({"IsCapturing",                  "Bool",    Round(    Script.IsCapturing)});
+    values.InsertLast({"IsEntityStateAvailable",       "Bool",    Round(    Script.IsEntityStateAvailable)});
+    values.InsertLast({"IsFakePlayer",                 "Bool",    Round(    Script.IsFakePlayer)});
+    values.InsertLast({"IsHighlighted",                "Bool",    Round(    Script.IsHighlighted)});
+    values.InsertLast({"IsInAir",                      "Bool",    Round(    Script.IsInAir)});
+    values.InsertLast({"IsInOffZone",                  "Bool",    Round(    Script.IsInOffZone)});
+    values.InsertLast({"IsInVehicle",                  "Bool",    Round(    Script.IsInVehicle)});
+    values.InsertLast({"IsInWater",                    "Bool",    Round(    Script.IsInWater)});
+    values.InsertLast({"IsOnTech",                     "Bool",    Round(    Script.IsOnTech)});
+    values.InsertLast({"IsOnTechArmor",                "Bool",    Round(    Script.IsOnTechArmor)});
+    values.InsertLast({"IsOnTechArrow",                "Bool",    Round(    Script.IsOnTechArrow)});
+    values.InsertLast({"IsOnTechGround",               "Bool",    Round(    Script.IsOnTechGround)});
+    values.InsertLast({"IsOnTechLaser",                "Bool",    Round(    Script.IsOnTechLaser)});
+    values.InsertLast({"IsOnTechNoWeapon",             "Bool",    Round(    Script.IsOnTechNoWeapon)});
+    values.InsertLast({"IsOnTechNucleus",              "Bool",    Round(    Script.IsOnTechNucleus)});
+    values.InsertLast({"IsOnTechSafeZone",             "Bool",    Round(    Script.IsOnTechSafeZone)});
+    values.InsertLast({"IsOnTechTeleport",             "Bool",    Round(    Script.IsOnTechTeleport)});
+    values.InsertLast({"IsPowerJumpActivable",         "Bool",    Round(    Script.IsPowerJumpActivable)});
+    values.InsertLast({"IsRunning",                    "Bool",    Round(    Script.IsRunning)});
+    values.InsertLast({"IsStuck",                      "Bool",    Round(    Script.IsStuck)});
+    values.InsertLast({"IsTeleportActivable",          "Bool",    Round(    Script.IsTeleportActivable)});
+    values.InsertLast({"IsTouchingGround",             "Bool",    Round(    Script.IsTouchingGround)});
+    values.InsertLast({"IsUnderground",                "Bool",    Round(    Script.IsUnderground)});
+    values.InsertLast({"JumpPower",                    "Float",   Round(    Script.JumpPower)});
+    values.InsertLast({"LandmarkOrderSelector_Race",   "Int32",   Round(    Script.LandmarkOrderSelector_Race)});
+    values.InsertLast({"LapStartTime",                 "Int32",   Round(    Script.LapStartTime)});
+    values.InsertLast({"LeftDirection",                "Vec3",    Round(    Script.LeftDirection)});
+    values.InsertLast({"Login",                        "String",            Script.Login});
+    values.InsertLast({"MarkerId.GetName()",           "String",            Script.MarkerId.GetName()});
+    values.InsertLast({"MarkerId.Value",               "Uint32",  RoundUint(Script.MarkerId.Value)});
+    values.InsertLast({"Name",                         "WString", string(   Script.Name)});
+    values.InsertLast({"NbActiveAttractors",           "Uint32",  RoundUint(Script.NbActiveAttractors)});
+    values.InsertLast({"Objects",                      "Object[]",          Script.Objects.Length == 0 ? RED + "none" : GREEN + Script.Objects.Length + " (unimplemented here)"});
+    values.InsertLast({"Position",                     "Vec3",    Round(    Script.Position)});
+    values.InsertLast({"Post",                         "Enum",    tostring( Script.Post)});
+    values.InsertLast({"RequestedClan",                "Int32",   Round(    Script.RequestedClan)});
+    values.InsertLast({"RequestsSpectate",             "Bool",    Round(    Script.RequestsSpectate)});
+    values.InsertLast({"SkiddingDistance",             "Float",   Round(    Script.SkiddingDistance)});
+    values.InsertLast({"SkiddingDuration",             "Uint32",  RoundUint(Script.SkiddingDuration)});
+    values.InsertLast({"SpawnStatus",                  "Enum",    tostring( Script.SpawnStatus)});
+    values.InsertLast({"Speed",                        "Float",   Round(    Script.Speed)});
+    values.InsertLast({"SpeedPower",                   "Float",   Round(    Script.SpeedPower)});
+    values.InsertLast({"Stamina",                      "Uint32",  RoundUint(Script.Stamina)});
+    values.InsertLast({"StaminaGain",                  "Float",   Round(    Script.StaminaGain)});
+    values.InsertLast({"StaminaMax",                   "Float",   Round(    Script.StaminaMax)});
+    values.InsertLast({"StaminaMaxValue",              "Uint32",  RoundUint(Script.StaminaMaxValue)});
+    values.InsertLast({"StaminaPower",                 "Float",   Round(    Script.StaminaPower)});
+    values.InsertLast({"StartTime",                    "Int32",   Round(    Script.StartTime)});
+    values.InsertLast({"ThrowSpeed",                   "Float",   Round(    Script.ThrowSpeed)});
+    values.InsertLast({"TrustClientSimu",              "Bool",    Round(    Script.TrustClientSimu)});
+    values.InsertLast({"UpDirection",                  "Vec3",    Round(    Script.UpDirection)});
+    values.InsertLast({"Upwardness",                   "Float",   Round(    Script.Upwardness)});
+    values.InsertLast({"UseAlternateWeaponVisual",     "Bool",    Round(    Script.UseAlternateWeaponVisual)});
+    values.InsertLast({"UseCrudeExtrapolation",        "Bool",    Round(    Script.UseCrudeExtrapolation)});
+    values.InsertLast({"UseDelayedVisuals",            "Bool",    Round(    Script.UseDelayedVisuals)});
+    values.InsertLast({"Vehicle",                      "Object",            Script.Vehicle is null ? RED + "null" : GREEN + "valid (unimplemented here)"});
+    values.InsertLast({"Velocity",                     "Vec3",    Round(    Script.Velocity)});
+    values.InsertLast({"WheelsContactCount",           "Uint32",  RoundUint(Script.WheelsContactCount)});
+    values.InsertLast({"WheelsSkiddingCount",          "Uint32",  RoundUint(Script.WheelsSkiddingCount)});
+
+    if (UI::BeginTable("##script-api-value-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+        UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+        UI::TableSetupScrollFreeze(0, 1);
+        UI::TableSetupColumn("Variable", UI::TableColumnFlags::WidthFixed, 280.0f);
+        UI::TableSetupColumn("Type",     UI::TableColumnFlags::WidthFixed, 90.0f);
+        UI::TableSetupColumn("Value");
+        UI::TableHeadersRow();
+
+        UI::ListClipper clipper(values.Length);
+        while (clipper.Step()) {
+            for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                UI::TableNextRow();
+                UI::TableNextColumn(); UI::Text(values[i][0]);
+                UI::TableNextColumn(); UI::Text(values[i][1]);
+                UI::TableNextColumn(); UI::Text(values[i][2]);
+            }
+        }
+
+        UI::PopStyleColor();
+        UI::EndTable();
+    }
+}
+
+void RenderScriptApiArrays(CSmScriptPlayer@ Script) {
+    UI::TextWrapped("These arrays of type " + ORANGE + "MwFastBuffer<uint>\\$G don't actually seem to populate from my testing.");
+    UI::TextWrapped("Values marked white are 0, " + GREEN + " green\\$G are positive/true, and " + RED + "red\\$G are negative/false.");
+
+    UI::BeginTabBar("##script-api-arrays");
+        if (UI::BeginTabItem("CurrentLapWaypointTimes")) {
+            if (UI::BeginTable("##script-api-curlap-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+                UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+                UI::TableSetupScrollFreeze(0, 1);
+                UI::TableSetupColumn("Lap");
+                UI::TableSetupColumn("Time (Uint32)");
+                UI::TableSetupColumn("Time (Formatted)");
+                UI::TableHeadersRow();
+
+                UI::ListClipper clipper(Script.CurrentLapWaypointTimes.Length);
+                while (clipper.Step()) {
+                    for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                        UI::TableNextRow();
+                        UI::TableNextColumn(); UI::Text(tostring(i));
+                        UI::TableNextColumn(); UI::Text(tostring(Script.CurrentLapWaypointTimes[i]));
+                        UI::TableNextColumn(); UI::Text(Time::Format(Script.CurrentLapWaypointTimes[i]));
+                    }
+                }
+
+                UI::PopStyleColor();
+                UI::EndTable();
+            }
+            UI::EndTabItem();
+        }
+        if (UI::BeginTabItem("LapWaypointTimes")) {
+            if (UI::BeginTable("##script-api-lap-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+                UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+                UI::TableSetupScrollFreeze(0, 1);
+                UI::TableSetupColumn("Lap");
+                UI::TableSetupColumn("Time (Uint32)");
+                UI::TableSetupColumn("Time (Formatted)");
+                UI::TableHeadersRow();
+
+                UI::ListClipper clipper(Script.LapWaypointTimes.Length);
+                while (clipper.Step()) {
+                    for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                        UI::TableNextRow();
+                        UI::TableNextColumn(); UI::Text(tostring(i));
+                        UI::TableNextColumn(); UI::Text(tostring(Script.LapWaypointTimes[i]));
+                        UI::TableNextColumn(); UI::Text(Time::Format(Script.LapWaypointTimes[i]));
+                    }
+                }
+
+                UI::PopStyleColor();
+                UI::EndTable();
+            }
+            UI::EndTabItem();
+        }
+        if (UI::BeginTabItem("PreviousLapWaypointTimes")) {
+            if (UI::BeginTable("##script-api-prevlap-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+                UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+                UI::TableSetupScrollFreeze(0, 1);
+                UI::TableSetupColumn("Lap");
+                UI::TableSetupColumn("Time (Uint32)");
+                UI::TableSetupColumn("Time (Formatted)");
+                UI::TableHeadersRow();
+
+                UI::ListClipper clipper(Script.PreviousLapWaypointTimes.Length);
+                while (clipper.Step()) {
+                    for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                        UI::TableNextRow();
+                        UI::TableNextColumn(); UI::Text(tostring(i));
+                        UI::TableNextColumn(); UI::Text(tostring(Script.PreviousLapWaypointTimes[i]));
+                        UI::TableNextColumn(); UI::Text(Time::Format(Script.PreviousLapWaypointTimes[i]));
+                    }
+                }
+
+                UI::PopStyleColor();
+                UI::EndTable();
+            }
+            UI::EndTabItem();
+        }
+        if (UI::BeginTabItem("RaceWaypointTimes")) {
+            if (UI::BeginTable("##script-api-race-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+                UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+                UI::TableSetupScrollFreeze(0, 1);
+                UI::TableSetupColumn("Lap");
+                UI::TableSetupColumn("Time (Uint32)");
+                UI::TableSetupColumn("Time (Formatted)");
+                UI::TableHeadersRow();
+
+                UI::ListClipper clipper(Script.RaceWaypointTimes.Length);
+                while (clipper.Step()) {
+                    for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                        UI::TableNextRow();
+                        UI::TableNextColumn(); UI::Text(tostring(i));
+                        UI::TableNextColumn(); UI::Text(tostring(Script.RaceWaypointTimes[i]));
+                        UI::TableNextColumn(); UI::Text(Time::Format(Script.RaceWaypointTimes[i]));
+                    }
+                }
+
+                UI::PopStyleColor();
+                UI::EndTable();
+            }
+            UI::EndTabItem();
+        }
+    UI::EndTabBar();
 }
 
 void RenderScriptOffsetValues(CSmScriptPlayer@ Script) {
@@ -1203,7 +1464,7 @@ void Tab_User() {
     for (uint i = 0; i < Arena.Players.Length; i++)
         Players.Add(Arena.Players[i]);
 
-    UI::TextWrapped(ORANGE + "CTrackManiaPlayerInfo\\$G is a part of " + ORANGE + "CSmPlayer\\$G and " + ORANGE + "CSmPlayer.Score\\$G.");
+    UI::TextWrapped(ORANGE + "CTrackManiaPlayerInfo\\$G is a part of " + ORANGE + "CSmPlayer\\$G, " + ORANGE + "CSmArenaScore\\$G, and " + ORANGE + "CSmScriptPlayer\\$G.");
 
     UI::BeginTabBar("##user-tabs", UI::TabBarFlags::FittingPolicyScroll | UI::TabBarFlags::TabListPopupButton);
         for (uint i = 0; i < Players.Length; i++) {
