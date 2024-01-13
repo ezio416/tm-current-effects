@@ -5,35 +5,58 @@ namespace CurrentEffects {
 
 #if TMNEXT
 
-    bool GetAccelPenalty()  { return penalty == 1; }
-    // (Experimental) returns true if the player bonked something
-    // import bool GetAccelPenalty() from "CurrentEffects";
+    // Returns true if experimental features are enabled.
+    import bool GetExperimental() from "CurrentEffects";
 
-    bool GetCruiseControl() { return cruise  == 1; }
-    bool GetFragile()       { return fragile == 1; }
-    bool GetSlowMo()        { return slowmo  == 1; }
-    bool GetSnowCar()       { return snow    == 1 || alwaysSnow; }
+    // Allows enabling experimental features from another plugin.
+    import void SetExperimental(bool e) from "CurrentEffects";
 
-    ESceneVehicleVisReactorBoostLvl GetReactorLevel() { return ESceneVehicleVisReactorBoostLvl(reactorLevel); }
-    ESceneVehicleVisReactorBoostType GetReactorType() { return ESceneVehicleVisReactorBoostType(reactorType); }
+    // (Very experimental) Returns true if the player bonked something.
+    import bool GetAccelPenalty() from "CurrentEffects";
 
-    VehicleState::TurboLevel GetTurboLevel() { return VehicleState::TurboLevel(turbo); }
+    // Returns true when in Cruise Control. Does not work when spectating.
+    import bool GetCruiseControl() from "CurrentEffects";
 
-    bool GetExperimental()       { return S_Experimental; }
-    // returns true if experimental features are enabled
-    // import bool GetExperimental() from "CurrentEffects";
+    // (Experimental) Returns true when Fragile. Does not work when watching a replay or spectating.
+    import bool GetFragile() from "CurrentEffects";
 
-    void SetExperimental(bool e) { S_Experimental = e };
+    // Returns the current Reactor Boost level.
+    import ESceneVehicleVisReactorBoostLvl GetReactorLevel() from "CurrentEffects";
+
+    // Returns 0.0-1.0 in the last second before a Reactor Boost runs out. Does not work when watching a replay.
+    import float GetReactorFinalTimer() from "CurrentEffects";
+
+    // Returns the current Reactor Boost type.
+    import ESceneVehicleVisReactorBoostType GetReactorType() from "CurrentEffects";
+
+    // Returns the current Slow-Mo level (0-4, 0 being none).
+    import int GetSlowMoLevel() from "CurrentEffects";
+
+    // (Experimental) Returns true when the current vehicle is the Snow Car. Does not work when watching a replay or spectating.
+    import bool GetSnowCar() from "CurrentEffects";
+
+    // Returns the current TurboLevel (0-5, 0 being none). Does not work when spectating. Requires VehicleState dependency.
+    import VehicleState::TurboLevel GetTurboLevel() from "CurrentEffects";
 
 #elif MP4
 
-    bool GetTurbo() { return turbo == 1; }
+    // Returns true when in Turbo.
+    import bool GetTurbo() from "CurrentEffects";
 
 #endif
 
-    bool GetForcedAccel() { return forced   == 1; }
-    bool GetNoBrakes()    { return noBrakes == 1; }
-    bool GetNoEngine()    { return noEngine == 1; }
-    bool GetNoGrip()      { return noGrip   == 1; }
-    bool GetNoSteer()     { return noSteer  == 1; }
+    // Returns true when in Forced Acceleration (Fullspeed Ahead in MP4). Does not work when watching a replay.
+    import bool GetForcedAccel() from "CurrentEffects";
+
+    // Returns true when in No Brakes. Does not work when watching a replay.
+    import bool GetNoBrakes() from "CurrentEffects";
+
+    // Returns true when in Engine Off (Free Wheeling in MP4). Does not work when watching a replay.
+    import bool GetNoEngine() from "CurrentEffects";
+
+    // Returns true when in No Grip. Does not work when watching a replay.
+    import bool GetNoGrip() from "CurrentEffects";
+
+    // Returns true when in No Steering. Does not work when watching a replay.
+    import bool GetNoSteer() from "CurrentEffects";
 }

@@ -7,5 +7,5 @@ siteid = 382
 
 [script]
 dependencies = [ "VehicleState" ]
-exports = [ "Export.as" ]
+exports = [ "src/Export.as" ]
 module = "CurrentEffects"
