@@ -248,6 +248,8 @@ int GetPenalty3(CSceneVehicleVisState@ state) {  // any impact? 0 - ~1,065,000,0
     return ret;
 }
 
+#endif
+
 void ResetAllEffects() {
     alwaysSnow   = false;
     cruise       = 0;
@@ -266,5 +268,3 @@ void ResetAllEffects() {
     snow         = 0;
     turbo        = 0;
 }
-
-#endif
