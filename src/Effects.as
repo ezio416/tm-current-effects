@@ -1,23 +1,27 @@
 // c 2023-08-17
-// m 2024-01-05
+// m 2024-01-12
 
-int    cruise   = 0;
-int    forced   = 0;
-int    fragile  = 0;
-int    noBrakes = 0;
-int    noEngine = 0;
-int    noGrip   = 0;
-int    noSteer  = 0;
-int    penalty  = 0;
-int    reactor  = 0;
+bool   alwaysSnow   = false;  // to change when starting as CarSnow is no longer broken
+int    cruise       = 0;
+int    forced       = 0;
+int    fragile      = 0;
+int    noBrakes     = 0;
+int    noEngine     = 0;
+int    noGrip       = 0;
+int    noSteer      = 0;
+int    penalty      = 0;
+int    reactor      = 0;
 string reactorIcon;
-int    slowmo   = 0;
-int    snow     = 0;
-int    turbo    = 0;
+int    reactorLevel = 0;
+float  reactorTimer = 0.0f;
+int    reactorType  = 0;
+int    slowmo       = 0;
+int    snow         = 0;
+int    turbo        = 0;
 
-void RenderEffects(CSceneVehicleVisState@ state) {
+void RenderEffects(CSceneVehicleVisState@ State) {
     if (!S_ShowAll) {
-        SetHandicaps(GetHandicapSum(state));
+        SetHandicaps(GetHandicapSum(State));
 
 #if TMNEXT
 
@@ -26,19 +30,23 @@ void RenderEffects(CSceneVehicleVisState@ state) {
             ResetEventEffects(true);
         }
 
-        cruise = GetCruiseSpeed(state) > 0 ? 1 : 0;
+        cruise = GetCruiseSpeed(State) != 0 ? 1 : 0;
 
-        penalty = S_Experimental && (GetPenalty1(state) > 0 || GetPenalty2(state) > 0 || GetPenalty3(state) > 0) ? 1 : 0;
+        penalty = S_Experimental && (GetPenalty1(State) > 0 || GetPenalty2(State) > 0 || GetPenalty3(State) > 0) ? 1 : 0;
 
-        reactor = int(state.ReactorBoostLvl);
+        reactorLevel = State.ReactorBoostLvl;
+        reactor = int(reactorLevel);
 
-        switch (int(state.ReactorBoostType)) {
+        reactorType = State.ReactorBoostType;
+        switch (int(reactorType)) {
             case 1:  reactorIcon = Icons::ChevronUp;   break;
             case 2:  reactorIcon = Icons::ChevronDown; break;
             default: reactorIcon = Icons::Rocket;
         }
 
-        switch (int(state.SimulationTimeCoef * 100)) {
+        reactorTimer = VehicleState::GetReactorFinalTimer(State);
+
+        switch (int(State.SimulationTimeCoef * 100)) {
             case 100: slowmo = 0; break;
             case 56:
             case 57:  slowmo = 1; break;
@@ -48,8 +56,8 @@ void RenderEffects(CSceneVehicleVisState@ state) {
         }
 
         turbo = 0;
-        if (state.IsTurbo)
-            turbo = int(VehicleState::GetLastTurboLevel(state));
+        if (State.IsTurbo)
+            turbo = int(VehicleState::GetLastTurboLevel(State));
 
         if (replay) {
             forced   = -1;
@@ -72,7 +80,7 @@ void RenderEffects(CSceneVehicleVisState@ state) {
 
 #elif MP4
 
-        turbo = state.TurboActive ? 1 : 0;
+        turbo = State.TurboActive ? 1 : 0;
 
 #endif
 
@@ -110,10 +118,10 @@ void RenderEffects(CSceneVehicleVisState@ state) {
 
 #if TMNEXT
 
-        if (S_Reactor)  UI::Text(GetReactorText(VehicleState::GetReactorFinalTimer(state)));
+        if (S_Reactor)  UI::Text(GetReactorText(reactorTimer));
         if (S_SlowMo)   UI::Text(GetSlowMoColor() + Icons::ClockO + iconPadding + "Slow-Mo");
         if (S_Snow)     UI::Text(GetSnowColor()   + Icons::Truck  + iconPadding + "Snow Car");
-        if (S_Turbo)    UI::Text(GetTurboText(state.TurboTime));
+        if (S_Turbo)    UI::Text(GetTurboText(State.TurboTime));
 
 #elif MP4
 
@@ -241,3 +249,22 @@ int GetPenalty3(CSceneVehicleVisState@ state) {  // any impact? 0 - ~1,065,000,0
 }
 
 #endif
+
+void ResetAllEffects() {
+    alwaysSnow   = false;
+    cruise       = 0;
+    forced       = 0;
+    fragile      = 0;
+    noBrakes     = 0;
+    noEngine     = 0;
+    noGrip       = 0;
+    noSteer      = 0;
+    penalty      = 0;
+    reactor      = 0;
+    reactorLevel = 0;
+    reactorTimer = 0.0f;
+    reactorType  = 0;
+    slowmo       = 0;
+    snow         = 0;
+    turbo        = 0;
+}

@@ -1,7 +1,6 @@
 // c 2023-05-04
-// m 2024-01-05
+// m 2024-01-12
 
-bool   alwaysSnow    = false;  // to change when starting as CarSnow is no longer broken
 string loginLocal    = GetLocalLogin();
 bool   replay;
 bool   spectating;
@@ -44,8 +43,10 @@ void Render() {
         font is null ||
         (S_HideWithGame && !UI::IsGameUIVisible()) ||
         (S_HideWithOP && !UI::IsOverlayShown())
-    )
+    ) {
+        ResetAllEffects();
         return;
+    }
 
     CTrackMania@ App = cast<CTrackMania@>(GetApp());
 
@@ -53,8 +54,10 @@ void Render() {
 
     CGamePlayground@ Playground = App.CurrentPlayground;
 
-    if (Playground is null)
+    if (Playground is null) {
+        ResetAllEffects();
         return;
+    }
 
 #elif TMNEXT
 
@@ -65,12 +68,13 @@ void Render() {
             ResetIntercept();
 
         totalRespawns = 0;
+        ResetAllEffects();
         return;
     }
 
     CGameCtnChallenge@ Map = App.RootMap;
     if (Map is null) {
-        alwaysSnow = false;
+        ResetAllEffects();
         return;
     }
 
@@ -84,12 +88,16 @@ void Render() {
 
     CSmArena@ Arena = Playground.Arena;
 
-    if (Arena is null || Arena.Players.Length == 0)
+    if (Arena is null || Arena.Players.Length == 0) {
+        ResetAllEffects();
         return;
+    }
 
     CSmScriptPlayer@ ScriptPlayer = cast<CSmScriptPlayer@>(Arena.Players[0].ScriptAPI);
-    if (ScriptPlayer is null)
+    if (ScriptPlayer is null) {
+        ResetAllEffects();
         return;
+    }
 
     if (ScriptPlayer.CurrentRaceTime < 1) {
         ResetEventEffects(true);
@@ -98,8 +106,10 @@ void Render() {
     }
 
     CSmArenaScore@ Score = ScriptPlayer.Score;
-    if (Score is null)
+    if (Score is null) {
+        ResetAllEffects();
         return;
+    }
 
     uint respawns = Score.NbRespawnsRequested;
 
@@ -119,8 +129,10 @@ void Render() {
     if (
         Playground.GameTerminals.Length != 1 ||
         Playground.UIConfigs.Length == 0
-    )
+    ) {
+        ResetAllEffects();
         return;
+    }
 
 #if TMNEXT
     ISceneVis@ Scene = App.GameScene;
@@ -128,45 +140,51 @@ void Render() {
     CGameScene@ Scene = cast<CGameScene@>(App.GameScene);
 #endif
 
-    if (Scene is null)
+    if (Scene is null) {
+        ResetAllEffects();
         return;
+    }
 
 #if TMNEXT
-    CSceneVehicleVis@ vis;
+    CSceneVehicleVis@ Vis;
 #elif MP4
-    CSceneVehicleVisState@ vis;
+    CSceneVehicleVisState@ Vis;
 #endif
 
     CSmPlayer@ Player = cast<CSmPlayer@>(Playground.GameTerminals[0].GUIPlayer);
 
     if (Player !is null) {
-        @vis = VehicleState::GetVis(Scene, Player);
+        @Vis = VehicleState::GetVis(Scene, Player);
         replay = false;
     } else {
-        @vis = VehicleState::GetSingularVis(Scene);
+        @Vis = VehicleState::GetSingularVis(Scene);
         replay = true;
     }
 
 #if MP4
 
-    if (vis is null) {
+    if (Vis is null) {
         CSceneVehicleVisState@[] states = VehicleState::GetAllVis(Scene);
 
         if (states.Length > 0)
-            @vis = states[0];
+            @Vis = states[0];
     }
 
 #endif
 
-    if (vis is null)
+    if (Vis is null) {
+        ResetAllEffects();
         return;
+    }
 
     CGamePlaygroundUIConfig::EUISequence Sequence = Playground.UIConfigs[0].UISequence;
     if (
         !(Sequence == CGamePlaygroundUIConfig::EUISequence::Playing) &&
         !(Sequence == CGamePlaygroundUIConfig::EUISequence::EndRound && replay)
-    )
+    ) {
+        ResetAllEffects();
         return;
+    }
 
 #if TMNEXT
 
@@ -175,7 +193,7 @@ void Render() {
 
 #endif
 
-    RenderEffects(vis.AsyncState);
+    RenderEffects(Vis.AsyncState);
 }
 
 // courtesy of "Auto-hide Opponents" plugin - https://github.com/XertroV/tm-autohide-opponents
