@@ -33,7 +33,6 @@ Showcase (older version): https://youtu.be/0rzvJQJC8gc
 ### Not working/not implemented:
 - Reactor Boost (full 6-second timer - the only reason I started this)
 - Slow-Mo (timer)
-- More settings (colors, etc.)
 
 ## Exported Functions
 Current Effects now allows you to use it as a dependency. To do so, include "CurrentEffects" in your `info.toml`'s dependency list. If you're developing for Trackmania (2020), I recommend also including "VehicleState." Experimental effects for TM2020 require an extra setting which you can access with Get and Set functions. Below are the exported functions which you may use in your own plugins:
