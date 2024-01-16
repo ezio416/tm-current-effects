@@ -1,5 +1,5 @@
 // c 2024-01-09
-// m 2024-01-11
+// m 2024-01-15
 
 #if SIG_DEVELOPER && TMNEXT
 
@@ -31,7 +31,7 @@ const int[] knownStateOffsets = {
 
 // offsets for which a value is known, but there's uncertainty in exactly what it represents
 const int[] observedStateOffsets = {
-    12, 104, 108, 112, 556, 612, 812
+    12, 104, 108, 112, 556, 612, 780, 784, 812, 816
 };
 
 // game versions for which the offsets in this file are valid
@@ -617,10 +617,13 @@ void RenderStateOffsetValues(CSceneVehicleVisState@ State) {
     values.InsertLast(OffsetValue(State, 568, "AirBrakeNormed",          DataType::Float));
     values.InsertLast(OffsetValue(State, 572, "SpoilerOpenNormed",       DataType::Float));
     values.InsertLast(OffsetValue(State, 576, "WingsOpenNormed",         DataType::Float));
+    values.InsertLast(OffsetValue(State, 780, "Penalty1",                DataType::Int32, false));
+    values.InsertLast(OffsetValue(State, 784, "Penalty2",                DataType::Int32, false));
     values.InsertLast(OffsetValue(State, 788, "WaterImmersionCoef",      DataType::Float));
     values.InsertLast(OffsetValue(State, 792, "WaterOverDistNormed",     DataType::Float));
     values.InsertLast(OffsetValue(State, 796, "WaterOverSurfacePos",     DataType::Vec3));
     values.InsertLast(OffsetValue(State, 808, "WetnessValue01",          DataType::Float));
+    values.InsertLast(OffsetValue(State, 816, "Penalty3",                DataType::Int32, false));
 
     if (UI::BeginTable("##state-offset-value-table", 5, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
