@@ -2016,38 +2016,6 @@ void Tab_CameraBehind() {
         return;
     }
 
-    if (UI::Button("reset##minDistance"))
-        minDistance = 4.0f;
-    UI::SameLine();
-    minDistance = UI::SliderFloat("minDistance", minDistance, 0.0f, maxDistance);
-    Dev::SetOffset(Camera, 52, minDistance);
-
-    if (UI::Button("reset##maxDistance"))
-        maxDistance = 5.0f;
-    UI::SameLine();
-    maxDistance = UI::SliderFloat("maxDistance", maxDistance, minDistance, 100.0f);
-    Dev::SetOffset(Camera, 56, maxDistance);
-
-    if (UI::Button("reset##height"))
-        height = 3.3f;
-    UI::SameLine();
-    height = UI::SliderFloat("height", height, -100.0f, 100.0f);
-    Dev::SetOffset(Camera, 60, height);
-
-    if (UI::Button("reset##pitch"))
-        pitch = 0.7f;
-    UI::SameLine();
-    pitch = UI::SliderFloat("pitch", pitch, 0.0f, 1.0f);
-    Dev::SetOffset(Camera, 64, pitch);
-
-    if (UI::Button("reset##fov"))
-        fov = 75.0f;
-    UI::SameLine();
-    fov = UI::SliderFloat("fov", fov, 1.0f, 180.0f);
-    Dev::SetOffset(Camera, 68, fov);
-
-    UI::Separator();
-
     offset = UI::InputInt("offset", offset, 4);
     if (offset < 0)
         offset = 0;
@@ -2083,11 +2051,11 @@ void Tab_CameraBehind() {
     //  40 def  0.25  LaunchedCheckpointStopped_SecondPartCoef
     //  44
     //  48 def  2.003
-    //  52 def  4.0   min distance ?
+    //  52 def  4.0   min distance should be < max distance
     //  56 def  5.0   max distance should be > min distance
     //  60 def  3.3   height
     //  64 def  0.7   pitch 0.0-1.0
-    //  68 def 75.0   fov
+    //  68 def 75.0   fov 1.0-180.0
     //  72 def  1.0   distance at speed should be > -3
     //  76 def 2000
     //  80 def 1000
