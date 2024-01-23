@@ -1,5 +1,5 @@
 // c 2024-01-09
-// m 2024-01-15
+// m 2024-01-17
 
 #if SIG_DEVELOPER && TMNEXT
 
@@ -65,6 +65,10 @@ void RenderDevNext() {
             Tab_Score();
             Tab_Script();
             Tab_User();
+            // Tab_Terminal();
+            // Tab_Scene();
+            Tab_CameraBehind();
+            Tab_CameraInternal();
         UI::EndTabBar();
     UI::End();
 }
@@ -1760,5 +1764,578 @@ void RenderUserApiArrays(CTrackManiaPlayerInfo@ User) {
 void RenderUserOffsetValues(CTrackManiaPlayerInfo@ User) { }
 
 void RenderUserOffsets(CTrackManiaPlayerInfo@ User) { }
+
+void Tab_Terminal() {
+    if (!UI::BeginTabItem("CGameTerminal"))
+        return;
+
+    CTrackMania@ App = cast<CTrackMania@>(GetApp());
+
+    CSmArenaClient@ Playground = cast<CSmArenaClient@>(App.CurrentPlayground);
+    if (Playground is null) {
+        UI::Text(RED + "null Playground");
+        UI::EndTabItem();
+        return;
+    }
+
+    if (Playground.GameTerminals.Length == 0) {
+        UI::Text(RED + "no GameTerminals");
+        UI::EndTabItem();
+        return;
+    }
+
+    CGameTerminal@ Terminal = Playground.GameTerminals[0];
+
+    if (UI::BeginTable("##terminal-offset-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+        UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+        UI::TableSetupScrollFreeze(0, 1);
+        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Value (" + tostring(S_OffsetType) + ")");
+        UI::TableHeadersRow();
+
+        UI::ListClipper clipper((S_OffsetMax / S_OffsetSkip) + 1);
+        while (clipper.Step()) {
+            for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                int offset = i * S_OffsetSkip;
+                string color = "";//knownStateOffsets.Find(offset) > -1 ? "" : (observedStateOffsets.Find(offset) > -1) ? YELLOW : RED;
+
+                UI::TableNextRow();
+                UI::TableNextColumn();
+                UI::Text(color + offset);
+
+                UI::TableNextColumn();
+                UI::Text(color + IntToHex(offset));
+
+                string value;
+                try {
+                    switch (S_OffsetType) {
+                        case DataType::Bool:   value = Round(    Dev::GetOffsetInt8(  Terminal, offset) == 1); break;
+                        case DataType::Int8:   value = Round(    Dev::GetOffsetInt8(  Terminal, offset));      break;
+                        case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8( Terminal, offset));      break;
+                        case DataType::Int16:  value = Round(    Dev::GetOffsetInt16( Terminal, offset));      break;
+                        case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(Terminal, offset));      break;
+                        case DataType::Int32:  value = Round(    Dev::GetOffsetInt32( Terminal, offset));      break;
+                        case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(Terminal, offset));      break;
+                        case DataType::Int64:  value = Round(    Dev::GetOffsetInt64( Terminal, offset));      break;
+                        case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(Terminal, offset));      break;
+                        case DataType::Float:  value = Round(    Dev::GetOffsetFloat( Terminal, offset));      break;
+                        case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2(  Terminal, offset));      break;
+                        case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3(  Terminal, offset));      break;
+                        case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4(  Terminal, offset));      break;
+                        case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4(  Terminal, offset));      break;
+                        default:               value = "Unsupported!";
+                    }
+                } catch {
+                    UI::Text(YELLOW + getExceptionInfo());
+                }
+                UI::TableNextColumn();
+                if (UI::Selectable(value, false))
+                    IO::SetClipboard(value);
+            }
+        }
+        UI::PopStyleColor();
+        UI::EndTable();
+    }
+    UI::EndTabItem();
+}
+
+void Tab_Scene() {
+    if (!UI::BeginTabItem("ISceneVis"))
+        return;
+
+    CTrackMania@ App = cast<CTrackMania@>(GetApp());
+
+    CSmArenaClient@ Playground = cast<CSmArenaClient@>(App.CurrentPlayground);
+    if (Playground is null) {
+        UI::Text(RED + "null Playground");
+        UI::EndTabItem();
+        return;
+    }
+
+    ISceneVis@ Scene = App.GameScene;
+    if (Scene is null) {
+        UI::Text(RED + "null Scene");
+        UI::EndTabItem();
+        return;
+    }
+
+    if (UI::BeginTable("##scene-offset-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+        UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+        UI::TableSetupScrollFreeze(0, 1);
+        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Value (" + tostring(S_OffsetType) + ")");
+        UI::TableHeadersRow();
+
+        UI::ListClipper clipper((S_OffsetMax / S_OffsetSkip) + 1);
+        while (clipper.Step()) {
+            for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                int offset = i * S_OffsetSkip;
+                string color = "";//knownStateOffsets.Find(offset) > -1 ? "" : (observedStateOffsets.Find(offset) > -1) ? YELLOW : RED;
+
+                UI::TableNextRow();
+                UI::TableNextColumn();
+                UI::Text(color + offset);
+
+                UI::TableNextColumn();
+                UI::Text(color + IntToHex(offset));
+
+                string value;
+                try {
+                    switch (S_OffsetType) {
+                        case DataType::Bool:   value = Round(    Dev::GetOffsetInt8(  Scene, offset) == 1); break;
+                        case DataType::Int8:   value = Round(    Dev::GetOffsetInt8(  Scene, offset));      break;
+                        case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8( Scene, offset));      break;
+                        case DataType::Int16:  value = Round(    Dev::GetOffsetInt16( Scene, offset));      break;
+                        case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(Scene, offset));      break;
+                        case DataType::Int32:  value = Round(    Dev::GetOffsetInt32( Scene, offset));      break;
+                        case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(Scene, offset));      break;
+                        case DataType::Int64:  value = Round(    Dev::GetOffsetInt64( Scene, offset));      break;
+                        case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(Scene, offset));      break;
+                        case DataType::Float:  value = Round(    Dev::GetOffsetFloat( Scene, offset));      break;
+                        case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2(  Scene, offset));      break;
+                        case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3(  Scene, offset));      break;
+                        case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4(  Scene, offset));      break;
+                        case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4(  Scene, offset));      break;
+                        default:               value = "Unsupported!";
+                    }
+                } catch {
+                    UI::Text(YELLOW + getExceptionInfo());
+                }
+                UI::TableNextColumn();
+                if (UI::Selectable(value, false))
+                    IO::SetClipboard(value);
+            }
+        }
+        UI::PopStyleColor();
+        UI::EndTable();
+    }
+    UI::EndTabItem();
+}
+
+float minDistance = 4.0f;
+float maxDistance = 5.0f;
+float height      = 3.3f;
+float pitch       = 0.7f;
+float fov         = 75.0f;
+
+int   offset  = 0;
+float value   = 0.0f;
+bool  autoSet = false;
+float min     = -10.0f;
+float max     = 10.0f;
+
+void Tab_CameraBehind() {
+    if (!UI::BeginTabItem("Cam1"))
+        return;
+
+    CTrackMania@ App = cast<CTrackMania@>(GetApp());
+
+    // CSmArenaClient@ Playground = cast<CSmArenaClient@>(App.CurrentPlayground);
+    // if (Playground is null) {
+    //     UI::Text(RED + "null Playground");
+    //     UI::EndTabItem();
+    //     return;
+    // }
+
+    CGameCtnCatalog@ Catalog = App.GlobalCatalog;
+    if (Catalog is null) {
+        UI::Text(RED + "null Catalog");
+        UI::EndTabItem();
+        return;
+    }
+
+    if (Catalog.Chapters.Length == 0) {
+        UI::Text(RED + "Catalog has no chapters");
+        UI::EndTabItem();
+        return;
+    }
+
+    CGameCtnArticle@ CarSport;
+
+    for (uint i = 0; i < Catalog.Chapters.Length; i++) {
+        CGameCtnChapter@ Chapter = Catalog.Chapters[i];
+        if (Chapter is null)
+            continue;
+
+        if (Chapter.Id.GetName() == "#10003") {
+            if (Chapter.Articles.Length == 0) {
+                UI::Text("Chapter has no articles");
+                break;
+            }
+
+            for (uint j = 0; j < Chapter.Articles.Length; j++) {
+                CGameCtnArticle@ Article = Chapter.Articles[j];
+                if (Article is null)
+                    continue;
+
+                if (Article.Id.GetName() == "CarSport") {
+                    @CarSport = Article;
+                    break;
+                }
+            }
+        }
+
+        if (CarSport !is null)
+            break;
+    }
+
+    if (CarSport is null) {
+        UI::Text(RED + "CarSport not found");
+        UI::EndTabItem();
+        return;
+    }
+
+    CGameItemModel@ Model = cast<CGameItemModel@>(CarSport.LoadedNod);
+    if (Model is null) {
+        UI::Text(RED + "null Model");
+        UI::EndTabItem();
+        return;
+    }
+
+    if (Model.Cameras.Length == 0) {
+        UI::Text(RED + "Model has no cameras");
+        UI::EndTabItem();
+        return;
+    }
+
+    CPlugVehicleCameraRace2Model@ Camera;
+
+    for (uint i = 0; i < Model.Cameras.Length; i++) {
+        @Camera = cast<CPlugVehicleCameraRace2Model@>(Model.Cameras[i]);
+        if (Camera !is null)
+            break;
+    }
+
+    if (Camera is null) {
+        UI::Text(RED + "Camera not found");
+        UI::EndTabItem();
+        return;
+    }
+
+    if (UI::Button("reset##minDistance"))
+        minDistance = 4.0f;
+    UI::SameLine();
+    minDistance = UI::SliderFloat("minDistance", minDistance, 0.0f, maxDistance);
+    Dev::SetOffset(Camera, 52, minDistance);
+
+    if (UI::Button("reset##maxDistance"))
+        maxDistance = 5.0f;
+    UI::SameLine();
+    maxDistance = UI::SliderFloat("maxDistance", maxDistance, minDistance, 100.0f);
+    Dev::SetOffset(Camera, 56, maxDistance);
+
+    if (UI::Button("reset##height"))
+        height = 3.3f;
+    UI::SameLine();
+    height = UI::SliderFloat("height", height, -100.0f, 100.0f);
+    Dev::SetOffset(Camera, 60, height);
+
+    if (UI::Button("reset##pitch"))
+        pitch = 0.7f;
+    UI::SameLine();
+    pitch = UI::SliderFloat("pitch", pitch, 0.0f, 1.0f);
+    Dev::SetOffset(Camera, 64, pitch);
+
+    if (UI::Button("reset##fov"))
+        fov = 75.0f;
+    UI::SameLine();
+    fov = UI::SliderFloat("fov", fov, 1.0f, 180.0f);
+    Dev::SetOffset(Camera, 68, fov);
+
+    UI::Separator();
+
+    offset = UI::InputInt("offset", offset, 4);
+    if (offset < 0)
+        offset = 0;
+
+    min = UI::InputFloat("min", min);
+    max = UI::InputFloat("max", max);
+
+    value = UI::SliderFloat("value", value, min, max);
+    UI::SameLine();
+    if (UI::Button("reset##offset"))
+        value = 0.0f;
+
+    autoSet = UI::Checkbox("auto", autoSet);
+
+    UI::SameLine();
+    if (UI::Button("get"))
+        value = Dev::GetOffsetFloat(Camera, offset);
+
+    UI::SameLine();
+    if (UI::Button("set") || autoSet)
+        Dev::SetOffset(Camera, offset, value);
+
+    //   0
+    //   4 def 32759
+    //   8
+    //  12 def 499
+    //  16 32 for std cam1, 30 all else
+    //  20
+    //  24
+    //  28 def 499
+    //  32 def 200    LaunchedCheckpointStopped_SecondPartDuration ?
+    //  36 def  0.15  LaunchedCheckpointStopped_FirstPartCoef
+    //  40 def  0.25  LaunchedCheckpointStopped_SecondPartCoef
+    //  44
+    //  48 def  2.003
+    //  52 def  4.0   min distance ?
+    //  56 def  5.0   max distance should be > min distance
+    //  60 def  3.3   height
+    //  64 def  0.7   pitch 0.0-1.0
+    //  68 def 75.0   fov
+    //  72 def  1.0   distance at speed should be > -3
+    //  76 def 2000
+    //  80 def 1000
+    //  84 def -0.7   slowing down shouldn't be too negative
+    //  88 def 750
+    //  92 def 1000
+    //  96 def -0.8
+    // 100 def 2000
+    // 104 def 1500
+    // 108 def 10.5
+    // 112 def 1000
+    // 116 def 1400
+    // 120 def -0.6
+    // 124 def 1000
+    // 128 def 1400
+    // 132 def 10.0
+    // 136 def 1250   BulletTimeFovSmooth ?
+    // 140 def 750    BulletTimeFovSmooth ?
+    // 144 def  0.7
+    // 148 def 1250   BulletTimeFovSmooth ?
+    // 152 def 750    BulletTimeFovSmooth ?
+    // 156 def  0.5
+    // 160 def 1250   BulletTimeFovSmooth ?
+    // 164 def 750    BulletTimeFovSmooth ?
+    // 168 def  0.2
+    // 172 def 1250   BulletTimeFovSmooth ?
+    // 176 def 750    BulletTimeFovSmooth ?
+    // 180 def -0.35
+    // 184 def 500
+    // 188 def 2000
+    // 192 def -0.4
+    // 196 def 2000
+    // 200 def 1500
+    // 204 def  1.0
+
+    UI::Separator();
+
+    if (UI::BeginTable("##camera-1-offset-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+        UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+        UI::TableSetupScrollFreeze(0, 1);
+        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Value (" + tostring(S_OffsetType) + ")");
+        UI::TableHeadersRow();
+
+        UI::ListClipper clipper((S_OffsetMax / S_OffsetSkip) + 1);
+        while (clipper.Step()) {
+            for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                int offset = i * S_OffsetSkip;
+                string color = "";//knownStateOffsets.Find(offset) > -1 ? "" : (observedStateOffsets.Find(offset) > -1) ? YELLOW : RED;
+
+                UI::TableNextRow();
+                UI::TableNextColumn();
+                UI::Text(color + offset);
+
+                UI::TableNextColumn();
+                UI::Text(color + IntToHex(offset));
+
+                string value;
+                try {
+                    switch (S_OffsetType) {
+                        case DataType::Bool:   value = Round(    Dev::GetOffsetInt8(  Camera, offset) == 1); break;
+                        case DataType::Int8:   value = Round(    Dev::GetOffsetInt8(  Camera, offset));      break;
+                        case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8( Camera, offset));      break;
+                        case DataType::Int16:  value = Round(    Dev::GetOffsetInt16( Camera, offset));      break;
+                        case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(Camera, offset));      break;
+                        case DataType::Int32:  value = Round(    Dev::GetOffsetInt32( Camera, offset));      break;
+                        case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(Camera, offset));      break;
+                        case DataType::Int64:  value = Round(    Dev::GetOffsetInt64( Camera, offset));      break;
+                        case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(Camera, offset));      break;
+                        case DataType::Float:  value = Round(    Dev::GetOffsetFloat( Camera, offset));      break;
+                        case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2(  Camera, offset));      break;
+                        case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3(  Camera, offset));      break;
+                        case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4(  Camera, offset));      break;
+                        case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4(  Camera, offset));      break;
+                        // case DataType::String: value =           Dev::GetOffsetString(Camera, offset);       break;
+                        default:               value = "Unsupported!";
+                    }
+                } catch {
+                    UI::Text(YELLOW + getExceptionInfo());
+                }
+                UI::TableNextColumn();
+                if (UI::Selectable(value, false))
+                    IO::SetClipboard(value);
+            }
+        }
+        UI::PopStyleColor();
+        UI::EndTable();
+    }
+    UI::EndTabItem();
+}
+
+void Tab_CameraInternal() {
+    if (!UI::BeginTabItem("CameraInternal"))
+        return;
+
+    CTrackMania@ App = cast<CTrackMania@>(GetApp());
+
+    CSmArenaClient@ Playground = cast<CSmArenaClient@>(App.CurrentPlayground);
+    if (Playground is null) {
+        UI::Text(RED + "null Playground");
+        UI::EndTabItem();
+        return;
+    }
+
+    CGameCtnCatalog@ Catalog = App.GlobalCatalog;
+    if (Catalog is null) {
+        UI::Text(RED + "null Catalog");
+        UI::EndTabItem();
+        return;
+    }
+
+    if (Catalog.Chapters.Length == 0) {
+        UI::Text(RED + "Catalog has no chapters");
+        UI::EndTabItem();
+        return;
+    }
+
+    CGameCtnArticle@ CarSport;
+
+    for (uint i = 0; i < Catalog.Chapters.Length; i++) {
+        CGameCtnChapter@ Chapter = Catalog.Chapters[i];
+        if (Chapter is null)
+            continue;
+
+        if (Chapter.Id.GetName() == "#10003") {
+            if (Chapter.Articles.Length == 0) {
+                UI::Text("Chapter has no articles");
+                break;
+            }
+
+            for (uint j = 0; j < Chapter.Articles.Length; j++) {
+                CGameCtnArticle@ Article = Chapter.Articles[j];
+                if (Article is null)
+                    continue;
+
+                if (Article.Id.GetName() == "CarSport") {
+                    @CarSport = Article;
+                    break;
+                }
+            }
+        }
+
+        if (CarSport !is null)
+            break;
+    }
+
+    if (CarSport is null) {
+        UI::Text("CarSport not found");
+        UI::EndTabItem();
+        return;
+    }
+
+    CGameItemModel@ Model = cast<CGameItemModel@>(CarSport.LoadedNod);
+    if (Model is null) {
+        UI::Text("null Model");
+        UI::EndTabItem();
+        return;
+    }
+
+    if (Model.Cameras.Length == 0) {
+        UI::Text(RED + "Model has no cameras");
+        UI::EndTabItem();
+        return;
+    }
+
+    CPlugVehicleCameraInternalModel@ Camera;
+
+    for (uint i = 0; i < Model.Cameras.Length; i++) {
+        @Camera = cast<CPlugVehicleCameraInternalModel@>(Model.Cameras[i]);
+        if (Camera !is null)
+            break;
+    }
+
+    if (Camera is null) {
+        UI::Text("Camera not found");
+        UI::EndTabItem();
+        return;
+    }
+
+    // Camera.RelativePos.x = UI::InputFloat("relX",   Camera.RelativePos.x, 0.1);
+    // Camera.RelativePos.y = UI::InputFloat("relY",   Camera.RelativePos.y, 0.1);  // cam1 3.3, cam2 2.2
+    // Camera.RelativePos.z = UI::InputFloat("relZ",   Camera.RelativePos.z, 0.1);  // cam1 -5.0, cam2 -4.5
+    // Camera.PitchYawRoll.x = UI::InputFloat("pitch", Camera.PitchYawRoll.x, 0.1);  // cam1 11.2, cam2 3.35
+    // Camera.PitchYawRoll.y = UI::InputFloat("yaw",   Camera.PitchYawRoll.y, 0.1);
+    // Camera.PitchYawRoll.z = UI::InputFloat("roll",  Camera.PitchYawRoll.z, 0.1);
+
+    // Camera.RelativePos.x  = UI::SliderFloat("relX",  Camera.RelativePos.x, -5, 5);
+    // Camera.RelativePos.y  = UI::SliderFloat("relY",  Camera.RelativePos.y, -5, 5);
+    // Camera.RelativePos.z  = UI::SliderFloat("relZ",  Camera.RelativePos.z, -5, 5);
+    // Camera.PitchYawRoll.x = UI::SliderFloat("pitch", Camera.PitchYawRoll.x, -180, 180);
+    // Camera.PitchYawRoll.y = UI::SliderFloat("raw",   Camera.PitchYawRoll.y, -180, 180);
+    // Camera.PitchYawRoll.z = UI::SliderFloat("roll",  Camera.PitchYawRoll.z, -180, 180);
+
+    if (UI::BeginTable("##camera-internal-offset-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+        UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+        UI::TableSetupScrollFreeze(0, 1);
+        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Value (" + tostring(S_OffsetType) + ")");
+        UI::TableHeadersRow();
+
+        UI::ListClipper clipper((S_OffsetMax / S_OffsetSkip) + 1);
+        while (clipper.Step()) {
+            for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                int offset = i * S_OffsetSkip;
+                string color = "";//knownStateOffsets.Find(offset) > -1 ? "" : (observedStateOffsets.Find(offset) > -1) ? YELLOW : RED;
+
+                UI::TableNextRow();
+                UI::TableNextColumn();
+                UI::Text(color + offset);
+
+                UI::TableNextColumn();
+                UI::Text(color + IntToHex(offset));
+
+                string value;
+                try {
+                    switch (S_OffsetType) {
+                        case DataType::Bool:   value = Round(    Dev::GetOffsetInt8(  Camera, offset) == 1); break;
+                        case DataType::Int8:   value = Round(    Dev::GetOffsetInt8(  Camera, offset));      break;
+                        case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8( Camera, offset));      break;
+                        case DataType::Int16:  value = Round(    Dev::GetOffsetInt16( Camera, offset));      break;
+                        case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(Camera, offset));      break;
+                        case DataType::Int32:  value = Round(    Dev::GetOffsetInt32( Camera, offset));      break;
+                        case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(Camera, offset));      break;
+                        case DataType::Int64:  value = Round(    Dev::GetOffsetInt64( Camera, offset));      break;
+                        case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(Camera, offset));      break;
+                        case DataType::Float:  value = Round(    Dev::GetOffsetFloat( Camera, offset));      break;
+                        case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2(  Camera, offset));      break;
+                        case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3(  Camera, offset));      break;
+                        case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4(  Camera, offset));      break;
+                        case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4(  Camera, offset));      break;
+                        default:               value = "Unsupported!";
+                    }
+                } catch {
+                    UI::Text(YELLOW + getExceptionInfo());
+                }
+                UI::TableNextColumn();
+                if (UI::Selectable(value, false))
+                    IO::SetClipboard(value);
+            }
+        }
+        UI::PopStyleColor();
+        UI::EndTable();
+    }
+    UI::EndTabItem();
+}
 
 #endif
