@@ -1,8 +1,8 @@
 // c 2023-08-04
-// m 2024-01-05
+// m 2024-01-26
 
 UI::Font@ font;
-Font      currentFont   = S_Font;
+Font      currentFont = S_Font;
 string    iconPadding = "";
 
 enum Font {
