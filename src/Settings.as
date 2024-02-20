@@ -18,10 +18,10 @@ bool S_ShowAll = false;
 
 #if TMNEXT
 
-[Setting category="General" name="Reset all effects" description="Accel Penalty/Fragile/Snow Car may get stuck, just click this once"]
+[Setting category="General" name="Reset all effects" description="Fragile may get stuck, just click this once"]
 bool S_Reset = false;
 
-[Setting category="General" name="Try experimental features" description="Warning - may crash your game!"]
+[Setting category="General" name="Try experimental features" description="Warning - may crash your game or just not work!"]
 bool S_Experimental = false;
 
 
@@ -67,8 +67,8 @@ bool S_Reactor= true;
 [Setting category="Toggles" name="Slow-Mo"]
 bool S_SlowMo = true;
 
-[Setting category="Toggles" name="Snow Car" description="experimental - may not work!"]
-bool S_Snow = false;
+[Setting category="Toggles" name="Snow Car"]
+bool S_Snow = true;
 
 #endif
 

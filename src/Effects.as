@@ -27,12 +27,12 @@ void RenderEffects(CSceneVehicleVisState@ State) {
 
         if (S_Reset) {
             S_Reset = false;
-            ResetEventEffects(true);
+            ResetEventEffects();
         }
 
         cruise = GetCruiseSpeed(State) != 0 ? 1 : 0;
 
-        penalty = S_Experimental && (GetPenalty1(State) > 0 || GetPenalty2(State) > 0 || GetPenalty3(State) > 0) ? 1 : 0;
+        penalty = S_Experimental && (GetSparks1(State) > 0 || GetSparks2(State) > 0 || GetSparks3(State) > 0) ? 1 : 0;
 
         reactorLevel = State.ReactorBoostLvl;
         reactor = int(reactorLevel);
@@ -55,6 +55,8 @@ void RenderEffects(CSceneVehicleVisState@ State) {
             default:  slowmo = 4;
         }
 
+        snow = GetSnowCar(State);
+
         turbo = 0;
         if (State.IsTurbo)
             turbo = int(VehicleState::GetLastTurboLevel(State));
@@ -66,16 +68,13 @@ void RenderEffects(CSceneVehicleVisState@ State) {
             noEngine = -1;
             noGrip   = -1;
             noSteer  = -1;
-            snow     = -1;
         } else if (spectating) {
             cruise   = -1;
             fragile  = -1;
-            snow     = -1;
             turbo    = -1;
         } else if (!S_Experimental) {
             fragile  = -1;
             penalty  = -1;
-            snow     = -1;
         }
 
 #elif MP4
@@ -174,17 +173,12 @@ int GetCruiseSpeed(CSceneVehicleVisState@ State) {
         cruiseOffset = type.GetMember("FrontSpeed").Offset + 12;
     }
 
-    int ret = Dev::GetOffsetInt32(State, cruiseOffset);
-
-    // if (ret > 0)
-    //     print("cruise: " + ret);
-
-    return ret;
+    return Dev::GetOffsetInt32(State, cruiseOffset);
 }
 
 uint16 penalty1Offset = 0;
 
-int GetPenalty1(CSceneVehicleVisState@ State) {  // front/back impact strength? 0 - 16,843,009
+int GetSparks1(CSceneVehicleVisState@ State) {  // front/back impact strength? 0 - 16,843,009
     if (penalty1Offset == 0) {
         const Reflection::MwClassInfo@ type = Reflection::GetType("CSceneVehicleVisState");
 
@@ -199,14 +193,14 @@ int GetPenalty1(CSceneVehicleVisState@ State) {  // front/back impact strength? 
     int ret = Dev::GetOffsetInt32(State, penalty1Offset);
 
     // if (ret > 0)
-    //     print("penalty 1: " + tostring(ret));
+    //     print("sparks 1: " + tostring(ret));
 
     return ret;
 }
 
 uint16 penalty2Offset = 0;
 
-int GetPenalty2(CSceneVehicleVisState@ State) {  // back impact? 0 - 1
+int GetSparks2(CSceneVehicleVisState@ State) {  // back impact? 0 - 1
     if (penalty2Offset == 0) {
         const Reflection::MwClassInfo@ type = Reflection::GetType("CSceneVehicleVisState");
 
@@ -221,14 +215,14 @@ int GetPenalty2(CSceneVehicleVisState@ State) {  // back impact? 0 - 1
     int ret = Dev::GetOffsetInt32(State, penalty2Offset);
 
     // if (ret > 0)
-    //     print("penalty 2:" + tostring(ret));
+    //     print("sparks 2:" + tostring(ret));
 
     return ret;
 }
 
 uint16 penalty3Offset = 0;
 
-int GetPenalty3(CSceneVehicleVisState@ State) {  // any impact? 0 - ~1,065,000,000
+int GetSparks3(CSceneVehicleVisState@ State) {  // any impact? 0 - ~1,065,000,000
     if (penalty3Offset == 0) {
         const Reflection::MwClassInfo@ type = Reflection::GetType("CSceneVehicleVisState");
 
@@ -243,9 +237,29 @@ int GetPenalty3(CSceneVehicleVisState@ State) {  // any impact? 0 - ~1,065,000,0
     int ret = Dev::GetOffsetInt32(State, penalty3Offset);
 
     // if (ret > 0)
-    //     print("penalty 3: " + tostring(ret));
+    //     print("sparks 3: " + tostring(ret));
 
     return ret;
+}
+
+uint16 snowCarOffset = 0;
+
+int GetSnowCar(CSceneVehicleVisState@ State) {
+    if (alwaysSnow)
+        return 1;
+
+    if (snowCarOffset == 0) {
+        const Reflection::MwClassInfo@ type = Reflection::GetType("CSceneVehicleVisState");
+
+        if (type is null) {
+            error("Unable to find reflection info for CSceneVehicleVisState!");
+            return 0;
+        }
+
+        snowCarOffset = type.GetMember("InputSteer").Offset - 8;
+    }
+
+    return Dev::GetOffsetUint8(State, snowCarOffset);
 }
 
 #endif

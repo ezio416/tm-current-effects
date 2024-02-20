@@ -1,11 +1,10 @@
 // c 2023-10-01
-// m 2023-01-05
+// m 2023-02-20
 
 #if TMNEXT
 
 bool fragileBeforeCp = false;
 bool intercepting    = false;
-bool snowBeforeCp    = false;
 
 void Intercept() {
     if (!S_Experimental)
@@ -73,21 +72,13 @@ void CaptureEvent(const string &in type, MwFastBuffer<wstring> &in data) {
             ResetEventEffects();
         else if (data[0].Contains("Fragile"))
             fragile = 1;
-        else if (data[0].Contains("Snow"))
-            snow = 1;
-        else if (data[0].Contains("Stadium") && !alwaysSnow)
-            snow = 0;
     } else if (type == "TMGame_RaceCheckpoint_Waypoint") {  // works while spectating?
         fragileBeforeCp = fragile == 1;
-        snowBeforeCp = snow == 1;
     }
 }
 
-void ResetEventEffects(bool resetSnow = false) {
+void ResetEventEffects() {
     fragile = 0;
-
-    if (resetSnow && !alwaysSnow)
-        snow = 0;
 }
 
 #endif

@@ -1,5 +1,5 @@
 // c 2023-05-04
-// m 2024-01-12
+// m 2024-02-20
 
 string loginLocal    = GetLocalLogin();
 bool   replay;
@@ -114,9 +114,8 @@ void Render() {
     }
 
     if (ScriptPlayer.CurrentRaceTime < 1) {
-        ResetEventEffects(true);
+        ResetEventEffects();
         fragileBeforeCp = false;
-        snowBeforeCp = false;
     }
 
     CSmArenaScore@ Score = ScriptPlayer.Score;
@@ -129,13 +128,10 @@ void Render() {
 
     if (totalRespawns < respawns) {
         totalRespawns = respawns;
-        ResetEventEffects(true);
+        ResetEventEffects();
 
         if (fragileBeforeCp)
             fragile = 1;
-
-        if (snowBeforeCp)
-            snow = 1;
     }
 
 #endif
