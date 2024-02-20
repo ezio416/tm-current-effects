@@ -1,5 +1,5 @@
 // c 2024-01-10
-// m 2024-01-11
+// m 2024-02-19
 
 #if SIG_DEVELOPER && TMNEXT
 
@@ -76,7 +76,7 @@ void HelpTextClickCopy() {
 }
 
 void HelpTextPosNeg() {
-    UI::TextWrapped("Values marked white are 0/enums/strings, " + GREEN + " green\\$G are positive/true/valid, and " + RED + "red\\$G are negative/false/null/empty.");
+    UI::TextWrapped("Values marked white are 0/enums/strings, " + GREEN + "green\\$G are positive/true/valid, and " + RED + "red\\$G are negative/false/null/empty.");
 }
 
 string IntToHex(int i) {
