@@ -1,5 +1,5 @@
 // c 2023-06-10
-// m 2024-01-11
+// m 2024-02-19
 
 [Setting category="General" name="Enabled"]
 bool S_Enabled = true;
@@ -10,10 +10,10 @@ bool S_HideWithGame = true;
 [Setting category="General" name="Show/hide with Openplanet UI"]
 bool S_HideWithOP = false;
 
-[Setting category="General" name="Font style/size" description="loading a font for the first time causes game to hang for a bit"]
+[Setting category="General" name="Font style/size" description="Loading a font for the first time causes game to hang for a bit"]
 Font S_Font = Font::DroidSansBold_20;
 
-[Setting category="General" name="Enable all effects" description="helps with choosing custom colors"]
+[Setting category="General" name="Enable all effects" description="Helps with choosing custom colors"]
 bool S_ShowAll = false;
 
 #if TMNEXT
@@ -21,11 +21,11 @@ bool S_ShowAll = false;
 [Setting category="General" name="Reset all effects" description="Accel Penalty/Fragile/Snow Car may get stuck, just click this once"]
 bool S_Reset = false;
 
-[Setting category="General" name="Try experimental features" description="warning - may crash your game!"]
+[Setting category="General" name="Try experimental features" description="Warning - may crash your game!"]
 bool S_Experimental = false;
 
 
-[Setting category="Toggles" name="Acceleration Penalty" description="experimental - may not work!"]
+[Setting category="Toggles" name="Acceleration Penalty" description="Experimental - may not work!"]
 bool S_Penalty = false;
 
 [Setting category="Toggles" name="Cruise Control"]
@@ -37,7 +37,7 @@ bool S_NoEngine = true;
 [Setting category="Toggles" name="Forced Acceleration"]
 bool S_Forced = true;
 
-[Setting category="Toggles" name="Fragile" description="experimental - may not work!"]
+[Setting category="Toggles" name="Fragile" description="Experimental - may not work!"]
 bool S_Fragile = false;
 
 #elif MP4
@@ -205,13 +205,16 @@ bool S_DevHideWithOP = false;
 [Setting category="Dev" name="Float precision" min=0 max=9]
 uint S_Precision = 3;
 
-[Setting category="Dev" name="Show offset tabs" description="disabled upon plugin reload for safety"]
+[Setting category="Dev" name="Show offset tabs" description="Disabled upon plugin reload for safety"]
 bool S_OffsetTabs = false;
+
+[Setting category="Dev" name="Always show offset tabs" description="Not recommended!"]
+bool S_OffsetTabsAlways = false;
 
 [Setting category="Dev" name="Offset data type"]
 DataType S_OffsetType = DataType::Int32;
 
-[Setting category="Dev" name="Offset bytes skip" min=1 max=4]
+[Setting category="Dev" name="Offset bytes skip" min=1 max=12]
 uint S_OffsetSkip = 4;
 
 [Setting category="Dev" name="Offset max distance" min=100 max=10000 description="Very high values are not recommended"]
