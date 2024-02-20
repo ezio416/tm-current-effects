@@ -34,7 +34,7 @@ const int[] knownStateOffsets = {
 };
 
 const int[] observedStateOffsets = {
-    12, 104, 108, 112, 556, 612, 780, 784, 812, 816, 840, 864, 1704, 1728
+    8, 12, 104, 108, 112, 556, 612, 780, 784, 812, 816, 840, 864, 1704, 1728
 };
 
 const int[] knownPlayerOffsets = {
