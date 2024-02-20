@@ -166,6 +166,7 @@ void Tab_Vis() {
                 UI::EndTabItem();
             }
         }
+
     UI::EndTabBar();
     UI::EndTabItem();
 }
@@ -190,7 +191,7 @@ void RenderVisApiValues(CSceneVehicleVis@ Vis) {
         string value = Round(Vis.Turbo);
         UI::TableNextColumn();
         if (UI::Selectable(value, false))
-            IO::SetClipboard(value);
+            SetClipboard(value);
 
         UI::PopStyleColor();
         UI::EndTable();
@@ -279,7 +280,7 @@ void RenderVisOffsetValues(CSceneVehicleVis@ Vis) {
 
                 UI::TableNextColumn();
                 if (UI::Selectable(values[i][4], false))
-                    IO::SetClipboard(values[i][4]);
+                    SetClipboard(values[i][4]);
             }
         }
 
@@ -340,7 +341,7 @@ void RenderVisOffsets(CSceneVehicleVis@ Vis) {
                 }
                 UI::TableNextColumn();
                 if (UI::Selectable(value, false))
-                    IO::SetClipboard(value);
+                    SetClipboard(value);
             }
         }
     }
@@ -535,7 +536,7 @@ void RenderStateApiValues(CSceneVehicleVisState@ State) {
 
                 UI::TableNextColumn();
                 if (UI::Selectable(values[i][2], false))
-                    IO::SetClipboard(values[i][2]);
+                    SetClipboard(values[i][2]);
             }
         }
 
@@ -675,7 +676,7 @@ void RenderStateOffsetValues(CSceneVehicleVisState@ State) {
 
                 UI::TableNextColumn();
                 if (UI::Selectable(values[i][4], false))
-                    IO::SetClipboard(values[i][4]);
+                    SetClipboard(values[i][4]);
             }
         }
 
@@ -736,7 +737,7 @@ void RenderStateOffsets(CSceneVehicleVisState@ State) {
                 }
                 UI::TableNextColumn();
                 if (UI::Selectable(value, false))
-                    IO::SetClipboard(value);
+                    SetClipboard(value);
             }
         }
     }
@@ -823,6 +824,7 @@ void Tab_Player() {
                 UI::EndTabItem();
             }
         }
+
     UI::EndTabBar();
     UI::EndTabItem();
 }
@@ -871,7 +873,7 @@ void RenderPlayerApiValues(CSmPlayer@ Player) {
 
                 UI::TableNextColumn();
                 if (UI::Selectable(values[i][2], false))
-                    IO::SetClipboard(values[i][2]);
+                    SetClipboard(values[i][2]);
             }
         }
 
@@ -941,7 +943,7 @@ void RenderPlayerOffsets(CSmPlayer@ Player) {
                 }
                 UI::TableNextColumn();
                 if (UI::Selectable(value, false))
-                    IO::SetClipboard(value);
+                    SetClipboard(value);
             }
         }
     }
@@ -1033,6 +1035,7 @@ void Tab_Score() {
                 UI::EndTabItem();
             }
         }
+
     UI::EndTabBar();
     UI::EndTabItem();
 }
@@ -1080,7 +1083,7 @@ void RenderScoreApiValues(CSmArenaScore@ Score) {
 
                 UI::TableNextColumn();
                 if (UI::Selectable(values[i][2], false))
-                    IO::SetClipboard(values[i][2]);
+                    SetClipboard(values[i][2]);
             }
         }
 
@@ -1114,20 +1117,22 @@ void RenderScoreApiArrays(CSmArenaScore@ Score) {
                         string value = tostring(Score.BestLapTimes[i]);
                         UI::TableNextColumn();
                         if (UI::Selectable(value, false))
-                            IO::SetClipboard(value);
+                            SetClipboard(value);
 
                         value = Time::Format(Score.BestLapTimes[i]);
                         UI::TableNextColumn();
                         if (UI::Selectable(value, false))
-                            IO::SetClipboard(value);
+                            SetClipboard(value);
                     }
                 }
 
                 UI::PopStyleColor();
                 UI::EndTable();
             }
+
             UI::EndTabItem();
         }
+
         if (UI::BeginTabItem("BestRaceTimes")) {
             if (UI::BeginTable("##score-api-bestrace-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
                 UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
@@ -1147,20 +1152,22 @@ void RenderScoreApiArrays(CSmArenaScore@ Score) {
                         string value = tostring(Score.BestRaceTimes[i]);
                         UI::TableNextColumn();
                         if (UI::Selectable(value, false))
-                            IO::SetClipboard(value);
+                            SetClipboard(value);
 
                         value = Time::Format(Score.BestRaceTimes[i]);
                         UI::TableNextColumn();
                         if (UI::Selectable(value, false))
-                            IO::SetClipboard(value);
+                            SetClipboard(value);
                     }
                 }
 
                 UI::PopStyleColor();
                 UI::EndTable();
             }
+
             UI::EndTabItem();
         }
+
         if (UI::BeginTabItem("PrevLapTimes")) {
             if (UI::BeginTable("##score-api-prevlap-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
                 UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
@@ -1180,20 +1187,22 @@ void RenderScoreApiArrays(CSmArenaScore@ Score) {
                         string value = tostring(Score.PrevLapTimes[i]);
                         UI::TableNextColumn();
                         if (UI::Selectable(value, false))
-                            IO::SetClipboard(value);
+                            SetClipboard(value);
 
                         value = Time::Format(Score.PrevLapTimes[i]);
                         UI::TableNextColumn();
                         if (UI::Selectable(value, false))
-                            IO::SetClipboard(value);
+                            SetClipboard(value);
                     }
                 }
 
                 UI::PopStyleColor();
                 UI::EndTable();
             }
+
             UI::EndTabItem();
         }
+
         if (UI::BeginTabItem("PrevRaceTimes")) {
             if (UI::BeginTable("##score-api-prevrace-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
                 UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
@@ -1213,20 +1222,22 @@ void RenderScoreApiArrays(CSmArenaScore@ Score) {
                         string value = tostring(Score.PrevRaceTimes[i]);
                         UI::TableNextColumn();
                         if (UI::Selectable(value, false))
-                            IO::SetClipboard(value);
+                            SetClipboard(value);
 
                         value = Time::Format(Score.PrevRaceTimes[i]);
                         UI::TableNextColumn();
                         if (UI::Selectable(value, false))
-                            IO::SetClipboard(value);
+                            SetClipboard(value);
                     }
                 }
 
                 UI::PopStyleColor();
                 UI::EndTable();
             }
+
             UI::EndTabItem();
         }
+
     UI::EndTabBar();
 }
 
@@ -1291,7 +1302,7 @@ void RenderScoreOffsets(CSmArenaScore@ Score) {
                 }
                 UI::TableNextColumn();
                 if (UI::Selectable(value, false))
-                    IO::SetClipboard(value);
+                    SetClipboard(value);
             }
         }
     }
@@ -1383,6 +1394,7 @@ void Tab_Script() {
                 UI::EndTabItem();
             }
         }
+
     UI::EndTabBar();
     UI::EndTabItem();
 }
@@ -1534,7 +1546,7 @@ void RenderScriptApiValues(CSmScriptPlayer@ Script) {
 
                 UI::TableNextColumn();
                 if (UI::Selectable(values[i][2], false))
-                    IO::SetClipboard(values[i][2]);
+                    SetClipboard(values[i][2]);
             }
         }
 
@@ -1568,20 +1580,22 @@ void RenderScriptApiArrays(CSmScriptPlayer@ Script) {
                         string value = tostring(Script.CurrentLapWaypointTimes[i]);
                         UI::TableNextColumn();
                         if (UI::Selectable(value, false))
-                            IO::SetClipboard(value);
+                            SetClipboard(value);
 
                         value = Time::Format(Script.CurrentLapWaypointTimes[i]);
                         UI::TableNextColumn();
                         if (UI::Selectable(value, false))
-                            IO::SetClipboard(value);
+                            SetClipboard(value);
                     }
                 }
 
                 UI::PopStyleColor();
                 UI::EndTable();
             }
+
             UI::EndTabItem();
         }
+
         if (UI::BeginTabItem("LapWaypointTimes")) {
             if (UI::BeginTable("##script-api-lap-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
                 UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
@@ -1601,20 +1615,22 @@ void RenderScriptApiArrays(CSmScriptPlayer@ Script) {
                         string value = tostring(Script.LapWaypointTimes[i]);
                         UI::TableNextColumn();
                         if (UI::Selectable(value, false))
-                            IO::SetClipboard(value);
+                            SetClipboard(value);
 
                         value = Time::Format(Script.LapWaypointTimes[i]);
                         UI::TableNextColumn();
                         if (UI::Selectable(value, false))
-                            IO::SetClipboard(value);
+                            SetClipboard(value);
                     }
                 }
 
                 UI::PopStyleColor();
                 UI::EndTable();
             }
+
             UI::EndTabItem();
         }
+
         if (UI::BeginTabItem("PreviousLapWaypointTimes")) {
             if (UI::BeginTable("##script-api-prevlap-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
                 UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
@@ -1634,20 +1650,22 @@ void RenderScriptApiArrays(CSmScriptPlayer@ Script) {
                         string value = tostring(Script.PreviousLapWaypointTimes[i]);
                         UI::TableNextColumn();
                         if (UI::Selectable(value, false))
-                            IO::SetClipboard(value);
+                            SetClipboard(value);
 
                         value = Time::Format(Script.PreviousLapWaypointTimes[i]);
                         UI::TableNextColumn();
                         if (UI::Selectable(value, false))
-                            IO::SetClipboard(value);
+                            SetClipboard(value);
                     }
                 }
 
                 UI::PopStyleColor();
                 UI::EndTable();
             }
+
             UI::EndTabItem();
         }
+
         if (UI::BeginTabItem("RaceWaypointTimes")) {
             if (UI::BeginTable("##script-api-race-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
                 UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
@@ -1667,20 +1685,22 @@ void RenderScriptApiArrays(CSmScriptPlayer@ Script) {
                         string value = tostring(Script.RaceWaypointTimes[i]);
                         UI::TableNextColumn();
                         if (UI::Selectable(value, false))
-                            IO::SetClipboard(value);
+                            SetClipboard(value);
 
                         value = Time::Format(Script.RaceWaypointTimes[i]);
                         UI::TableNextColumn();
                         if (UI::Selectable(value, false))
-                            IO::SetClipboard(value);
+                            SetClipboard(value);
                     }
                 }
 
                 UI::PopStyleColor();
                 UI::EndTable();
             }
+
             UI::EndTabItem();
         }
+
     UI::EndTabBar();
 }
 
@@ -1745,7 +1765,7 @@ void RenderScriptOffsets(CSmScriptPlayer@ Script) {
                 }
                 UI::TableNextColumn();
                 if (UI::Selectable(value, false))
-                    IO::SetClipboard(value);
+                    SetClipboard(value);
             }
         }
     }
@@ -1837,6 +1857,7 @@ void Tab_User() {
                 UI::EndTabItem();
             }
         }
+
     UI::EndTabBar();
     UI::EndTabItem();
 }
@@ -1924,7 +1945,7 @@ void RenderUserApiValues(CTrackManiaPlayerInfo@ User) {
     values.InsertLast({"UploadRate",                      "Uint32",  RoundUint(User.UploadRate)});
 
     if (User.VoiceChat is null)
-        values.InsertLast({"VoiceChat", "Object", RED + "null"});
+        values.InsertLast({"VoiceChat",                   "Object",  RED + "null"});
     else {
         values.InsertLast({"VoiceChat.Id.GetName()",      "String",            User.VoiceChat.Id.GetName()});
         values.InsertLast({"VoiceChat.Id.Value",          "Uint32",  RoundUint(User.VoiceChat.Id.Value)});
@@ -1944,7 +1965,7 @@ void RenderUserApiValues(CTrackManiaPlayerInfo@ User) {
     values.InsertLast({"ZoneFlagUrl",                     "String",            User.ZoneFlagUrl});
 
     if (User.ZoneLeague is null)
-        values.InsertLast({"ZoneLeague", "Object", RED + "null"});
+        values.InsertLast({"ZoneLeague",                  "Object",  RED + "null"});
     else {
         values.InsertLast({"ZoneLeague.Description",      "WString", string(   User.ZoneLeague.Description)});
         values.InsertLast({"ZoneLeague.Id.GetName()",     "String",            User.ZoneLeague.Id.GetName()});
@@ -1976,7 +1997,7 @@ void RenderUserApiValues(CTrackManiaPlayerInfo@ User) {
 
                 UI::TableNextColumn();
                 if (UI::Selectable(values[i][2], false))
-                    IO::SetClipboard(values[i][2]);
+                    SetClipboard(values[i][2]);
             }
         }
 
@@ -2056,7 +2077,7 @@ void RenderUserOffsets(CTrackManiaPlayerInfo@ User) {
                 }
                 UI::TableNextColumn();
                 if (UI::Selectable(value, false))
-                    IO::SetClipboard(value);
+                    SetClipboard(value);
             }
         }
     }
