@@ -7,6 +7,11 @@ bool   gameVersionValid = false;
 string titleDev         = title + " (Developer)";
 string version;
 
+// game versions for which the offsets in this file are valid
+const string[] validGameVersions = {
+    "2024-01-10_12_53"  // released 2024-01-10
+};
+
 // offsets for which a value is known
 const int[] knownVisOffsets = {
     0, 140, 144, 312, 316, 320, 324, 328, 332, 336, 340, 344, 348, 352, 356, 360, 364, 368, 372, 376, 384, 388, 392, 396, 400,
@@ -18,7 +23,6 @@ const int[] observedVisOffsets = {
     124, 128, 456, 460, 464, 480, 484, 488, 504, 508, 512, 528, 532, 536, 548, 552, 556, 564, 560, 568, 572, 576, 584, 588, 596
 };
 
-// offsets for which a value is known
 const int[] knownStateOffsets = {
     0, 16, 20, 24, 32, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84, 88, 92, 96, 100, 116, 120, 128, 136, 138, 139,
     168, 172, 176, 180, 184, 185, 188, 192, 196, 200, 204, 208,  // FL
@@ -29,14 +33,32 @@ const int[] knownStateOffsets = {
     560, 564, 568, 572, 576, 788, 792, 796, 800, 804, 808
 };
 
-// offsets for which a value is known, but there's uncertainty in exactly what it represents
 const int[] observedStateOffsets = {
     12, 104, 108, 112, 556, 612, 780, 784, 812, 816
 };
 
-// game versions for which the offsets in this file are valid
-const string[] validGameVersions = {
-    "2024-01-10_12_53"  // released 2024-01-10
+const int[] knownPlayerOffsets = {
+};
+
+const int[] observedPlayerOffsets = {
+};
+
+const int[] knownScoreOffsets = {
+};
+
+const int[] observedScoreOffsets = {
+};
+
+const int[] knownScriptOffsets = {
+};
+
+const int[] observedScriptOffsets = {
+};
+
+const int[] knownUserOffsets = {
+};
+
+const int[] observedUserOffsets = {
 };
 
 void InitDevNext() {
@@ -623,13 +645,13 @@ void RenderStateOffsetValues(CSceneVehicleVisState@ State) {
     values.InsertLast(OffsetValue(State, 568, "AirBrakeNormed",          DataType::Float));
     values.InsertLast(OffsetValue(State, 572, "SpoilerOpenNormed",       DataType::Float));
     values.InsertLast(OffsetValue(State, 576, "WingsOpenNormed",         DataType::Float));
-    values.InsertLast(OffsetValue(State, 780, "Sparks1",                DataType::Int32, false));
-    values.InsertLast(OffsetValue(State, 784, "Sparks2",                DataType::Int32, false));
+    values.InsertLast(OffsetValue(State, 780, "Sparks1",                 DataType::Int32, false));
+    values.InsertLast(OffsetValue(State, 784, "Sparks2",                 DataType::Int32, false));
     values.InsertLast(OffsetValue(State, 788, "WaterImmersionCoef",      DataType::Float));
     values.InsertLast(OffsetValue(State, 792, "WaterOverDistNormed",     DataType::Float));
     values.InsertLast(OffsetValue(State, 796, "WaterOverSurfacePos",     DataType::Vec3));
     values.InsertLast(OffsetValue(State, 808, "WetnessValue01",          DataType::Float));
-    values.InsertLast(OffsetValue(State, 816, "Sparks3",                DataType::Int32, false));
+    values.InsertLast(OffsetValue(State, 816, "Sparks3",                 DataType::Int32, false));
 
     if (UI::BeginTable("##state-offset-value-table", 5, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
@@ -858,9 +880,75 @@ void RenderPlayerApiValues(CSmPlayer@ Player) {
     }
 }
 
-void RenderPlayerOffsetValues(CSmPlayer@ Player) { }
+void RenderPlayerOffsetValues(CSmPlayer@ Player) {
+    UI::TextWrapped("Variables marked " + YELLOW + "yellow\\$G have been observed but are uncertain.");
+    HelpTextPosNeg();
+    HelpTextClickCopy();
 
-void RenderPlayerOffsets(CSmPlayer@ Player) { }
+    string[][] values;
+    ;
+}
+
+void RenderPlayerOffsets(CSmPlayer@ Player) {
+    UI::TextWrapped("If you go much further than a few thousand, there is a small, but non-zero chance your game could crash.");
+    UI::TextWrapped("Offsets marked white are known, " + YELLOW + "yellow\\$G are somewhat known, and " + RED + "red\\$G are unknown.");
+    HelpTextPosNeg();
+    HelpTextClickCopy();
+
+    if (UI::BeginTable("##player-offset-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+        UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+        UI::TableSetupScrollFreeze(0, 1);
+        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Value (" + tostring(S_OffsetType) + ")");
+        UI::TableHeadersRow();
+
+        UI::ListClipper clipper((S_OffsetMax / S_OffsetSkip) + 1);
+        while (clipper.Step()) {
+            for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                int offset = i * S_OffsetSkip;
+                string color = knownPlayerOffsets.Find(offset) > -1 ? "" : (observedPlayerOffsets.Find(offset) > -1) ? YELLOW : RED;
+
+                UI::TableNextRow();
+                UI::TableNextColumn();
+                UI::Text(color + offset);
+
+                UI::TableNextColumn();
+                UI::Text(color + IntToHex(offset));
+
+                string value;
+                try {
+                    switch (S_OffsetType) {
+                        case DataType::Bool:   value = Round(    Dev::GetOffsetInt8(  Player, offset) == 1); break;
+                        case DataType::Int8:   value = Round(    Dev::GetOffsetInt8(  Player, offset));      break;
+                        case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8( Player, offset));      break;
+                        case DataType::Int16:  value = Round(    Dev::GetOffsetInt16( Player, offset));      break;
+                        case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(Player, offset));      break;
+                        case DataType::Int32:  value = Round(    Dev::GetOffsetInt32( Player, offset));      break;
+                        case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(Player, offset));      break;
+                        case DataType::Int64:  value = Round(    Dev::GetOffsetInt64( Player, offset));      break;
+                        case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(Player, offset));      break;
+                        case DataType::Float:  value = Round(    Dev::GetOffsetFloat( Player, offset));      break;
+                        case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2(  Player, offset));      break;
+                        case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3(  Player, offset));      break;
+                        case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4(  Player, offset));      break;
+                        case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4(  Player, offset));      break;
+                        default:               value = "Unsupported!";
+                    }
+                } catch {
+                    UI::Text(YELLOW + getExceptionInfo());
+                }
+                UI::TableNextColumn();
+                if (UI::Selectable(value, false))
+                    IO::SetClipboard(value);
+            }
+        }
+    }
+
+    UI::PopStyleColor();
+    UI::EndTable();
+}
 
 void Tab_Score() {
     if (!UI::BeginTabItem("CSmArenaScore"))
@@ -1142,9 +1230,75 @@ void RenderScoreApiArrays(CSmArenaScore@ Score) {
     UI::EndTabBar();
 }
 
-void RenderScoreOffsetValues(CSmArenaScore@ Score) { }
+void RenderScoreOffsetValues(CSmArenaScore@ Score) {
+    UI::TextWrapped("Variables marked " + YELLOW + "yellow\\$G have been observed but are uncertain.");
+    HelpTextPosNeg();
+    HelpTextClickCopy();
 
-void RenderScoreOffsets(CSmArenaScore@ Score) { }
+    string[][] values;
+    ;
+}
+
+void RenderScoreOffsets(CSmArenaScore@ Score) {
+    UI::TextWrapped("If you go much further than a few thousand, there is a small, but non-zero chance your game could crash.");
+    UI::TextWrapped("Offsets marked white are known, " + YELLOW + "yellow\\$G are somewhat known, and " + RED + "red\\$G are unknown.");
+    HelpTextPosNeg();
+    HelpTextClickCopy();
+
+    if (UI::BeginTable("##score-offset-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+        UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+        UI::TableSetupScrollFreeze(0, 1);
+        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Value (" + tostring(S_OffsetType) + ")");
+        UI::TableHeadersRow();
+
+        UI::ListClipper clipper((S_OffsetMax / S_OffsetSkip) + 1);
+        while (clipper.Step()) {
+            for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                int offset = i * S_OffsetSkip;
+                string color = knownScoreOffsets.Find(offset) > -1 ? "" : (observedScoreOffsets.Find(offset) > -1) ? YELLOW : RED;
+
+                UI::TableNextRow();
+                UI::TableNextColumn();
+                UI::Text(color + offset);
+
+                UI::TableNextColumn();
+                UI::Text(color + IntToHex(offset));
+
+                string value;
+                try {
+                    switch (S_OffsetType) {
+                        case DataType::Bool:   value = Round(    Dev::GetOffsetInt8(  Score, offset) == 1); break;
+                        case DataType::Int8:   value = Round(    Dev::GetOffsetInt8(  Score, offset));      break;
+                        case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8( Score, offset));      break;
+                        case DataType::Int16:  value = Round(    Dev::GetOffsetInt16( Score, offset));      break;
+                        case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(Score, offset));      break;
+                        case DataType::Int32:  value = Round(    Dev::GetOffsetInt32( Score, offset));      break;
+                        case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(Score, offset));      break;
+                        case DataType::Int64:  value = Round(    Dev::GetOffsetInt64( Score, offset));      break;
+                        case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(Score, offset));      break;
+                        case DataType::Float:  value = Round(    Dev::GetOffsetFloat( Score, offset));      break;
+                        case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2(  Score, offset));      break;
+                        case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3(  Score, offset));      break;
+                        case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4(  Score, offset));      break;
+                        case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4(  Score, offset));      break;
+                        default:               value = "Unsupported!";
+                    }
+                } catch {
+                    UI::Text(YELLOW + getExceptionInfo());
+                }
+                UI::TableNextColumn();
+                if (UI::Selectable(value, false))
+                    IO::SetClipboard(value);
+            }
+        }
+    }
+
+    UI::PopStyleColor();
+    UI::EndTable();
+}
 
 void Tab_Script() {
     if (!UI::BeginTabItem("CSmScriptPlayer"))
@@ -1530,9 +1684,75 @@ void RenderScriptApiArrays(CSmScriptPlayer@ Script) {
     UI::EndTabBar();
 }
 
-void RenderScriptOffsetValues(CSmScriptPlayer@ Script) { }
+void RenderScriptOffsetValues(CSmScriptPlayer@ Script) {
+    UI::TextWrapped("Variables marked " + YELLOW + "yellow\\$G have been observed but are uncertain.");
+    HelpTextPosNeg();
+    HelpTextClickCopy();
 
-void RenderScriptOffsets(CSmScriptPlayer@ Script) { }
+    string[][] values;
+    ;
+}
+
+void RenderScriptOffsets(CSmScriptPlayer@ Script) {
+    UI::TextWrapped("If you go much further than a few thousand, there is a small, but non-zero chance your game could crash.");
+    UI::TextWrapped("Offsets marked white are known, " + YELLOW + "yellow\\$G are somewhat known, and " + RED + "red\\$G are unknown.");
+    HelpTextPosNeg();
+    HelpTextClickCopy();
+
+    if (UI::BeginTable("##script-offset-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+        UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+        UI::TableSetupScrollFreeze(0, 1);
+        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Value (" + tostring(S_OffsetType) + ")");
+        UI::TableHeadersRow();
+
+        UI::ListClipper clipper((S_OffsetMax / S_OffsetSkip) + 1);
+        while (clipper.Step()) {
+            for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                int offset = i * S_OffsetSkip;
+                string color = knownScriptOffsets.Find(offset) > -1 ? "" : (observedScriptOffsets.Find(offset) > -1) ? YELLOW : RED;
+
+                UI::TableNextRow();
+                UI::TableNextColumn();
+                UI::Text(color + offset);
+
+                UI::TableNextColumn();
+                UI::Text(color + IntToHex(offset));
+
+                string value;
+                try {
+                    switch (S_OffsetType) {
+                        case DataType::Bool:   value = Round(    Dev::GetOffsetInt8(  Script, offset) == 1); break;
+                        case DataType::Int8:   value = Round(    Dev::GetOffsetInt8(  Script, offset));      break;
+                        case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8( Script, offset));      break;
+                        case DataType::Int16:  value = Round(    Dev::GetOffsetInt16( Script, offset));      break;
+                        case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(Script, offset));      break;
+                        case DataType::Int32:  value = Round(    Dev::GetOffsetInt32( Script, offset));      break;
+                        case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(Script, offset));      break;
+                        case DataType::Int64:  value = Round(    Dev::GetOffsetInt64( Script, offset));      break;
+                        case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(Script, offset));      break;
+                        case DataType::Float:  value = Round(    Dev::GetOffsetFloat( Script, offset));      break;
+                        case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2(  Script, offset));      break;
+                        case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3(  Script, offset));      break;
+                        case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4(  Script, offset));      break;
+                        case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4(  Script, offset));      break;
+                        default:               value = "Unsupported!";
+                    }
+                } catch {
+                    UI::Text(YELLOW + getExceptionInfo());
+                }
+                UI::TableNextColumn();
+                if (UI::Selectable(value, false))
+                    IO::SetClipboard(value);
+            }
+        }
+    }
+
+    UI::PopStyleColor();
+    UI::EndTable();
+}
 
 void Tab_User() {
     if (!UI::BeginTabItem("CTrackManiaPlayerInfo"))
@@ -1573,7 +1793,7 @@ void Tab_User() {
     for (uint i = 0; i < Arena.Players.Length; i++)
         Players.Add(Arena.Players[i]);
 
-    UI::TextWrapped(ORANGE + "CTrackManiaPlayerInfo\\$G is a part of " + ORANGE + "CSmPlayer\\$G, " + ORANGE + "CSmArenaScore\\$G, and " + ORANGE + "CSmScriptPlayer\\$G.");
+    UI::TextWrapped(ORANGE + "CTrackManiaPlayerInfo\\$G is a part of " + ORANGE + "App\\$G, " + ORANGE + "CSmPlayer\\$G, " + ORANGE + "CSmArenaScore\\$G, and " + ORANGE + "CSmScriptPlayer\\$G.");
 
     UI::BeginTabBar("##user-tabs", UI::TabBarFlags::FittingPolicyScroll | UI::TabBarFlags::TabListPopupButton);
         for (uint i = 0; i < Players.Length; i++) {
@@ -1775,8 +1995,74 @@ void RenderUserApiArrays(CTrackManiaPlayerInfo@ User) {
     // User.ZoneIdPath
 }
 
-void RenderUserOffsetValues(CTrackManiaPlayerInfo@ User) { }
+void RenderUserOffsetValues(CTrackManiaPlayerInfo@ User) {
+    UI::TextWrapped("Variables marked " + YELLOW + "yellow\\$G have been observed but are uncertain.");
+    HelpTextPosNeg();
+    HelpTextClickCopy();
 
-void RenderUserOffsets(CTrackManiaPlayerInfo@ User) { }
+    string[][] values;
+    ;
+}
+
+void RenderUserOffsets(CTrackManiaPlayerInfo@ User) {
+    UI::TextWrapped("If you go much further than a few thousand, there is a small, but non-zero chance your game could crash.");
+    UI::TextWrapped("Offsets marked white are known, " + YELLOW + "yellow\\$G are somewhat known, and " + RED + "red\\$G are unknown.");
+    HelpTextPosNeg();
+    HelpTextClickCopy();
+
+    if (UI::BeginTable("##user-offset-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+        UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
+
+        UI::TableSetupScrollFreeze(0, 1);
+        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Value (" + tostring(S_OffsetType) + ")");
+        UI::TableHeadersRow();
+
+        UI::ListClipper clipper((S_OffsetMax / S_OffsetSkip) + 1);
+        while (clipper.Step()) {
+            for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+                int offset = i * S_OffsetSkip;
+                string color = knownUserOffsets.Find(offset) > -1 ? "" : (observedUserOffsets.Find(offset) > -1) ? YELLOW : RED;
+
+                UI::TableNextRow();
+                UI::TableNextColumn();
+                UI::Text(color + offset);
+
+                UI::TableNextColumn();
+                UI::Text(color + IntToHex(offset));
+
+                string value;
+                try {
+                    switch (S_OffsetType) {
+                        case DataType::Bool:   value = Round(    Dev::GetOffsetInt8(  User, offset) == 1); break;
+                        case DataType::Int8:   value = Round(    Dev::GetOffsetInt8(  User, offset));      break;
+                        case DataType::Uint8:  value = RoundUint(Dev::GetOffsetUint8( User, offset));      break;
+                        case DataType::Int16:  value = Round(    Dev::GetOffsetInt16( User, offset));      break;
+                        case DataType::Uint16: value = RoundUint(Dev::GetOffsetUint16(User, offset));      break;
+                        case DataType::Int32:  value = Round(    Dev::GetOffsetInt32( User, offset));      break;
+                        case DataType::Uint32: value = RoundUint(Dev::GetOffsetUint32(User, offset));      break;
+                        case DataType::Int64:  value = Round(    Dev::GetOffsetInt64( User, offset));      break;
+                        case DataType::Uint64: value = RoundUint(Dev::GetOffsetUint64(User, offset));      break;
+                        case DataType::Float:  value = Round(    Dev::GetOffsetFloat( User, offset));      break;
+                        case DataType::Vec2:   value = Round(    Dev::GetOffsetVec2(  User, offset));      break;
+                        case DataType::Vec3:   value = Round(    Dev::GetOffsetVec3(  User, offset));      break;
+                        case DataType::Vec4:   value = Round(    Dev::GetOffsetVec4(  User, offset));      break;
+                        case DataType::Iso4:   value = Round(    Dev::GetOffsetIso4(  User, offset));      break;
+                        default:               value = "Unsupported!";
+                    }
+                } catch {
+                    UI::Text(YELLOW + getExceptionInfo());
+                }
+                UI::TableNextColumn();
+                if (UI::Selectable(value, false))
+                    IO::SetClipboard(value);
+            }
+        }
+    }
+
+    UI::PopStyleColor();
+    UI::EndTable();
+}
 
 #endif
