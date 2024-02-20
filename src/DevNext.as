@@ -1,5 +1,5 @@
 // c 2024-01-09
-// m 2024-02-19
+// m 2024-02-20
 
 #if SIG_DEVELOPER && TMNEXT
 
@@ -24,7 +24,7 @@ const int[] observedVisOffsets = {
 };
 
 const int[] knownStateOffsets = {
-    0, 16, 20, 24, 32, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84, 88, 92, 96, 100, 116, 120, 128, 136, 138, 139,
+    0, 8, 16, 20, 24, 32, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84, 88, 92, 96, 100, 116, 120, 128, 136, 138, 139,
     168, 172, 176, 180, 184, 185, 188, 192, 196, 200, 204, 208,  // FL
     212, 216, 220, 224, 228, 229, 232, 236, 240, 244, 248, 252,  // FR
     256, 260, 264, 268, 272, 273, 276, 280, 284, 288, 292, 296,  // RR
@@ -34,7 +34,7 @@ const int[] knownStateOffsets = {
 };
 
 const int[] observedStateOffsets = {
-    8, 12, 104, 108, 112, 556, 612, 780, 784, 812, 816, 840, 864, 1704, 1728
+    12, 104, 108, 112, 556, 612, 780, 784, 812, 816, 840, 864, 1704, 1728
 };
 
 const int[] knownPlayerOffsets = {
@@ -557,6 +557,7 @@ void RenderStateOffsetValues(CSceneVehicleVisState@ State) {
 
     string[][] values;
     values.InsertLast(OffsetValue(State, 0,    "EntityId",                DataType::Uint32));
+    values.InsertLast(OffsetValue(State, 8,    "VehicleType",             DataType::Uint8));
     values.InsertLast(OffsetValue(State, 16,   "InputSteer",              DataType::Float));
     values.InsertLast(OffsetValue(State, 20,   "InputGasPedal",           DataType::Float));
     values.InsertLast(OffsetValue(State, 24,   "InputBrakePedal",         DataType::Float));
