@@ -982,26 +982,6 @@ void RenderPlayerOffsetValues(CSmPlayer@ Player) {
     }
 }
 
-void ReadBuffer(CSmPlayer@ player) {
-    if (player is null) UI::Text("Null Player!?");
-    auto capacity = 201;
-    auto nextIx = Dev::GetOffsetUint32(player, 0xBE1C);
-    auto currIx = (nextIx + 200) % capacity;
-    auto offset = 0x1160 + currIx * 0xD8;
-    UI::Text("NextIx: " + Text::Format("0x%x", nextIx) + ", CurrIx: " + Text::Format("0x%x", currIx));
-    UI::Text("Offset: " + Text::Format("0x%04x", offset));
-    for (uint j = 0; j < 0xD8; j += 8) {
-        auto asInts = Dev::GetOffsetNat2(player, offset + j);
-        UI::Text(
-            Text::Format("+0x%02x: ", j) +
-            Dev::GetOffsetVec2(player, offset + j).ToString() + " | " +
-            Dev::GetOffsetNat2(player, offset + j).ToString() + " | " +
-            Text::Format("0x%04x", asInts.x) + ", " +
-            Text::Format("0x%04x", asInts.y)
-        );
-    }
-}
-
 void RenderPlayerOffsets(CSmPlayer@ Player) {
     UI::TextWrapped("If you go much further than a few thousand, there is a small, but non-zero chance your game could crash.");
     UI::TextWrapped("Offsets marked white are known, " + YELLOW + "yellow\\$G are somewhat known, and " + RED + "red\\$G are unknown.");
