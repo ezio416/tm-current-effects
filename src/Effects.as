@@ -1,5 +1,5 @@
 // c 2023-08-17
-// m 2024-01-12
+// m 2024-02-19
 
 bool   alwaysSnow   = false;  // to change when starting as CarSnow is no longer broken
 int    cruise       = 0;
@@ -162,7 +162,7 @@ string GetTurboText(float f) {
 
 uint16 cruiseOffset = 0;
 
-int GetCruiseSpeed(CSceneVehicleVisState@ state) {
+int GetCruiseSpeed(CSceneVehicleVisState@ State) {
     if (cruiseOffset == 0) {
         const Reflection::MwClassInfo@ type = Reflection::GetType("CSceneVehicleVisState");
 
@@ -174,7 +174,7 @@ int GetCruiseSpeed(CSceneVehicleVisState@ state) {
         cruiseOffset = type.GetMember("FrontSpeed").Offset + 12;
     }
 
-    int ret = Dev::GetOffsetInt32(state, cruiseOffset);
+    int ret = Dev::GetOffsetInt32(State, cruiseOffset);
 
     // if (ret > 0)
     //     print("cruise: " + ret);
@@ -184,7 +184,7 @@ int GetCruiseSpeed(CSceneVehicleVisState@ state) {
 
 uint16 penalty1Offset = 0;
 
-int GetPenalty1(CSceneVehicleVisState@ state) {  // front/back impact strength? 0 - 16,843,009
+int GetPenalty1(CSceneVehicleVisState@ State) {  // front/back impact strength? 0 - 16,843,009
     if (penalty1Offset == 0) {
         const Reflection::MwClassInfo@ type = Reflection::GetType("CSceneVehicleVisState");
 
@@ -196,7 +196,7 @@ int GetPenalty1(CSceneVehicleVisState@ state) {  // front/back impact strength? 
         penalty1Offset = type.GetMember("WaterImmersionCoef").Offset - 8;
     }
 
-    int ret = Dev::GetOffsetInt32(state, penalty1Offset);
+    int ret = Dev::GetOffsetInt32(State, penalty1Offset);
 
     // if (ret > 0)
     //     print("penalty 1: " + tostring(ret));
@@ -206,7 +206,7 @@ int GetPenalty1(CSceneVehicleVisState@ state) {  // front/back impact strength? 
 
 uint16 penalty2Offset = 0;
 
-int GetPenalty2(CSceneVehicleVisState@ state) {  // back impact? 0 - 1
+int GetPenalty2(CSceneVehicleVisState@ State) {  // back impact? 0 - 1
     if (penalty2Offset == 0) {
         const Reflection::MwClassInfo@ type = Reflection::GetType("CSceneVehicleVisState");
 
@@ -218,7 +218,7 @@ int GetPenalty2(CSceneVehicleVisState@ state) {  // back impact? 0 - 1
         penalty2Offset = type.GetMember("WaterImmersionCoef").Offset - 4;
     }
 
-    int ret = Dev::GetOffsetInt32(state, penalty2Offset);
+    int ret = Dev::GetOffsetInt32(State, penalty2Offset);
 
     // if (ret > 0)
     //     print("penalty 2:" + tostring(ret));
@@ -228,7 +228,7 @@ int GetPenalty2(CSceneVehicleVisState@ state) {  // back impact? 0 - 1
 
 uint16 penalty3Offset = 0;
 
-int GetPenalty3(CSceneVehicleVisState@ state) {  // any impact? 0 - ~1,065,000,000
+int GetPenalty3(CSceneVehicleVisState@ State) {  // any impact? 0 - ~1,065,000,000
     if (penalty3Offset == 0) {
         const Reflection::MwClassInfo@ type = Reflection::GetType("CSceneVehicleVisState");
 
@@ -240,7 +240,7 @@ int GetPenalty3(CSceneVehicleVisState@ state) {  // any impact? 0 - ~1,065,000,0
         penalty3Offset = type.GetMember("WetnessValue01").Offset + 8;
     }
 
-    int ret = Dev::GetOffsetInt32(state, penalty3Offset);
+    int ret = Dev::GetOffsetInt32(State, penalty3Offset);
 
     // if (ret > 0)
     //     print("penalty 3: " + tostring(ret));
