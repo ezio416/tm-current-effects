@@ -19,6 +19,7 @@ Showcase (older version): https://youtu.be/0rzvJQJC8gc
 - No Steering
 - Reactor Boost (yellow/red, up/down, last-second timer)
 - Slow-Mo (all 4 levels)
+- Snow Car
 - Turbo (all 5 levels, timer)
 - Editor playtest
 - Playing on servers
@@ -28,7 +29,6 @@ Showcase (older version): https://youtu.be/0rzvJQJC8gc
 - Spectating (some effects unsupported)
 - Acceleration penalty (very experimental)
 - Fragile (experimental, breaks in some instances (no pun intended))
-- Snow Car (experimental)
 
 ### Not working/not implemented:
 - Reactor Boost (full 6-second timer - the only reason I started this)
@@ -50,7 +50,7 @@ Current Effects now allows you to use it as a dependency. To do so, include "Cur
 - `bool GetCruiseControl()` - Returns true when in Cruise Control. Does not work when spectating.
 - `bool GetFragile()` - (Experimental) Returns true when Fragile. Does not work when watching a replay or spectating.
 - `int GetSlowMoLevel()` - Returns the current Slow-Mo level (0-4, 0 being none).
-- `bool GetSnowCar()` - (Experimental) Returns true when the current vehicle is the Snow Car. Does not work when watching a replay or spectating.
+- `bool GetSnowCar()` - Returns true when the current vehicle is the Snow Car.
 - `ESceneVehicleVisReactorBoostLvl GetReactorLevel()` - Returns the current Reactor Boost level.
 - `float GetReactorFinalTimer()` - Returns 0.0-1.0 in the last second before a Reactor Boost runs out. Does not work when watching a replay.
 - `ESceneVehicleVisReactorBoostType GetReactorType()` - Returns the current Reactor Boost type.

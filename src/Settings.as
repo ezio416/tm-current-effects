@@ -1,5 +1,5 @@
 // c 2023-06-10
-// m 2024-01-05
+// m 2024-02-19
 
 [Setting category="General" name="Enabled"]
 bool S_Enabled = true;
@@ -10,22 +10,22 @@ bool S_HideWithGame = true;
 [Setting category="General" name="Show/hide with Openplanet UI"]
 bool S_HideWithOP = false;
 
-[Setting category="General" name="Font style/size" description="loading a font for the first time causes game to hang for a bit"]
+[Setting category="General" name="Font style/size" description="Loading a font for the first time causes game to hang for a bit"]
 Font S_Font = Font::DroidSansBold_20;
 
-[Setting category="General" name="Enable all effects" description="helps with choosing custom colors"]
+[Setting category="General" name="Enable all effects" description="Helps with choosing custom colors"]
 bool S_ShowAll = false;
 
 #if TMNEXT
 
-[Setting category="General" name="Reset all effects" description="Cruise Control/Fragile/Snow Car may get stuck, just click this once"]
+[Setting category="General" name="Reset all effects" description="Fragile may get stuck, just click this once"]
 bool S_Reset = false;
 
-[Setting category="General" name="Try experimental features" description="warning - may crash your game!"]
+[Setting category="General" name="Try experimental features" description="Warning - may crash your game or just not work!"]
 bool S_Experimental = false;
 
 
-[Setting category="Toggles" name="Acceleration Penalty" description="experimental - may not work!"]
+[Setting category="Toggles" name="Acceleration Penalty" description="Experimental - may not work!"]
 bool S_Penalty = false;
 
 [Setting category="Toggles" name="Cruise Control"]
@@ -37,7 +37,7 @@ bool S_NoEngine = true;
 [Setting category="Toggles" name="Forced Acceleration"]
 bool S_Forced = true;
 
-[Setting category="Toggles" name="Fragile" description="experimental - may not work!"]
+[Setting category="Toggles" name="Fragile" description="Experimental - may not work!"]
 bool S_Fragile = false;
 
 #elif MP4
@@ -67,7 +67,7 @@ bool S_Reactor= true;
 [Setting category="Toggles" name="Slow-Mo"]
 bool S_SlowMo = true;
 
-[Setting category="Toggles" name="Snow Car" description="experimental - may not work!"]
+[Setting category="Toggles" name="Snow Car"]
 bool S_Snow = true;
 
 #endif
