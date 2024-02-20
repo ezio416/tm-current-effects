@@ -623,13 +623,13 @@ void RenderStateOffsetValues(CSceneVehicleVisState@ State) {
     values.InsertLast(OffsetValue(State, 568, "AirBrakeNormed",          DataType::Float));
     values.InsertLast(OffsetValue(State, 572, "SpoilerOpenNormed",       DataType::Float));
     values.InsertLast(OffsetValue(State, 576, "WingsOpenNormed",         DataType::Float));
-    values.InsertLast(OffsetValue(State, 780, "Penalty1",                DataType::Int32, false));
-    values.InsertLast(OffsetValue(State, 784, "Penalty2",                DataType::Int32, false));
+    values.InsertLast(OffsetValue(State, 780, "Sparks1",                DataType::Int32, false));
+    values.InsertLast(OffsetValue(State, 784, "Sparks2",                DataType::Int32, false));
     values.InsertLast(OffsetValue(State, 788, "WaterImmersionCoef",      DataType::Float));
     values.InsertLast(OffsetValue(State, 792, "WaterOverDistNormed",     DataType::Float));
     values.InsertLast(OffsetValue(State, 796, "WaterOverSurfacePos",     DataType::Vec3));
     values.InsertLast(OffsetValue(State, 808, "WetnessValue01",          DataType::Float));
-    values.InsertLast(OffsetValue(State, 816, "Penalty3",                DataType::Int32, false));
+    values.InsertLast(OffsetValue(State, 816, "Sparks3",                DataType::Int32, false));
 
     if (UI::BeginTable("##state-offset-value-table", 5, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
