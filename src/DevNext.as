@@ -1,5 +1,5 @@
 // c 2024-01-09
-// m 2024-01-15
+// m 2024-02-19
 
 #if SIG_DEVELOPER && TMNEXT
 
@@ -47,10 +47,10 @@ void InitDevNext() {
 
 void RenderDevNext() {
     if (
-        !S_Dev ||
-        version.Length == 0 ||
-        (S_DevHideWithGame && !UI::IsGameUIVisible()) ||
-        (S_DevHideWithOP && !UI::IsOverlayShown())
+        !S_Dev
+        || version.Length == 0
+        || (S_DevHideWithGame && !UI::IsGameUIVisible())
+        || (S_DevHideWithOP && !UI::IsOverlayShown())
     )
         return;
 
@@ -114,6 +114,9 @@ void Tab_Vis() {
             CSceneVehicleVis@ Vis = AllVis[i];
 
             if (UI::BeginTabItem(i == 0 && meExists ? Icons::Eye + " Viewing" : tostring(i))) {
+                if (!S_OffsetTabs && UI::Button(Icons::Eye + " Show offset tabs"))
+                        S_OffsetTabs = true;
+
                 UI::BeginTabBar("##vis-tabs-single");
 
                 if (UI::BeginTabItem("API Values")) {
@@ -369,6 +372,9 @@ void Tab_State() {
             CSceneVehicleVisState@ State = Vis.AsyncState;
 
             if (UI::BeginTabItem(i == 0 && meExists ? Icons::Eye + " Viewing" : tostring(i))) {
+                if (!S_OffsetTabs && UI::Button(Icons::Eye + " Show offset tabs"))
+                        S_OffsetTabs = true;
+
                 UI::BeginTabBar("##state-tabs-single");
 
                 if (UI::BeginTabItem("API Values")) {
@@ -765,6 +771,9 @@ void Tab_Player() {
             CSmPlayer@ Player = Players[i];
 
             if (UI::BeginTabItem(i == 0 ? Icons::User + " Me" : i + "_" + Player.User.Name)) {
+                if (!S_OffsetTabs && UI::Button(Icons::Eye + " Show offset tabs"))
+                        S_OffsetTabs = true;
+
                 UI::BeginTabBar("##player-tabs-single");
 
                 if (UI::BeginTabItem("API Values")) {
@@ -899,6 +908,9 @@ void Tab_Score() {
             CSmPlayer@ Player = Players[i];
 
             if (UI::BeginTabItem(i == 0 ? Icons::User + " Me" : i + "_" + Player.User.Name)) {
+                if (!S_OffsetTabs && UI::Button(Icons::Eye + " Show offset tabs"))
+                        S_OffsetTabs = true;
+
                 UI::BeginTabBar("##score-tabs-single");
 
                 if (UI::BeginTabItem("API Values")) {
@@ -1180,6 +1192,9 @@ void Tab_Script() {
             CSmPlayer@ Player = Players[i];
 
             if (UI::BeginTabItem(i == 0 ? Icons::User + " Me" : i + "_" + Player.User.Name)) {
+                if (!S_OffsetTabs && UI::Button(Icons::Eye + " Show offset tabs"))
+                        S_OffsetTabs = true;
+
                 UI::BeginTabBar("##script-tabs-single");
 
                 if (UI::BeginTabItem("API Values")) {
@@ -1565,6 +1580,9 @@ void Tab_User() {
             CSmPlayer@ Player = Players[i];
 
             if (UI::BeginTabItem(i == 0 ? Icons::User + " Me" : i + "_" + Player.User.Name)) {
+                if (!S_OffsetTabs && UI::Button(Icons::Eye + " Show offset tabs"))
+                        S_OffsetTabs = true;
+
                 UI::BeginTabBar("##user-tabs-single");
 
                 if (UI::BeginTabItem("API Values")) {
