@@ -114,6 +114,7 @@ string GetVehicleColor() {
         case -1: return disabledColor;
         case  1: return snowColor;
         case  2: return rallyColor;
+        // case  3: return desertColor;
         default: return offColor;
     }
 }
