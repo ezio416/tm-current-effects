@@ -1,7 +1,6 @@
 // c 2023-08-17
-// m 2024-02-19
+// m 2024-02-23
 
-bool   alwaysSnow   = false;  // to change when starting as CarSnow is no longer broken
 int    cruise       = 0;
 int    forced       = 0;
 int    fragile      = 0;
@@ -16,8 +15,8 @@ int    reactorLevel = 0;
 float  reactorTimer = 0.0f;
 int    reactorType  = 0;
 int    slowmo       = 0;
-int    snow         = 0;
 int    turbo        = 0;
+int    vehicle      = 0;
 
 void RenderEffects(CSceneVehicleVisState@ State) {
     if (!S_ShowAll) {
@@ -55,7 +54,7 @@ void RenderEffects(CSceneVehicleVisState@ State) {
             default:  slowmo = 4;
         }
 
-        snow = GetSnowCar(State);
+        vehicle = GetVehicleType(State);
 
         turbo = 0;
         if (State.IsTurbo)
@@ -119,8 +118,8 @@ void RenderEffects(CSceneVehicleVisState@ State) {
 
         if (S_Reactor)  UI::Text(GetReactorText(reactorTimer));
         if (S_SlowMo)   UI::Text(GetSlowMoColor() + Icons::ClockO + iconPadding + "Slow-Mo");
-        if (S_Snow)     UI::Text(GetSnowColor()   + Icons::Truck  + iconPadding + "Snow Car");
         if (S_Turbo)    UI::Text(GetTurboText(State.TurboTime));
+        if (S_Vehicle)  UI::Text(GetVehicleText());
 
 #elif MP4
 
@@ -157,6 +156,14 @@ string GetTurboText(float f) {
     if (f < 0.6) return GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "Tu" + offColor + "rbo";
     if (f < 0.8) return GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "T" + offColor + "urbo";
     return GetTurboColor() + Icons::ArrowCircleUp + offColor + iconPadding + "Turbo";
+}
+
+string GetVehicleText() {
+    switch (vehicle) {
+        case 1:  return GetVehicleColor() + Icons::Kenney::Car + iconPadding + "Snow Car";
+        case 2:  return GetVehicleColor() + Icons::Kenney::Car + iconPadding + "Rally Car";
+        default: return GetVehicleColor() + Icons::Kenney::Car + iconPadding + "Stadium Car";
+    }
 }
 
 uint16 cruiseOffset = 0;
@@ -242,13 +249,10 @@ int GetSparks3(CSceneVehicleVisState@ State) {  // any impact? 0 - ~1,065,000,00
     return ret;
 }
 
-uint16 snowCarOffset = 0;
+uint16 vehicleTypeOffset = 0;
 
-int GetSnowCar(CSceneVehicleVisState@ State) {
-    if (alwaysSnow)
-        return 1;
-
-    if (snowCarOffset == 0) {
+int GetVehicleType(CSceneVehicleVisState@ State) {
+    if (vehicleTypeOffset == 0) {
         const Reflection::MwClassInfo@ type = Reflection::GetType("CSceneVehicleVisState");
 
         if (type is null) {
@@ -256,16 +260,25 @@ int GetSnowCar(CSceneVehicleVisState@ State) {
             return 0;
         }
 
-        snowCarOffset = type.GetMember("InputSteer").Offset - 8;
+        vehicleTypeOffset = type.GetMember("InputSteer").Offset - 8;
     }
 
-    return Dev::GetOffsetUint8(State, snowCarOffset);
+    CTrackMania@ App = cast<CTrackMania@>(GetApp());
+    if (App.RootMap !is null) {
+        if (App.RootMap.VehicleName.GetName() == "CarSnow")
+            return 1;
+        if (App.RootMap.VehicleName.GetName() == "CarRally")
+            return 2;
+        // if (map.VehicleName.GetName() == "CarDesert")  // to update when car is added
+        // 	return 3;
+    }
+
+    return Dev::GetOffsetUint8(State, vehicleTypeOffset);
 }
 
 #endif
 
 void ResetAllEffects() {
-    alwaysSnow   = false;
     cruise       = 0;
     forced       = 0;
     fragile      = 0;
@@ -279,6 +292,6 @@ void ResetAllEffects() {
     reactorTimer = 0.0f;
     reactorType  = 0;
     slowmo       = 0;
-    snow         = 0;
     turbo        = 0;
+    vehicle      = 0;
 }
