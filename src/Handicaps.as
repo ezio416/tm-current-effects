@@ -3,7 +3,7 @@
 
 uint16 handicapOffset = 0;
 
-int GetHandicapSum(CSceneVehicleVisState@ state) {
+int GetHandicapSum(CSceneVehicleVisState@ State) {
 
 #if TMNEXT
 
@@ -18,10 +18,10 @@ int GetHandicapSum(CSceneVehicleVisState@ state) {
         handicapOffset = type.GetMember("TurboTime").Offset + 12;
     }
 
-    return Dev::GetOffsetInt32(state, handicapOffset);
+    return Dev::GetOffsetInt32(State, handicapOffset);
 
 #elif MP4
-    return int(state.ActiveEffects);
+    return int(State.ActiveEffects);
 #endif
 }
 
