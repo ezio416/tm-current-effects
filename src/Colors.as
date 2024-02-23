@@ -139,6 +139,7 @@ void SetColors() {
 
 #if TMNEXT
 
+    // desertColor   = Text::FormatOpenplanetColor(S_DesertColor);
     disabledColor = Text::FormatOpenplanetColor(S_DisabledColor);
     cruiseColor   = Text::FormatOpenplanetColor(S_CruiseColor);
     fragileColor  = Text::FormatOpenplanetColor(S_FragileColor);

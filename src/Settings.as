@@ -188,6 +188,10 @@ string snowColor;
 vec3 S_RallyColor = vec3(0.1f, 0.8f, 0.1f);
 string rallyColor;
 
+// [Setting category="Colors" name="Vehicle - Desert Car" color]
+// vec3 S_DesertColor = vec3(1.0f, 0.5f, 0.1f);
+// string desertColor;
+
 #elif MP4
 
 [Setting category="Colors" name="Turbo" color]
