@@ -118,10 +118,7 @@ void Render() {
 
 #endif
 
-    if (
-        Playground.GameTerminals.Length != 1 ||
-        Playground.UIConfigs.Length == 0
-    ) {
+    if (Playground.GameTerminals.Length != 1 || Playground.UIConfigs.Length == 0) {
         ResetAllEffects();
         return;
     }
