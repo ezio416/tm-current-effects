@@ -1,5 +1,5 @@
 // c 2024-01-09
-// m 2024-02-20
+// m 2024-02-25
 
 #if SIG_DEVELOPER && TMNEXT
 
@@ -34,7 +34,7 @@ const int[] knownStateOffsets = {
 };
 
 const int[] observedStateOffsets = {
-    12, 104, 108, 112, 556, 612, 780, 784, 812, 816, 840, 864, 1704, 1728
+    12, 104, 108, 112, 412, 552, 556, 612, 780, 784, 812, 816, 840, 864, 1704, 1728
 };
 
 const int[] knownPlayerOffsets = {
