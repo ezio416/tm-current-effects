@@ -1,5 +1,5 @@
 // c 2023-08-17
-// m 2024-02-23
+// m 2024-02-25
 
 int    cruise       = 0;
 int    forced       = 0;
@@ -167,38 +167,33 @@ string GetVehicleText() {
     }
 }
 
+uint16 GetMemberOffset(const string &in className, const string &in memberName) {
+    const Reflection::MwClassInfo@ type = Reflection::GetType(className);
+
+    if (type is null)
+        throw("Unable to find reflection info for " + className);
+
+    const Reflection::MwMemberInfo@ member = type.GetMember(memberName);
+
+    return member.Offset;
+}
+
 uint16 cruiseOffset = 0;
 
 int GetCruiseSpeed(CSceneVehicleVisState@ State) {
-    if (cruiseOffset == 0) {
-        const Reflection::MwClassInfo@ type = Reflection::GetType("CSceneVehicleVisState");
-
-        if (type is null) {
-            error("Unable to find reflection info for CSceneVehicleVisState!");
-            return 0;
-        }
-
-        cruiseOffset = type.GetMember("FrontSpeed").Offset + 12;
-    }
+    if (cruiseOffset == 0)
+        cruiseOffset = GetMemberOffset("CSceneVehicleVisState", "FrontSpeed") + 12;
 
     return Dev::GetOffsetInt32(State, cruiseOffset);
 }
 
-uint16 penalty1Offset = 0;
+uint16 sparks1offset = 0;
 
 int GetSparks1(CSceneVehicleVisState@ State) {  // front/back impact strength? 0 - 16,843,009
-    if (penalty1Offset == 0) {
-        const Reflection::MwClassInfo@ type = Reflection::GetType("CSceneVehicleVisState");
+    if (sparks1offset == 0)
+        sparks1offset = GetMemberOffset("CSceneVehicleVisState", "WaterImmersionCoef") - 8;
 
-        if (type is null) {
-            error("Unable to find reflection info for CSceneVehicleVisState!");
-            return 0;
-        }
-
-        penalty1Offset = type.GetMember("WaterImmersionCoef").Offset - 8;
-    }
-
-    int ret = Dev::GetOffsetInt32(State, penalty1Offset);
+    int ret = Dev::GetOffsetInt32(State, sparks1offset);
 
     // if (ret > 0)
     //     print("sparks 1: " + tostring(ret));
@@ -206,21 +201,13 @@ int GetSparks1(CSceneVehicleVisState@ State) {  // front/back impact strength? 0
     return ret;
 }
 
-uint16 penalty2Offset = 0;
+uint16 sparks2offset = 0;
 
 int GetSparks2(CSceneVehicleVisState@ State) {  // back impact? 0 - 1
-    if (penalty2Offset == 0) {
-        const Reflection::MwClassInfo@ type = Reflection::GetType("CSceneVehicleVisState");
+    if (sparks2offset == 0)
+        sparks2offset = GetMemberOffset("CSceneVehicleVisState", "WaterImmersionCoef") - 4;
 
-        if (type is null) {
-            error("Unable to find reflection info for CSceneVehicleVisState!");
-            return 0;
-        }
-
-        penalty2Offset = type.GetMember("WaterImmersionCoef").Offset - 4;
-    }
-
-    int ret = Dev::GetOffsetInt32(State, penalty2Offset);
+    int ret = Dev::GetOffsetInt32(State, sparks2offset);
 
     // if (ret > 0)
     //     print("sparks 2:" + tostring(ret));
@@ -228,21 +215,13 @@ int GetSparks2(CSceneVehicleVisState@ State) {  // back impact? 0 - 1
     return ret;
 }
 
-uint16 penalty3Offset = 0;
+uint16 sparks3Offset = 0;
 
 int GetSparks3(CSceneVehicleVisState@ State) {  // any impact? 0 - ~1,065,000,000
-    if (penalty3Offset == 0) {
-        const Reflection::MwClassInfo@ type = Reflection::GetType("CSceneVehicleVisState");
+    if (sparks3Offset == 0)
+        sparks3Offset = GetMemberOffset("CSceneVehicleVisState", "WetnessValue01") + 8;
 
-        if (type is null) {
-            error("Unable to find reflection info for CSceneVehicleVisState!");
-            return 0;
-        }
-
-        penalty3Offset = type.GetMember("WetnessValue01").Offset + 8;
-    }
-
-    int ret = Dev::GetOffsetInt32(State, penalty3Offset);
+    int ret = Dev::GetOffsetInt32(State, sparks3Offset);
 
     // if (ret > 0)
     //     print("sparks 3: " + tostring(ret));
@@ -253,16 +232,8 @@ int GetSparks3(CSceneVehicleVisState@ State) {  // any impact? 0 - ~1,065,000,00
 uint16 vehicleTypeOffset = 0;
 
 int GetVehicleType(CSceneVehicleVisState@ State) {
-    if (vehicleTypeOffset == 0) {
-        const Reflection::MwClassInfo@ type = Reflection::GetType("CSceneVehicleVisState");
-
-        if (type is null) {
-            error("Unable to find reflection info for CSceneVehicleVisState!");
-            return 0;
-        }
-
-        vehicleTypeOffset = type.GetMember("InputSteer").Offset - 8;
-    }
+    if (vehicleTypeOffset == 0)
+        vehicleTypeOffset = GetMemberOffset("CSceneVehicleVisState", "InputSteer") - 8;
 
     CTrackMania@ App = cast<CTrackMania@>(GetApp());
     if (App.RootMap !is null) {
