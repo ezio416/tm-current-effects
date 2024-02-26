@@ -1,9 +1,9 @@
 // c 2023-05-04
-// m 2024-02-23
+// m 2024-02-26
 
 string loginLocal;
-bool   replay;
-bool   spectating;
+bool   replay        = false;
+bool   spectating    = false;
 uint   totalRespawns = 0;
 
 void RenderMenu() {
