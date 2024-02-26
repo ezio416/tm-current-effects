@@ -158,6 +158,12 @@ string GetVehicleText() {
     }
 }
 
+#elif MP4
+
+int GetHandicapFlags(CSceneVehicleVisState@ State) {
+    return int(State.ActiveEffects);
+}
+
 #endif
 
 void ResetAllEffects() {

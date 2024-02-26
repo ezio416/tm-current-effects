@@ -76,10 +76,4 @@ int GetVehicleType(CSceneVehicleVisState@ State) {
     return Dev::GetOffsetUint8(State, vehicleTypeOffset);
 }
 
-#elif MP4
-
-int GetHandicapSum(CSceneVehicleVisState@ State) {
-    return int(State.ActiveEffects);
-}
-
 #endif
