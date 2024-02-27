@@ -1,5 +1,5 @@
 // c 2024-01-09
-// m 2024-02-25
+// m 2024-02-27
 
 #if SIG_DEVELOPER && TMNEXT
 
@@ -9,7 +9,8 @@ string version;
 
 // game versions for which the offsets in this file are valid
 const string[] validGameVersions = {
-    "2024-01-10_12_53"  // released 2024-01-10
+    "2024-01-10_12_53",  // released 2024-01-10
+    // "2024-02-26_11_36"   // released 2024-02-27
 };
 
 // offsets for which a value is known
