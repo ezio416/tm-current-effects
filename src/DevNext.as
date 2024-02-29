@@ -44,7 +44,7 @@ const int[] knownPlayerOffsets = {
 };
 
 const int[] observedPlayerOffsets = {
-    564, 596, 628, 632, 636, 640, 648, 652, 660, 664, 668, 672, 864, 868, 3596, 3600, 3604, 3608, 3792, 3796, 3800, 4128
+    564, 596, 628, 632, 636, 640, 648, 652, 660, 664, 668, 672, 676, 864, 868, 3596, 3600, 3604, 3608, 3792, 3796, 3800, 4128
 };
 
 const int[] knownScoreOffsets = {
@@ -918,9 +918,10 @@ void RenderPlayerOffsetValues(CSmPlayer@ Player) {
     values.InsertLast(OffsetValue(Player, 552,  "EndTime",                    DataType::Int32));
     values.InsertLast(OffsetValue(Player, 632,  "StadiumCarEntityId",         DataType::Uint32, false));
     values.InsertLast(OffsetValue(Player, 660,  "StadiumCarEntityId",         DataType::Uint32, false));
-    values.InsertLast(OffsetValue(Player, 664,  "DesertCarEntityId",          DataType::Uint32, false));  // may be swapped with rally
-    values.InsertLast(OffsetValue(Player, 668,  "RallyCarEntityId",           DataType::Uint32, false));  // may be swapped with desert
+    values.InsertLast(OffsetValue(Player, 664,  "EntityId",                   DataType::Uint32, false));
+    values.InsertLast(OffsetValue(Player, 668,  "EntityId",                   DataType::Uint32, false));
     values.InsertLast(OffsetValue(Player, 672,  "SnowCarEntityId",            DataType::Uint32, false));
+    values.InsertLast(OffsetValue(Player, 676,  "RallyCarEntityId",           DataType::Uint32, false));
     values.InsertLast(OffsetValue(Player, 680,  "SpawnableObjectModelIndex",  DataType::Uint32));
     values.InsertLast(OffsetValue(Player, 876,  "Speaking",                   DataType::Bool));
     values.InsertLast(OffsetValue(Player, 880,  "SkippedInputs",              DataType::Bool));
