@@ -1,9 +1,12 @@
 // c 2024-01-09
-// m 2024-02-27
+// m 2024-02-28
 
 #if SIG_DEVELOPER && TMNEXT
 
+float        colWidthOffset   = 0.0f;
+float        colWidthVarType  = 0.0f;
 bool         gameVersionValid = false;
+const float  scale            = UI::GetScale();
 const string titleDev         = title + " (Developer)";
 string       version;
 
@@ -71,6 +74,9 @@ void InitDevNext() {
 
     if (!S_OffsetTabsAlways)
         S_OffsetTabs = false;
+
+    colWidthOffset  = scale * 90.0f;
+    colWidthVarType = scale * 60.0f;
 }
 
 void RenderDevNext() {
@@ -185,8 +191,8 @@ void RenderVisApiValues(CSceneVehicleVis@ Vis) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
 
         UI::TableSetupScrollFreeze(0, 1);
-        UI::TableSetupColumn("Variable", UI::TableColumnFlags::WidthFixed, 250.0f);
-        UI::TableSetupColumn("Type",     UI::TableColumnFlags::WidthFixed, 90.0f);
+        UI::TableSetupColumn("Variable", UI::TableColumnFlags::WidthFixed, scale * 165.0f);
+        UI::TableSetupColumn("Type",     UI::TableColumnFlags::WidthFixed, colWidthVarType);
         UI::TableSetupColumn("Value");
         UI::TableHeadersRow();
 
@@ -268,10 +274,10 @@ void RenderVisOffsetValues(CSceneVehicleVis@ Vis) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
 
         UI::TableSetupScrollFreeze(0, 1);
-        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
-        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 140.0f);
-        UI::TableSetupColumn("Variable",     UI::TableColumnFlags::WidthFixed, 250.0f);
-        UI::TableSetupColumn("Type",         UI::TableColumnFlags::WidthFixed, 90.0f);
+        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, colWidthOffset);
+        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, colWidthOffset);
+        UI::TableSetupColumn("Variable",     UI::TableColumnFlags::WidthFixed, scale * 165.0f);
+        UI::TableSetupColumn("Type",         UI::TableColumnFlags::WidthFixed, colWidthVarType);
         UI::TableSetupColumn("Value");
         UI::TableHeadersRow();
 
@@ -305,8 +311,8 @@ void RenderVisOffsets(CSceneVehicleVis@ Vis) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
 
         UI::TableSetupScrollFreeze(0, 1);
-        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
-        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, colWidthOffset);
+        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, colWidthOffset);
         UI::TableSetupColumn("Value (" + tostring(S_OffsetType) + ")");
         UI::TableHeadersRow();
 
@@ -528,8 +534,8 @@ void RenderStateApiValues(CSceneVehicleVisState@ State) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
 
         UI::TableSetupScrollFreeze(0, 1);
-        UI::TableSetupColumn("Variable", UI::TableColumnFlags::WidthFixed, 250.0f);
-        UI::TableSetupColumn("Type",     UI::TableColumnFlags::WidthFixed, 90.0f);
+        UI::TableSetupColumn("Variable", UI::TableColumnFlags::WidthFixed, scale * 165.0f);
+        UI::TableSetupColumn("Type",     UI::TableColumnFlags::WidthFixed, colWidthVarType);
         UI::TableSetupColumn("Value");
         UI::TableHeadersRow();
 
@@ -669,10 +675,10 @@ void RenderStateOffsetValues(CSceneVehicleVisState@ State) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
 
         UI::TableSetupScrollFreeze(0, 1);
-        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
-        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 140.0f);
-        UI::TableSetupColumn("Variable",     UI::TableColumnFlags::WidthFixed, 250.0f);
-        UI::TableSetupColumn("Type",         UI::TableColumnFlags::WidthFixed, 90.0f);
+        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, colWidthOffset);
+        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, colWidthOffset);
+        UI::TableSetupColumn("Variable",     UI::TableColumnFlags::WidthFixed, scale * 165.0f);
+        UI::TableSetupColumn("Type",         UI::TableColumnFlags::WidthFixed, colWidthVarType);
         UI::TableSetupColumn("Value");
         UI::TableHeadersRow();
 
@@ -706,8 +712,8 @@ void RenderStateOffsets(CSceneVehicleVisState@ State) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
 
         UI::TableSetupScrollFreeze(0, 1);
-        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
-        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, colWidthOffset);
+        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, colWidthOffset);
         UI::TableSetupColumn("Value (" + tostring(S_OffsetType) + ")");
         UI::TableHeadersRow();
 
@@ -928,10 +934,10 @@ void RenderPlayerApiValues(CSmPlayer@ Player) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
 
         UI::TableSetupScrollFreeze(0, 1);
-        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
-        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 140.0f);
-        UI::TableSetupColumn("Variable",     UI::TableColumnFlags::WidthFixed, 400.0f);
-        UI::TableSetupColumn("Type",         UI::TableColumnFlags::WidthFixed, 90.0f);
+        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, colWidthOffset);
+        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, colWidthOffset);
+        UI::TableSetupColumn("Variable",     UI::TableColumnFlags::WidthFixed, scale * 265.0f);
+        UI::TableSetupColumn("Type",         UI::TableColumnFlags::WidthFixed, colWidthVarType);
         UI::TableSetupColumn("Value");
         UI::TableHeadersRow();
 
@@ -1018,10 +1024,10 @@ void RenderPlayerOffsetValues(CSmPlayer@ Player) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
 
         UI::TableSetupScrollFreeze(0, 1);
-        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
-        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 140.0f);
-        UI::TableSetupColumn("Variable",     UI::TableColumnFlags::WidthFixed, 400.0f);
-        UI::TableSetupColumn("Type",         UI::TableColumnFlags::WidthFixed, 90.0f);
+        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, colWidthOffset);
+        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, colWidthOffset);
+        UI::TableSetupColumn("Variable",     UI::TableColumnFlags::WidthFixed, scale * 265.0f);
+        UI::TableSetupColumn("Type",         UI::TableColumnFlags::WidthFixed, colWidthVarType);
         UI::TableSetupColumn("Value");
         UI::TableHeadersRow();
 
@@ -1055,8 +1061,8 @@ void RenderPlayerOffsets(CSmPlayer@ Player) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
 
         UI::TableSetupScrollFreeze(0, 1);
-        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
-        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, colWidthOffset);
+        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, colWidthOffset);
         UI::TableSetupColumn("Value (" + tostring(S_OffsetType) + ")");
         UI::TableHeadersRow();
 
@@ -1223,8 +1229,8 @@ void RenderScoreApiValues(CSmArenaScore@ Score) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
 
         UI::TableSetupScrollFreeze(0, 1);
-        UI::TableSetupColumn("Variable", UI::TableColumnFlags::WidthFixed, 280.0f);
-        UI::TableSetupColumn("Type",     UI::TableColumnFlags::WidthFixed, 90.0f);
+        UI::TableSetupColumn("Variable", UI::TableColumnFlags::WidthFixed, scale * 185.0f);
+        UI::TableSetupColumn("Type",     UI::TableColumnFlags::WidthFixed, colWidthVarType);
         UI::TableSetupColumn("Value");
         UI::TableHeadersRow();
 
@@ -1414,8 +1420,8 @@ void RenderScoreOffsets(CSmArenaScore@ Score) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
 
         UI::TableSetupScrollFreeze(0, 1);
-        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
-        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, colWidthOffset);
+        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, colWidthOffset);
         UI::TableSetupColumn("Value (" + tostring(S_OffsetType) + ")");
         UI::TableHeadersRow();
 
@@ -1686,8 +1692,8 @@ void RenderScriptApiValues(CSmScriptPlayer@ Script) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
 
         UI::TableSetupScrollFreeze(0, 1);
-        UI::TableSetupColumn("Variable", UI::TableColumnFlags::WidthFixed, 280.0f);
-        UI::TableSetupColumn("Type",     UI::TableColumnFlags::WidthFixed, 90.0f);
+        UI::TableSetupColumn("Variable", UI::TableColumnFlags::WidthFixed, scale * 185.0f);
+        UI::TableSetupColumn("Type",     UI::TableColumnFlags::WidthFixed, colWidthVarType);
         UI::TableSetupColumn("Value");
         UI::TableHeadersRow();
 
@@ -1877,8 +1883,8 @@ void RenderScriptOffsets(CSmScriptPlayer@ Script) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
 
         UI::TableSetupScrollFreeze(0, 1);
-        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
-        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, colWidthOffset);
+        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, colWidthOffset);
         UI::TableSetupColumn("Value (" + tostring(S_OffsetType) + ")");
         UI::TableHeadersRow();
 
@@ -2137,8 +2143,8 @@ void RenderUserApiValues(CTrackManiaPlayerInfo@ User) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
 
         UI::TableSetupScrollFreeze(0, 1);
-        UI::TableSetupColumn("Variable", UI::TableColumnFlags::WidthFixed, 280.0f);
-        UI::TableSetupColumn("Type",     UI::TableColumnFlags::WidthFixed, 90.0f);
+        UI::TableSetupColumn("Variable", UI::TableColumnFlags::WidthFixed, scale * 185.0f);
+        UI::TableSetupColumn("Type",     UI::TableColumnFlags::WidthFixed, colWidthVarType);
         UI::TableSetupColumn("Value");
         UI::TableHeadersRow();
 
@@ -2189,8 +2195,8 @@ void RenderUserOffsets(CTrackManiaPlayerInfo@ User) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
 
         UI::TableSetupScrollFreeze(0, 1);
-        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
-        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, colWidthOffset);
+        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, colWidthOffset);
         UI::TableSetupColumn("Value (" + tostring(S_OffsetType) + ")");
         UI::TableHeadersRow();
 
