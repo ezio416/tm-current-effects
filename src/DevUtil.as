@@ -1,5 +1,5 @@
 // c 2024-01-10
-// m 2024-02-19
+// m 2024-02-28
 
 #if SIG_DEVELOPER && TMNEXT
 
@@ -71,8 +71,25 @@ enum TurboState {
     ReplayTrue  = 29
 }
 
+const string[] ColorOffset(uint16 offset) {
+    bool bad = offset == 65535;
+    return { (bad ? RED : "") + tostring(offset), (bad ? RED : "") + IntToHex(offset) };
+}
+
+void HelpTextApiExcluded() {
+    UI::TextWrapped("Functions, strings, and other types may have offsets excluded.");
+}
+
 void HelpTextClickCopy() {
     UI::TextWrapped("Click on any value to copy it to your clipboard.");
+}
+
+void HelpTextMaxOffset() {
+    UI::TextWrapped("Offsets of 65535 (0xFFFF) are almost certainly incorrect and are marked " + RED + "red\\$G as a result.");
+}
+
+void HelpTextObserved() {
+    UI::TextWrapped("Variables marked " + YELLOW + "yellow\\$G have been observed but are uncertain.");
 }
 
 void HelpTextPosNeg() {

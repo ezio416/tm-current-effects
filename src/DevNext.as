@@ -3,9 +3,9 @@
 
 #if SIG_DEVELOPER && TMNEXT
 
-bool   gameVersionValid = false;
-string titleDev         = title + " (Developer)";
-string version;
+bool         gameVersionValid = false;
+const string titleDev         = title + " (Developer)";
+string       version;
 
 // game versions for which the offsets in this file are valid
 const string[] validGameVersions = {
@@ -844,36 +844,94 @@ void Tab_Player() {
 
 void RenderPlayerApiValues(CSmPlayer@ Player) {
     HelpTextPosNeg();
+    HelpTextMaxOffset();
+    HelpTextApiExcluded();
     HelpTextClickCopy();
 
     string[][] values;
-    values.InsertLast({"CurrentLaunchedRespawnLandmarkIndex",   "Uint32", RoundUint(Player.CurrentLaunchedRespawnLandmarkIndex)});
-    values.InsertLast({"CurrentStoppedRespawnLandmarkIndex",    "Uint32", RoundUint(Player.CurrentStoppedRespawnLandmarkIndex)});
-    values.InsertLast({"GetCurrentEntityID()",                  "Uint32", RoundUint(Player.GetCurrentEntityID())});
-    values.InsertLast({"EdClan",                                "Uint32", RoundUint(Player.EdClan)});
-    values.InsertLast({"EndTime",                               "Int32",  Round(    Player.EndTime)});
-    values.InsertLast({"Flags",                                 "Uint8",  RoundUint(Player.Flags)});
-    values.InsertLast({"Id.GetName()",                          "String",           Player.Id.GetName()});
-    values.InsertLast({"Id.Value",                              "Uint32", RoundUint(Player.Id.Value)});
-    values.InsertLast({"IdName",                                "String",           Player.IdName});
-    values.InsertLast({"LinearHue",                             "Float",  Round(    Player.LinearHue)});
-    values.InsertLast({"LinearHueSrgb",                         "Vec3",   Round(    Player.LinearHueSrgb)});
-    values.InsertLast({"SkippedInputs",                         "Bool",   Round(    Player.SkippedInputs)});
-    values.InsertLast({"SpawnableObjectModelIndex",             "Uint32", RoundUint(Player.SpawnableObjectModelIndex)});
-    values.InsertLast({"SpawnIndex",                            "Int32",  Round(    Player.SpawnIndex)});
-    values.InsertLast({"Speaking",                              "Bool",   Round(    Player.Speaking)});
-    values.InsertLast({"StartTime",                             "Int32",  Round(    Player.StartTime)});
-    values.InsertLast({"TrustClientSimu",                       "Bool",   Round(    Player.TrustClientSimu)});
-    values.InsertLast({"TrustClientSimu_Client_IsTrustedState", "Bool",   Round(    Player.TrustClientSimu_Client_IsTrustedState)});
-    values.InsertLast({"TrustClientSimu_ServerOverrideCount",   "Uint32", RoundUint(Player.TrustClientSimu_ServerOverrideCount)});
-    values.InsertLast({"UseDelayedVisuals",                     "Bool",   Round(    Player.UseDelayedVisuals)});
+    string varName;
+    string[] varOffsets;
 
-    if (UI::BeginTable("##player-api-value-table", 3, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
+    varName = "CurrentLaunchedRespawnLandmarkIndex";
+    varOffsets = ColorOffset(GetMemberOffset("CSmPlayer", varName));
+    values.InsertLast({ varOffsets[0], varOffsets[1], varName, "Uint32", RoundUint(Player.CurrentLaunchedRespawnLandmarkIndex) });
+
+    varName = "CurrentStoppedRespawnLandmarkIndex";
+    varOffsets = ColorOffset(GetMemberOffset("CSmPlayer", varName));
+    values.InsertLast({ varOffsets[0], varOffsets[1], varName, "Uint32", RoundUint(Player.CurrentStoppedRespawnLandmarkIndex) });
+
+    varName = "EdClan";
+    varOffsets = ColorOffset(GetMemberOffset("CSmPlayer", varName));
+    values.InsertLast({ varOffsets[0], varOffsets[1], varName, "Uint32", RoundUint(Player.EdClan) });
+
+    varName = "EndTime";
+    varOffsets = ColorOffset(GetMemberOffset("CSmPlayer", varName));
+    values.InsertLast({ varOffsets[0], varOffsets[1], varName, "Int32", Round(Player.EndTime) });
+
+    varName = "Flags";
+    varOffsets = ColorOffset(GetMemberOffset("CSmPlayer", varName));
+    values.InsertLast({ varOffsets[0], varOffsets[1], varName, "Uint8", RoundUint(Player.Flags) });
+
+    values.InsertLast({ "", "", "GetCurrentEntityID()", "Uint32", RoundUint(Player.GetCurrentEntityID()) });
+    values.InsertLast({ "", "", "Id.GetName()", "String", Player.Id.GetName() });
+    values.InsertLast({ "", "", "Id.Value", "Uint32", RoundUint(Player.Id.Value) });
+
+    varName = "IdName";
+    varOffsets = ColorOffset(GetMemberOffset("CSmPlayer", varName));
+    values.InsertLast({ varOffsets[0], varOffsets[1], varName, "String", Player.IdName });
+
+    varName = "LinearHue";
+    varOffsets = ColorOffset(GetMemberOffset("CSmPlayer", varName));
+    values.InsertLast({ varOffsets[0], varOffsets[1], varName, "Float", Round(Player.LinearHue) });
+
+    varName = "LinearHueSrgb";
+    varOffsets = ColorOffset(GetMemberOffset("CSmPlayer", varName));
+    values.InsertLast({ varOffsets[0], varOffsets[1], varName, "Vec3", Round(Player.LinearHueSrgb) });
+
+    varName = "SkippedInputs";
+    varOffsets = ColorOffset(GetMemberOffset("CSmPlayer", varName));
+    values.InsertLast({ varOffsets[0], varOffsets[1], varName, "Bool", Round(Player.SkippedInputs) });
+
+    varName = "SpawnableObjectModelIndex";
+    varOffsets = ColorOffset(GetMemberOffset("CSmPlayer", varName));
+    values.InsertLast({ varOffsets[0], varOffsets[1], varName, "Uint32", RoundUint(Player.SpawnableObjectModelIndex) });
+
+    varName = "SpawnIndex";
+    varOffsets = ColorOffset(GetMemberOffset("CSmPlayer", varName));
+    values.InsertLast({ varOffsets[0], varOffsets[1], varName, "Int32", Round(Player.SpawnIndex) });
+
+    varName = "Speaking";
+    varOffsets = ColorOffset(GetMemberOffset("CSmPlayer", varName));
+    values.InsertLast({ varOffsets[0], varOffsets[1], varName, "Bool", Round(Player.Speaking) });
+
+    varName = "StartTime";
+    varOffsets = ColorOffset(GetMemberOffset("CSmPlayer", varName));
+    values.InsertLast({ varOffsets[0], varOffsets[1], varName, "Int32", Round(Player.StartTime) });
+
+    varName = "TrustClientSimu";
+    varOffsets = ColorOffset(GetMemberOffset("CSmPlayer", varName));
+    values.InsertLast({ varOffsets[0], varOffsets[1], varName, "Bool", Round(Player.TrustClientSimu) });
+
+    varName = "TrustClientSimu_Client_IsTrustedState";
+    varOffsets = ColorOffset(GetMemberOffset("CSmPlayer", varName));
+    values.InsertLast({ varOffsets[0], varOffsets[1], varName, "Bool", Round(Player.TrustClientSimu_Client_IsTrustedState) });
+
+    varName = "TrustClientSimu_ServerOverrideCount";
+    varOffsets = ColorOffset(GetMemberOffset("CSmPlayer", varName));
+    values.InsertLast({ varOffsets[0], varOffsets[1], varName, "Uint32", RoundUint(Player.TrustClientSimu_ServerOverrideCount) });
+
+    varName = "UseDelayedVisuals";
+    varOffsets = ColorOffset(GetMemberOffset("CSmPlayer", varName));
+    values.InsertLast({ varOffsets[0], varOffsets[1], varName, "Bool", Round(Player.UseDelayedVisuals) });
+
+    if (UI::BeginTable("##player-api-value-table", 5, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(0.0f, 0.0f, 0.0f, 0.5f));
 
         UI::TableSetupScrollFreeze(0, 1);
-        UI::TableSetupColumn("Variable", UI::TableColumnFlags::WidthFixed, 400.0f);
-        UI::TableSetupColumn("Type",     UI::TableColumnFlags::WidthFixed, 90.0f);
+        UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
+        UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 140.0f);
+        UI::TableSetupColumn("Variable",     UI::TableColumnFlags::WidthFixed, 400.0f);
+        UI::TableSetupColumn("Type",         UI::TableColumnFlags::WidthFixed, 90.0f);
         UI::TableSetupColumn("Value");
         UI::TableHeadersRow();
 
@@ -883,10 +941,12 @@ void RenderPlayerApiValues(CSmPlayer@ Player) {
                 UI::TableNextRow();
                 UI::TableNextColumn(); UI::Text(values[i][0]);
                 UI::TableNextColumn(); UI::Text(values[i][1]);
+                UI::TableNextColumn(); UI::Text(values[i][2]);
+                UI::TableNextColumn(); UI::Text(values[i][3]);
 
                 UI::TableNextColumn();
-                if (UI::Selectable(values[i][2], false))
-                    SetClipboard(values[i][2]);
+                if (UI::Selectable(values[i][4], false))
+                    SetClipboard(values[i][4]);
             }
         }
 
@@ -896,8 +956,8 @@ void RenderPlayerApiValues(CSmPlayer@ Player) {
 }
 
 void RenderPlayerOffsetValues(CSmPlayer@ Player) {
-    UI::TextWrapped("Variables marked " + YELLOW + "yellow\\$G have been observed but are uncertain.");
     HelpTextPosNeg();
+    HelpTextObserved();
     HelpTextClickCopy();
 
     string[][] values;
@@ -960,7 +1020,7 @@ void RenderPlayerOffsetValues(CSmPlayer@ Player) {
         UI::TableSetupScrollFreeze(0, 1);
         UI::TableSetupColumn("Offset (dec)", UI::TableColumnFlags::WidthFixed, 120.0f);
         UI::TableSetupColumn("Offset (hex)", UI::TableColumnFlags::WidthFixed, 140.0f);
-        UI::TableSetupColumn("Variable",     UI::TableColumnFlags::WidthFixed, 250.0f);
+        UI::TableSetupColumn("Variable",     UI::TableColumnFlags::WidthFixed, 400.0f);
         UI::TableSetupColumn("Type",         UI::TableColumnFlags::WidthFixed, 90.0f);
         UI::TableSetupColumn("Value");
         UI::TableHeadersRow();
