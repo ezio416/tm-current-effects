@@ -1,5 +1,5 @@
 // c 2024-02-26
-// m 2024-02-26
+// m 2024-03-09
 
 uint16 GetMemberOffset(const string &in className, const string &in memberName) {
     const Reflection::MwClassInfo@ type = Reflection::GetType(className);
@@ -62,18 +62,33 @@ int GetVehicleType(CSceneVehicleVisState@ State) {
 
     CTrackMania@ App = cast<CTrackMania@>(GetApp());
 
-    if (App.RootMap !is null) {
-        if (App.RootMap.VehicleName.GetName() == "CarSnow")
-            return 1;
+    CSmArenaClient@ Playground = cast<CSmArenaClient@>(App.CurrentPlayground);
+    if (
+        Playground is null
+        || Playground.Arena is null
+        || Playground.Arena.Resources is null
+        || Playground.Arena.Resources.m_AllGameItemModels.Length == 0
+    )
+        return 0;
 
-        if (App.RootMap.VehicleName.GetName() == "CarRally")
+    const uint index = Dev::GetOffsetUint8(State, vehicleTypeOffset);
+
+    try {
+        CGameItemModel@ Model = Playground.Arena.Resources.m_AllGameItemModels[index];
+        if (Model is null)
+            return 0;
+
+        if (Model.Name == "CarSport")
+            return 0;
+        if (Model.Name == "CarSnow")
+            return 1;
+        if (Model.Name == "CarRally")
             return 2;
 
-        // if (map.VehicleName.GetName() == "CarDesert")  // to update when car is added
-        // 	return 3;
+        return 0;
+    } catch {
+        return 0;
     }
-
-    return Dev::GetOffsetUint8(State, vehicleTypeOffset);
 }
 
 #endif
