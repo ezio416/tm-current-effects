@@ -1,5 +1,5 @@
 // c 2023-10-21
-// m 2024-01-05
+// m 2024-02-23
 
 int64 lastAllColorsSwap = 0;
 
@@ -8,8 +8,8 @@ int64 lastAllColorsSwap = 0;
 string GetCruiseColor() {
     switch (cruise) {
         case -1: return disabledColor;
-        case  0: return offColor;
-        default: return cruiseColor;
+        case  1: return cruiseColor;
+        default: return offColor;
     }
 }
 
@@ -18,8 +18,8 @@ string GetCruiseColor() {
 string GetForcedColor() {
     switch (forced) {
         case -1: return disabledColor;
-        case  0: return offColor;
-        default: return forcedColor;
+        case  1: return forcedColor;
+        default: return offColor;
     }
 }
 
@@ -28,8 +28,8 @@ string GetForcedColor() {
 string GetFragileColor() {
     switch (fragile) {
         case -1: return disabledColor;
-        case  0: return offColor;
-        default: return fragileColor;
+        case  1: return fragileColor;
+        default: return offColor;
     }
 }
 
@@ -38,32 +38,32 @@ string GetFragileColor() {
 string GetNoBrakesColor() {
     switch (noBrakes) {
         case -1: return disabledColor;
-        case  0: return offColor;
-        default: return noBrakesColor;
+        case  1: return noBrakesColor;
+        default: return offColor;
     }
 }
 
 string GetNoEngineColor() {
     switch (noEngine) {
         case -1: return disabledColor;
-        case  0: return offColor;
-        default: return noEngineColor;
+        case  1: return noEngineColor;
+        default: return offColor;
     }
 }
 
 string GetNoGripColor() {
     switch (noGrip) {
         case -1: return disabledColor;
-        case  0: return offColor;
-        default: return noGripColor;
+        case  1: return noGripColor;
+        default: return offColor;
     }
 }
 
 string GetNoSteerColor() {
     switch (noSteer) {
         case -1: return disabledColor;
-        case  0: return offColor;
-        default: return noSteerColor;
+        case  1: return noSteerColor;
+        default: return offColor;
     }
 }
 
@@ -72,48 +72,50 @@ string GetNoSteerColor() {
 string GetPenaltyColor() {
     switch (penalty) {
         case -1: return disabledColor;
-        case  0: return offColor;
-        default: return penaltyColor;
+        case  1: return penaltyColor;
+        default: return offColor;
     }
 }
 
 string GetReactorColor() {
     switch (reactor) {
         case -1: return disabledColor;
-        case  0: return offColor;
         case  1: return reactor1Color;
-        default: return reactor2Color;
+        case  2: return reactor2Color;
+        default: return offColor;
     }
 }
 
 string GetSlowMoColor() {
     switch (slowmo) {
         case -1: return disabledColor;
-        case  0: return offColor;
         case  1: return slowMo1Color;
         case  2: return slowMo2Color;
         case  3: return slowMo3Color;
-        default: return slowMo4Color;
-    }
-}
-
-string GetSnowColor() {
-    switch (snow) {
-        case -1: return disabledColor;
-        case  0: return offColor;
-        default: return snowColor;
+        case  4: return slowMo4Color;
+        default: return offColor;
     }
 }
 
 string GetTurboColor() {
     switch (turbo) {
         case -1: return disabledColor;
-        case  0: return offColor;
         case  1: return turbo1Color;
         case  2: return turbo2Color;
         case  3: return turbo3Color;
         case  4: return turbo4Color;
-        default: return turbo5Color;
+        case  5: return turbo5Color;
+        default: return offColor;
+    }
+}
+
+string GetVehicleColor() {
+    switch (vehicle) {
+        case -1: return disabledColor;
+        case  1: return snowColor;
+        case  2: return rallyColor;
+        // case  3: return desertColor;
+        default: return offColor;
     }
 }
 
@@ -121,8 +123,8 @@ string GetTurboColor() {
 
 string GetTurboColor() {
     switch (turbo) {
-        case  0: return offColor;
-        default: return turboColor;
+        case  1: return turboColor;
+        default: return offColor;
     }
 }
 
@@ -138,10 +140,12 @@ void SetColors() {
 
 #if TMNEXT
 
+    // desertColor   = Text::FormatOpenplanetColor(S_DesertColor);
     disabledColor = Text::FormatOpenplanetColor(S_DisabledColor);
     cruiseColor   = Text::FormatOpenplanetColor(S_CruiseColor);
     fragileColor  = Text::FormatOpenplanetColor(S_FragileColor);
     penaltyColor  = Text::FormatOpenplanetColor(S_PenaltyColor);
+    rallyColor    = Text::FormatOpenplanetColor(S_RallyColor);
     reactor1Color = Text::FormatOpenplanetColor(S_Reactor1Color);
     reactor2Color = Text::FormatOpenplanetColor(S_Reactor2Color);
     slowMo1Color  = Text::FormatOpenplanetColor(S_SlowMo1Color);
@@ -169,12 +173,12 @@ void ShowAllColors() {
     noEngine = 1;
     noGrip   = 1;
     noSteer  = 1;
+    penalty  = 1;
 
 #if TMNEXT
 
     cruise = 1;
     fragile = 1;
-    snow = 1;
 
     int64 now = Time::Stamp;
 
@@ -204,6 +208,13 @@ void ShowAllColors() {
             case 2:  turbo = 3; break;
             case 3:  turbo = 4; break;
             default: turbo = 5;
+        }
+
+        switch (vehicle) {
+            case 0:
+            case 2:  vehicle = 1; break;
+            case 1:  vehicle = 2; break;
+            default: vehicle = 0;
         }
     }
 
