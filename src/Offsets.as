@@ -84,6 +84,8 @@ int GetVehicleType(CSceneVehicleVisState@ State) {
             return 1;
         if (Model.Name == "CarRally")
             return 2;
+        // if (Model.Name == "CarDesert")
+        //     return 3;
 
         return 0;
     } catch {
