@@ -1,5 +1,5 @@
 // c 2024-01-12
-// m 2024-01-12
+// m 2024-02-23
 
 namespace CurrentEffects {
 
@@ -13,7 +13,7 @@ namespace CurrentEffects {
     bool  GetFragile()           { return fragile == 1; }
     float GetReactorFinalTimer() { return reactorTimer; }
     int   GetSlowMoLevel()       { return slowmo; }
-    bool  GetSnowCar()           { return snow    == 1 || alwaysSnow; }
+    bool  GetSnowCar()           { return vehicle == 1; }
 
     ESceneVehicleVisReactorBoostLvl GetReactorLevel() { return ESceneVehicleVisReactorBoostLvl(reactorLevel); }
     ESceneVehicleVisReactorBoostType GetReactorType() { return ESceneVehicleVisReactorBoostType(reactorType); }

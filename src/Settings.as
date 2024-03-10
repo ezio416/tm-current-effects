@@ -1,5 +1,5 @@
 // c 2023-06-10
-// m 2024-02-19
+// m 2024-02-23
 
 [Setting category="General" name="Enabled"]
 bool S_Enabled = true;
@@ -67,14 +67,17 @@ bool S_Reactor= true;
 [Setting category="Toggles" name="Slow-Mo"]
 bool S_SlowMo = true;
 
-[Setting category="Toggles" name="Snow Car"]
-bool S_Snow = true;
-
 #endif
 
 [Setting category="Toggles" name="Turbo"]
 bool S_Turbo = true;
 
+#if TMNEXT
+
+[Setting category="Toggles" name="Vehicle Type" description="Stadium, Snow, or Rally car"]
+bool S_Vehicle = true;
+
+#endif
 
 [Setting category="Colors" name="Effect Currently Off" color]
 vec3 S_OffColor = vec3(0.5f, 0.5f, 0.5f);
@@ -157,10 +160,6 @@ string slowMo3Color;
 vec3 S_SlowMo4Color = vec3(1.0f, 0.0f, 0.0f);
 string slowMo4Color;
 
-[Setting category="Colors" name="Snow Car" color]
-vec3 S_SnowColor = vec3(0.0f, 1.0f, 1.0f);
-string snowColor;
-
 [Setting category="Colors" name="Turbo 1 (yellow)" color]
 vec3 S_Turbo1Color = vec3(1.0f, 1.0f, 0.0f);
 string turbo1Color;
@@ -180,6 +179,18 @@ string turbo4Color;
 [Setting category="Colors" name="Turbo 5 (roulette purple - ultra)" color]
 vec3 S_Turbo5Color = vec3(1.0f, 0.0f, 1.0f);
 string turbo5Color;
+
+[Setting category="Colors" name="Vehicle - Snow Car" color]
+vec3 S_SnowColor = vec3(0.0f, 1.0f, 1.0f);
+string snowColor;
+
+[Setting category="Colors" name="Vehicle - Rally Car" color]
+vec3 S_RallyColor = vec3(0.1f, 0.8f, 0.1f);
+string rallyColor;
+
+// [Setting category="Colors" name="Vehicle - Desert Car" color]
+// vec3 S_DesertColor = vec3(1.0f, 0.5f, 0.1f);
+// string desertColor;
 
 #elif MP4
 

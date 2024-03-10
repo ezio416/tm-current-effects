@@ -1,7 +1,6 @@
 // c 2023-08-17
-// m 2024-02-19
+// m 2024-02-26
 
-bool   alwaysSnow   = false;  // to change when starting as CarSnow is no longer broken
 int    cruise       = 0;
 int    forced       = 0;
 int    fragile      = 0;
@@ -16,15 +15,14 @@ int    reactorLevel = 0;
 float  reactorTimer = 0.0f;
 int    reactorType  = 0;
 int    slowmo       = 0;
-int    snow         = 0;
 int    turbo        = 0;
+int    vehicle      = 0;
 
 void RenderEffects(CSceneVehicleVisState@ State) {
     if (!S_ShowAll) {
-        SetHandicaps(GetHandicapSum(State));
+        SetHandicaps(GetHandicapFlags(State));
 
 #if TMNEXT
-
         if (S_Reset) {
             S_Reset = false;
             ResetEventEffects();
@@ -46,7 +44,7 @@ void RenderEffects(CSceneVehicleVisState@ State) {
 
         reactorTimer = VehicleState::GetReactorFinalTimer(State);
 
-        switch (int(State.SimulationTimeCoef * 100)) {
+        switch (int(State.SimulationTimeCoef * 100.0f)) {
             case 100: slowmo = 0; break;
             case 56:
             case 57:  slowmo = 1; break;
@@ -55,7 +53,7 @@ void RenderEffects(CSceneVehicleVisState@ State) {
             default:  slowmo = 4;
         }
 
-        snow = GetSnowCar(State);
+        vehicle = GetVehicleType(State);
 
         turbo = 0;
         if (State.IsTurbo)
@@ -78,9 +76,7 @@ void RenderEffects(CSceneVehicleVisState@ State) {
         }
 
 #elif MP4
-
         turbo = State.TurboActive ? 1 : 0;
-
 #endif
 
     } else
@@ -97,7 +93,6 @@ void RenderEffects(CSceneVehicleVisState@ State) {
     UI::Begin("Current Effects", flags);
 
 #if TMNEXT
-
         if (S_Penalty)  UI::Text(GetPenaltyColor()  + Icons::Times       + iconPadding + "Accel Penalty");
         if (S_Cruise)   UI::Text(GetCruiseColor()   + Icons::Tachometer  + iconPadding + "Cruise Control");
         if (S_NoEngine) UI::Text(GetNoEngineColor() + Icons::PowerOff    + iconPadding + "Engine Off");
@@ -105,10 +100,8 @@ void RenderEffects(CSceneVehicleVisState@ State) {
         if (S_Fragile)  UI::Text(GetFragileColor()  + Icons::ChainBroken + iconPadding + "Fragile");
 
 #elif MP4
-
         if (S_NoEngine) UI::Text(GetNoEngineColor() + Icons::PowerOff + iconPadding + "Free Wheeling");
         if (S_Forced)   UI::Text(GetForcedColor()   + Icons::Forward  + iconPadding + "Fullspeed Ahead");
-
 #endif
 
         if (S_NoBrakes) UI::Text(GetNoBrakesColor() + Icons::ExclamationTriangle + iconPadding + "No Brakes");
@@ -116,16 +109,13 @@ void RenderEffects(CSceneVehicleVisState@ State) {
         if (S_NoSteer)  UI::Text(GetNoSteerColor()  + Icons::ArrowsH             + iconPadding + "No Steering");
 
 #if TMNEXT
-
         if (S_Reactor)  UI::Text(GetReactorText(reactorTimer));
         if (S_SlowMo)   UI::Text(GetSlowMoColor() + Icons::ClockO + iconPadding + "Slow-Mo");
-        if (S_Snow)     UI::Text(GetSnowColor()   + Icons::Truck  + iconPadding + "Snow Car");
         if (S_Turbo)    UI::Text(GetTurboText(State.TurboTime));
+        if (S_Vehicle)  UI::Text(GetVehicleText());
 
 #elif MP4
-
         if (S_Turbo)    UI::Text(GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "Turbo");
-
 #endif
 
     UI::End();
@@ -135,137 +125,48 @@ void RenderEffects(CSceneVehicleVisState@ State) {
 #if TMNEXT
 
 string GetReactorText(float f) {
-    if (f == 0)   return GetReactorColor() + reactorIcon + iconPadding + "Reactor Boost";
-    if (f < 0.09) return GetReactorColor() + reactorIcon + iconPadding + "Reactor Boos" + offColor + "t";
-    if (f < 0.17) return GetReactorColor() + reactorIcon + iconPadding + "Reactor Boo" + offColor + "st";
-    if (f < 0.25) return GetReactorColor() + reactorIcon + iconPadding + "Reactor Bo" + offColor + "ost";
-    if (f < 0.33) return GetReactorColor() + reactorIcon + iconPadding + "Reactor B" + offColor + "oost";
-    if (f < 0.41) return GetReactorColor() + reactorIcon + iconPadding + "Reactor " + offColor + "Boost";
-    if (f < 0.49) return GetReactorColor() + reactorIcon + iconPadding + "Reacto" + offColor + "r Boost";
-    if (f < 0.57) return GetReactorColor() + reactorIcon + iconPadding + "React" + offColor + "or Boost";
-    if (f < 0.65) return GetReactorColor() + reactorIcon + iconPadding + "Reac" + offColor + "tor Boost";
-    if (f < 0.73) return GetReactorColor() + reactorIcon + iconPadding + "Rea" + offColor + "ctor Boost";
-    if (f < 0.81) return GetReactorColor() + reactorIcon + iconPadding + "Re" + offColor + "actor Boost";
-    if (f < 0.89) return GetReactorColor() + reactorIcon + iconPadding + "R" + offColor + "eactor Boost";
+    if (f == 0.0f) return GetReactorColor() + reactorIcon + iconPadding + "Reactor Boost";
+    if (f < 0.09f) return GetReactorColor() + reactorIcon + iconPadding + "Reactor Boos" + offColor + "t";
+    if (f < 0.17f) return GetReactorColor() + reactorIcon + iconPadding + "Reactor Boo" + offColor + "st";
+    if (f < 0.25f) return GetReactorColor() + reactorIcon + iconPadding + "Reactor Bo" + offColor + "ost";
+    if (f < 0.33f) return GetReactorColor() + reactorIcon + iconPadding + "Reactor B" + offColor + "oost";
+    if (f < 0.41f) return GetReactorColor() + reactorIcon + iconPadding + "Reactor " + offColor + "Boost";
+    if (f < 0.49f) return GetReactorColor() + reactorIcon + iconPadding + "Reacto" + offColor + "r Boost";
+    if (f < 0.57f) return GetReactorColor() + reactorIcon + iconPadding + "React" + offColor + "or Boost";
+    if (f < 0.65f) return GetReactorColor() + reactorIcon + iconPadding + "Reac" + offColor + "tor Boost";
+    if (f < 0.73f) return GetReactorColor() + reactorIcon + iconPadding + "Rea" + offColor + "ctor Boost";
+    if (f < 0.81f) return GetReactorColor() + reactorIcon + iconPadding + "Re" + offColor + "actor Boost";
+    if (f < 0.89f) return GetReactorColor() + reactorIcon + iconPadding + "R" + offColor + "eactor Boost";
     return GetReactorColor() + reactorIcon + offColor + iconPadding + "Reactor Boost";
 }
 
 string GetTurboText(float f) {
-    if (f == 0)  return GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "Turbo";
-    if (f < 0.2) return GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "Turb" + offColor + "o";
-    if (f < 0.4) return GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "Tur" + offColor + "bo";
-    if (f < 0.6) return GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "Tu" + offColor + "rbo";
-    if (f < 0.8) return GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "T" + offColor + "urbo";
+    if (f == 0.0f) return GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "Turbo";
+    if (f < 0.2f)  return GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "Turb" + offColor + "o";
+    if (f < 0.4f)  return GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "Tur" + offColor + "bo";
+    if (f < 0.6f)  return GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "Tu" + offColor + "rbo";
+    if (f < 0.8f)  return GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "T" + offColor + "urbo";
     return GetTurboColor() + Icons::ArrowCircleUp + offColor + iconPadding + "Turbo";
 }
 
-uint16 cruiseOffset = 0;
-
-int GetCruiseSpeed(CSceneVehicleVisState@ State) {
-    if (cruiseOffset == 0) {
-        const Reflection::MwClassInfo@ type = Reflection::GetType("CSceneVehicleVisState");
-
-        if (type is null) {
-            error("Unable to find reflection info for CSceneVehicleVisState!");
-            return 0;
-        }
-
-        cruiseOffset = type.GetMember("FrontSpeed").Offset + 12;
+string GetVehicleText() {
+    switch (vehicle) {
+        case 1:  return GetVehicleColor() + Icons::Kenney::Car + iconPadding + "Snow Car";
+        case 2:  return GetVehicleColor() + Icons::Kenney::Car + iconPadding + "Rally Car";
+        // case 3:  return GetVehicleColor() + Icons::Kenney::Car + iconPadding + "Desert Car";
+        default: return GetVehicleColor() + Icons::Kenney::Car + iconPadding + "Stadium Car";
     }
-
-    return Dev::GetOffsetInt32(State, cruiseOffset);
 }
 
-uint16 penalty1Offset = 0;
+#elif MP4
 
-int GetSparks1(CSceneVehicleVisState@ State) {  // front/back impact strength? 0 - 16,843,009
-    if (penalty1Offset == 0) {
-        const Reflection::MwClassInfo@ type = Reflection::GetType("CSceneVehicleVisState");
-
-        if (type is null) {
-            error("Unable to find reflection info for CSceneVehicleVisState!");
-            return 0;
-        }
-
-        penalty1Offset = type.GetMember("WaterImmersionCoef").Offset - 8;
-    }
-
-    int ret = Dev::GetOffsetInt32(State, penalty1Offset);
-
-    // if (ret > 0)
-    //     print("sparks 1: " + tostring(ret));
-
-    return ret;
-}
-
-uint16 penalty2Offset = 0;
-
-int GetSparks2(CSceneVehicleVisState@ State) {  // back impact? 0 - 1
-    if (penalty2Offset == 0) {
-        const Reflection::MwClassInfo@ type = Reflection::GetType("CSceneVehicleVisState");
-
-        if (type is null) {
-            error("Unable to find reflection info for CSceneVehicleVisState!");
-            return 0;
-        }
-
-        penalty2Offset = type.GetMember("WaterImmersionCoef").Offset - 4;
-    }
-
-    int ret = Dev::GetOffsetInt32(State, penalty2Offset);
-
-    // if (ret > 0)
-    //     print("sparks 2:" + tostring(ret));
-
-    return ret;
-}
-
-uint16 penalty3Offset = 0;
-
-int GetSparks3(CSceneVehicleVisState@ State) {  // any impact? 0 - ~1,065,000,000
-    if (penalty3Offset == 0) {
-        const Reflection::MwClassInfo@ type = Reflection::GetType("CSceneVehicleVisState");
-
-        if (type is null) {
-            error("Unable to find reflection info for CSceneVehicleVisState!");
-            return 0;
-        }
-
-        penalty3Offset = type.GetMember("WetnessValue01").Offset + 8;
-    }
-
-    int ret = Dev::GetOffsetInt32(State, penalty3Offset);
-
-    // if (ret > 0)
-    //     print("sparks 3: " + tostring(ret));
-
-    return ret;
-}
-
-uint16 snowCarOffset = 0;
-
-int GetSnowCar(CSceneVehicleVisState@ State) {
-    if (alwaysSnow)
-        return 1;
-
-    if (snowCarOffset == 0) {
-        const Reflection::MwClassInfo@ type = Reflection::GetType("CSceneVehicleVisState");
-
-        if (type is null) {
-            error("Unable to find reflection info for CSceneVehicleVisState!");
-            return 0;
-        }
-
-        snowCarOffset = type.GetMember("InputSteer").Offset - 8;
-    }
-
-    return Dev::GetOffsetUint8(State, snowCarOffset);
+int GetHandicapFlags(CSceneVehicleVisState@ State) {
+    return int(State.ActiveEffects);
 }
 
 #endif
 
 void ResetAllEffects() {
-    alwaysSnow   = false;
     cruise       = 0;
     forced       = 0;
     fragile      = 0;
@@ -279,6 +180,24 @@ void ResetAllEffects() {
     reactorTimer = 0.0f;
     reactorType  = 0;
     slowmo       = 0;
-    snow         = 0;
     turbo        = 0;
+    vehicle      = 0;
+}
+
+void SetHandicaps(int flags) {
+
+#if TMNEXT
+    noEngine = (flags & 0x100  == 0x100)  ? 1 : 0;
+    forced   = (flags & 0x200  == 0x200)  ? 1 : 0;
+    noBrakes = (flags & 0x400  == 0x400)  ? 1 : 0;
+    noSteer  = (flags & 0x800  == 0x800)  ? 1 : 0;
+    noGrip   = (flags & 0x1000 == 0x1000) ? 1 : 0;
+
+#elif MP4
+    noEngine = (flags & 0x1  == 0x1)  ? 1 : 0;
+    forced   = (flags & 0x2  == 0x2)  ? 1 : 0;
+    noBrakes = (flags & 0x4  == 0x4)  ? 1 : 0;
+    noSteer  = (flags & 0x8  == 0x8)  ? 1 : 0;
+    noGrip   = (flags & 0x10 == 0x10) ? 1 : 0;
+#endif
 }

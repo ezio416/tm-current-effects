@@ -1,10 +1,9 @@
 // c 2023-05-04
-// m 2024-02-20
+// m 2024-02-26
 
-string loginLocal    = GetLocalLogin();
-bool   replay;
-bool   spectating;
-string title         = "\\$F00" + Icons::React + "\\$G Current Effects";
+string loginLocal;
+bool   replay        = false;
+bool   spectating    = false;
 uint   totalRespawns = 0;
 
 void RenderMenu() {
@@ -18,8 +17,11 @@ void RenderMenu() {
 }
 
 #if TMNEXT
-void OnDestroyed() { ResetIntercept(); }
-void OnDisabled()  { ResetIntercept(); }
+void OnDestroyed() { OnDisabled(); }
+void OnDisabled() {
+    if (intercepting)
+        ResetIntercept();
+}
 #endif
 
 void Main() {
@@ -48,15 +50,10 @@ void OnSettingsChanged() {
 }
 
 void Render() {
-#if SIG_DEVELOPER && TMNEXT
-    RenderDevNext();
-#endif
-
-    if (
-        !S_Enabled ||
-        font is null ||
-        (S_HideWithGame && !UI::IsGameUIVisible()) ||
-        (S_HideWithOP && !UI::IsOverlayShown())
+    if (!S_Enabled
+        || font is null
+        || (S_HideWithGame && !UI::IsGameUIVisible())
+        || (S_HideWithOP && !UI::IsOverlayShown())
     ) {
         ResetAllEffects();
         return;
@@ -86,15 +83,9 @@ void Render() {
         return;
     }
 
-    CGameCtnChallenge@ Map = App.RootMap;
-    if (Map is null) {
+    if (App.RootMap is null) {
         ResetAllEffects();
         return;
-    }
-
-    if (Map.VehicleName.GetName() == "CarSnow") {
-        alwaysSnow = true;
-        snow = 1;
     }
 
     if (!intercepting)
@@ -136,10 +127,7 @@ void Render() {
 
 #endif
 
-    if (
-        Playground.GameTerminals.Length != 1 ||
-        Playground.UIConfigs.Length == 0
-    ) {
+    if (Playground.GameTerminals.Length != 1 || Playground.UIConfigs.Length == 0) {
         ResetAllEffects();
         return;
     }
