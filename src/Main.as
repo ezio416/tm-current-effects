@@ -1,10 +1,11 @@
 // c 2023-05-04
-// m 2024-02-26
+// m 2024-03-09
 
-string loginLocal;
-bool   replay        = false;
-bool   spectating    = false;
-uint   totalRespawns = 0;
+string       loginLocal;
+bool         replay        = false;
+bool         spectating    = false;
+const string title         = "\\$F00" + Icons::React + "\\$G Current Effects";
+uint         totalRespawns = 0;
 
 void RenderMenu() {
     if (UI::MenuItem(title, "", S_Enabled))
@@ -29,11 +30,10 @@ void Main() {
     ChangeFont();
     SetColors();
 
-#if SIG_DEVELOPER && TMNEXT
+#if TMNEXT
+#if SIG_DEVELOPER
     InitDevNext();
 #endif
-
-#if TMNEXT
     Intercept();
 #endif
 }
