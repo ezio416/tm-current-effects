@@ -1,5 +1,5 @@
 // c 2024-01-12
-// m 2024-02-20
+// m 2024-03-10
 
 namespace CurrentEffects {
 
@@ -32,8 +32,8 @@ namespace CurrentEffects {
     // Returns the current Slow-Mo level (0-4, 0 being none).
     import int GetSlowMoLevel() from "CurrentEffects";
 
-    // Returns true when the current vehicle is the Snow Car.
-    import bool GetSnowCar() from "CurrentEffects";
+    // Returns 0 for Stadium, 1 for Snow, and 2 for Rally car.
+    import int GetVehicleType() from "CurrentEffects";
 
     // Returns the current TurboLevel (0-5, 0 being none). Does not work when spectating. Requires VehicleState dependency.
     import VehicleState::TurboLevel GetTurboLevel() from "CurrentEffects";
