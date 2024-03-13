@@ -1,6 +1,8 @@
 // c 2023-05-04
 // m 2024-03-13
 
+bool           lastExperimental = false;
+bool           lastRunHidden    = false;
 string         loginLocal;
 InternalState@ state;
 uint           totalRespawns    = 0;
@@ -41,11 +43,36 @@ void OnSettingsChanged() {
 #endif
 }
 
+void Update(float) {
+    if (state is null)
+        return;
+
+    if (!state.Init) {
+        state.Init = true;
+        state.Experimental = S_Experimental;
+        state.RunWhenHidden = S_RunHidden;
+        return;
+    }
+
+    if (lastExperimental != S_Experimental) {
+        lastExperimental = S_Experimental;
+        state.Experimental = S_Experimental;
+    } else
+        S_Experimental = state.Experimental;
+
+    if (lastRunHidden != S_RunHidden) {
+        lastRunHidden = S_RunHidden;
+        state.RunWhenHidden = S_RunHidden;
+    } else
+        S_RunHidden = state.RunWhenHidden;
+}
+
 void Render() {
-    if (!S_Enabled
+    const bool shouldHide = (S_HideWithGame && !UI::IsGameUIVisible()) || (S_HideWithOP && !UI::IsOverlayShown());
+    if (
+        !S_Enabled
         || font is null
-        || (S_HideWithGame && !UI::IsGameUIVisible())
-        || (S_HideWithOP && !UI::IsOverlayShown())
+        || (shouldHide && !S_RunHidden)
     ) {
         ResetAllEffects();
         return;
@@ -183,7 +210,7 @@ void Render() {
 
 #endif
 
-    RenderEffects(Vis.AsyncState);
+    RenderEffects(Vis.AsyncState, shouldHide);
 }
 
 // courtesy of "Auto-hide Opponents" plugin - https://github.com/XertroV/tm-autohide-opponents
@@ -218,4 +245,7 @@ class InternalState : CurrentEffects::State {
     void set_TurboTime              (float f)                            { _turboTime    = f; }
     void set_Vehicle                (int i)                              { _vehicle      = i; }
     void set_WatchingReplay         (bool b)                             { _replay       = b; }
+
+    bool get_Init()       { return _init; }
+    void set_Init(bool i) { _init = i;    }
 }

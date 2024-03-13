@@ -3,7 +3,7 @@
 
 string reactorIcon;
 
-void RenderEffects(CSceneVehicleVisState@ VisState) {
+void RenderEffects(CSceneVehicleVisState@ VisState, const bool shouldHide) {
     if (!S_ShowAll) {
         SetHandicaps(GetHandicapFlags(VisState));
 
@@ -68,7 +68,10 @@ void RenderEffects(CSceneVehicleVisState@ VisState) {
 #endif
 
     } else
-        ShowAllColors();
+        ShowAllColors(shouldHide);
+
+    if (shouldHide)
+        return;
 
     int flags = UI::WindowFlags::AlwaysAutoResize |
                 UI::WindowFlags::NoCollapse |

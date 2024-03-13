@@ -10,31 +10,6 @@ namespace CurrentEffects {
         return state;
     }
 
-    /*
-    Whether experimental features are enabled
-    Value is accessible to user as a setting
-    */
-    bool get_Experimental() {
-        return S_Experimental;
-    }
-
-    void set_Experimental(bool e) {
-        S_Experimental = e;
-    }
-
-    /*
-    Whether plugin will run when its window is hidden
-    Value is accessible to user as a setting
-    Recommended: `true`
-    */
-    bool get_RunWhenHidden() {
-        return S_RunHidden;
-    }
-
-    void set_RunWhenHidden(bool r) {
-        S_RunHidden = r;
-    }
-
 #if TMNEXT
     /*
     DEPRECATED - INSTEAD USE `CurrentEffects::GetState().AccelPenalty`

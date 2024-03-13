@@ -24,8 +24,10 @@ namespace CurrentEffects {
         protected State(bool inherited) { }
 
         protected int    _cruise       = 0;
+        protected bool   _experimental = false;
         protected int    _forced       = 0;
         protected int    _fragile      = 0;
+        protected bool   _init         = false;
         protected int    _noBrakes     = 0;
         protected int    _noEngine     = 0;
         protected int    _noGrip       = 0;
@@ -35,6 +37,7 @@ namespace CurrentEffects {
         protected float  _reactorTimer = 0.0f;
         protected int    _reactorType  = 0;
         protected bool   _replay       = false;
+        protected bool   _runHidden    = false;
         protected int    _slowMo       = 0;
         protected bool   _spectating   = false;
         protected int    _turbo        = 0;
@@ -60,6 +63,18 @@ namespace CurrentEffects {
             return ActiveState(_cruise);
         }
 #endif
+
+        /*
+        Whether experimental features are enabled
+        Value is accessible to user as a setting
+        */
+        bool get_Experimental() {
+            return _experimental;
+        }
+
+        void set_Experimental(bool e) {
+            _experimental = e;
+        }
 
         /*
         Whether Forced Acceleration/Fullspeed Ahead is active
@@ -136,6 +151,19 @@ namespace CurrentEffects {
         */
         const ESceneVehicleVisReactorBoostType get_ReactorBoostType() {
             return ESceneVehicleVisReactorBoostType(_reactorType);
+        }
+
+        /*
+        Whether plugin will run when its window is hidden
+        Value is accessible to user as a setting
+        Recommended: `true`
+        */
+        bool get_RunWhenHidden() {
+            return _runHidden;
+        }
+
+        void set_RunWhenHidden(bool r) {
+            _runHidden = r;
         }
 
         /*

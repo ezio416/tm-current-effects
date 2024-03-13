@@ -167,7 +167,10 @@ void SetColors() {
 
 }
 
-void ShowAllColors() {
+void ShowAllColors(const bool shouldHide) {
+    if (shouldHide)
+        return;
+
     state.AccelPenalty = CurrentEffects::ActiveState::Active;
     state.ForcedAccel  = CurrentEffects::ActiveState::Active;
     state.NoBrakes     = CurrentEffects::ActiveState::Active;
