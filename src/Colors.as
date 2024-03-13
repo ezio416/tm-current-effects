@@ -4,7 +4,6 @@
 int64 lastAllColorsSwap = 0;
 
 #if TMNEXT
-
 string GetCruiseColor() {
     switch (state.CruiseControl) {
         case -1: return disabledColor;
@@ -12,7 +11,6 @@ string GetCruiseColor() {
         default: return offColor;
     }
 }
-
 #endif
 
 string GetForcedColor() {
@@ -24,7 +22,6 @@ string GetForcedColor() {
 }
 
 #if TMNEXT
-
 string GetFragileColor() {
     switch (state.Fragile) {
         case -1: return disabledColor;
@@ -32,7 +29,6 @@ string GetFragileColor() {
         default: return offColor;
     }
 }
-
 #endif
 
 string GetNoBrakesColor() {
@@ -68,7 +64,6 @@ string GetNoSteerColor() {
 }
 
 #if TMNEXT
-
 string GetPenaltyColor() {
     switch (state.AccelPenalty) {
         case -1: return disabledColor;
@@ -120,14 +115,12 @@ string GetVehicleColor() {
 }
 
 #elif MP4
-
 string GetTurboColor() {
     switch (state.TurboLevel) {
         case  1: return turboColor;
         default: return offColor;
     }
 }
-
 #endif
 
 void SetColors() {
@@ -139,7 +132,6 @@ void SetColors() {
     noSteerColor  = Text::FormatOpenplanetColor(S_NoSteerColor);
 
 #if TMNEXT
-
     // desertColor   = Text::FormatOpenplanetColor(S_DesertColor);
     disabledColor = Text::FormatOpenplanetColor(S_DisabledColor);
     cruiseColor   = Text::FormatOpenplanetColor(S_CruiseColor);
@@ -160,9 +152,7 @@ void SetColors() {
     turbo5Color   = Text::FormatOpenplanetColor(S_Turbo5Color);
 
 #elif MP4
-
     turboColor = Text::FormatOpenplanetColor(S_TurboColor);
-
 #endif
 
 }
@@ -179,7 +169,6 @@ void ShowAllColors(const bool shouldHide) {
     state.NoSteer      = CurrentEffects::ActiveState::Active;
 
 #if TMNEXT
-
     state.CruiseControl = CurrentEffects::ActiveState::Active;
     state.Fragile       = CurrentEffects::ActiveState::Active;
 
@@ -222,9 +211,6 @@ void ShowAllColors(const bool shouldHide) {
     }
 
 #elif MP4
-
     state.TurboLevel = 1;
-
 #endif
-
 }
