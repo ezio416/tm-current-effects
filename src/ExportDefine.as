@@ -4,7 +4,7 @@
 namespace CurrentEffects {
     /*
     Call this function to get access to variables in this plugin
-    Use this instead of a new `CurrentEffects::State()`
+    Use this instead of a new `CurrentEffects::State`
     */
     State@ GetState() {
         return state;
