@@ -2,13 +2,9 @@
 // m 2024-03-13
 
 namespace CurrentEffects {
+    import State@                           GetState()                from "CurrentEffects";
 
 #if TMNEXT
-    import State@                           GetState()                from "CurrentEffects";
-    import bool                             get_Experimental()        from "CurrentEffects";
-    import void                             set_Experimental(bool e)  from "CurrentEffects";
-    import bool                             get_RunWhenHidden()       from "CurrentEffects";
-    import void                             set_RunWhenHidden(bool r) from "CurrentEffects";
     import bool                             GetExperimental()         from "CurrentEffects";
     import void                             SetExperimental(bool e)   from "CurrentEffects";
     import bool                             GetAccelPenalty()         from "CurrentEffects";

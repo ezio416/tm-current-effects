@@ -152,6 +152,7 @@ namespace CurrentEffects {
         const ESceneVehicleVisReactorBoostType get_ReactorBoostType() {
             return ESceneVehicleVisReactorBoostType(_reactorType);
         }
+#endif
 
         /*
         Whether plugin will run when its window is hidden
@@ -166,6 +167,7 @@ namespace CurrentEffects {
             _runHidden = r;
         }
 
+#if TMNEXT
         /*
         Whether the user is spectating another player
         (TMNEXT only)

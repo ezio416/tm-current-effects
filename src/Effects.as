@@ -166,10 +166,14 @@ void ResetAllEffects() {
     state.NoEngine               = CurrentEffects::ActiveState::NotActive;
     state.NoGrip                 = CurrentEffects::ActiveState::NotActive;
     state.NoSteer                = CurrentEffects::ActiveState::NotActive;
+
+#if TMNEXT
     state.ReactorBoostLevel      = ESceneVehicleVisReactorBoostLvl::None;
     state.ReactorBoostFinalTimer = 0.0f;
     state.ReactorBoostType       = ESceneVehicleVisReactorBoostType::None;
     state.SlowMoLevel            = 0;
+#endif
+
     state.Spectating             = false;
     state.TurboLevel             = 0;
     state.TurboTime              = 0.0f;

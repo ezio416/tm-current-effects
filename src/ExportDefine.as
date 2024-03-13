@@ -43,6 +43,7 @@ namespace CurrentEffects {
         return state.ForcedAccel == 1;
     }
 
+#if TMNEXT
     /*
     DEPRECATED - INSTEAD USE CurrentEffects::GetState().Experimental
     Whether experimental features are enabled
@@ -53,7 +54,6 @@ namespace CurrentEffects {
         return S_Experimental;
     }
 
-#if TMNEXT
     /*
     DEPRECATED - INSTEAD USE `CurrentEffects::GetState().Fragile`
     Whether Fragile is active
@@ -181,6 +181,7 @@ namespace CurrentEffects {
     }
 #endif
 
+#if TMNEXT
     /*
     DEPRECATED - INSTEAD USE CurrentEffects::Experimental
     Allows toggling experimental features
@@ -189,6 +190,7 @@ namespace CurrentEffects {
         WarnDeprecated();
         S_Experimental = e;
     }
+#endif
 }
 
 bool warnedDeprecated = false;

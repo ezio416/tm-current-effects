@@ -81,7 +81,6 @@ void Render() {
     CTrackMania@ App = cast<CTrackMania@>(GetApp());
 
 #if MP4
-
     CGamePlayground@ Playground = App.CurrentPlayground;
 
     if (Playground is null) {
@@ -90,7 +89,6 @@ void Render() {
     }
 
 #elif TMNEXT
-
     CSmArenaClient@ Playground = cast<CSmArenaClient@>(App.CurrentPlayground);
 
     if (Playground is null) {
@@ -143,7 +141,6 @@ void Render() {
         if (fragileBeforeCp)
             state.Fragile = CurrentEffects::ActiveState::Active;
     }
-
 #endif
 
     if (Playground.GameTerminals.Length != 1 || Playground.UIConfigs.Length == 0) {
@@ -179,14 +176,12 @@ void Render() {
     }
 
 #if MP4
-
     if (Vis is null) {
         CSceneVehicleVisState@[] states = VehicleState::GetAllVis(Scene);
 
         if (states.Length > 0)
             @Vis = states[0];
     }
-
 #endif
 
     if (Vis is null) {
@@ -197,17 +192,18 @@ void Render() {
     CGamePlaygroundUIConfig::EUISequence Sequence = Playground.UIConfigs[0].UISequence;
     if (
         !(Sequence == CGamePlaygroundUIConfig::EUISequence::Playing) &&
-        !(Sequence == CGamePlaygroundUIConfig::EUISequence::EndRound && state.WatchingReplay)
-    ) {
+        !(Sequence == CGamePlaygroundUIConfig::EUISequence::EndRound
+#if TMNEXT
+        && state.WatchingReplay
+#endif
+    )) {
         ResetAllEffects();
         return;
     }
 
 #if TMNEXT
-
     CSmPlayer@ ViewingPlayer = VehicleState::GetViewingPlayer();
     state.Spectating = ((ViewingPlayer is null ? "" : ViewingPlayer.ScriptAPI.Login) != loginLocal) && !state.WatchingReplay;
-
 #endif
 
     RenderEffects(Vis.AsyncState, shouldHide);
@@ -237,8 +233,12 @@ class InternalState : CurrentEffects::State {
     void set_NoGrip                 (CurrentEffects::ActiveState a)      { _noGrip       = a; }
     void set_NoSteer                (CurrentEffects::ActiveState a)      { _noSteer      = a; }
     void set_ReactorBoostFinalTimer (float f)                            { _reactorTimer = f; }
+
+#if TMNEXT
     void set_ReactorBoostLevel      (ESceneVehicleVisReactorBoostLvl e)  { _reactorLevel = e; }
     void set_ReactorBoostType       (ESceneVehicleVisReactorBoostType e) { _reactorType  = e; }
+#endif
+
     void set_Spectating             (bool b)                             { _spectating   = b; }
     void set_SlowMoLevel            (int i)                              { _slowMo       = i; }
     void set_TurboLevel             (int i)                              { _turbo        = i; }
