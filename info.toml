@@ -1,12 +1,12 @@
 [meta]
-name     = "Current Effects"
-author   = "Ezio"
+name = "Current Effects"
+author = "Ezio"
 category = "Overlay"
-version  = "0.19.2"
-siteid   = 382
+version = "0.20.0"
+siteid = 382
 
 [script]
-dependencies   = [ "VehicleState" ]
-exports        = [ "src/Export.as" ]
+dependencies = [ "VehicleState" ]
+exports = [ "src/Export.as" ]
 shared_exports = [ "src/ExportShared.as" ]
-module         = "CurrentEffects"
+module = "CurrentEffects"
