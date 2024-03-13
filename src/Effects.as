@@ -1,26 +1,11 @@
 // c 2023-08-17
-// m 2024-02-26
+// m 2024-03-13
 
-int    cruise       = 0;
-int    forced       = 0;
-int    fragile      = 0;
-int    noBrakes     = 0;
-int    noEngine     = 0;
-int    noGrip       = 0;
-int    noSteer      = 0;
-int    penalty      = 0;
-int    reactor      = 0;
 string reactorIcon;
-int    reactorLevel = 0;
-float  reactorTimer = 0.0f;
-int    reactorType  = 0;
-int    slowmo       = 0;
-int    turbo        = 0;
-int    vehicle      = 0;
 
-void RenderEffects(CSceneVehicleVisState@ State) {
+void RenderEffects(CSceneVehicleVisState@ VisState) {
     if (!S_ShowAll) {
-        SetHandicaps(GetHandicapFlags(State));
+        SetHandicaps(GetHandicapFlags(VisState));
 
 #if TMNEXT
         if (S_Reset) {
@@ -28,55 +13,58 @@ void RenderEffects(CSceneVehicleVisState@ State) {
             ResetEventEffects();
         }
 
-        cruise = GetCruiseSpeed(State) != 0 ? 1 : 0;
+        state.CruiseControl = CurrentEffects::ActiveState(GetCruiseSpeed(VisState) != 0 ? 1 : 0);
 
-        penalty = S_Experimental && (GetSparks1(State) > 0 || GetSparks2(State) > 0 || GetSparks3(State) > 0) ? 1 : 0;
+        state.AccelPenalty = CurrentEffects::ActiveState(S_Experimental && (GetSparks1(VisState) > 0 || GetSparks2(VisState) > 0 || GetSparks3(VisState) > 0) ? 1 : 0);
 
-        reactorLevel = State.ReactorBoostLvl;
-        reactor = int(reactorLevel);
+        state.ReactorBoostLevel = VisState.ReactorBoostLvl;
 
-        reactorType = State.ReactorBoostType;
-        switch (int(reactorType)) {
+        state.ReactorBoostType = VisState.ReactorBoostType;
+        switch (state.ReactorBoostType) {
             case 1:  reactorIcon = Icons::ChevronUp;   break;
             case 2:  reactorIcon = Icons::ChevronDown; break;
             default: reactorIcon = Icons::Rocket;
         }
 
-        reactorTimer = VehicleState::GetReactorFinalTimer(State);
+        state.ReactorBoostFinalTimer = VehicleState::GetReactorFinalTimer(VisState);
 
-        switch (int(State.SimulationTimeCoef * 100.0f)) {
-            case 100: slowmo = 0; break;
+        switch (int(VisState.SimulationTimeCoef * 100.0f)) {
+            case 100: state.SlowMoLevel = 0; break;
             case 56:
-            case 57:  slowmo = 1; break;
-            case 32:  slowmo = 2; break;
-            case 18:  slowmo = 3; break;
-            default:  slowmo = 4;
+            case 57:  state.SlowMoLevel = 1; break;
+            case 32:  state.SlowMoLevel = 2; break;
+            case 18:  state.SlowMoLevel = 3; break;
+            default:  state.SlowMoLevel = 4;
         }
 
-        vehicle = GetVehicleType(State);
+        state.Vehicle = GetVehicleType(VisState);
 
-        turbo = 0;
-        if (State.IsTurbo)
-            turbo = int(VehicleState::GetLastTurboLevel(State));
+        state.TurboLevel = 0;
+        if (VisState.IsTurbo)
+            state.TurboLevel = int(VehicleState::GetLastTurboLevel(VisState));
 
-        if (replay) {
-            forced   = -1;
-            fragile  = -1;
-            noBrakes = -1;
-            noEngine = -1;
-            noGrip   = -1;
-            noSteer  = -1;
-        } else if (spectating) {
-            cruise   = -1;
-            fragile  = -1;
-            turbo    = -1;
+        if (state.WatchingReplay) {
+            state.AccelPenalty = CurrentEffects::ActiveState::Disabled;
+            state.ForcedAccel  = CurrentEffects::ActiveState::Disabled;
+            state.Fragile      = CurrentEffects::ActiveState::Disabled;
+            state.NoBrakes     = CurrentEffects::ActiveState::Disabled;
+            state.NoEngine     = CurrentEffects::ActiveState::Disabled;
+            state.NoGrip       = CurrentEffects::ActiveState::Disabled;
+            state.NoSteer      = CurrentEffects::ActiveState::Disabled;
+        } else if (state.Spectating) {
+            state.AccelPenalty  = CurrentEffects::ActiveState::Disabled;
+            state.CruiseControl = CurrentEffects::ActiveState::Disabled;
+            state.Fragile       = CurrentEffects::ActiveState::Disabled;
+            state.TurboLevel    = CurrentEffects::ActiveState::Disabled;
         } else if (!S_Experimental) {
-            fragile  = -1;
-            penalty  = -1;
+            state.AccelPenalty = CurrentEffects::ActiveState::Disabled;
+            state.Fragile      = CurrentEffects::ActiveState::Disabled;
         }
+
+        state.TurboTime = VisState.TurboTime;
 
 #elif MP4
-        turbo = State.TurboActive ? 1 : 0;
+        state.TurboLevel = VisState.TurboActive ? 1 : 0;
 #endif
 
     } else
@@ -109,9 +97,9 @@ void RenderEffects(CSceneVehicleVisState@ State) {
         if (S_NoSteer)  UI::Text(GetNoSteerColor()  + Icons::ArrowsH             + iconPadding + "No Steering");
 
 #if TMNEXT
-        if (S_Reactor)  UI::Text(GetReactorText(reactorTimer));
+        if (S_Reactor)  UI::Text(GetReactorText(state.ReactorBoostFinalTimer));
         if (S_SlowMo)   UI::Text(GetSlowMoColor() + Icons::ClockO + iconPadding + "Slow-Mo");
-        if (S_Turbo)    UI::Text(GetTurboText(State.TurboTime));
+        if (S_Turbo)    UI::Text(GetTurboText(state.TurboTime));
         if (S_Vehicle)  UI::Text(GetVehicleText());
 
 #elif MP4
@@ -124,7 +112,7 @@ void RenderEffects(CSceneVehicleVisState@ State) {
 
 #if TMNEXT
 
-string GetReactorText(float f) {
+string GetReactorText(const float f) {
     if (f == 0.0f) return GetReactorColor() + reactorIcon + iconPadding + "Reactor Boost";
     if (f < 0.09f) return GetReactorColor() + reactorIcon + iconPadding + "Reactor Boos" + offColor + "t";
     if (f < 0.17f) return GetReactorColor() + reactorIcon + iconPadding + "Reactor Boo" + offColor + "st";
@@ -140,7 +128,7 @@ string GetReactorText(float f) {
     return GetReactorColor() + reactorIcon + offColor + iconPadding + "Reactor Boost";
 }
 
-string GetTurboText(float f) {
+string GetTurboText(const float f) {
     if (f == 0.0f) return GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "Turbo";
     if (f < 0.2f)  return GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "Turb" + offColor + "o";
     if (f < 0.4f)  return GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "Tur" + offColor + "bo";
@@ -150,7 +138,7 @@ string GetTurboText(float f) {
 }
 
 string GetVehicleText() {
-    switch (vehicle) {
+    switch (state.Vehicle) {
         case 1:  return GetVehicleColor() + Icons::Kenney::Car + iconPadding + "Snow Car";
         case 2:  return GetVehicleColor() + Icons::Kenney::Car + iconPadding + "Rally Car";
         // case 3:  return GetVehicleColor() + Icons::Kenney::Car + iconPadding + "Desert Car";
@@ -160,44 +148,46 @@ string GetVehicleText() {
 
 #elif MP4
 
-int GetHandicapFlags(CSceneVehicleVisState@ State) {
-    return int(State.ActiveEffects);
+int GetHandicapFlags(CSceneVehicleVisState@ VisState) {
+    return int(VisState.ActiveEffects);
 }
 
 #endif
 
 void ResetAllEffects() {
-    cruise       = 0;
-    forced       = 0;
-    fragile      = 0;
-    noBrakes     = 0;
-    noEngine     = 0;
-    noGrip       = 0;
-    noSteer      = 0;
-    penalty      = 0;
-    reactor      = 0;
-    reactorLevel = 0;
-    reactorTimer = 0.0f;
-    reactorType  = 0;
-    slowmo       = 0;
-    turbo        = 0;
-    vehicle      = 0;
+    state.AccelPenalty           = CurrentEffects::ActiveState::NotActive;
+    state.CruiseControl          = CurrentEffects::ActiveState::NotActive;
+    state.ForcedAccel            = CurrentEffects::ActiveState::NotActive;
+    state.Fragile                = CurrentEffects::ActiveState::NotActive;
+    state.NoBrakes               = CurrentEffects::ActiveState::NotActive;
+    state.NoEngine               = CurrentEffects::ActiveState::NotActive;
+    state.NoGrip                 = CurrentEffects::ActiveState::NotActive;
+    state.NoSteer                = CurrentEffects::ActiveState::NotActive;
+    state.ReactorBoostLevel      = ESceneVehicleVisReactorBoostLvl::None;
+    state.ReactorBoostFinalTimer = 0.0f;
+    state.ReactorBoostType       = ESceneVehicleVisReactorBoostType::None;
+    state.SlowMoLevel            = 0;
+    state.Spectating             = false;
+    state.TurboLevel             = 0;
+    state.TurboTime              = 0.0f;
+    state.Vehicle                = 0;
+    state.WatchingReplay         = false;
 }
 
-void SetHandicaps(int flags) {
+void SetHandicaps(const int flags) {
 
 #if TMNEXT
-    noEngine = (flags & 0x100  == 0x100)  ? 1 : 0;
-    forced   = (flags & 0x200  == 0x200)  ? 1 : 0;
-    noBrakes = (flags & 0x400  == 0x400)  ? 1 : 0;
-    noSteer  = (flags & 0x800  == 0x800)  ? 1 : 0;
-    noGrip   = (flags & 0x1000 == 0x1000) ? 1 : 0;
+    state.NoEngine    = CurrentEffects::ActiveState((flags & 0x100  == 0x100)  ? 1 : 0);
+    state.ForcedAccel = CurrentEffects::ActiveState((flags & 0x200  == 0x200)  ? 1 : 0);
+    state.NoBrakes    = CurrentEffects::ActiveState((flags & 0x400  == 0x400)  ? 1 : 0);
+    state.NoSteer     = CurrentEffects::ActiveState((flags & 0x800  == 0x800)  ? 1 : 0);
+    state.NoGrip      = CurrentEffects::ActiveState((flags & 0x1000 == 0x1000) ? 1 : 0);
 
 #elif MP4
-    noEngine = (flags & 0x1  == 0x1)  ? 1 : 0;
-    forced   = (flags & 0x2  == 0x2)  ? 1 : 0;
-    noBrakes = (flags & 0x4  == 0x4)  ? 1 : 0;
-    noSteer  = (flags & 0x8  == 0x8)  ? 1 : 0;
-    noGrip   = (flags & 0x10 == 0x10) ? 1 : 0;
+    state.NoEngine    = CurrentEffects::ActiveState((flags & 0x1  == 0x1)  ? 1 : 0);
+    state.ForcedAccel = CurrentEffects::ActiveState((flags & 0x2  == 0x2)  ? 1 : 0);
+    state.NoBrakes    = CurrentEffects::ActiveState((flags & 0x4  == 0x4)  ? 1 : 0);
+    state.NoSteer     = CurrentEffects::ActiveState((flags & 0x8  == 0x8)  ? 1 : 0);
+    state.NoGrip      = CurrentEffects::ActiveState((flags & 0x10 == 0x10) ? 1 : 0);
 #endif
 }

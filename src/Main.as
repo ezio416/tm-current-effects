@@ -1,10 +1,9 @@
 // c 2023-05-04
-// m 2024-02-26
+// m 2024-03-13
 
-string loginLocal;
-bool   replay        = false;
-bool   spectating    = false;
-uint   totalRespawns = 0;
+string         loginLocal;
+InternalState@ state;
+uint           totalRespawns    = 0;
 
 void RenderMenu() {
     if (UI::MenuItem("\\$F00" + Icons::React + "\\$G Current Effects", "", S_Enabled))
@@ -20,6 +19,8 @@ void OnDisabled() {
 #endif
 
 void Main() {
+    @state = InternalState();
+
     startnew(CacheLocalLogin);
     ChangeFont();
     SetColors();
@@ -113,7 +114,7 @@ void Render() {
         ResetEventEffects();
 
         if (fragileBeforeCp)
-            fragile = 1;
+            state.Fragile = CurrentEffects::ActiveState::Active;
     }
 
 #endif
@@ -144,10 +145,10 @@ void Render() {
 
     if (Player !is null) {
         @Vis = VehicleState::GetVis(Scene, Player);
-        replay = false;
+        state.WatchingReplay = false;
     } else {
         @Vis = VehicleState::GetSingularVis(Scene);
-        replay = true;
+        state.WatchingReplay = true;
     }
 
 #if MP4
@@ -169,7 +170,7 @@ void Render() {
     CGamePlaygroundUIConfig::EUISequence Sequence = Playground.UIConfigs[0].UISequence;
     if (
         !(Sequence == CGamePlaygroundUIConfig::EUISequence::Playing) &&
-        !(Sequence == CGamePlaygroundUIConfig::EUISequence::EndRound && replay)
+        !(Sequence == CGamePlaygroundUIConfig::EUISequence::EndRound && state.WatchingReplay)
     ) {
         ResetAllEffects();
         return;
@@ -178,7 +179,7 @@ void Render() {
 #if TMNEXT
 
     CSmPlayer@ ViewingPlayer = VehicleState::GetViewingPlayer();
-    spectating = ((ViewingPlayer is null ? "" : ViewingPlayer.ScriptAPI.Login) != loginLocal) && !replay;
+    state.Spectating = ((ViewingPlayer is null ? "" : ViewingPlayer.ScriptAPI.Login) != loginLocal) && !state.WatchingReplay;
 
 #endif
 
@@ -195,4 +196,26 @@ void CacheLocalLogin() {
         if (loginLocal.Length > 10)
             break;
     }
+}
+
+class InternalState : CurrentEffects::State {
+    InternalState() { super(true); }
+
+    void set_AccelPenalty           (CurrentEffects::ActiveState a)      { _penalty      = a; }
+    void set_CruiseControl          (CurrentEffects::ActiveState a)      { _cruise       = a; }
+    void set_ForcedAccel            (CurrentEffects::ActiveState a)      { _forced       = a; }
+    void set_Fragile                (CurrentEffects::ActiveState a)      { _fragile      = a; }
+    void set_NoBrakes               (CurrentEffects::ActiveState a)      { _noBrakes     = a; }
+    void set_NoEngine               (CurrentEffects::ActiveState a)      { _noEngine     = a; }
+    void set_NoGrip                 (CurrentEffects::ActiveState a)      { _noGrip       = a; }
+    void set_NoSteer                (CurrentEffects::ActiveState a)      { _noSteer      = a; }
+    void set_ReactorBoostFinalTimer (float f)                            { _reactorTimer = f; }
+    void set_ReactorBoostLevel      (ESceneVehicleVisReactorBoostLvl e)  { _reactorLevel = e; }
+    void set_ReactorBoostType       (ESceneVehicleVisReactorBoostType e) { _reactorType  = e; }
+    void set_Spectating             (bool b)                             { _spectating   = b; }
+    void set_SlowMoLevel            (int i)                              { _slowMo       = i; }
+    void set_TurboLevel             (int i)                              { _turbo        = i; }
+    void set_TurboTime              (float f)                            { _turboTime    = f; }
+    void set_Vehicle                (int i)                              { _vehicle      = i; }
+    void set_WatchingReplay         (bool b)                             { _replay       = b; }
 }

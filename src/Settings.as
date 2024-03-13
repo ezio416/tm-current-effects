@@ -1,5 +1,5 @@
 // c 2023-06-10
-// m 2024-02-23
+// m 2024-03-13
 
 [Setting category="General" name="Enabled"]
 bool S_Enabled = true;
@@ -9,6 +9,12 @@ bool S_HideWithGame = true;
 
 [Setting category="General" name="Show/hide with Openplanet UI"]
 bool S_HideWithOP = false;
+
+[Setting category="General" name="Run when window is hidden" description="Useful when plugin is used as a dependency"]
+bool S_RunHidden = false;
+
+[Setting category="General" name="Try experimental features" description="Warning - may crash your game or just not work!"]
+bool S_Experimental = false;
 
 [Setting category="General" name="Font style/size" description="Loading a font for the first time causes game to hang for a bit"]
 Font S_Font = Font::DroidSansBold_20;
@@ -20,9 +26,6 @@ bool S_ShowAll = false;
 
 [Setting category="General" name="Reset all effects" description="Fragile may get stuck, just click this once"]
 bool S_Reset = false;
-
-[Setting category="General" name="Try experimental features" description="Warning - may crash your game or just not work!"]
-bool S_Experimental = false;
 
 
 [Setting category="Toggles" name="Acceleration Penalty" description="Experimental - may not work!"]

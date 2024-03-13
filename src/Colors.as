@@ -1,12 +1,12 @@
 // c 2023-10-21
-// m 2024-02-23
+// m 2024-03-13
 
 int64 lastAllColorsSwap = 0;
 
 #if TMNEXT
 
 string GetCruiseColor() {
-    switch (cruise) {
+    switch (state.CruiseControl) {
         case -1: return disabledColor;
         case  1: return cruiseColor;
         default: return offColor;
@@ -16,7 +16,7 @@ string GetCruiseColor() {
 #endif
 
 string GetForcedColor() {
-    switch (forced) {
+    switch (state.ForcedAccel) {
         case -1: return disabledColor;
         case  1: return forcedColor;
         default: return offColor;
@@ -26,7 +26,7 @@ string GetForcedColor() {
 #if TMNEXT
 
 string GetFragileColor() {
-    switch (fragile) {
+    switch (state.Fragile) {
         case -1: return disabledColor;
         case  1: return fragileColor;
         default: return offColor;
@@ -36,7 +36,7 @@ string GetFragileColor() {
 #endif
 
 string GetNoBrakesColor() {
-    switch (noBrakes) {
+    switch (state.NoBrakes) {
         case -1: return disabledColor;
         case  1: return noBrakesColor;
         default: return offColor;
@@ -44,7 +44,7 @@ string GetNoBrakesColor() {
 }
 
 string GetNoEngineColor() {
-    switch (noEngine) {
+    switch (state.NoEngine) {
         case -1: return disabledColor;
         case  1: return noEngineColor;
         default: return offColor;
@@ -52,7 +52,7 @@ string GetNoEngineColor() {
 }
 
 string GetNoGripColor() {
-    switch (noGrip) {
+    switch (state.NoGrip) {
         case -1: return disabledColor;
         case  1: return noGripColor;
         default: return offColor;
@@ -60,7 +60,7 @@ string GetNoGripColor() {
 }
 
 string GetNoSteerColor() {
-    switch (noSteer) {
+    switch (state.NoSteer) {
         case -1: return disabledColor;
         case  1: return noSteerColor;
         default: return offColor;
@@ -70,7 +70,7 @@ string GetNoSteerColor() {
 #if TMNEXT
 
 string GetPenaltyColor() {
-    switch (penalty) {
+    switch (state.AccelPenalty) {
         case -1: return disabledColor;
         case  1: return penaltyColor;
         default: return offColor;
@@ -78,7 +78,7 @@ string GetPenaltyColor() {
 }
 
 string GetReactorColor() {
-    switch (reactor) {
+    switch (state.ReactorBoostLevel) {
         case -1: return disabledColor;
         case  1: return reactor1Color;
         case  2: return reactor2Color;
@@ -87,7 +87,7 @@ string GetReactorColor() {
 }
 
 string GetSlowMoColor() {
-    switch (slowmo) {
+    switch (state.SlowMoLevel) {
         case -1: return disabledColor;
         case  1: return slowMo1Color;
         case  2: return slowMo2Color;
@@ -98,7 +98,7 @@ string GetSlowMoColor() {
 }
 
 string GetTurboColor() {
-    switch (turbo) {
+    switch (state.TurboLevel) {
         case -1: return disabledColor;
         case  1: return turbo1Color;
         case  2: return turbo2Color;
@@ -110,7 +110,7 @@ string GetTurboColor() {
 }
 
 string GetVehicleColor() {
-    switch (vehicle) {
+    switch (state.Vehicle) {
         case -1: return disabledColor;
         case  1: return snowColor;
         case  2: return rallyColor;
@@ -122,7 +122,7 @@ string GetVehicleColor() {
 #elif MP4
 
 string GetTurboColor() {
-    switch (turbo) {
+    switch (state.TurboLevel) {
         case  1: return turboColor;
         default: return offColor;
     }
@@ -168,59 +168,59 @@ void SetColors() {
 }
 
 void ShowAllColors() {
-    forced   = 1;
-    noBrakes = 1;
-    noEngine = 1;
-    noGrip   = 1;
-    noSteer  = 1;
-    penalty  = 1;
+    state.AccelPenalty = CurrentEffects::ActiveState::Active;
+    state.ForcedAccel  = CurrentEffects::ActiveState::Active;
+    state.NoBrakes     = CurrentEffects::ActiveState::Active;
+    state.NoEngine     = CurrentEffects::ActiveState::Active;
+    state.NoGrip       = CurrentEffects::ActiveState::Active;
+    state.NoSteer      = CurrentEffects::ActiveState::Active;
 
 #if TMNEXT
 
-    cruise = 1;
-    fragile = 1;
+    state.CruiseControl = CurrentEffects::ActiveState::Active;
+    state.Fragile       = CurrentEffects::ActiveState::Active;
 
     int64 now = Time::Stamp;
 
     if (now - lastAllColorsSwap >= 2) {
         lastAllColorsSwap = now;
 
-        switch (reactor) {
+        switch (state.ReactorBoostLevel) {
             case 0:
-            case 2:  reactor = 1; break;
-            default: reactor = 2;
+            case 2:  state.ReactorBoostLevel = ESceneVehicleVisReactorBoostLvl::Lvl1; break;
+            default: state.ReactorBoostLevel = ESceneVehicleVisReactorBoostLvl::Lvl2;
         }
 
         reactorIcon = (reactorIcon == Icons::ChevronDown) ? Icons::ChevronUp : Icons::ChevronDown;
 
-        switch (slowmo) {
+        switch (state.SlowMoLevel) {
             case 0:
-            case 4:  slowmo = 1; break;
-            case 1:  slowmo = 2; break;
-            case 2:  slowmo = 3; break;
-            default: slowmo = 4;
+            case 4:  state.SlowMoLevel = 1; break;
+            case 1:  state.SlowMoLevel = 2; break;
+            case 2:  state.SlowMoLevel = 3; break;
+            default: state.SlowMoLevel = 4;
         }
 
-        switch (turbo) {
+        switch (state.TurboLevel) {
             case 0:
-            case 5:  turbo = 1; break;
-            case 1:  turbo = 2; break;
-            case 2:  turbo = 3; break;
-            case 3:  turbo = 4; break;
-            default: turbo = 5;
+            case 5:  state.TurboLevel = 1; break;
+            case 1:  state.TurboLevel = 2; break;
+            case 2:  state.TurboLevel = 3; break;
+            case 3:  state.TurboLevel = 4; break;
+            default: state.TurboLevel = 5;
         }
 
-        switch (vehicle) {
+        switch (state.Vehicle) {
             case 0:
-            case 2:  vehicle = 1; break;
-            case 1:  vehicle = 2; break;
-            default: vehicle = 0;
+            case 2:  state.Vehicle = 1; break;
+            case 1:  state.Vehicle = 2; break;
+            default: state.Vehicle = 0;
         }
     }
 
 #elif MP4
 
-    turbo = 1;
+    state.TurboLevel = 1;
 
 #endif
 
