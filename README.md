@@ -40,13 +40,15 @@ Showcase (older version): https://youtu.be/0rzvJQJC8gc
 ## Exports
 Current Effects (CE) now allows you to use it as a dependency! To do so, include "CurrentEffects" in your `info.toml`'s dependency list. In order to use these exports, call `CurrentEffects::GetState()`. This returns a `CurrentEffects::State` object which cannot be instantiated on its own, but a null handle may be initialized globally. It is safe to keep this handle around indefinitely. Don't call this function globally, rather within one of your own functions to ensure the return is not null. Within this class are all the variables you will need, and anything that is not marked as a constant can be freely modified (currently only includes 2 settings). Many variables have a type of `CurrentEffects::ActiveState` which is a shared enum. It acts like a 3-state boolean, with `-1` indicating the effect is disabled (because the user is spectating or watching a replay), `0` indicating inactive, and `1` indicating active.
 
+### Trackmania (2020) / Maniaplanet 4 / Trackmania Turbo
+- `const ActiveState NoEngine` - Whether Engine Off/Free Wheeling is active. Does not work when watching a replay.
+- `const int TurboLevel` - Current level of Turbo `0 - 5` (`-1` when disabled). Does not work when spectating. (TMNEXT) Optionally cast to `VehicleState::TurboLevel`. (MP4/Turbo) Only sets to `1` when active.
+
 ### Trackmania (2020) / Maniaplanet 4
 - `const ActiveState ForcedAccel` - Whether Forced Acceleration/Fullspeed Ahead is active. Does not work when watching a replay.
 - `const ActiveState NoBrakes` - Whether No Brakes is active. Does not work when watching a replay.
-- `const ActiveState NoEngine` - Whether Engine Off/Free Wheeling is active. Does not work when watching a replay.
 - `const ActiveState NoGrip` - Whether No Grip is active. Does not work when watching a replay.
 - `const ActiveState NoSteer` - Whether No Steering is active. Does not work when watching a replay.
-- `const int TurboLevel` - Current level of Turbo `0 - 5` (`-1` when disabled). Does not work when spectating. (TMNEXT) Optionally cast to `VehicleState::TurboLevel`. (MP4) Only sets to `1` when active.
 - `bool Experimental` - Whether experimental features are enabled.
 - `bool RunWhenHidden` - Whether CE will run in the background. You should set this to `true` when using CE as a dependency.
 
