@@ -36,7 +36,7 @@ namespace CurrentEffects {
         return state.CruiseControl == 1;
     }
 #endif
-
+#if TMNEXT || MP4
     /*
     DEPRECATED - INSTEAD USE CurrentEffects::GetState().ForcedAccel
     Whether Forced Acceleration/Fullspeed Ahead is active
@@ -46,7 +46,7 @@ namespace CurrentEffects {
         WarnDeprecated();
         return state.ForcedAccel == 1;
     }
-
+#endif
 #if TMNEXT
     /*
     DEPRECATED - INSTEAD USE CurrentEffects::GetState().Experimental
@@ -69,7 +69,7 @@ namespace CurrentEffects {
         return state.Fragile == 1;
     }
 #endif
-
+#if TMNEXT || MP4
     /*
     DEPRECATED - INSTEAD USE `CurrentEffects::GetState().NoBrakes`
     Whether No Brakes is active
@@ -109,7 +109,7 @@ namespace CurrentEffects {
         WarnDeprecated();
         return state.NoSteer == 1;
     }
-
+#endif
 #if TMNEXT
     /*
     DEPRECATED - INSTEAD USE `CurrentEffects::GetState().ReactorBoostFinalTimer`

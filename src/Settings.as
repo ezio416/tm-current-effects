@@ -34,8 +34,14 @@ bool S_Penalty = false;
 [Setting category="Toggles" name="Cruise Control"]
 bool S_Cruise = true;
 
+#endif
+#if TMNEXT || TURBO
+
 [Setting category="Toggles" name="Engine Off"]
 bool S_NoEngine = true;
+
+#endif
+#if TMNEXT
 
 [Setting category="Toggles" name="Forced Acceleration"]
 bool S_Forced = true;
@@ -52,6 +58,7 @@ bool S_NoEngine = true;
 bool S_Forced = true;
 
 #endif
+#if TMNEXT || MP4
 
 [Setting category="Toggles" name="No Brakes"]
 bool S_NoBrakes = true;
@@ -62,6 +69,7 @@ bool S_NoGrip = true;
 [Setting category="Toggles" name="No Steering"]
 bool S_NoSteer = true;
 
+#endif
 #if TMNEXT
 
 [Setting category="Toggles" name="Reactor Boost"]
@@ -101,9 +109,15 @@ string penaltyColor;
 vec3 S_CruiseColor = vec3(0.226f, 0.564f, 1.0f);
 string cruiseColor;
 
+#endif
+#if TMNEXT || TURBO
+
 [Setting category="Colors" name="Engine Off" color]
 vec3 S_NoEngineColor = vec3(1.0f, 0.0f, 0.0f);
 string noEngineColor;
+
+#endif
+#if TMNEXT
 
 [Setting category="Colors" name="Forced Acceleration" color]
 vec3 S_ForcedColor = vec3(0.0f, 1.0f, 0.0f);
@@ -124,6 +138,7 @@ vec3 S_ForcedColor = vec3(0.0f, 1.0f, 0.0f);
 string forcedColor;
 
 #endif
+#if TMNEXT || MP4
 
 [Setting category="Colors" name="No Brakes" color]
 vec3 S_NoBrakesColor = vec3(1.0f, 0.848f, 0.0f);
@@ -137,6 +152,7 @@ string noGripColor;
 vec3 S_NoSteerColor = vec3(0.951f, 0.0f, 1.0f);
 string noSteerColor;
 
+#endif
 #if TMNEXT
 
 [Setting category="Colors" name="Reactor Boost 1 (yellow/green)" color]
@@ -195,7 +211,7 @@ string rallyColor;
 // vec3 S_DesertColor = vec3(1.0f, 0.5f, 0.1f);
 // string desertColor;
 
-#elif MP4
+#else
 
 [Setting category="Colors" name="Turbo" color]
 vec3 S_TurboColor = vec3(0.0f, 1.0f, 0.0f);

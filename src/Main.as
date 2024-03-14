@@ -80,7 +80,7 @@ void Render() {
 
     CTrackMania@ App = cast<CTrackMania@>(GetApp());
 
-#if MP4
+#if MP4 || TURBO
     CGamePlayground@ Playground = App.CurrentPlayground;
 
     if (Playground is null) {
@@ -150,8 +150,8 @@ void Render() {
 
 #if TMNEXT
     ISceneVis@ Scene = App.GameScene;
-#elif MP4
-    CGameScene@ Scene = cast<CGameScene@>(App.GameScene);
+#elif MP4 || TURBO
+    CGameScene@ Scene = App.GameScene;
 #endif
 
     if (Scene is null) {
@@ -161,10 +161,13 @@ void Render() {
 
 #if TMNEXT
     CSceneVehicleVis@ Vis;
-#elif MP4
+#elif MP4 || TURBO
     CSceneVehicleVisState@ Vis;
 #endif
 
+#if TURBO
+    @Vis = VehicleState::ViewingPlayerState();
+#else
     CSmPlayer@ Player = cast<CSmPlayer@>(Playground.GameTerminals[0].GUIPlayer);
 
     if (Player !is null) {
@@ -174,6 +177,7 @@ void Render() {
         @Vis = VehicleState::GetSingularVis(Scene);
         state.WatchingReplay = true;
     }
+#endif
 
 #if MP4
     if (Vis is null) {
@@ -191,7 +195,7 @@ void Render() {
 
     CGamePlaygroundUIConfig::EUISequence Sequence = Playground.UIConfigs[0].UISequence;
     if (
-        !(Sequence == CGamePlaygroundUIConfig::EUISequence::Playing) &&
+        Sequence != CGamePlaygroundUIConfig::EUISequence::Playing &&
         !(Sequence == CGamePlaygroundUIConfig::EUISequence::EndRound
 #if TMNEXT
         && state.WatchingReplay
@@ -206,7 +210,11 @@ void Render() {
     state.Spectating = ((ViewingPlayer is null ? "" : ViewingPlayer.ScriptAPI.Login) != loginLocal) && !state.WatchingReplay;
 #endif
 
+#if TURBO
+    RenderEffects(Vis, shouldHide);
+#else
     RenderEffects(Vis.AsyncState, shouldHide);
+#endif
 }
 
 // courtesy of "Auto-hide Opponents" plugin - https://github.com/XertroV/tm-autohide-opponents

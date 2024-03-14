@@ -13,6 +13,7 @@ string GetCruiseColor() {
 }
 #endif
 
+#if TMNEXT || MP4
 string GetForcedColor() {
     switch (state.ForcedAccel) {
         case -1: return disabledColor;
@@ -20,6 +21,7 @@ string GetForcedColor() {
         default: return offColor;
     }
 }
+#endif
 
 #if TMNEXT
 string GetFragileColor() {
@@ -30,7 +32,7 @@ string GetFragileColor() {
     }
 }
 #endif
-
+#if TMNEXT || MP4
 string GetNoBrakesColor() {
     switch (state.NoBrakes) {
         case -1: return disabledColor;
@@ -38,6 +40,7 @@ string GetNoBrakesColor() {
         default: return offColor;
     }
 }
+#endif
 
 string GetNoEngineColor() {
     switch (state.NoEngine) {
@@ -47,6 +50,7 @@ string GetNoEngineColor() {
     }
 }
 
+#if TMNEXT || MP4
 string GetNoGripColor() {
     switch (state.NoGrip) {
         case -1: return disabledColor;
@@ -62,7 +66,7 @@ string GetNoSteerColor() {
         default: return offColor;
     }
 }
-
+#endif
 #if TMNEXT
 string GetPenaltyColor() {
     switch (state.AccelPenalty) {
@@ -114,7 +118,7 @@ string GetVehicleColor() {
     }
 }
 
-#elif MP4
+#else
 string GetTurboColor() {
     switch (state.TurboLevel) {
         case  1: return turboColor;
@@ -125,12 +129,15 @@ string GetTurboColor() {
 
 void SetColors() {
     offColor      = Text::FormatOpenplanetColor(S_OffColor);
+#if TMNEXT || MP4
     forcedColor   = Text::FormatOpenplanetColor(S_ForcedColor);
     noBrakesColor = Text::FormatOpenplanetColor(S_NoBrakesColor);
+#endif
     noEngineColor = Text::FormatOpenplanetColor(S_NoEngineColor);
+#if TMNEXT || MP4
     noGripColor   = Text::FormatOpenplanetColor(S_NoGripColor);
     noSteerColor  = Text::FormatOpenplanetColor(S_NoSteerColor);
-
+#endif
 #if TMNEXT
     // desertColor   = Text::FormatOpenplanetColor(S_DesertColor);
     disabledColor = Text::FormatOpenplanetColor(S_DisabledColor);
@@ -151,7 +158,7 @@ void SetColors() {
     turbo4Color   = Text::FormatOpenplanetColor(S_Turbo4Color);
     turbo5Color   = Text::FormatOpenplanetColor(S_Turbo5Color);
 
-#elif MP4
+#else
     turboColor = Text::FormatOpenplanetColor(S_TurboColor);
 #endif
 

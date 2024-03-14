@@ -76,6 +76,7 @@ namespace CurrentEffects {
             _experimental = e;
         }
 
+#if TMNEXT || MP4
         /*
         Whether Forced Acceleration/Fullspeed Ahead is active
         Does not work when watching a replay
@@ -83,7 +84,7 @@ namespace CurrentEffects {
         const ActiveState get_ForcedAccel() {
             return ActiveState(_forced);
         }
-
+#endif
 #if TMNEXT
         /*
         Whether Fragile is active
@@ -94,7 +95,7 @@ namespace CurrentEffects {
             return ActiveState(_fragile);
         }
 #endif
-
+#if TMNEXT || MP4
         /*
         Whether No Brakes is active
         Does not work when watching a replay
@@ -102,7 +103,7 @@ namespace CurrentEffects {
         const ActiveState get_NoBrakes() {
             return ActiveState(_noBrakes);
         }
-
+#endif
         /*
         Whether Engine Off/Free Wheeling is active
         Does not work when watching a replay
@@ -110,7 +111,7 @@ namespace CurrentEffects {
         const ActiveState get_NoEngine() {
             return ActiveState(_noEngine);
         }
-
+#if TMNEXT || MP4
         /*
         Whether No Grip is active
         Does not work when watching a replay
@@ -126,7 +127,7 @@ namespace CurrentEffects {
         const ActiveState get_NoSteer() {
             return ActiveState(_noSteer);
         }
-
+#endif
 #if TMNEXT
         /*
         Timer that counts from `0.0 - 1.0` in the final second of Reactor Boost

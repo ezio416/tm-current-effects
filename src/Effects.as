@@ -5,6 +5,10 @@ string reactorIcon;
 
 void RenderEffects(CSceneVehicleVisState@ VisState, const bool shouldHide) {
     if (!S_ShowAll) {
+#if TURBO
+        state.NoEngine = CurrentEffects::ActiveState(Dev::GetOffsetUint8(VisState.m_vis, 440));
+        state.TurboLevel = Dev::GetOffsetUint8(VisState.m_vis, 416);
+#else
         SetHandicaps(GetHandicapFlags(VisState));
 
 #if TMNEXT
@@ -66,6 +70,7 @@ void RenderEffects(CSceneVehicleVisState@ VisState, const bool shouldHide) {
 #elif MP4
         state.TurboLevel = VisState.TurboActive ? 1 : 0;
 #endif
+#endif
 
     } else
         ShowAllColors(shouldHide);
@@ -86,26 +91,28 @@ void RenderEffects(CSceneVehicleVisState@ VisState, const bool shouldHide) {
 #if TMNEXT
         if (S_Penalty)  UI::Text(GetPenaltyColor()  + Icons::Times       + iconPadding + "Accel Penalty");
         if (S_Cruise)   UI::Text(GetCruiseColor()   + Icons::Tachometer  + iconPadding + "Cruise Control");
+#endif
+#if TMNEXT || TURBO
         if (S_NoEngine) UI::Text(GetNoEngineColor() + Icons::PowerOff    + iconPadding + "Engine Off");
+#endif
+#if TMNEXT
         if (S_Forced)   UI::Text(GetForcedColor()   + Icons::Forward     + iconPadding + "Forced Accel");
         if (S_Fragile)  UI::Text(GetFragileColor()  + Icons::ChainBroken + iconPadding + "Fragile");
-
 #elif MP4
         if (S_NoEngine) UI::Text(GetNoEngineColor() + Icons::PowerOff + iconPadding + "Free Wheeling");
         if (S_Forced)   UI::Text(GetForcedColor()   + Icons::Forward  + iconPadding + "Fullspeed Ahead");
 #endif
-
+#if TMNEXT || MP4
         if (S_NoBrakes) UI::Text(GetNoBrakesColor() + Icons::ExclamationTriangle + iconPadding + "No Brakes");
         if (S_NoGrip)   UI::Text(GetNoGripColor()   + Icons::SnowflakeO          + iconPadding + "No Grip");
         if (S_NoSteer)  UI::Text(GetNoSteerColor()  + Icons::ArrowsH             + iconPadding + "No Steering");
-
+#endif
 #if TMNEXT
         if (S_Reactor)  UI::Text(GetReactorText(state.ReactorBoostFinalTimer));
         if (S_SlowMo)   UI::Text(GetSlowMoColor() + Icons::ClockO + iconPadding + "Slow-Mo");
         if (S_Turbo)    UI::Text(GetTurboText(state.TurboTime));
         if (S_Vehicle)  UI::Text(GetVehicleText());
-
-#elif MP4
+#else
         if (S_Turbo)    UI::Text(GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "Turbo");
 #endif
 
