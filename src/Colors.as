@@ -217,7 +217,7 @@ void ShowAllColors(const bool shouldHide) {
         }
     }
 
-#elif MP4
+#else
     state.TurboLevel = 1;
 #endif
 }

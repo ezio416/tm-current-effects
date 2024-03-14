@@ -6,6 +6,9 @@ string reactorIcon;
 void RenderEffects(CSceneVehicleVisState@ VisState, const bool shouldHide) {
     if (!S_ShowAll) {
 #if TURBO
+        if (VisState.m_vis is null)
+            return;
+
         state.NoEngine = CurrentEffects::ActiveState(Dev::GetOffsetUint8(VisState.m_vis, 440));
         state.TurboLevel = Dev::GetOffsetUint8(VisState.m_vis, 416);
 #else
