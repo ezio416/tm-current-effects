@@ -1,10 +1,11 @@
 // c 2023-05-04
-// m 2024-02-26
+// m 2024-03-13
 
-string loginLocal;
-bool   replay        = false;
-bool   spectating    = false;
-uint   totalRespawns = 0;
+bool           lastExperimental = false;
+bool           lastRunHidden    = false;
+string         loginLocal;
+InternalState@ state;
+uint           totalRespawns    = 0;
 
 void RenderMenu() {
     if (UI::MenuItem("\\$F00" + Icons::React + "\\$G Current Effects", "", S_Enabled))
@@ -20,6 +21,8 @@ void OnDisabled() {
 #endif
 
 void Main() {
+    @state = InternalState();
+
     startnew(CacheLocalLogin);
     ChangeFont();
     SetColors();
@@ -40,11 +43,36 @@ void OnSettingsChanged() {
 #endif
 }
 
+void Update(float) {
+    if (state is null)
+        return;
+
+    if (!state.Init) {
+        state.Init = true;
+        state.Experimental = S_Experimental;
+        state.RunWhenHidden = S_RunHidden;
+        return;
+    }
+
+    if (lastExperimental != S_Experimental) {
+        lastExperimental = S_Experimental;
+        state.Experimental = S_Experimental;
+    } else
+        S_Experimental = state.Experimental;
+
+    if (lastRunHidden != S_RunHidden) {
+        lastRunHidden = S_RunHidden;
+        state.RunWhenHidden = S_RunHidden;
+    } else
+        S_RunHidden = state.RunWhenHidden;
+}
+
 void Render() {
-    if (!S_Enabled
+    const bool shouldHide = (S_HideWithGame && !UI::IsGameUIVisible()) || (S_HideWithOP && !UI::IsOverlayShown());
+    if (
+        !S_Enabled
         || font is null
-        || (S_HideWithGame && !UI::IsGameUIVisible())
-        || (S_HideWithOP && !UI::IsOverlayShown())
+        || (shouldHide && !S_RunHidden)
     ) {
         ResetAllEffects();
         return;
@@ -52,8 +80,7 @@ void Render() {
 
     CTrackMania@ App = cast<CTrackMania@>(GetApp());
 
-#if MP4
-
+#if MP4 || TURBO
     CGamePlayground@ Playground = App.CurrentPlayground;
 
     if (Playground is null) {
@@ -62,7 +89,6 @@ void Render() {
     }
 
 #elif TMNEXT
-
     CSmArenaClient@ Playground = cast<CSmArenaClient@>(App.CurrentPlayground);
 
     if (Playground is null) {
@@ -113,9 +139,8 @@ void Render() {
         ResetEventEffects();
 
         if (fragileBeforeCp)
-            fragile = 1;
+            state.Fragile = CurrentEffects::ActiveState::Active;
     }
-
 #endif
 
     if (Playground.GameTerminals.Length != 1 || Playground.UIConfigs.Length == 0) {
@@ -125,8 +150,8 @@ void Render() {
 
 #if TMNEXT
     ISceneVis@ Scene = App.GameScene;
-#elif MP4
-    CGameScene@ Scene = cast<CGameScene@>(App.GameScene);
+#elif MP4 || TURBO
+    CGameScene@ Scene = App.GameScene;
 #endif
 
     if (Scene is null) {
@@ -136,29 +161,31 @@ void Render() {
 
 #if TMNEXT
     CSceneVehicleVis@ Vis;
-#elif MP4
+#elif MP4 || TURBO
     CSceneVehicleVisState@ Vis;
 #endif
 
+#if TURBO
+    @Vis = VehicleState::ViewingPlayerState();
+#else
     CSmPlayer@ Player = cast<CSmPlayer@>(Playground.GameTerminals[0].GUIPlayer);
 
     if (Player !is null) {
         @Vis = VehicleState::GetVis(Scene, Player);
-        replay = false;
+        state.WatchingReplay = false;
     } else {
         @Vis = VehicleState::GetSingularVis(Scene);
-        replay = true;
+        state.WatchingReplay = true;
     }
+#endif
 
 #if MP4
-
     if (Vis is null) {
         CSceneVehicleVisState@[] states = VehicleState::GetAllVis(Scene);
 
         if (states.Length > 0)
             @Vis = states[0];
     }
-
 #endif
 
     if (Vis is null) {
@@ -168,21 +195,26 @@ void Render() {
 
     CGamePlaygroundUIConfig::EUISequence Sequence = Playground.UIConfigs[0].UISequence;
     if (
-        !(Sequence == CGamePlaygroundUIConfig::EUISequence::Playing) &&
-        !(Sequence == CGamePlaygroundUIConfig::EUISequence::EndRound && replay)
-    ) {
+        Sequence != CGamePlaygroundUIConfig::EUISequence::Playing &&
+        !(Sequence == CGamePlaygroundUIConfig::EUISequence::EndRound
+#if TMNEXT
+        && state.WatchingReplay
+#endif
+    )) {
         ResetAllEffects();
         return;
     }
 
 #if TMNEXT
-
     CSmPlayer@ ViewingPlayer = VehicleState::GetViewingPlayer();
-    spectating = ((ViewingPlayer is null ? "" : ViewingPlayer.ScriptAPI.Login) != loginLocal) && !replay;
-
+    state.Spectating = ((ViewingPlayer is null ? "" : ViewingPlayer.ScriptAPI.Login) != loginLocal) && !state.WatchingReplay;
 #endif
 
-    RenderEffects(Vis.AsyncState);
+#if TURBO
+    RenderEffects(Vis, shouldHide);
+#else
+    RenderEffects(Vis.AsyncState, shouldHide);
+#endif
 }
 
 // courtesy of "Auto-hide Opponents" plugin - https://github.com/XertroV/tm-autohide-opponents
@@ -195,4 +227,33 @@ void CacheLocalLogin() {
         if (loginLocal.Length > 10)
             break;
     }
+}
+
+class InternalState : CurrentEffects::State {
+    InternalState() { super(true); }
+
+    void set_AccelPenalty           (CurrentEffects::ActiveState a)      { _penalty      = a; }
+    void set_CruiseControl          (CurrentEffects::ActiveState a)      { _cruise       = a; }
+    void set_ForcedAccel            (CurrentEffects::ActiveState a)      { _forced       = a; }
+    void set_Fragile                (CurrentEffects::ActiveState a)      { _fragile      = a; }
+    void set_NoBrakes               (CurrentEffects::ActiveState a)      { _noBrakes     = a; }
+    void set_NoEngine               (CurrentEffects::ActiveState a)      { _noEngine     = a; }
+    void set_NoGrip                 (CurrentEffects::ActiveState a)      { _noGrip       = a; }
+    void set_NoSteer                (CurrentEffects::ActiveState a)      { _noSteer      = a; }
+    void set_ReactorBoostFinalTimer (float f)                            { _reactorTimer = f; }
+
+#if TMNEXT
+    void set_ReactorBoostLevel      (ESceneVehicleVisReactorBoostLvl e)  { _reactorLevel = e; }
+    void set_ReactorBoostType       (ESceneVehicleVisReactorBoostType e) { _reactorType  = e; }
+#endif
+
+    void set_Spectating             (bool b)                             { _spectating   = b; }
+    void set_SlowMoLevel            (int i)                              { _slowMo       = i; }
+    void set_TurboLevel             (int i)                              { _turbo        = i; }
+    void set_TurboTime              (float f)                            { _turboTime    = f; }
+    void set_Vehicle                (int i)                              { _vehicle      = i; }
+    void set_WatchingReplay         (bool b)                             { _replay       = b; }
+
+    bool get_Init()       { return _init; }
+    void set_Init(bool i) { _init = i;    }
 }

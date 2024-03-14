@@ -1,5 +1,5 @@
 // c 2023-10-01
-// m 2023-02-20
+// m 2023-03-13
 
 #if TMNEXT
 
@@ -71,14 +71,14 @@ void CaptureEvent(const string &in type, MwFastBuffer<wstring> &in data) {
         if (data[0].Contains("Reset"))
             ResetEventEffects();
         else if (data[0].Contains("Fragile"))
-            fragile = 1;
+            state.Fragile = CurrentEffects::ActiveState::Active;
     } else if (type == "TMGame_RaceCheckpoint_Waypoint") {  // works while spectating?
-        fragileBeforeCp = fragile == 1;
+        fragileBeforeCp = state.Fragile == 1;
     }
 }
 
 void ResetEventEffects() {
-    fragile = 0;
+    state.Fragile = CurrentEffects::ActiveState::NotActive;
 }
 
 #endif

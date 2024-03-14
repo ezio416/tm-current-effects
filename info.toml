@@ -2,10 +2,11 @@
 name = "Current Effects"
 author = "Ezio"
 category = "Overlay"
-version = "0.19.2"
+version = "0.20.2"
 siteid = 382
 
 [script]
 dependencies = [ "VehicleState" ]
 exports = [ "src/Export.as" ]
+shared_exports = [ "src/ExportShared.as" ]
 module = "CurrentEffects"
