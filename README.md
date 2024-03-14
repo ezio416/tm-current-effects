@@ -3,6 +3,7 @@
 ![Version](https://img.shields.io/badge/dynamic/json?query=version&url=https%3A%2F%2Fopenplanet.dev%2Fapi%2Fplugin%2F382&label=Version&color=red)
 ![Game Trackmania](https://img.shields.io/badge/Game-Trackmania-blue)
 ![Game Maniaplanet](https://img.shields.io/badge/Game-Maniaplanet_4-blue)
+
 # Current Effects
 The newest Trackmania has a number of special effects that can be applied to your car, including some helpers and many hinderances. It can be hard to keep track of what you currently have, especially in cases of LOL maps.
 
@@ -62,3 +63,5 @@ Current Effects (CE) now allows you to use it as a dependency! To do so, include
 - `const bool WatchingReplay` - Whether the user is watching a replay.
 
 There are several more exported functions available, but they are deprecated and will be removed in a future update. As such, they are no longer documented. If you are already using these, switch to the new method of using `CurrentEffects::GetState()`.
+
+![image](images/current-effects.png)
