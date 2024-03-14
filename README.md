@@ -3,6 +3,7 @@
 ![Version](https://img.shields.io/badge/dynamic/json?query=version&url=https%3A%2F%2Fopenplanet.dev%2Fapi%2Fplugin%2F382&label=Version&color=red)
 ![Game Trackmania](https://img.shields.io/badge/Game-Trackmania-blue)
 ![Game Maniaplanet](https://img.shields.io/badge/Game-Maniaplanet_4-blue)
+![Game Turbo](https://img.shields.io/badge/Game-Turbo-blue)
 
 # Current Effects
 The newest Trackmania has a number of special effects that can be applied to your car, including some helpers and many hinderances. It can be hard to keep track of what you currently have, especially in cases of LOL maps.
