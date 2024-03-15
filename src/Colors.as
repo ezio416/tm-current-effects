@@ -1,5 +1,5 @@
 // c 2023-10-21
-// m 2024-03-13
+// m 2024-03-15
 
 int64 lastAllColorsSwap = 0;
 
@@ -111,9 +111,9 @@ string GetTurboColor() {
 string GetVehicleColor() {
     switch (state.Vehicle) {
         case -1: return disabledColor;
-        case  1: return snowColor;
-        case  2: return rallyColor;
-        // case  3: return desertColor;
+        case  2: return snowColor;
+        case  3: return rallyColor;
+        // case  4: return desertColor;
         default: return offColor;
     }
 }

@@ -1,5 +1,5 @@
 // c 2024-02-26
-// m 2024-03-09
+// m 2024-03-15
 
 uint16 GetMemberOffset(const string &in className, const string &in memberName) {
     const Reflection::MwClassInfo@ type = Reflection::GetType(className);
@@ -69,28 +69,26 @@ int GetVehicleType(CSceneVehicleVisState@ State) {
         || Playground.Arena.Resources is null
         || Playground.Arena.Resources.m_AllGameItemModels.Length == 0
     )
-        return 0;
+        return 1;  // stadium
 
     const uint index = Dev::GetOffsetUint8(State, vehicleTypeOffset);
 
-    try {
+    if (index < Playground.Arena.Resources.m_AllGameItemModels.Length) {
         CGameItemModel@ Model = Playground.Arena.Resources.m_AllGameItemModels[index];
         if (Model is null)
-            return 0;
+                return 1;  // stadium
 
-        if (Model.Name == "CarSport")
-            return 0;
-        if (Model.Name == "CarSnow")
-            return 1;
-        if (Model.Name == "CarRally")
-            return 2;
-        // if (Model.Name == "CarDesert")
-        //     return 3;
-
-        return 0;
-    } catch {
-        return 0;
+        switch (Model.Id.Value) {
+            case 0x4000625B: return 0;  // pilot
+            case 0x40004C95: return 1;  // stadium
+            case 0x400016D9: return 2;  // snow
+            case 0x40003CE4: return 3;  // rally
+            // case 0x4000????: return 4;  // desert
+            default: return 1;  // stadium
+        }
     }
+
+    return 1;  // stadium
 }
 
 #endif
