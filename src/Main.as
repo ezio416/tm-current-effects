@@ -210,6 +210,9 @@ void Render() {
     state.Spectating = ((ViewingPlayer is null ? "" : ViewingPlayer.ScriptAPI.Login) != loginLocal) && !state.WatchingReplay;
 #endif
 
+    // if (UI::Button("Explore Vis"))
+    //     ExploreNod("Vis", Vis, Reflection::GetType("CSceneVehicleVis"));
+
 #if TURBO
     RenderEffects(Vis, shouldHide);
 #else
