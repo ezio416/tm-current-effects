@@ -1,5 +1,5 @@
 // c 2023-05-04
-// m 2024-03-09
+// m 2024-03-15
 
 string       loginLocal;
 bool         replay        = false;
@@ -50,6 +50,10 @@ void OnSettingsChanged() {
 }
 
 void Render() {
+#if SIG_DEVELOPER && TMNEXT
+    RenderDevNext();
+#endif
+
     if (!S_Enabled
         || font is null
         || (S_HideWithGame && !UI::IsGameUIVisible())
