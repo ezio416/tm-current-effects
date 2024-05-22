@@ -1,5 +1,5 @@
 // c 2024-02-26
-// m 2024-03-09
+// m 2024-05-21
 
 uint16 GetMemberOffset(const string &in className, const string &in memberName) {
     const Reflection::MwClassInfo@ type = Reflection::GetType(className);
@@ -84,8 +84,8 @@ int GetVehicleType(CSceneVehicleVisState@ State) {
             return 1;
         if (Model.Name == "CarRally")
             return 2;
-        // if (Model.Name == "CarDesert")
-        //     return 3;
+        if (Model.Name == "CarDesert")
+            return 3;
 
         return 0;
     } catch {

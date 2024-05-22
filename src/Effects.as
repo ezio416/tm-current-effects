@@ -1,5 +1,5 @@
 // c 2023-08-17
-// m 2024-03-13
+// m 2024-05-21
 
 string reactorIcon;
 
@@ -154,7 +154,7 @@ string GetVehicleText() {
     switch (state.Vehicle) {
         case 1:  return GetVehicleColor() + Icons::Kenney::Car + iconPadding + "Snow Car";
         case 2:  return GetVehicleColor() + Icons::Kenney::Car + iconPadding + "Rally Car";
-        // case 3:  return GetVehicleColor() + Icons::Kenney::Car + iconPadding + "Desert Car";
+        case 3:  return GetVehicleColor() + Icons::Kenney::Car + iconPadding + "Desert Car";
         default: return GetVehicleColor() + Icons::Kenney::Car + iconPadding + "Stadium Car";
     }
 }
