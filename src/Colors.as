@@ -1,5 +1,5 @@
 // c 2023-10-21
-// m 2024-05-21
+// m 2024-05-22
 
 int64 lastAllColorsSwap = 0;
 
@@ -139,7 +139,7 @@ void SetColors() {
     noSteerColor  = Text::FormatOpenplanetColor(S_NoSteerColor);
 #endif
 #if TMNEXT
-    // desertColor   = Text::FormatOpenplanetColor(S_DesertColor);
+    desertColor   = Text::FormatOpenplanetColor(S_DesertColor);
     disabledColor = Text::FormatOpenplanetColor(S_DisabledColor);
     cruiseColor   = Text::FormatOpenplanetColor(S_CruiseColor);
     fragileColor  = Text::FormatOpenplanetColor(S_FragileColor);
