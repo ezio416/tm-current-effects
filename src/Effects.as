@@ -1,5 +1,5 @@
 // c 2023-08-17
-// m 2024-05-21
+// m 2024-06-04
 
 string reactorIcon;
 
@@ -20,7 +20,7 @@ void RenderEffects(CSceneVehicleVisState@ VisState, const bool shouldHide) {
             ResetEventEffects();
         }
 
-        state.CruiseControl = CurrentEffects::ActiveState(GetCruiseSpeed(VisState) != 0 ? 1 : 0);
+        state.CruiseControl = CurrentEffects::ActiveState(VehicleState::GetCruiseDisplaySpeed(VisState) != 0 ? 1 : 0);
 
         state.AccelPenalty = CurrentEffects::ActiveState(S_Experimental && (GetSparks1(VisState) > 0 || GetSparks2(VisState) > 0 || GetSparks3(VisState) > 0) ? 1 : 0);
 
@@ -44,7 +44,7 @@ void RenderEffects(CSceneVehicleVisState@ VisState, const bool shouldHide) {
             default:  state.SlowMoLevel = 4;
         }
 
-        state.Vehicle = GetVehicleType(VisState);
+        state.Vehicle = int(VehicleState::GetVehicleType(VisState)) - 1;
 
         state.TurboLevel = 0;
         if (VisState.IsTurbo)
