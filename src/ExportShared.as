@@ -1,5 +1,5 @@
 // c 2024-03-10
-// m 2024-03-13
+// m 2024-06-04
 
 /*
 Shared namespace defining active effects on the viewed vehicle
@@ -19,7 +19,7 @@ namespace CurrentEffects {
     You may set any non-constant values
     It is safe to keep a handle to this around, though you should check its values every frame to ensure they're accurate
     */
-    shared class State {
+    shared class State {  // making this abstract causes issues in dependent plugins
         State() { throw("Do not instantiate this class! Instead use CurrentEffects::GetState()"); }
         protected State(bool inherited) { }
 
@@ -207,8 +207,8 @@ namespace CurrentEffects {
         }
 
         /*
-        Current vehicle type (Stadium `0`, Snow `1`, Rally `2`)
-        Optionally cast to `VehicleState::VehicleType` (once available)
+        Current vehicle type (Pilot `0`, Stadium `1`, Snow `2`, Rally `3`, Desert `4`)
+        Optionally cast to `VehicleState::VehicleType`
         (TMNEXT only)
         */
         const int get_Vehicle() {

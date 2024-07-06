@@ -1,5 +1,5 @@
 // c 2024-02-26
-// m 2024-03-09
+// m 2024-06-04
 
 uint16 GetMemberOffset(const string &in className, const string &in memberName) {
     const Reflection::MwClassInfo@ type = Reflection::GetType(className);
@@ -14,19 +14,10 @@ uint16 GetMemberOffset(const string &in className, const string &in memberName) 
 
 #if TMNEXT
 
-uint16 cruiseOffset        = 0;
 uint16 handicapFlagsOffset = 0;
 uint16 sparks1offset       = 0;
 uint16 sparks2offset       = 0;
 uint16 sparks3Offset       = 0;
-uint16 vehicleTypeOffset   = 0;
-
-int GetCruiseSpeed(CSceneVehicleVisState@ State) {
-    if (cruiseOffset == 0)
-        cruiseOffset = GetMemberOffset("CSceneVehicleVisState", "FrontSpeed") + 12;
-
-    return Dev::GetOffsetInt32(State, cruiseOffset);
-}
 
 int GetHandicapFlags(CSceneVehicleVisState@ State) {
     if (handicapFlagsOffset == 0)
@@ -54,43 +45,6 @@ int GetSparks3(CSceneVehicleVisState@ State) {  // any impact? 0 - ~1,065,000,00
         sparks3Offset = GetMemberOffset("CSceneVehicleVisState", "WetnessValue01") + 8;
 
     return Dev::GetOffsetInt32(State, sparks3Offset);
-}
-
-int GetVehicleType(CSceneVehicleVisState@ State) {
-    if (vehicleTypeOffset == 0)
-        vehicleTypeOffset = GetMemberOffset("CSceneVehicleVisState", "InputSteer") - 8;
-
-    CTrackMania@ App = cast<CTrackMania@>(GetApp());
-
-    CSmArenaClient@ Playground = cast<CSmArenaClient@>(App.CurrentPlayground);
-    if (
-        Playground is null
-        || Playground.Arena is null
-        || Playground.Arena.Resources is null
-        || Playground.Arena.Resources.m_AllGameItemModels.Length == 0
-    )
-        return 0;
-
-    const uint index = Dev::GetOffsetUint8(State, vehicleTypeOffset);
-
-    try {
-        CGameItemModel@ Model = Playground.Arena.Resources.m_AllGameItemModels[index];
-        if (Model is null)
-            return 0;
-
-        if (Model.Name == "CarSport")
-            return 0;
-        if (Model.Name == "CarSnow")
-            return 1;
-        if (Model.Name == "CarRally")
-            return 2;
-        // if (Model.Name == "CarDesert")
-        //     return 3;
-
-        return 0;
-    } catch {
-        return 0;
-    }
 }
 
 #endif

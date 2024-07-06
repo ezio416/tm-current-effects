@@ -1,5 +1,5 @@
 // c 2023-06-10
-// m 2024-03-13
+// m 2024-05-21
 
 [Setting category="General" name="Enabled"]
 bool S_Enabled = true;
@@ -207,9 +207,9 @@ string snowColor;
 vec3 S_RallyColor = vec3(0.1f, 0.8f, 0.1f);
 string rallyColor;
 
-// [Setting category="Colors" name="Vehicle - Desert Car" color]
-// vec3 S_DesertColor = vec3(1.0f, 0.5f, 0.1f);
-// string desertColor;
+[Setting category="Colors" name="Vehicle - Desert Car" color]
+vec3 S_DesertColor = vec3(1.0f, 0.5f, 0.1f);
+string desertColor;
 
 #else
 
