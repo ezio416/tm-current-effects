@@ -13,8 +13,14 @@ bool S_RunHidden = false;
 [Setting category="General" name="Try experimental features" description="Warning - may crash your game or just not work!"]
 bool S_Experimental = false;
 
-[Setting category="General" name="Font style/size" description="Loading a font for the first time causes game to hang for a bit"]
-Font S_Font = Font::DroidSansBold_20;
+[Setting category="General" name="Font style" hidden]
+Font S_Font = Font::DroidSans;
+
+[Setting category="General" name="Font (system)" hidden]
+string S_SystemFont;
+
+[Setting category="General" name="Font size" min=8 max=72 hidden]
+int S_FontSize = 16;
 
 [Setting category="General" name="Enable all effects" description="Helps with choosing custom colors"]
 bool S_ShowAll = false;

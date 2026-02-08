@@ -85,35 +85,35 @@ void RenderEffects(CSceneVehicleVisState@ VisState, const bool shouldHide) {
     if (!UI::IsOverlayShown())
         flags |= UI::WindowFlags::NoInputs;
 
-    UI::PushFont(font);
+    UI::PushFont(font, S_FontSize);
     UI::Begin("Current Effects", flags);
 
 #if TMNEXT
-        if (S_Penalty)  UI::Text(GetPenaltyColor()  + Icons::Times       + iconPadding + "Accel Penalty");
-        if (S_Cruise)   UI::Text(GetCruiseColor()   + Icons::Tachometer  + iconPadding + "Cruise Control");
+        if (S_Penalty)  UI::Text(GetPenaltyColor()  + Icons::Times       + " Accel Penalty");
+        if (S_Cruise)   UI::Text(GetCruiseColor()   + Icons::Tachometer  + " Cruise Control");
 #endif
 #if TMNEXT || TURBO
-        if (S_NoEngine) UI::Text(GetNoEngineColor() + Icons::PowerOff    + iconPadding + "Engine Off");
+        if (S_NoEngine) UI::Text(GetNoEngineColor() + Icons::PowerOff    + " Engine Off");
 #endif
 #if TMNEXT
-        if (S_Forced)   UI::Text(GetForcedColor()   + Icons::Forward     + iconPadding + "Forced Accel");
-        if (S_Fragile)  UI::Text(GetFragileColor()  + Icons::ChainBroken + iconPadding + "Fragile");
+        if (S_Forced)   UI::Text(GetForcedColor()   + Icons::Forward     + " Forced Accel");
+        if (S_Fragile)  UI::Text(GetFragileColor()  + Icons::ChainBroken + " Fragile");
 #elif MP4
-        if (S_NoEngine) UI::Text(GetNoEngineColor() + Icons::PowerOff + iconPadding + "Free Wheeling");
-        if (S_Forced)   UI::Text(GetForcedColor()   + Icons::Forward  + iconPadding + "Fullspeed Ahead");
+        if (S_NoEngine) UI::Text(GetNoEngineColor() + Icons::PowerOff + " Free Wheeling");
+        if (S_Forced)   UI::Text(GetForcedColor()   + Icons::Forward  + " Fullspeed Ahead");
 #endif
 #if TMNEXT || MP4
-        if (S_NoBrakes) UI::Text(GetNoBrakesColor() + Icons::ExclamationTriangle + iconPadding + "No Brakes");
-        if (S_NoGrip)   UI::Text(GetNoGripColor()   + Icons::SnowflakeO          + iconPadding + "No Grip");
-        if (S_NoSteer)  UI::Text(GetNoSteerColor()  + Icons::ArrowsH             + iconPadding + "No Steering");
+        if (S_NoBrakes) UI::Text(GetNoBrakesColor() + Icons::ExclamationTriangle + " No Brakes");
+        if (S_NoGrip)   UI::Text(GetNoGripColor()   + Icons::SnowflakeO          + " No Grip");
+        if (S_NoSteer)  UI::Text(GetNoSteerColor()  + Icons::ArrowsH             + " No Steering");
 #endif
 #if TMNEXT
         if (S_Reactor)  UI::Text(GetReactorText(state.ReactorBoostFinalTimer));
-        if (S_SlowMo)   UI::Text(GetSlowMoColor() + Icons::ClockO + iconPadding + "Slow-Mo");
+        if (S_SlowMo)   UI::Text(GetSlowMoColor() + Icons::ClockO + " Slow-Mo");
         if (S_Turbo)    UI::Text(GetTurboText(state.TurboTime));
         if (S_Vehicle)  UI::Text(GetVehicleText());
 #else
-        if (S_Turbo)    UI::Text(GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "Turbo");
+        if (S_Turbo)    UI::Text(GetTurboColor() + Icons::ArrowCircleUp + " Turbo");
 #endif
 
     UI::End();
@@ -123,36 +123,36 @@ void RenderEffects(CSceneVehicleVisState@ VisState, const bool shouldHide) {
 #if TMNEXT
 
 string GetReactorText(const float f) {
-    if (f == 0.0f) return GetReactorColor() + reactorIcon + iconPadding + "Reactor Boost";
-    if (f < 0.09f) return GetReactorColor() + reactorIcon + iconPadding + "Reactor Boos" + offColor + "t";
-    if (f < 0.17f) return GetReactorColor() + reactorIcon + iconPadding + "Reactor Boo" + offColor + "st";
-    if (f < 0.25f) return GetReactorColor() + reactorIcon + iconPadding + "Reactor Bo" + offColor + "ost";
-    if (f < 0.33f) return GetReactorColor() + reactorIcon + iconPadding + "Reactor B" + offColor + "oost";
-    if (f < 0.41f) return GetReactorColor() + reactorIcon + iconPadding + "Reactor " + offColor + "Boost";
-    if (f < 0.49f) return GetReactorColor() + reactorIcon + iconPadding + "Reacto" + offColor + "r Boost";
-    if (f < 0.57f) return GetReactorColor() + reactorIcon + iconPadding + "React" + offColor + "or Boost";
-    if (f < 0.65f) return GetReactorColor() + reactorIcon + iconPadding + "Reac" + offColor + "tor Boost";
-    if (f < 0.73f) return GetReactorColor() + reactorIcon + iconPadding + "Rea" + offColor + "ctor Boost";
-    if (f < 0.81f) return GetReactorColor() + reactorIcon + iconPadding + "Re" + offColor + "actor Boost";
-    if (f < 0.89f) return GetReactorColor() + reactorIcon + iconPadding + "R" + offColor + "eactor Boost";
-    return GetReactorColor() + reactorIcon + offColor + iconPadding + "Reactor Boost";
+    if (f == 0.0f) return GetReactorColor() + reactorIcon + " Reactor Boost";
+    if (f < 0.09f) return GetReactorColor() + reactorIcon + " Reactor Boos" + offColor + "t";
+    if (f < 0.17f) return GetReactorColor() + reactorIcon + " Reactor Boo" + offColor + "st";
+    if (f < 0.25f) return GetReactorColor() + reactorIcon + " Reactor Bo" + offColor + "ost";
+    if (f < 0.33f) return GetReactorColor() + reactorIcon + " Reactor B" + offColor + "oost";
+    if (f < 0.41f) return GetReactorColor() + reactorIcon + " Reactor " + offColor + "Boost";
+    if (f < 0.49f) return GetReactorColor() + reactorIcon + " Reacto" + offColor + "r Boost";
+    if (f < 0.57f) return GetReactorColor() + reactorIcon + " React" + offColor + "or Boost";
+    if (f < 0.65f) return GetReactorColor() + reactorIcon + " Reac" + offColor + "tor Boost";
+    if (f < 0.73f) return GetReactorColor() + reactorIcon + " Rea" + offColor + "ctor Boost";
+    if (f < 0.81f) return GetReactorColor() + reactorIcon + " Re" + offColor + "actor Boost";
+    if (f < 0.89f) return GetReactorColor() + reactorIcon + " R" + offColor + "eactor Boost";
+    return GetReactorColor() + reactorIcon + offColor + " Reactor Boost";
 }
 
 string GetTurboText(const float f) {
-    if (f == 0.0f) return GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "Turbo";
-    if (f < 0.2f)  return GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "Turb" + offColor + "o";
-    if (f < 0.4f)  return GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "Tur" + offColor + "bo";
-    if (f < 0.6f)  return GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "Tu" + offColor + "rbo";
-    if (f < 0.8f)  return GetTurboColor() + Icons::ArrowCircleUp + iconPadding + "T" + offColor + "urbo";
-    return GetTurboColor() + Icons::ArrowCircleUp + offColor + iconPadding + "Turbo";
+    if (f == 0.0f) return GetTurboColor() + Icons::ArrowCircleUp + " Turbo";
+    if (f < 0.2f)  return GetTurboColor() + Icons::ArrowCircleUp + " Turb" + offColor + "o";
+    if (f < 0.4f)  return GetTurboColor() + Icons::ArrowCircleUp + " Tur" + offColor + "bo";
+    if (f < 0.6f)  return GetTurboColor() + Icons::ArrowCircleUp + " Tu" + offColor + "rbo";
+    if (f < 0.8f)  return GetTurboColor() + Icons::ArrowCircleUp + " T" + offColor + "urbo";
+    return GetTurboColor() + Icons::ArrowCircleUp + offColor + " Turbo";
 }
 
 string GetVehicleText() {
     switch (state.Vehicle) {
-        case 1:  return GetVehicleColor() + Icons::Kenney::Car + iconPadding + "Snow Car";
-        case 2:  return GetVehicleColor() + Icons::Kenney::Car + iconPadding + "Rally Car";
-        case 3:  return GetVehicleColor() + Icons::Kenney::Car + iconPadding + "Desert Car";
-        default: return GetVehicleColor() + Icons::Kenney::Car + iconPadding + "Stadium Car";
+        case 1:  return GetVehicleColor() + Icons::Kenney::Car + " Snow Car";
+        case 2:  return GetVehicleColor() + Icons::Kenney::Car + " Rally Car";
+        case 3:  return GetVehicleColor() + Icons::Kenney::Car + " Desert Car";
+        default: return GetVehicleColor() + Icons::Kenney::Car + " Stadium Car";
     }
 }
 
