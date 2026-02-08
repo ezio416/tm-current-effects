@@ -88,7 +88,7 @@ bool S_Turbo = true;
 
 #if TMNEXT
 
-[Setting category="Toggles" name="Vehicle Type" description="Stadium, Snow, or Rally car"]
+[Setting category="Toggles" name="Vehicle Type" description="Stadium, Snow, Rally, or Desert car"]
 bool S_Vehicle = true;
 
 #endif
