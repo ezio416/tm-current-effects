@@ -74,7 +74,7 @@ string GetPenaltyColor() {
 }
 
 string GetReactorColor() {
-    switch (state.ReactorBoostLevel) {
+    switch (int(state.ReactorBoostLevel)) {
         case -1: return disabledColor;
         case  1: return reactor1Color;
         case  2: return reactor2Color;
