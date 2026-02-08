@@ -78,9 +78,11 @@ void RenderEffects(CSceneVehicleVisState@ VisState, const bool shouldHide) {
     if (shouldHide)
         return;
 
-    int flags = UI::WindowFlags::AlwaysAutoResize |
-                UI::WindowFlags::NoCollapse |
-                UI::WindowFlags::NoTitleBar;
+    int flags = UI::GetDefaultWindowFlags()
+        | UI::WindowFlags::AlwaysAutoResize
+        | UI::WindowFlags::NoCollapse
+        | UI::WindowFlags::NoTitleBar
+    ;
 
     if (!UI::IsOverlayShown())
         flags |= UI::WindowFlags::NoInputs;
