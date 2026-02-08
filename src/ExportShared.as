@@ -1,6 +1,3 @@
-// c 2024-03-10
-// m 2024-06-04
-
 /*
 Shared namespace defining active effects on the viewed vehicle
 When watching a replay, there must be only one vehicle active

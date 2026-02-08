@@ -1,6 +1,3 @@
-// c 2023-05-04
-// m 2024-03-13
-
 bool           lastExperimental = false;
 bool           lastRunHidden    = false;
 string         loginLocal;

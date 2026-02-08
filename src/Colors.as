@@ -1,6 +1,3 @@
-// c 2023-10-21
-// m 2024-05-22
-
 int64 lastAllColorsSwap = 0;
 
 #if TMNEXT

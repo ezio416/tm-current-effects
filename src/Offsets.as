@@ -1,6 +1,3 @@
-// c 2024-02-26
-// m 2024-06-04
-
 uint16 GetMemberOffset(const string &in className, const string &in memberName) {
     const Reflection::MwClassInfo@ type = Reflection::GetType(className);
 

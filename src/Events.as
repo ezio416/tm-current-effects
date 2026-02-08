@@ -1,6 +1,3 @@
-// c 2023-10-01
-// m 2023-03-13
-
 #if TMNEXT
 
 bool fragileBeforeCp = false;

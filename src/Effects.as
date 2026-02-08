@@ -1,6 +1,3 @@
-// c 2023-08-17
-// m 2024-06-04
-
 string reactorIcon;
 
 void RenderEffects(CSceneVehicleVisState@ VisState, const bool shouldHide) {
