@@ -35,7 +35,7 @@ class StateNext : State {
     bool                             standRespawning;
     float                            steerLimit;
     uint8                            turboLevel;
-    float                            wetness;
+    float                            water;
     string                           wsid;
 
     void RenderDebugRows() const override {
@@ -79,7 +79,7 @@ class StateNext : State {
         _RenderDebugRow("standRespawning",    Color::DebugBool(standRespawning));
         _RenderDebugRow("steerLimit",         Color::DebugFloat(steerLimit));
         _RenderDebugRow("turboLevel",         Color::DebugInt(turboLevel));
-        _RenderDebugRow("wetness",            Color::DebugFloat(wetness));
+        _RenderDebugRow("water",              Color::DebugFloat(water));
         _RenderDebugRow("wsid",               Color::DebugString(wsid));
     }
 
@@ -118,7 +118,7 @@ class StateNext : State {
         standRespawning    = false;
         steerLimit         = 0.0f;
         turboLevel         = 0;
-        wetness            = 0.0f;
+        water              = 0.0f;
         wsid               = "";
     }
 
@@ -401,7 +401,7 @@ class StateNext : State {
             case VehicleState::VehicleType::CarDesert:      vehicleType = CurrentEffects::VehicleType::Desert;  break;
         }
 
-        wetness = Vis.AsyncState.WetnessValue01;
+        water = Vis.AsyncState.WetnessValue01;
     }
 }
 

@@ -12,6 +12,7 @@ Status@[] g_statuses = {
     SlowMo(),
     Turbo(),
     VehicleType(),
+    Water(),
 };
 
 #elif MP4
@@ -85,7 +86,6 @@ class CruiseControl : Status {
     CruiseControl() {
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
             | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
-        g_cruiseColor = Text::FormatOpenplanetColor(S_CruiseColor);
     }
 
     void RenderLegacy() const override {
@@ -136,13 +136,21 @@ class Fragile : Status {
 
 class ForcedAccel : Handicap {
     void RenderLegacy() const override {
+#if TMNEXT
         UI::Text(Color::ForcedAccel() + Icons::Forward + " Forced Accel");
+#elif MP4
+        UI::Text(Color::ForcedAccel() + Icons::Forward + " Fullspeed Ahead");
+#endif
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
+#if TMNEXT
         Set(UI::Checkbox("Forced Accel", S_Forced));
+#elif MP4
+        Set(UI::Checkbox("Fullspeed Ahead", S_Forced));
+#endif
 
         S_ForcedColor = UI::InputColor3("", S_ForcedColor);
         g_forcedColor = Text::FormatOpenplanetColor(S_ForcedColor);
@@ -301,7 +309,7 @@ class Reactor : Status {
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Reactor", S_Reactor));
+        Set(UI::Checkbox("Reactor Boost", S_Reactor));
 
         S_Reactor1Color = UI::InputColor3("level 1", S_Reactor1Color);
         g_reactor1Color = Text::FormatOpenplanetColor(S_Reactor1Color);
@@ -526,5 +534,30 @@ class VehicleType : Status {
 
     void Set(const bool b) override {
         enabled = S_Vehicle = b;
+    }
+}
+
+class Water : Status {
+    Water() {
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay | CurrentEffects::ViewMode::Server;
+    }
+
+    void RenderLegacy() const override {
+        UI::Text(Color::Water() + Icons::Tint + " Water");
+        RenderLegacyBar(g_state.water, 1.0f, S_WaterColor);
+    }
+
+    void RenderSettings() override {
+        UI::PushID(this);
+
+        Set(UI::Checkbox("Water", S_Water));
+        S_WaterColor = UI::InputColor3("", S_WaterColor);
+        g_waterColor = Text::FormatOpenplanetColor(S_WaterColor);
+
+        UI::PopID();
+    }
+
+    void Set(const bool b) override {
+        enabled = S_Water = b;
     }
 }

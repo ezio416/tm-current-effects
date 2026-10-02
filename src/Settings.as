@@ -13,6 +13,7 @@
 [Setting category="Toggles" hidden] bool S_Fragile  = true;
 [Setting category="Toggles" hidden] bool S_Reactor  = true;
 [Setting category="Toggles" hidden] bool S_SlowMo   = true;
+[Setting category="Toggles" hidden] bool S_Water    = false;
 #endif
 #if TMNEXT || MP4
 [Setting category="Toggles" hidden] bool S_Forced   = true;
@@ -83,6 +84,10 @@ string g_turbo4Color;
 [Setting category="Colors" hidden]
 vec3 S_Turbo5Color = vec3(1.0f, 0.0f, 1.0f);
 string g_turbo5Color;
+
+[Setting category="Colors" hidden]
+vec3 S_WaterColor = vec3(0.0f, 0.85f, 1.0f);
+string g_waterColor;
 
 #else
 

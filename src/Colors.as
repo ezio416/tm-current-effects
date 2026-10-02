@@ -125,6 +125,7 @@ namespace Color {
         g_turbo3Color   = Text::FormatOpenplanetColor(S_Turbo3Color);
         g_turbo4Color   = Text::FormatOpenplanetColor(S_Turbo4Color);
         g_turbo5Color   = Text::FormatOpenplanetColor(S_Turbo5Color);
+        g_waterColor    = Text::FormatOpenplanetColor(S_WaterColor);
 #endif
 #if TMNEXT || MP4
         g_desertColor   = Text::FormatOpenplanetColor(S_DesertColor);
@@ -178,4 +179,10 @@ namespace Color {
         return g_turboColor;
 #endif
     }
+
+#if TMNEXT
+    string Water() {
+        return g_state.water > 0.0f ? g_waterColor : g_offColor;
+    }
+#endif
 }
