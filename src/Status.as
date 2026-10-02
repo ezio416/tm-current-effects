@@ -1,6 +1,7 @@
 #if TMNEXT
 
 Status@[] g_statuses = {
+    ActionKey(),
     CruiseControl(),
     NoEngine(),
     ForcedAccel(),
@@ -82,6 +83,49 @@ abstract class Handicap : Status {
     }
 }
 
+#if TMNEXT
+class ActionKey : Status {
+    ActionKey() {
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
+    }
+
+    void RenderLegacy() const override {
+        UI::Text(Color::ActionKey() + Icons::Percent + " Action Key " + g_state.actionKey);
+
+        vec3 color = S_OffColor;
+        switch (g_state.actionKey) {
+            case 1: color = S_AK1Color; break;
+            case 2: color = S_AK2Color; break;
+            case 3: color = S_AK3Color; break;
+            case 4: color = S_AK4Color; break;
+        }
+
+        RenderLegacyBar(g_state.steerLimit, 1.0f, color);
+    }
+
+    void RenderSettings() override {
+        UI::PushID(this);
+
+        Set(UI::Checkbox("Action Key", S_ActionKey));
+
+        S_AK1Color = UI::InputColor3("1 - 20%", S_AK1Color);
+        g_AK1Color = Text::FormatOpenplanetColor(S_AK1Color);
+        S_AK2Color = UI::InputColor3("2 - 40%", S_AK2Color);
+        g_AK2Color = Text::FormatOpenplanetColor(S_AK2Color);
+        S_AK3Color = UI::InputColor3("3 - 60%", S_AK3Color);
+        g_AK3Color = Text::FormatOpenplanetColor(S_AK3Color);
+        S_AK4Color = UI::InputColor3("4 - 80%", S_AK4Color);
+        g_AK4Color = Text::FormatOpenplanetColor(S_AK4Color);
+
+        UI::PopID();
+    }
+
+    void Set(const bool b) override {
+        enabled = S_ActionKey = b;
+    }
+}
+#endif
+
 class CruiseControl : Status {
     CruiseControl() {
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
@@ -89,7 +133,7 @@ class CruiseControl : Status {
     }
 
     void RenderLegacy() const override {
-        UI::Text((g_state.cruiseControl ? g_cruiseColor : g_offColor) + Icons::Tachometer + " Cruise Control");
+        UI::Text(Color::CruiseControl() + Icons::Tachometer + " Cruise Control");
         RenderLegacyBar(g_state.cruiseControlSpeed, 1000.0f, S_CruiseColor);
     }
 
@@ -428,11 +472,11 @@ class Turbo : Status {
         g_turbo1Color = Text::FormatOpenplanetColor(S_Turbo1Color);
         S_Turbo2Color = UI::InputColor3("super", S_Turbo2Color);
         g_turbo2Color = Text::FormatOpenplanetColor(S_Turbo2Color);
-        S_Turbo3Color = UI::InputColor3("roulette normal", S_Turbo3Color);
+        S_Turbo3Color = UI::InputColor3("roulette - normal", S_Turbo3Color);
         g_turbo3Color = Text::FormatOpenplanetColor(S_Turbo3Color);
-        S_Turbo4Color = UI::InputColor3("roulette super", S_Turbo4Color);
+        S_Turbo4Color = UI::InputColor3("roulette - super", S_Turbo4Color);
         g_turbo4Color = Text::FormatOpenplanetColor(S_Turbo4Color);
-        S_Turbo5Color = UI::InputColor3("roulette ultra", S_Turbo5Color);
+        S_Turbo5Color = UI::InputColor3("roulette - ultra", S_Turbo5Color);
         g_turbo5Color = Text::FormatOpenplanetColor(S_Turbo5Color);
 #else
         S_TurboColor = UI::InputColor3("", S_TurboColor);

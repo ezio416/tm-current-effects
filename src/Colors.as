@@ -3,9 +3,21 @@ namespace Color {
     const string DEBUG_ON  = "\\$0f0";
 
 #if TMNEXT
+
+    string ActionKey() {
+        switch (g_state.actionKey) {
+            case 1:  return g_AK1Color;
+            case 2:  return g_AK2Color;
+            case 3:  return g_AK3Color;
+            case 4:  return g_AK4Color;
+            default: return g_offColor;
+        }
+    }
+
     string CruiseControl() {
         return g_state.cruiseControl ? g_cruiseColor : g_offColor;
     }
+
 #endif
 
     string DebugBool(const bool b) {
@@ -112,6 +124,10 @@ namespace Color {
         g_offColor      = Text::FormatOpenplanetColor(S_OffColor);
         g_noEngineColor = Text::FormatOpenplanetColor(S_NoEngineColor);
 #if TMNEXT
+        g_AK1Color      = Text::FormatOpenplanetColor(S_AK1Color);
+        g_AK2Color      = Text::FormatOpenplanetColor(S_AK2Color);
+        g_AK3Color      = Text::FormatOpenplanetColor(S_AK3Color);
+        g_AK4Color      = Text::FormatOpenplanetColor(S_AK4Color);
         g_cruiseColor   = Text::FormatOpenplanetColor(S_CruiseColor);
         g_fragileColor  = Text::FormatOpenplanetColor(S_FragileColor);
         g_reactor1Color = Text::FormatOpenplanetColor(S_Reactor1Color);

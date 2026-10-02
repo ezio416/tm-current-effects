@@ -5,21 +5,22 @@
 [Setting category="General" hidden] Style S_Style          = Style::Legacy;
 
 
-[Setting category="Toggles" hidden] bool S_NoEngine = true;
-[Setting category="Toggles" hidden] bool S_Turbo    = true;
-[Setting category="Toggles" hidden] bool S_Vehicle  = true;
+[Setting category="Toggles" hidden] bool S_NoEngine  = true;
+[Setting category="Toggles" hidden] bool S_Turbo     = true;
+[Setting category="Toggles" hidden] bool S_Vehicle   = true;
 #if TMNEXT
-[Setting category="Toggles" hidden] bool S_Cruise   = true;
-[Setting category="Toggles" hidden] bool S_Fragile  = true;
-[Setting category="Toggles" hidden] bool S_Reactor  = true;
-[Setting category="Toggles" hidden] bool S_SlowMo   = true;
-[Setting category="Toggles" hidden] bool S_Water    = false;
+[Setting category="Toggles" hidden] bool S_ActionKey = false;
+[Setting category="Toggles" hidden] bool S_Cruise    = true;
+[Setting category="Toggles" hidden] bool S_Fragile   = true;
+[Setting category="Toggles" hidden] bool S_Reactor   = true;
+[Setting category="Toggles" hidden] bool S_SlowMo    = true;
+[Setting category="Toggles" hidden] bool S_Water     = false;
 #endif
 #if TMNEXT || MP4
-[Setting category="Toggles" hidden] bool S_Forced   = true;
-[Setting category="Toggles" hidden] bool S_NoBrakes = true;
-[Setting category="Toggles" hidden] bool S_NoGrip   = true;
-[Setting category="Toggles" hidden] bool S_NoSteer  = true;
+[Setting category="Toggles" hidden] bool S_Forced    = true;
+[Setting category="Toggles" hidden] bool S_NoBrakes  = true;
+[Setting category="Toggles" hidden] bool S_NoGrip    = true;
+[Setting category="Toggles" hidden] bool S_NoSteer   = true;
 #endif
 
 
@@ -32,6 +33,22 @@ vec3 S_NoEngineColor = vec3(1.0f, 0.0f, 0.0f);
 string g_noEngineColor;
 
 #if TMNEXT
+
+[Setting category="Colors" hidden]
+vec3 S_AK1Color = vec3(1.0f, 0.0f, 0.0f);
+string g_AK1Color;
+
+[Setting category="Colors" hidden]
+vec3 S_AK2Color = vec3(1.0f, 1.0f, 0.0f);
+string g_AK2Color;
+
+[Setting category="Colors" hidden]
+vec3 S_AK3Color = vec3(0.0f, 1.0f, 0.0f);
+string g_AK3Color;
+
+[Setting category="Colors" hidden]
+vec3 S_AK4Color = vec3(0.0f, 1.0f, 1.0f);
+string g_AK4Color;
 
 [Setting category="Colors" hidden]
 vec3 S_CruiseColor = vec3(0.226f, 0.564f, 1.0f);
