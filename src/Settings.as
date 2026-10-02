@@ -198,12 +198,14 @@ void SettingsTab_Statuses() {
     S_HideWithGame = UI::Checkbox("Show/hide with game UI", S_HideWithGame);
     S_HideWithOP   = UI::Checkbox("Show/hide with Openplanet UI", S_HideWithOP);
 
+#if TMNEXT
     if (!Safety::safe) {
         S_OverrideSafety = UI::Checkbox(
             "\\$fa0" + Icons::ExclamationCircle + " Override safety and run plugin " + Icons::ExclamationCircle,
             S_OverrideSafety
         );
     }
+#endif
 
     UI::Separator();
 

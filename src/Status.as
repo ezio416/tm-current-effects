@@ -24,7 +24,8 @@ const Status@[] g_statuses = {
     NoBrakes(),
     NoGrip(),
     NoSteer(),
-    Turbo()
+    Turbo(),
+    VehicleType(),
 };
 
 #elif TURBO
@@ -84,6 +85,7 @@ abstract class Handicap : Status {
 }
 
 #if TMNEXT
+
 class ActionKey : Status {
     ActionKey() {
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
@@ -124,7 +126,6 @@ class ActionKey : Status {
         enabled = S_ActionKey = b;
     }
 }
-#endif
 
 class CruiseControl : Status {
     CruiseControl() {
@@ -178,6 +179,9 @@ class Fragile : Status {
     }
 }
 
+#endif
+#if TMNEXT || MP4
+
 class ForcedAccel : Handicap {
     void RenderLegacy() const override {
 #if TMNEXT
@@ -228,6 +232,8 @@ class NoBrakes : Handicap {
     }
 }
 
+#endif
+
 class NoEngine : Handicap {
     void RenderLegacy() const override {
 #if TMNEXT
@@ -256,6 +262,8 @@ class NoEngine : Handicap {
         enabled = S_NoEngine = b;
     }
 }
+
+#if TMNEXT || MP4
 
 class NoGrip : Handicap {
     void RenderLegacy() const override {
@@ -298,6 +306,9 @@ class NoSteer : Handicap {
         enabled = S_NoSteer = b;
     }
 }
+
+#endif
+#if TMNEXT
 
 class Reactor : Status {
     Reactor() {
@@ -426,6 +437,8 @@ class SlowMo : Status {
         enabled = S_SlowMo = b;
     }
 }
+
+#endif
 
 class Turbo : Status {
     Turbo() {
@@ -581,6 +594,8 @@ class VehicleType : Status {
     }
 }
 
+#if TMNEXT
+
 class Water : Status {
     Water() {
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay | CurrentEffects::ViewMode::Server;
@@ -605,3 +620,5 @@ class Water : Status {
         enabled = S_Water = b;
     }
 }
+
+#endif
