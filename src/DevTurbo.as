@@ -10,12 +10,12 @@ namespace Danger {
     // offsets
     const uint16 O_TERMINAL_CUR_CAMERA = GetMemberOffset("CGameTerminal", "CameraSet") + 0xc;
 
-    CE::Camera GetCurrentCamera(CGameTerminal@ Terminal) {
+    CurrentEffects::Camera GetCurrentCamera(CGameTerminal@ Terminal) {
         switch (Dev::GetOffsetUint32(Terminal, O_TERMINAL_CUR_CAMERA)) {
-            case 0x4: return CE::Camera::Cam1;
-            case 0x5: return CE::Camera::Cam2;
-            case 0x6: return CE::Camera::Cam3;
-            default:  return CE::Camera::Unknown;
+            case 0x4: return CurrentEffects::Camera::Cam1;
+            case 0x5: return CurrentEffects::Camera::Cam2;
+            case 0x6: return CurrentEffects::Camera::Cam3;
+            default:  return CurrentEffects::Camera::Unknown;
         }
     }
 }

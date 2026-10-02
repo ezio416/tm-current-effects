@@ -19,27 +19,27 @@ namespace Danger {
     const uint16 O_VIS_ENTITY_ID           = 0x0;
     const uint16 O_VIS_TURBO_TIMER         = 0x608;  // should probably add this to VehicleState
 
-    CE::Camera GetCurrentCamera(CGameTerminal@ Terminal) {
+    CurrentEffects::Camera GetCurrentCamera(CGameTerminal@ Terminal) {
         const uint cam = Dev::GetOffsetUint32(Terminal, O_TERMINAL_CUR_CAMERA);
         if (cam == 0x2) {
             const bool alt = Dev::GetOffsetUint32(Terminal, O_TERMINAL_ALT_CAMERA) == 0;
-            return alt ? CE::Camera::Alt7 : CE::Camera::Cam7;
+            return alt ? CurrentEffects::Camera::Alt7 : CurrentEffects::Camera::Cam7;
         }
 
         if (Terminal.CameraSet is null) {
-            return CE::Camera::Unknown;
+            return CurrentEffects::Camera::Unknown;
         }
 
         const bool backwards = Dev::GetOffsetUint32(Terminal.CameraSet, O_CAMERA_SYSTEM_BW_CAMERA) == 4;  // why 4?
         if (backwards) {
-            return CE::Camera::Backwards;
+            return CurrentEffects::Camera::Backwards;
         }
 
         switch (cam) {
-            case 0x12: return CE::Camera::Cam1;
-            case 0x13: return CE::Camera::Cam2;
-            case 0x14: return CE::Camera::Cam3;
-            default:   return CE::Camera::Unknown;
+            case 0x12: return CurrentEffects::Camera::Cam1;
+            case 0x13: return CurrentEffects::Camera::Cam2;
+            case 0x14: return CurrentEffects::Camera::Cam3;
+            default:   return CurrentEffects::Camera::Unknown;
         }
     }
 
@@ -51,8 +51,8 @@ namespace Danger {
         return Dev::GetOffsetUint32(Vis, O_VIS_ENTITY_ID);
     }
 
-    CE::OpponentVis GetOpponentVisibility() {
-        return CE::OpponentVis(Dev::ReadUint32(A_OPPONENT_VIS));
+    CurrentEffects::OpponentVis GetOpponentVisibility() {
+        return CurrentEffects::OpponentVis(Dev::ReadUint32(A_OPPONENT_VIS));
     }
 
     float GetTurboTimer(CMwNod@ Vis) {  // using CSceneVehicleVis crashes game

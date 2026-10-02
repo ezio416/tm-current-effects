@@ -12,8 +12,8 @@ namespace Color {
         return (b ? DEBUG_ON : DEBUG_OFF) + b;
     }
 
-    string DebugCamera(const CE::Camera c) {
-        return (c != CE::Camera::Unknown ? DEBUG_ON : DEBUG_OFF) + tostring(c);
+    string DebugCamera(const CurrentEffects::Camera c) {
+        return (c != CurrentEffects::Camera::Unknown ? DEBUG_ON : DEBUG_OFF) + tostring(c);
     }
 
     string DebugFloat(const double f) {
@@ -28,8 +28,8 @@ namespace Color {
         return (i != 0 ? DEBUG_ON : DEBUG_OFF) + i;
     }
 
-    string DebugOpponentVis(const CE::OpponentVis o) {
-        return (o > CE::OpponentVis::Off ? DEBUG_ON : DEBUG_OFF) + tostring(o);
+    string DebugOpponentVis(const CurrentEffects::OpponentVis o) {
+        return (o > CurrentEffects::OpponentVis::Off ? DEBUG_ON : DEBUG_OFF) + tostring(o);
     }
 
     string DebugPointer(const uint64 p) {
@@ -56,12 +56,12 @@ namespace Color {
         return DEBUG_ON + s;
     }
 
-    string DebugVehicleType(const CE::VehicleType v) {
-        return (v != CE::VehicleType::Unknown ? DEBUG_ON : DEBUG_OFF) + tostring(v);
+    string DebugVehicleType(const CurrentEffects::VehicleType v) {
+        return (v != CurrentEffects::VehicleType::Unknown ? DEBUG_ON : DEBUG_OFF) + tostring(v);
     }
 
-    string DebugViewMode(const CE::ViewMode v) {
-        return (v != CE::ViewMode::Unknown ? DEBUG_ON : DEBUG_OFF) + tostring(v);
+    string DebugViewMode(const CurrentEffects::ViewMode v) {
+        return (v != CurrentEffects::ViewMode::Unknown ? DEBUG_ON : DEBUG_OFF) + tostring(v);
     }
 
 #if TMNEXT || MP4

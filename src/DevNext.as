@@ -35,28 +35,28 @@ namespace Danger {
     const uint16 O_VISSTATE_ITEM_MODEL_INDEX  = 0x8;
     const uint16 O_WRAPPER_OPPONENT_VIS       = GetMemberOffset("CGameUserProfileWrapper", "ProfileOld") + 0x38;
 
-    CE::Camera GetCurrentCamera(CGameTerminal@ Terminal) {
+    CurrentEffects::Camera GetCurrentCamera(CGameTerminal@ Terminal) {
         if (!Safety::ShouldRun()) {
-            return CE::Camera::Unknown;
+            return CurrentEffects::Camera::Unknown;
         }
 
         const bool alt = Dev::GetOffsetUint32(Terminal, O_TERMINAL_ALT_CAMERA) == 0;
 
         const uint cam = Dev::GetOffsetUint32(Terminal, O_TERMINAL_CUR_CAMERA);
         if (cam == 0x2) {
-            return alt ? CE::Camera::Alt7 : CE::Camera::Cam7;
+            return alt ? CurrentEffects::Camera::Alt7 : CurrentEffects::Camera::Cam7;
         }
 
         const bool backwards = Dev::GetOffsetUint32(Terminal, O_TERMINAL_BW_CAMERA) == 1;
         if (backwards) {
-            return CE::Camera::Backwards;
+            return CurrentEffects::Camera::Backwards;
         }
 
         switch (cam) {
-            case 0x12: return alt ? CE::Camera::Alt1 : CE::Camera::Cam1;
-            case 0x13: return alt ? CE::Camera::Alt2 : CE::Camera::Cam2;
-            case 0x14: return alt ? CE::Camera::Alt3 : CE::Camera::Cam3;
-            default:   return CE::Camera::Unknown;
+            case 0x12: return alt ? CurrentEffects::Camera::Alt1 : CurrentEffects::Camera::Cam1;
+            case 0x13: return alt ? CurrentEffects::Camera::Alt2 : CurrentEffects::Camera::Cam2;
+            case 0x14: return alt ? CurrentEffects::Camera::Alt3 : CurrentEffects::Camera::Cam3;
+            default:   return CurrentEffects::Camera::Unknown;
         }
     }
 
@@ -116,12 +116,12 @@ namespace Danger {
         return Dev::GetOffsetUint32(Profile, O_PROFILE_NAMETAG_VIS) == 1;
     }
 
-    CE::OpponentVis GetOpponentVisibility(CGameUserProfileWrapper@ Wrapper) {
+    CurrentEffects::OpponentVis GetOpponentVisibility(CGameUserProfileWrapper@ Wrapper) {
         if (!Safety::ShouldRun()) {
-            return CE::OpponentVis::Unknown;
+            return CurrentEffects::OpponentVis::Unknown;
         }
 
-        return CE::OpponentVis(Dev::GetOffsetUint32(Wrapper, O_WRAPPER_OPPONENT_VIS));
+        return CurrentEffects::OpponentVis(Dev::GetOffsetUint32(Wrapper, O_WRAPPER_OPPONENT_VIS));
     }
 
     uint64 GetPointer(CSceneVehicleVis@ Vis) {
@@ -199,7 +199,7 @@ namespace Danger {
         return Dev::GetOffsetNod(Player, O_CSMPLAYER_VEHICLE + index * 0x10);
     }
 
-    CMwNod@ GetVehicleSecondary(const CE::VehicleType type) {  // prefer not to use this one
+    CMwNod@ GetVehicleSecondary(const CurrentEffects::VehicleType type) {  // prefer not to use this one
         if (!Safety::ShouldRun()) {
             return null;
         }
@@ -215,13 +215,13 @@ namespace Danger {
         }
 
         switch (type) {
-            case CE::VehicleType::Desert:
+            case CurrentEffects::VehicleType::Desert:
                 return Dev::GetOffsetNod(Vehicles, O_VEHICLES_DESERT);
-            case CE::VehicleType::Snow:
+            case CurrentEffects::VehicleType::Snow:
                 return Dev::GetOffsetNod(Vehicles, O_VEHICLES_SNOW);
-            case CE::VehicleType::Stadium:
+            case CurrentEffects::VehicleType::Stadium:
                 return Dev::GetOffsetNod(Vehicles, O_VEHICLES_STADIUM);
-            case CE::VehicleType::Rally:
+            case CurrentEffects::VehicleType::Rally:
                 return Dev::GetOffsetNod(Vehicles, O_VEHICLES_RALLY);
         }
 

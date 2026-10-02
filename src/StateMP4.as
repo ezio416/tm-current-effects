@@ -9,7 +9,7 @@ class StateMP4 : State {
     bool            noBrake;
     bool            noGrip;
     bool            noSteer;
-    CE::OpponentVis opponentVis;
+    CurrentEffects::OpponentVis opponentVis;
     bool            spectateAuto;
 
     void RenderDebugRows() const override {
@@ -40,7 +40,7 @@ class StateMP4 : State {
         noBrake      = false;
         noGrip       = false;
         noSteer      = false;
-        opponentVis  = CE::OpponentVis::Unknown;
+        opponentVis  = CurrentEffects::OpponentVis::Unknown;
         spectateAuto = false;
     }
 
@@ -74,21 +74,21 @@ class StateMP4 : State {
 
         switch (App.Network.PlaygroundClientScriptAPI.SettingsPlayerModelId.Value) {
             case 0x4000161f:
-            case 0x40003cc5: vehicleType = CE::VehicleType::Snow;    break;
+            case 0x40003cc5: vehicleType = CurrentEffects::VehicleType::Snow;    break;
             case 0x40001f21:
-            case 0x40004aad: vehicleType = CE::VehicleType::Desert;  break;
+            case 0x40004aad: vehicleType = CurrentEffects::VehicleType::Desert;  break;
             case 0x40001fc2:
-            case 0x40003b84: vehicleType = CE::VehicleType::Bay;     break;
-            case 0x40004852: vehicleType = CE::VehicleType::Stadium; break;
-            case 0x40001bc0: vehicleType = CE::VehicleType::Human;   break;
-            case 0x40004899: vehicleType = CE::VehicleType::Canyon;  break;
-            case 0x40004ec8: vehicleType = CE::VehicleType::Valley;  break;
-            case 0x40004edc: vehicleType = CE::VehicleType::Lagoon;  break;
+            case 0x40003b84: vehicleType = CurrentEffects::VehicleType::Bay;     break;
+            case 0x40004852: vehicleType = CurrentEffects::VehicleType::Stadium; break;
+            case 0x40001bc0: vehicleType = CurrentEffects::VehicleType::Human;   break;
+            case 0x40004899: vehicleType = CurrentEffects::VehicleType::Canyon;  break;
+            case 0x40004ec8: vehicleType = CurrentEffects::VehicleType::Valley;  break;
+            case 0x40004edc: vehicleType = CurrentEffects::VehicleType::Lagoon;  break;
         }
 
         if (App.PlaygroundScript !is null) {
             camera   = Danger::GetCurrentCamera(Playground.GameTerminals[0]);
-            viewMode = CE::ViewMode::Solo;
+            viewMode = CurrentEffects::ViewMode::Solo;
 
             CGamePlayer@ Me = Playground.GameTerminals[0].ControlledPlayer;
             if (Me !is null) {
@@ -96,7 +96,7 @@ class StateMP4 : State {
             }
 
         } else {
-            viewMode = CE::ViewMode::Server;
+            viewMode = CurrentEffects::ViewMode::Server;
 
             CGamePlayer@ Player;
             for (uint i = 0; i < Playground.Players.Length; i++) {
@@ -110,17 +110,17 @@ class StateMP4 : State {
                 camera = Danger::GetCurrentCamera(Playground.GameTerminals[0]);
 
             } else {
-                viewMode = CE::ViewMode::Spectate;
+                viewMode = CurrentEffects::ViewMode::Spectate;
 
                 switch (Playground.GameTerminals[0].SpectatorCameraType) {
                     case CGameTerminal::ESpectatorCameraType::_SpectatorCam_Follow:
-                        camera = CE::Camera::SpecFollow;
+                        camera = CurrentEffects::Camera::SpecFollow;
                         break;
                     case CGameTerminal::ESpectatorCameraType::_SpectatorCam_Free:
-                        camera = CE::Camera::SpecFree;
+                        camera = CurrentEffects::Camera::SpecFree;
                         break;
                     case CGameTerminal::ESpectatorCameraType::_SpectatorCam_Replay:
-                        camera = CE::Camera::SpecReplay;
+                        camera = CurrentEffects::Camera::SpecReplay;
                         break;
                 }
 

@@ -1,4 +1,4 @@
-namespace CE {
+namespace CurrentEffects {
     shared enum Camera {
         Unknown = -1,
         Cam1,

@@ -15,7 +15,7 @@ class StateNext : State {
     bool                             noBrake;
     bool                             noGrip;
     bool                             noSteer;
-    CE::OpponentVis                  opponentVis;
+    CurrentEffects::OpponentVis                  opponentVis;
     uint64                           p_phy;
     bool                             reactor;
     uint                             reactorDuration;
@@ -98,7 +98,7 @@ class StateNext : State {
         noBrake            = false;
         noGrip             = false;
         noSteer            = false;
-        opponentVis        = CE::OpponentVis::Unknown;
+        opponentVis        = CurrentEffects::OpponentVis::Unknown;
         p_phy              = 0x0;
         reactor            = false;
         reactorDuration    = 0;
@@ -158,11 +158,11 @@ class StateNext : State {
             auto Player = cast<CSmPlayer>(Playground.GameTerminals[0].GUIPlayer);
 
             if (Player is Playground.GameTerminals[0].ControlledPlayer) {
-                viewMode = CE::ViewMode::Server;
+                viewMode = CurrentEffects::ViewMode::Server;
                 camera = Danger::GetCurrentCamera(Playground.GameTerminals[0]);
 
             } else {
-                viewMode = CE::ViewMode::Spectate;
+                viewMode = CurrentEffects::ViewMode::Spectate;
 
                 if (true
                     and Playground.Interface !is null
@@ -173,18 +173,18 @@ class StateNext : State {
                         case CGamePlaygroundClientScriptAPI::ESpectatorCameraType::Follow:
                             switch (Playground.Interface.ManialinkScriptHandler.Playground.GetSpectatorTargetType()) {
                                 case CGamePlaygroundClientScriptAPI::ESpectatorTargetType::Single:
-                                    camera = CE::Camera::SpecFollow;
+                                    camera = CurrentEffects::Camera::SpecFollow;
                                     break;
                                 case CGamePlaygroundClientScriptAPI::ESpectatorTargetType::None:
-                                    camera = CE::Camera::SpecFollowAll;
+                                    camera = CurrentEffects::Camera::SpecFollowAll;
                                     break;
                             }
                             break;
                         case CGamePlaygroundClientScriptAPI::ESpectatorCameraType::Free:
-                            camera = CE::Camera::SpecFree;
+                            camera = CurrentEffects::Camera::SpecFree;
                             break;
                         case CGamePlaygroundClientScriptAPI::ESpectatorCameraType::Replay:
-                            camera = CE::Camera::SpecReplay;
+                            camera = CurrentEffects::Camera::SpecReplay;
                             break;
                     }
                 }
@@ -194,17 +194,17 @@ class StateNext : State {
                 _UpdateWithPlayer(Player);
                 _UpdateWithVis(VehicleState::GetVis(App.GameScene, Player));
 
-                if (viewMode == CE::ViewMode::Server) {
+                if (viewMode == CurrentEffects::ViewMode::Server) {
                     _UpdateWithVehicle(Danger::GetVehicleSecondary(vehicleType));
                 }
             }
 
         } else if (Playground.GameTerminals.Length > 1) {
-            viewMode = CE::ViewMode::SplitScreen;
+            viewMode = CurrentEffects::ViewMode::SplitScreen;
 
         } else {
             if (Playground.GameTerminals[0].GUIPlayer !is null) {
-                viewMode = CE::ViewMode::Solo;
+                viewMode = CurrentEffects::ViewMode::Solo;
                 camera = Danger::GetCurrentCamera(Playground.GameTerminals[0]);
 
                 auto Player = cast<CSmPlayer>(Playground.GameTerminals[0].ControlledPlayer);
@@ -222,7 +222,7 @@ class StateNext : State {
                 _UpdateWithVehicle(Danger::GetVehicle(Player, Danger::GetItemModelIndex(Vis.AsyncState)));
 
             } else {
-                viewMode = CE::ViewMode::Replay;
+                viewMode = CurrentEffects::ViewMode::Replay;
 
                 CSceneVehicleVis@ Vis = VehicleState::GetSingularVis(App.GameScene);
 
@@ -394,11 +394,11 @@ class StateNext : State {
         }
 
         switch (VehicleState::GetVehicleType(Vis.AsyncState)) {
-            case VehicleState::VehicleType::CharacterPilot: vehicleType = CE::VehicleType::Human;   break;
-            case VehicleState::VehicleType::CarSport:       vehicleType = CE::VehicleType::Stadium; break;
-            case VehicleState::VehicleType::CarSnow:        vehicleType = CE::VehicleType::Snow;    break;
-            case VehicleState::VehicleType::CarRally:       vehicleType = CE::VehicleType::Rally;   break;
-            case VehicleState::VehicleType::CarDesert:      vehicleType = CE::VehicleType::Desert;  break;
+            case VehicleState::VehicleType::CharacterPilot: vehicleType = CurrentEffects::VehicleType::Human;   break;
+            case VehicleState::VehicleType::CarSport:       vehicleType = CurrentEffects::VehicleType::Stadium; break;
+            case VehicleState::VehicleType::CarSnow:        vehicleType = CurrentEffects::VehicleType::Snow;    break;
+            case VehicleState::VehicleType::CarRally:       vehicleType = CurrentEffects::VehicleType::Rally;   break;
+            case VehicleState::VehicleType::CarDesert:      vehicleType = CurrentEffects::VehicleType::Desert;  break;
         }
 
         wetness = Vis.AsyncState.WetnessValue01;

@@ -41,7 +41,7 @@ abstract class Status {
     bool get_available() const final {
         return true
             and enabled
-            and g_state.viewMode != CE::ViewMode::Unknown
+            and g_state.viewMode != CurrentEffects::ViewMode::Unknown
             and modes & g_state.viewMode == g_state.viewMode
         ;
     }
@@ -72,18 +72,18 @@ abstract class Status {
 abstract class Handicap : Status {
     Handicap() {
 #if TMNEXT
-        modes = CE::ViewMode::Solo | CE::ViewMode::Server | CE::ViewMode::Spectate;
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
 #elif MP4
-        modes = CE::ViewMode::Solo | CE::ViewMode::Server;
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
 #elif TURBO
-        modes = CE::ViewMode::Solo | CE::ViewMode::Server;
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
 #endif
     }
 }
 
 class CruiseControl : Status {
     CruiseControl() {
-        modes = CE::ViewMode::Solo | CE::ViewMode::Replay | CE::ViewMode::Server | CE::ViewMode::Spectate;
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
         g_cruiseColor = Text::FormatOpenplanetColor(S_CruiseColor);
     }
 
@@ -109,7 +109,7 @@ class CruiseControl : Status {
 
 class Fragile : Status {
     Fragile() {
-        modes = CE::ViewMode::Solo | CE::ViewMode::Replay | CE::ViewMode::Server | CE::ViewMode::Spectate;
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
     }
 
     void RenderLegacy() const override {
@@ -247,7 +247,7 @@ class NoSteer : Handicap {
 
 class Reactor : Status {
     Reactor() {
-        modes = CE::ViewMode::Solo | CE::ViewMode::Replay | CE::ViewMode::Server | CE::ViewMode::Spectate;
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
     }
 
     void RenderLegacy() const override {
@@ -272,14 +272,14 @@ class Reactor : Status {
         if (!Safety::ShouldRun()) {
             f = g_state.reactorFinalTimer;
         } else switch (g_state.viewMode) {
-            case CE::ViewMode::Solo:
-            case CE::ViewMode::Server:
+            case CurrentEffects::ViewMode::Solo:
+            case CurrentEffects::ViewMode::Server:
                 f = float(g_state.reactorRemaining) / Math::Max(1, g_state.reactorDuration);
                 break;
-            case CE::ViewMode::Replay:
+            case CurrentEffects::ViewMode::Replay:
                 f = 0.0f;
                 break;
-            case CE::ViewMode::Spectate:
+            case CurrentEffects::ViewMode::Spectate:
                 f = g_state.reactorFinalTimer;
                 break;
         }
@@ -315,7 +315,7 @@ class Reactor : Status {
 
 class SlowMo : Status {
     SlowMo() {
-        modes = CE::ViewMode::Solo | CE::ViewMode::Replay | CE::ViewMode::Server | CE::ViewMode::Spectate;
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
     }
 
     void RenderLegacy() const override {
@@ -339,8 +339,8 @@ class SlowMo : Status {
 
         if (Safety::ShouldRun()) {
             switch (g_state.viewMode) {
-                case CE::ViewMode::Solo:
-                case CE::ViewMode::Server:
+                case CurrentEffects::ViewMode::Solo:
+                case CurrentEffects::ViewMode::Server:
                     f = float(g_state.slowMoRemaining) / Math::Max(1, g_state.slowMoDuration);
                     break;
             }
@@ -374,11 +374,11 @@ class SlowMo : Status {
 class Turbo : Status {
     Turbo() {
 #if TMNEXT
-        modes = CE::ViewMode::Solo | CE::ViewMode::Replay | CE::ViewMode::Server;
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay | CurrentEffects::ViewMode::Server;
 #elif MP4
-        modes = CE::ViewMode::Solo | CE::ViewMode::Server;
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
 #elif TURBO
-        modes = CE::ViewMode::Solo | CE::ViewMode::Server;
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
 #endif
     }
 
@@ -438,31 +438,31 @@ class Turbo : Status {
 class VehicleType : Status {
     VehicleType() {
 #if TMNEXT
-        modes = CE::ViewMode::Solo | CE::ViewMode::Replay | CE::ViewMode::Server | CE::ViewMode::Spectate;
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
 #elif MP4
-        modes = CE::ViewMode::Solo | CE::ViewMode::Server | CE::ViewMode::Spectate;
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
 #elif TURBO
-        modes = CE::ViewMode::Solo | CE::ViewMode::Server | CE::ViewMode::Spectate;
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
 #endif
     }
 
     void RenderLegacy() const override {
         switch (g_state.vehicleType) {
-            case CE::VehicleType::Stadium: UI::Text(g_offColor    + Icons::Kenney::Car + " Stadium Car"); break;
+            case CurrentEffects::VehicleType::Stadium: UI::Text(g_offColor    + Icons::Kenney::Car + " Stadium Car"); break;
 #if TMNEXT || MP4
-            case CE::VehicleType::Snow:    UI::Text(g_snowColor   + Icons::Kenney::Car + " Snow Car");    break;
-            case CE::VehicleType::Desert:  UI::Text(g_desertColor + Icons::Kenney::Car + " Desert Car");  break;
-            case CE::VehicleType::Rally:   UI::Text(g_rallyColor  + Icons::Kenney::Car + " Rally Car");   break;
+            case CurrentEffects::VehicleType::Snow:    UI::Text(g_snowColor   + Icons::Kenney::Car + " Snow Car");    break;
+            case CurrentEffects::VehicleType::Desert:  UI::Text(g_desertColor + Icons::Kenney::Car + " Desert Car");  break;
+            case CurrentEffects::VehicleType::Rally:   UI::Text(g_rallyColor  + Icons::Kenney::Car + " Rally Car");   break;
 #endif
 #if MP4
-            // case CE::VehicleType::Island:  UI::Text(g_islandColor + Icons::Kenney::Car + " Island Car");  break;
-            case CE::VehicleType::Bay:     UI::Text(g_desertColor + Icons::Kenney::Car + " Bay Car");     break;
-            // case CE::VehicleType::Coast:   UI::Text(g_coastColor  + Icons::Kenney::Car + " Coast Car");   break;
+            // case CurrentEffects::VehicleType::Island:  UI::Text(g_islandColor + Icons::Kenney::Car + " Island Car");  break;
+            case CurrentEffects::VehicleType::Bay:     UI::Text(g_desertColor + Icons::Kenney::Car + " Bay Car");     break;
+            // case CurrentEffects::VehicleType::Coast:   UI::Text(g_coastColor  + Icons::Kenney::Car + " Coast Car");   break;
 #endif
 #if MP4 || TURBO
-            case CE::VehicleType::Canyon:  UI::Text(g_canyonColor + Icons::Kenney::Car + " Canyon Car");  break;
-            case CE::VehicleType::Valley:  UI::Text(g_valleyColor + Icons::Kenney::Car + " Valley Car");  break;
-            case CE::VehicleType::Lagoon:  UI::Text(g_lagoonColor + Icons::Kenney::Car + " Lagoon Car");  break;
+            case CurrentEffects::VehicleType::Canyon:  UI::Text(g_canyonColor + Icons::Kenney::Car + " Canyon Car");  break;
+            case CurrentEffects::VehicleType::Valley:  UI::Text(g_valleyColor + Icons::Kenney::Car + " Valley Car");  break;
+            case CurrentEffects::VehicleType::Lagoon:  UI::Text(g_lagoonColor + Icons::Kenney::Car + " Lagoon Car");  break;
 #endif
         }
     }

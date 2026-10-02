@@ -33,13 +33,13 @@ class StateTurbo : State {
         ticks    = App.Network.PlaygroundClientScriptAPI.GameTime / 10 * 10;  // 100 ticks/s, round down game time
 
         if (App.Challenge.CollectionName == "Canyon") {
-            vehicleType = CE::VehicleType::Canyon;
+            vehicleType = CurrentEffects::VehicleType::Canyon;
         } else if (App.Challenge.CollectionName == "Valley") {
-            vehicleType = CE::VehicleType::Valley;
+            vehicleType = CurrentEffects::VehicleType::Valley;
         } else if (App.Challenge.CollectionName == "Lagoon") {
-            vehicleType = CE::VehicleType::Lagoon;
+            vehicleType = CurrentEffects::VehicleType::Lagoon;
         } else if (App.Challenge.CollectionName == "Stadium") {
-            vehicleType = CE::VehicleType::Stadium;
+            vehicleType = CurrentEffects::VehicleType::Stadium;
         }
 
         _Update(
@@ -48,9 +48,9 @@ class StateTurbo : State {
         );
 
         if (App.PlaygroundScript !is null) {
-            viewMode = CE::ViewMode::Solo;
+            viewMode = CurrentEffects::ViewMode::Solo;
         } else {
-            viewMode = CE::ViewMode::Server;
+            viewMode = CurrentEffects::ViewMode::Server;
             // TODO turbo spectating (but I don't want to)
         }
     }

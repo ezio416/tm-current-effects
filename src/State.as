@@ -1,5 +1,5 @@
 abstract class State {
-    CE::Camera                           camera;
+    CurrentEffects::Camera                           camera;
     bool                                 driving;
     bool                                 finished;
     string                               gameMode;
@@ -15,8 +15,8 @@ abstract class State {
     uint                                 ticks;
     bool                                 turbo;
     float                                turboTimer;
-    CE::VehicleType                      vehicleType;
-    CE::ViewMode                         viewMode;
+    CurrentEffects::VehicleType                      vehicleType;
+    CurrentEffects::ViewMode                         viewMode;
 
     State() {
         Reset();
@@ -54,7 +54,7 @@ abstract class State {
     }
 
     void Reset() {
-        camera      = CE::Camera::Unknown;
+        camera      = CurrentEffects::Camera::Unknown;
         driving     = false;
         finished    = false;
         gameMode    = "";
@@ -70,8 +70,8 @@ abstract class State {
         ticks       = 0;
         turbo       = false;
         turboTimer  = 0.0f;
-        vehicleType = CE::VehicleType::Unknown;
-        viewMode    = CE::ViewMode::Unknown;
+        vehicleType = CurrentEffects::VehicleType::Unknown;
+        viewMode    = CurrentEffects::ViewMode::Unknown;
     }
 
     void Update() {
