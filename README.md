@@ -54,7 +54,7 @@ So many things can affect your car. So many things.
 |turbo timer         |✅|✅|✅|❌|✅|✅|❌|✅|✅|❌
 |vehicle type        |✅|✅|✅|✅|⚠️|⚠️|⚠️|✅|✅|✅
 |web services id     |✅|❌|✅|✅|❌|❌|❌|❌|❌|❌
-|wetness             |✅|✅|✅|❌|❌|❌|❌|❌|❌|❌
+|water               |✅|✅|✅|❌|❌|❌|❌|❌|❌|❌
 
 \* when watching a replay or spectating, fragile only appears if at least one tire is partially worn
 
