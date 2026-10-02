@@ -7,6 +7,10 @@ namespace CurrentEffects {
         return g_state.ghostVis;
     }
 
+    VehicleType StatusVehicleType() {
+        return g_state.vehicleType;
+    }
+
     ViewMode StatusViewMode() {
         return g_state.viewMode;
     }

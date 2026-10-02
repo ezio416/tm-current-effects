@@ -10,6 +10,11 @@ namespace CurrentEffects {
     import bool StatusGhosts() from "CurrentEffects";
 
     /*
+    the current vehicle type (stadium, canyon, etc.)
+    */
+    import VehicleType StatusVehicleType() from "CurrentEffects";
+
+    /*
     the current view mode (solo, spectating, etc.)
     */
     import ViewMode StatusViewMode() from "CurrentEffects";
