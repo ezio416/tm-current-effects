@@ -10,26 +10,81 @@ namespace Safety {
         "2026-07-22_18_27"
     };
 
-    bool checked   = false;
-    bool disregard = false;
-    bool notified  = false;
-    bool safe      = false;
+    bool   checked            = false;
+    bool   checkingApi        = false;
+    bool   notified           = false;
+    bool   safe               = false;
+    string version;
+    uint   versionSafeRetries = 0;
 
     void CheckAsync() {
         if (checked) {
             return;
         }
 
-        const string ver = GetApp().SystemPlatform.ExeVersion;
+        version = GetApp().SystemPlatform.ExeVersion;
 
-        if (SAFE_GAME_VERSIONS.Find(ver) != -1) {
+        if (SAFE_GAME_VERSIONS.Find(version) != -1) {
             checked = safe = true;
             return;
         }
 
-        ;  // TODO safety req
+        if (!GetStatusFromOpenplanetAsync()) {
+            NotifyUnsafe();
+        }
+    }
 
-        NotifyUnsafe();
+    bool GetStatusFromOpenplanetAsync() {
+        if (checkingApi) {
+            return false;
+        }
+
+        checkingApi = true;
+
+        trace("GetStatusFromOpenplanet starting");
+
+        Net::HttpRequest@ req = Net::HttpGet("https://api.openplanet.dev/plugin/currenteffects/config/version-compat");
+        while (!req.Finished()) {
+            yield();
+        }
+
+        int code = req.ResponseCode();
+        if (code != 200) {
+            warn("GetStatusFromOpenplanet error: code: " + code
+                + "; error: " + req.Error() + "; body: " + req.String());
+            checkingApi = false;
+            return RetryGetStatusAsync();
+        }
+
+        try {
+            string pluginVersion = Meta::ExecutingPlugin().Version;
+            Json::Value@ response = Json::Parse(req.String());
+
+            if (response.GetType() == Json::Type::Object) {
+                if (response.HasKey(pluginVersion)) {
+                    if (response[pluginVersion].HasKey(version) && bool(response[pluginVersion][version])) {
+                        checkingApi = false;
+                        trace("GetStatusFromOpenplanet good");
+                        return true;
+                    } else {
+                        warn("GetStatusFromOpenplanet warning: game version " + version
+                            + " not marked good with plugin version " + pluginVersion);
+                    }
+                } else {
+                    warn("GetStatusFromOpenplanet warning: plugin version " + pluginVersion + " not specified");
+                }
+            } else {
+                warn("GetStatusFromOpenplanet error: wrong JSON type received");
+            }
+
+            checkingApi = false;
+            return false;
+
+        } catch {
+            warn("GetStatusFromOpenplanet exception: " + getExceptionInfo());
+            checkingApi = false;
+            return RetryGetStatusAsync();
+        }
     }
 
     void NotifyUnsafe() {
@@ -37,6 +92,25 @@ namespace Safety {
             UI::ShowNotification(PLUGIN_TITLE, NOTIFY_MSG, NOTIFY_COLOR, 15000);
             notified = true;
         }
+    }
+
+    bool RetryGetStatusAsync() {
+        checkingApi = true;
+
+        trace("retrying GetStatusFromOpenplanet in 1000 ms");
+
+        sleep(1000);
+
+        if (versionSafeRetries++ > 5) {
+            warn("not retrying GetStatusFromOpenplanet anymore, too many failures");
+            checkingApi = false;
+            return false;
+        }
+
+        trace("retrying GetStatusFromOpenplanet...");
+
+        checkingApi = false;
+        return GetStatusFromOpenplanetAsync();
     }
 
     bool ShouldRun() {
