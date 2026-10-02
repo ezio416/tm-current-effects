@@ -92,7 +92,7 @@ class ActionKey : Status {
     }
 
     void RenderLegacy() const override {
-        UI::Text(Color::ActionKey() + Icons::Percent + " Action Key " + g_state.actionKey);
+        UI::Text(ColorActionKey() + Icons::Percent + " Action Key " + g_state.actionKey);
 
         vec3 color = S_OffColor;
         switch (g_state.actionKey) {
@@ -134,7 +134,7 @@ class CruiseControl : Status {
     }
 
     void RenderLegacy() const override {
-        UI::Text(Color::CruiseControl() + Icons::Tachometer + " Cruise Control");
+        UI::Text(ColorCruise() + Icons::Tachometer + " Cruise Control");
         RenderLegacyBar(g_state.cruiseControlSpeed, 1000.0f, S_CruiseColor);
     }
 
@@ -160,7 +160,7 @@ class Fragile : Status {
     }
 
     void RenderLegacy() const override {
-        UI::Text(Color::Fragile() + Icons::ChainBroken + " Fragile");
+        UI::Text(ColorFragile() + Icons::ChainBroken + " Fragile");
         RenderLegacyBar(g_state.fragileDamage, 1.0f, S_FragileColor);
     }
 
@@ -185,9 +185,9 @@ class Fragile : Status {
 class ForcedAccel : Handicap {
     void RenderLegacy() const override {
 #if TMNEXT
-        UI::Text(Color::ForcedAccel() + Icons::Forward + " Forced Accel");
+        UI::Text(ColorForced() + Icons::Forward + " Forced Accel");
 #elif MP4
-        UI::Text(Color::ForcedAccel() + Icons::Forward + " Fullspeed Ahead");
+        UI::Text(ColorForced() + Icons::Forward + " Fullspeed Ahead");
 #endif
     }
 
@@ -213,7 +213,7 @@ class ForcedAccel : Handicap {
 
 class NoBrakes : Handicap {
     void RenderLegacy() const override {
-        UI::Text(Color::NoBrake() + Icons::ExclamationTriangle + " No Brakes");
+        UI::Text(ColorNoBrakes() + Icons::ExclamationTriangle + " No Brakes");
     }
 
     void RenderSettings() override {
@@ -222,7 +222,7 @@ class NoBrakes : Handicap {
         Set(UI::Checkbox("No Brakes", S_NoBrakes));
 
         S_NoBrakesColor = UI::InputColor3("", S_NoBrakesColor);
-        g_noBrakeColor = Text::FormatOpenplanetColor(S_NoBrakesColor);
+        g_noBrakesColor = Text::FormatOpenplanetColor(S_NoBrakesColor);
 
         UI::PopID();
     }
@@ -237,9 +237,9 @@ class NoBrakes : Handicap {
 class NoEngine : Handicap {
     void RenderLegacy() const override {
 #if TMNEXT
-        UI::Text(Color::NoEngine() + Icons::PowerOff + " Engine Off");
+        UI::Text(ColorNoEngine() + Icons::PowerOff + " Engine Off");
 #else
-        UI::Text(Color::NoEngine() + Icons::PowerOff + " Free Wheeling");
+        UI::Text(ColorNoEngine() + Icons::PowerOff + " Free Wheeling");
 #endif
     }
 
@@ -267,7 +267,7 @@ class NoEngine : Handicap {
 
 class NoGrip : Handicap {
     void RenderLegacy() const override {
-        UI::Text(Color::NoGrip() + Icons::SnowflakeO + " No Grip");
+        UI::Text(ColorNoGrip() + Icons::SnowflakeO + " No Grip");
     }
 
     void RenderSettings() override {
@@ -288,7 +288,7 @@ class NoGrip : Handicap {
 
 class NoSteer : Handicap {
     void RenderLegacy() const override {
-        UI::Text(Color::NoSteer() + Icons::ArrowsH + " No Steering");
+        UI::Text(ColorNoSteer() + Icons::ArrowsH + " No Steering");
     }
 
     void RenderSettings() override {
@@ -331,7 +331,7 @@ class Reactor : Status {
                 reactorIcon = Icons::ChevronDown; break;
         }
 
-        UI::Text(Color::Reactor() + reactorIcon + " Reactor Boost");
+        UI::Text(ColorReactor() + reactorIcon + " Reactor Boost");
 
         float f;
 
@@ -392,7 +392,7 @@ class SlowMo : Status {
             return;
         }
 
-        UI::Text(Color::SlowMo() + Icons::ClockO + " Slow-Mo");
+        UI::Text(ColorSlowMo() + Icons::ClockO + " Slow-Mo");
 
         vec3 color = S_OffColor;
         switch (g_state.slowMoLevel) {
@@ -458,7 +458,7 @@ class Turbo : Status {
             return;
         }
 
-        UI::Text(Color::Turbo() + Icons::ArrowCircleUp + " Turbo");
+        UI::Text(ColorTurbo() + Icons::ArrowCircleUp + " Turbo");
 
 #if TMNEXT
         vec3 color;
@@ -602,7 +602,7 @@ class Water : Status {
     }
 
     void RenderLegacy() const override {
-        UI::Text(Color::Water() + Icons::Tint + " Water");
+        UI::Text(ColorWater() + Icons::Tint + " Water");
         RenderLegacyBar(g_state.water, 1.0f, S_WaterColor);
     }
 

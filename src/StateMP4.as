@@ -6,7 +6,7 @@ class StateMP4 : State {
     uint                        entityId;
     bool                        forcedAccel;
     bool                        nametagVis;
-    bool                        noBrake;
+    bool                        noBrakes;
     bool                        noGrip;
     bool                        noSteer;
     CurrentEffects::OpponentVis opponentVis;
@@ -21,14 +21,14 @@ class StateMP4 : State {
         UI::TableNextColumn();
         UI::SeparatorText("");
 
-        _RenderDebugRow("entityId",     Color::DebugString(Text::Format("0x%x", entityId)));
-        _RenderDebugRow("forcedAccel",  Color::DebugBool(forcedAccel));
-        _RenderDebugRow("nametagVis",   Color::DebugBool(nametagVis));
-        _RenderDebugRow("noBrake",      Color::DebugBool(noBrake));
-        _RenderDebugRow("noGrip",       Color::DebugBool(noGrip));
-        _RenderDebugRow("noSteer",      Color::DebugBool(noSteer));
-        _RenderDebugRow("opponentVis",  Color::DebugOpponentVis(opponentVis));
-        _RenderDebugRow("spectateAuto", Color::DebugBool(spectateAuto));
+        _RenderDebugRow("entityId",     ColorDebugString(Text::Format("0x%x", entityId)));
+        _RenderDebugRow("forcedAccel",  ColorDebugBool(forcedAccel));
+        _RenderDebugRow("nametagVis",   ColorDebugBool(nametagVis));
+        _RenderDebugRow("noBrake",      ColorDebugBool(noBrakes));
+        _RenderDebugRow("noGrip",       ColorDebugBool(noGrip));
+        _RenderDebugRow("noSteer",      ColorDebugBool(noSteer));
+        _RenderDebugRow("opponentVis",  ColorDebugOpponentVis(opponentVis));
+        _RenderDebugRow("spectateAuto", ColorDebugBool(spectateAuto));
     }
 
     void Reset() override {
@@ -37,7 +37,7 @@ class StateMP4 : State {
         entityId     = 0x0;
         forcedAccel  = false;
         nametagVis   = false;
-        noBrake      = false;
+        noBrakes     = false;
         noGrip       = false;
         noSteer      = false;
         opponentVis  = CurrentEffects::OpponentVis::Unknown;
@@ -154,7 +154,7 @@ class StateMP4 : State {
         if (VisState !is null and VisState.m_vis !is null) {
             noEngine    = VisState.ActiveEffects & 0x1  == 0x1;
             forcedAccel = VisState.ActiveEffects & 0x2  == 0x2;
-            noBrake     = VisState.ActiveEffects & 0x4  == 0x4;
+            noBrakes    = VisState.ActiveEffects & 0x4  == 0x4;
             noSteer     = VisState.ActiveEffects & 0x8  == 0x8;
             noGrip      = VisState.ActiveEffects & 0x10 == 0x10;
 

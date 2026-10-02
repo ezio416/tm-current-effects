@@ -121,7 +121,7 @@ string g_forcedColor;
 
 [Setting category="Colors" hidden]
 vec3 S_NoBrakesColor = vec3(1.0f, 0.848f, 0.0f);
-string g_noBrakeColor;
+string g_noBrakesColor;
 
 [Setting category="Colors" hidden]
 vec3 S_NoGripColor = vec3(0.049f, 0.861f, 1.0f);
@@ -183,69 +183,77 @@ string g_lagoonColor;
 
 [SettingsTab name="Settings" icon="Cog" order=0]
 void SettingsTab_Statuses() {
-    if (UI::Button("Reset general to default")) {
-        Meta::PluginSetting@[]@ settings = PLUGIN_META.GetSettings();
-        for (uint i = 0; i < settings.Length; i++) {
-            if (settings[i].Category == "General") {
-                settings[i].Reset();
+    if (UI::TreeNode("General", UI::TreeNodeFlags::Framed)) {
+        if (UI::Button("Reset general to default")) {
+            Meta::PluginSetting@[]@ settings = PLUGIN_META.GetSettings();
+            for (uint i = 0; i < settings.Length; i++) {
+                if (settings[i].Category == "General") {
+                    settings[i].Reset();
+                }
             }
+
+            OnSettingsChanged();
         }
 
-        OnSettingsChanged();
-    }
-
-    S_Enabled      = UI::Checkbox("Show window", S_Enabled);
-    S_HideWithGame = UI::Checkbox("Show/hide with game UI", S_HideWithGame);
-    S_HideWithOP   = UI::Checkbox("Show/hide with Openplanet UI", S_HideWithOP);
+        S_Enabled      = UI::Checkbox("Show window", S_Enabled);
+        S_HideWithGame = UI::Checkbox("Show/hide with game UI", S_HideWithGame);
+        S_HideWithOP   = UI::Checkbox("Show/hide with Openplanet UI", S_HideWithOP);
 
 #if TMNEXT
-    if (!Safety::safe) {
-        S_OverrideSafety = UI::Checkbox(
-            "\\$fa0" + Icons::ExclamationCircle + " Override safety and run plugin " + Icons::ExclamationCircle,
-            S_OverrideSafety
-        );
-    }
+        if (!Safety::safe) {
+            S_OverrideSafety = UI::Checkbox(
+                "\\$fa0" + Icons::ExclamationCircle + " Override safety and run plugin " + Icons::ExclamationCircle,
+                S_OverrideSafety
+            );
+        }
 #endif
 
-    UI::Separator();
-
-    if (UI::Button("Reset font to default")) {
-        PLUGIN_META.GetSetting("S_Font").Reset();
-        PLUGIN_META.GetSetting("S_FontSize").Reset();
+        UI::TreePop();
     }
 
-    RenderFontSettings();
-
-    UI::Separator();
-
-    if (UI::Button("Reset toggles to default")) {
-        Meta::PluginSetting@[]@ settings = PLUGIN_META.GetSettings();
-        for (uint i = 0; i < settings.Length; i++) {
-            if (settings[i].Category == "Toggles") {
-                settings[i].Reset();
-            }
+    if (UI::TreeNode("Font", UI::TreeNodeFlags::Framed)) {
+        if (UI::Button("Reset font to default")) {
+            PLUGIN_META.GetSetting("S_Font").Reset();
+            PLUGIN_META.GetSetting("S_FontSize").Reset();
         }
 
-        OnSettingsChanged();
+        RenderFontSettings();
+
+        UI::TreePop();
     }
 
-    UI::SameLine();
-    if (UI::Button("Reset colors to default")) {
-        Meta::PluginSetting@[]@ settings = PLUGIN_META.GetSettings();
-        for (uint i = 0; i < settings.Length; i++) {
-            if (settings[i].Category == "Colors") {
-                settings[i].Reset();
+    if (UI::TreeNode("Toggles and Colors", UI::TreeNodeFlags::Framed)) {
+        if (UI::Button("Reset toggles to default")) {
+            Meta::PluginSetting@[]@ settings = PLUGIN_META.GetSettings();
+            for (uint i = 0; i < settings.Length; i++) {
+                if (settings[i].Category == "Toggles") {
+                    settings[i].Reset();
+                }
             }
+
+            OnSettingsChanged();
         }
 
-        OnSettingsChanged();
-    }
+        UI::SameLine();
+        if (UI::Button("Reset colors to default")) {
+            Meta::PluginSetting@[]@ settings = PLUGIN_META.GetSettings();
+            for (uint i = 0; i < settings.Length; i++) {
+                if (settings[i].Category == "Colors") {
+                    settings[i].Reset();
+                }
+            }
 
-    S_OffColor = UI::InputColor3("Status Inactive/Invalid", S_OffColor);
-    g_offColor = Text::FormatOpenplanetColor(S_OffColor);
+            OnSettingsChanged();
+        }
 
-    for (uint i = 0; i < g_statuses.Length; i++) {
-        g_statuses[i].RenderSettings();
+        S_OffColor = UI::InputColor3("Status Inactive/Invalid", S_OffColor);
+        g_offColor = Text::FormatOpenplanetColor(S_OffColor);
+
+        for (uint i = 0; i < g_statuses.Length; i++) {
+            g_statuses[i].RenderSettings();
+        }
+
+        UI::TreePop();
     }
 }
 

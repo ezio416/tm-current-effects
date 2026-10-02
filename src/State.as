@@ -33,24 +33,24 @@ abstract class State {
     }
 
     void RenderDebugRows() const {
-        _RenderDebugRow("camera",      Color::DebugCamera(camera));
-        _RenderDebugRow("driving",     Color::DebugBool(driving));
-        _RenderDebugRow("finished",    Color::DebugBool(finished));
-        _RenderDebugRow("gameMode",    Color::DebugString(gameMode));
-        _RenderDebugRow("ghostVis",    Color::DebugBool(ghostVis));
-        _RenderDebugRow("login",       Color::DebugString(login));
-        _RenderDebugRow("name",        Color::DebugFormattedString(name));
-        _RenderDebugRow("noEngine",    Color::DebugBool(noEngine));
-        _RenderDebugRow("p_vis",       Color::DebugPointer(p_vis));
-        _RenderDebugRow("respawns",    Color::DebugInt(respawns));
-        _RenderDebugRow("sequence",    Color::DebugSequence(sequence));
-        _RenderDebugRow("spawning",    Color::DebugBool(spawning));
-        _RenderDebugRow("startTick",   Color::DebugInt(startTick));
-        _RenderDebugRow("ticks",       Color::DebugInt(ticks));
-        _RenderDebugRow("turbo",       Color::DebugBool(turbo));
-        _RenderDebugRow("turboTimer",  Color::DebugFloat(turboTimer));
-        _RenderDebugRow("vehicleType", Color::DebugVehicleType(vehicleType));
-        _RenderDebugRow("viewMode",    Color::DebugViewMode(viewMode));
+        _RenderDebugRow("camera",      ColorDebugCamera(camera));
+        _RenderDebugRow("driving",     ColorDebugBool(driving));
+        _RenderDebugRow("finished",    ColorDebugBool(finished));
+        _RenderDebugRow("gameMode",    ColorDebugString(gameMode));
+        _RenderDebugRow("ghostVis",    ColorDebugBool(ghostVis));
+        _RenderDebugRow("login",       ColorDebugString(login));
+        _RenderDebugRow("name",        ColorDebugFormattedString(name));
+        _RenderDebugRow("noEngine",    ColorDebugBool(noEngine));
+        _RenderDebugRow("p_vis",       ColorDebugPointer(p_vis));
+        _RenderDebugRow("respawns",    ColorDebugInt(respawns));
+        _RenderDebugRow("sequence",    ColorDebugSequence(sequence));
+        _RenderDebugRow("spawning",    ColorDebugBool(spawning));
+        _RenderDebugRow("startTick",   ColorDebugInt(startTick));
+        _RenderDebugRow("ticks",       ColorDebugInt(ticks));
+        _RenderDebugRow("turbo",       ColorDebugBool(turbo));
+        _RenderDebugRow("turboTimer",  ColorDebugFloat(turboTimer));
+        _RenderDebugRow("vehicleType", ColorDebugVehicleType(vehicleType));
+        _RenderDebugRow("viewMode",    ColorDebugViewMode(viewMode));
     }
 
     void Reset() {

@@ -13,7 +13,7 @@ void Main() {
 }
 
 void OnSettingsChanged() {
-    Color::SetStrings();
+    SetColorStrings();
 }
 
 void Render() {

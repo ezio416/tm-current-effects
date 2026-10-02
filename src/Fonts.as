@@ -31,8 +31,7 @@ void ChangeFont() {
                 @g_font = UI::LoadSystemFont(S_SystemFont);
             } catch {
                 @g_font = null;
-            }
-            if (g_font is null) {
+
                 const string msg = "error loading system font '" + S_SystemFont + "', reverting to DroidSans";
                 error(msg + ", error: " + getExceptionInfo());
                 UI::ShowNotification(
