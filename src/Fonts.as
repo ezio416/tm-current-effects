@@ -1,9 +1,9 @@
-Font      currentFont = S_Font;
-UI::Font@ font;
-UI::Font@ fontDroidSans;
-UI::Font@ fontDroidSansBold;
-UI::Font@ fontDroidSansMono;
-string[]  fontErrors;
+Font      g_currentFont = S_Font;
+UI::Font@ g_font;
+UI::Font@ g_fontDroidSans;
+UI::Font@ g_fontDroidSansBold;
+UI::Font@ g_fontDroidSansMono;
+string[]  g_fontErrors;
 
 enum Font {
     DroidSans,
@@ -18,21 +18,21 @@ enum Font {
 
 void ChangeFont() {
     switch (S_Font) {
-        case Font::DroidSans:      @font = UI::LoadFont("DroidSans.ttf");       break;
-        case Font::DroidSansBold:  @font = UI::LoadFont("DroidSans-Bold.ttf");  break;
-        case Font::DroidSansMono:  @font = UI::LoadFont("DroidSansMono.ttf");   break;
-        case Font::Montserrat:     @font = UI::LoadFont("Montserrat.ttf");      break;
-        case Font::MontserratBold: @font = UI::LoadFont("Montserrat-Bold.ttf"); break;
-        case Font::Oswald:         @font = UI::LoadFont("Oswald.ttf");          break;
-        case Font::OswaldBold:     @font = UI::LoadFont("Oswald-Bold.ttf");     break;
+        case Font::DroidSans:      @g_font = UI::LoadFont("DroidSans.ttf");       break;
+        case Font::DroidSansBold:  @g_font = UI::LoadFont("DroidSans-Bold.ttf");  break;
+        case Font::DroidSansMono:  @g_font = UI::LoadFont("DroidSansMono.ttf");   break;
+        case Font::Montserrat:     @g_font = UI::LoadFont("Montserrat.ttf");      break;
+        case Font::MontserratBold: @g_font = UI::LoadFont("Montserrat-Bold.ttf"); break;
+        case Font::Oswald:         @g_font = UI::LoadFont("Oswald.ttf");          break;
+        case Font::OswaldBold:     @g_font = UI::LoadFont("Oswald-Bold.ttf");     break;
 
         case Font::System:
             try {
-                @font = UI::LoadSystemFont(S_SystemFont);
+                @g_font = UI::LoadSystemFont(S_SystemFont);
             } catch {
-                @font = null;
+                @g_font = null;
             }
-            if (font is null) {
+            if (g_font is null) {
                 const string msg = "error loading system font '" + S_SystemFont + "', reverting to DroidSans";
                 error(msg + ", error: " + getExceptionInfo());
                 UI::ShowNotification(
@@ -41,8 +41,8 @@ void ChangeFont() {
                     vec4(1.0f, 0.2f, 0.2f, 0.5f)
                 );
 
-                if (fontErrors.Find(S_SystemFont) == -1) {
-                    fontErrors.InsertLast(S_SystemFont);
+                if (g_fontErrors.Find(S_SystemFont) == -1) {
+                    g_fontErrors.InsertLast(S_SystemFont);
                 }
                 S_SystemFont = "";
                 S_Font = Font::DroidSans;
@@ -51,45 +51,17 @@ void ChangeFont() {
             }
     }
 
-    currentFont = S_Font;
+    g_currentFont = S_Font;
 }
 
-[SettingsTab icon="Font" name="Font" order=1]
-void SettingsTab_Font() {
+void RenderFontSettings() {
     if (UI::BeginCombo("Font", S_Font == Font::System ? S_SystemFont : tostring(S_Font))) {
-        if (UI::Selectable("DroidSans", S_Font == Font::DroidSans)) {
-            S_Font = Font::DroidSans;
-            ChangeFont();
-        }
-
-        if (UI::Selectable("DroidSansBold", S_Font == Font::DroidSansBold)) {
-            S_Font = Font::DroidSansBold;
-            ChangeFont();
-        }
-
-        if (UI::Selectable("DroidSansMono", S_Font == Font::DroidSansMono)) {
-            S_Font = Font::DroidSansMono;
-            ChangeFont();
-        }
-
-        if (UI::Selectable("Montserrat", S_Font == Font::Montserrat)) {
-            S_Font = Font::Montserrat;
-            ChangeFont();
-        }
-
-        if (UI::Selectable("MontserratBold", S_Font == Font::MontserratBold)) {
-            S_Font = Font::MontserratBold;
-            ChangeFont();
-        }
-
-        if (UI::Selectable("Oswald", S_Font == Font::Oswald)) {
-            S_Font = Font::Oswald;
-            ChangeFont();
-        }
-
-        if (UI::Selectable("OswaldBold", S_Font == Font::OswaldBold)) {
-            S_Font = Font::OswaldBold;
-            ChangeFont();
+        for (int i = 0; i < Font::System; i++) {
+            const Font f = Font(i);
+            if (UI::Selectable(tostring(f), S_Font == f)) {
+                S_Font = f;
+                ChangeFont();
+            }
         }
 
         const string systemFonts = "C:/Windows/Fonts/";
@@ -102,7 +74,7 @@ void SettingsTab_Font() {
                     const string fileName = files[i].Replace(systemFonts, "");
                     const string displayName = fileName.Replace(".ttf", "").Replace(".TTF", "");
                     if (UI::Selectable(
-                        (fontErrors.Find(fileName) > -1 ? "\\$F00" : "") + displayName + "##" + i,
+                        (g_fontErrors.Find(fileName) > -1 ? "\\$F00" : "") + displayName + "##" + i,
                         S_SystemFont == fileName
                     )) {
                         S_Font = Font::System;
