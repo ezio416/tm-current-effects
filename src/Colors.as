@@ -1,220 +1,181 @@
-int64 lastAllColorsSwap = 0;
+namespace Color {
+    const string DEBUG_OFF = "\\$f00";
+    const string DEBUG_ON  = "\\$0f0";
 
 #if TMNEXT
-string GetCruiseColor() {
-    switch (state.CruiseControl) {
-        case -1: return disabledColor;
-        case  1: return cruiseColor;
-        default: return offColor;
+    string CruiseControl() {
+        return g_state.cruiseControl ? g_cruiseColor : g_offColor;
     }
-}
+#endif
+
+    string DebugBool(const bool b) {
+        return (b ? DEBUG_ON : DEBUG_OFF) + b;
+    }
+
+    string DebugCamera(const CE::Camera c) {
+        return (c != CE::Camera::Unknown ? DEBUG_ON : DEBUG_OFF) + tostring(c);
+    }
+
+    string DebugFloat(const double f) {
+        return Text::Format((f != 0.0f ? DEBUG_ON : DEBUG_OFF) + "%.3f", f);
+    }
+
+    string DebugFormattedString(const string&in s) {
+        return DEBUG_ON + Text::StripFormatCodes(s);
+    }
+
+    string DebugInt(const int64 i) {  // unlikely to get a uint64 that exceeds int64 max without being a pointer
+        return (i != 0 ? DEBUG_ON : DEBUG_OFF) + i;
+    }
+
+    string DebugOpponentVis(const CE::OpponentVis o) {
+        return (o > CE::OpponentVis::Off ? DEBUG_ON : DEBUG_OFF) + tostring(o);
+    }
+
+    string DebugPointer(const uint64 p) {
+        return (p != 0x0 ? DEBUG_ON : DEBUG_OFF) + Text::FormatPointer(p);
+    }
+
+#if TMNEXT
+
+    string DebugReactorLevel(const ESceneVehicleVisReactorBoostLvl l) {
+        return (l != ESceneVehicleVisReactorBoostLvl::None ? DEBUG_ON : DEBUG_OFF) + tostring(l);
+    }
+
+    string DebugReactorType(const ESceneVehicleVisReactorBoostType t) {
+        return (t != ESceneVehicleVisReactorBoostType::None ? DEBUG_ON : DEBUG_OFF) + tostring(t);
+    }
+
+#endif
+
+    string DebugSequence(const CGamePlaygroundUIConfig::EUISequence s) {
+        return (s != CGamePlaygroundUIConfig::EUISequence::None ? DEBUG_ON : DEBUG_OFF) + tostring(s);
+    }
+
+    string DebugString(const string&in s) {
+        return DEBUG_ON + s;
+    }
+
+    string DebugVehicleType(const CE::VehicleType v) {
+        return (v != CE::VehicleType::Unknown ? DEBUG_ON : DEBUG_OFF) + tostring(v);
+    }
+
+    string DebugViewMode(const CE::ViewMode v) {
+        return (v != CE::ViewMode::Unknown ? DEBUG_ON : DEBUG_OFF) + tostring(v);
+    }
+
+#if TMNEXT || MP4
+    string ForcedAccel() {
+        return g_state.forcedAccel ? g_forcedColor : g_offColor;
+    }
+#endif
+
+#if TMNEXT
+    string Fragile() {
+        return g_state.fragile ? g_fragileColor : g_offColor;
+    }
 #endif
 
 #if TMNEXT || MP4
-string GetForcedColor() {
-    switch (state.ForcedAccel) {
-        case -1: return disabledColor;
-        case  1: return forcedColor;
-        default: return offColor;
+    string NoBrake() {
+        return g_state.noBrake ? g_noBrakeColor : g_offColor;
     }
-}
+#endif
+
+    string NoEngine() {
+        return g_state.noEngine ? g_noEngineColor : g_offColor;
+    }
+
+#if TMNEXT || MP4
+    string NoGrip() {
+        return g_state.noGrip ? g_noGripColor : g_offColor;
+    }
+#endif
+
+#if TMNEXT || MP4
+    string NoSteer() {
+        return g_state.noSteer ? g_noSteerColor : g_offColor;
+    }
 #endif
 
 #if TMNEXT
-string GetFragileColor() {
-    switch (state.Fragile) {
-        case -1: return disabledColor;
-        case  1: return fragileColor;
-        default: return offColor;
+    string Reactor() {
+        switch (g_state.reactorLevel) {
+            case ESceneVehicleVisReactorBoostLvl::Lvl1: return g_reactor1Color;
+            case ESceneVehicleVisReactorBoostLvl::Lvl2: return g_reactor2Color;
+            default:                                    return g_offColor;
+        }
     }
-}
-#endif
-#if TMNEXT || MP4
-string GetNoBrakesColor() {
-    switch (state.NoBrakes) {
-        case -1: return disabledColor;
-        case  1: return noBrakesColor;
-        default: return offColor;
-    }
-}
 #endif
 
-string GetNoEngineColor() {
-    switch (state.NoEngine) {
-        case -1: return disabledColor;
-        case  1: return noEngineColor;
-        default: return offColor;
-    }
-}
-
-#if TMNEXT || MP4
-string GetNoGripColor() {
-    switch (state.NoGrip) {
-        case -1: return disabledColor;
-        case  1: return noGripColor;
-        default: return offColor;
-    }
-}
-
-string GetNoSteerColor() {
-    switch (state.NoSteer) {
-        case -1: return disabledColor;
-        case  1: return noSteerColor;
-        default: return offColor;
-    }
-}
-#endif
+    void SetStrings() {
+        g_offColor      = Text::FormatOpenplanetColor(S_OffColor);
+        g_noEngineColor = Text::FormatOpenplanetColor(S_NoEngineColor);
 #if TMNEXT
-string GetPenaltyColor() {
-    switch (state.AccelPenalty) {
-        case -1: return disabledColor;
-        case  1: return penaltyColor;
-        default: return offColor;
+        g_cruiseColor   = Text::FormatOpenplanetColor(S_CruiseColor);
+        g_fragileColor  = Text::FormatOpenplanetColor(S_FragileColor);
+        g_reactor1Color = Text::FormatOpenplanetColor(S_Reactor1Color);
+        g_reactor2Color = Text::FormatOpenplanetColor(S_Reactor2Color);
+        g_slowMo1Color  = Text::FormatOpenplanetColor(S_SlowMo1Color);
+        g_slowMo2Color  = Text::FormatOpenplanetColor(S_SlowMo2Color);
+        g_slowMo3Color  = Text::FormatOpenplanetColor(S_SlowMo3Color);
+        g_slowMo4Color  = Text::FormatOpenplanetColor(S_SlowMo4Color);
+        g_turbo1Color   = Text::FormatOpenplanetColor(S_Turbo1Color);
+        g_turbo2Color   = Text::FormatOpenplanetColor(S_Turbo2Color);
+        g_turbo3Color   = Text::FormatOpenplanetColor(S_Turbo3Color);
+        g_turbo4Color   = Text::FormatOpenplanetColor(S_Turbo4Color);
+        g_turbo5Color   = Text::FormatOpenplanetColor(S_Turbo5Color);
+#endif
+#if TMNEXT || MP4
+        g_desertColor   = Text::FormatOpenplanetColor(S_DesertColor);
+        g_forcedColor   = Text::FormatOpenplanetColor(S_ForcedColor);
+        g_noBrakeColor  = Text::FormatOpenplanetColor(S_NoBrakesColor);
+        g_noGripColor   = Text::FormatOpenplanetColor(S_NoGripColor);
+        g_noSteerColor  = Text::FormatOpenplanetColor(S_NoSteerColor);
+        g_rallyColor    = Text::FormatOpenplanetColor(S_RallyColor);
+        g_snowColor     = Text::FormatOpenplanetColor(S_SnowColor);
+#endif
+#if MP4
+        // g_islandColor   = Text::FormatOpenplanetColor(S_IslandColor);
+        g_bayColor      = Text::FormatOpenplanetColor(S_BayColor);
+        // g_coastColor    = Text::FormatOpenplanetColor(S_CoastColor);
+#endif
+#if MP4 || TURBO
+        g_canyonColor    = Text::FormatOpenplanetColor(S_CanyonColor);
+        g_lagoonColor    = Text::FormatOpenplanetColor(S_LagoonColor);
+        g_turboColor     = Text::FormatOpenplanetColor(S_TurboColor);
+        g_valleyColor    = Text::FormatOpenplanetColor(S_ValleyColor);
+#endif
     }
-}
 
-string GetReactorColor() {
-    switch (int(state.ReactorBoostLevel)) {
-        case -1: return disabledColor;
-        case  1: return reactor1Color;
-        case  2: return reactor2Color;
-        default: return offColor;
+#if TMNEXT
+    string SlowMo() {
+        switch (g_state.slowMoLevel) {
+            case 1:  return g_slowMo1Color;
+            case 2:  return g_slowMo2Color;
+            case 3:  return g_slowMo3Color;
+            case 4:  return g_slowMo4Color;
+            default: return g_offColor;
+        }
     }
-}
+#endif
 
-string GetSlowMoColor() {
-    switch (state.SlowMoLevel) {
-        case -1: return disabledColor;
-        case  1: return slowMo1Color;
-        case  2: return slowMo2Color;
-        case  3: return slowMo3Color;
-        case  4: return slowMo4Color;
-        default: return offColor;
-    }
-}
+    string Turbo() {
+        if (!g_state.turbo) {
+            return g_offColor;
+        }
 
-string GetTurboColor() {
-    switch (state.TurboLevel) {
-        case -1: return disabledColor;
-        case  1: return turbo1Color;
-        case  2: return turbo2Color;
-        case  3: return turbo3Color;
-        case  4: return turbo4Color;
-        case  5: return turbo5Color;
-        default: return offColor;
-    }
-}
-
-string GetVehicleColor() {
-    switch (state.Vehicle) {
-        case -1: return disabledColor;
-        case  1: return snowColor;
-        case  2: return rallyColor;
-        case  3: return desertColor;
-        default: return offColor;
-    }
-}
-
+#if TMNEXT
+        switch (g_state.turboLevel) {
+            case 1:  return g_turbo1Color;
+            case 2:  return g_turbo2Color;
+            case 3:  return g_turbo3Color;
+            case 4:  return g_turbo4Color;
+            case 5:  return g_turbo5Color;
+            default: return g_offColor;
+        }
 #else
-string GetTurboColor() {
-    switch (state.TurboLevel) {
-        case  1: return turboColor;
-        default: return offColor;
+        return g_turboColor;
+#endif
     }
-}
-#endif
-
-void SetColors() {
-    offColor      = Text::FormatOpenplanetColor(S_OffColor);
-#if TMNEXT || MP4
-    forcedColor   = Text::FormatOpenplanetColor(S_ForcedColor);
-    noBrakesColor = Text::FormatOpenplanetColor(S_NoBrakesColor);
-#endif
-    noEngineColor = Text::FormatOpenplanetColor(S_NoEngineColor);
-#if TMNEXT || MP4
-    noGripColor   = Text::FormatOpenplanetColor(S_NoGripColor);
-    noSteerColor  = Text::FormatOpenplanetColor(S_NoSteerColor);
-#endif
-#if TMNEXT
-    desertColor   = Text::FormatOpenplanetColor(S_DesertColor);
-    disabledColor = Text::FormatOpenplanetColor(S_DisabledColor);
-    cruiseColor   = Text::FormatOpenplanetColor(S_CruiseColor);
-    fragileColor  = Text::FormatOpenplanetColor(S_FragileColor);
-    penaltyColor  = Text::FormatOpenplanetColor(S_PenaltyColor);
-    rallyColor    = Text::FormatOpenplanetColor(S_RallyColor);
-    reactor1Color = Text::FormatOpenplanetColor(S_Reactor1Color);
-    reactor2Color = Text::FormatOpenplanetColor(S_Reactor2Color);
-    slowMo1Color  = Text::FormatOpenplanetColor(S_SlowMo1Color);
-    slowMo2Color  = Text::FormatOpenplanetColor(S_SlowMo2Color);
-    slowMo3Color  = Text::FormatOpenplanetColor(S_SlowMo3Color);
-    slowMo4Color  = Text::FormatOpenplanetColor(S_SlowMo4Color);
-    snowColor     = Text::FormatOpenplanetColor(S_SnowColor);
-    turbo1Color   = Text::FormatOpenplanetColor(S_Turbo1Color);
-    turbo2Color   = Text::FormatOpenplanetColor(S_Turbo2Color);
-    turbo3Color   = Text::FormatOpenplanetColor(S_Turbo3Color);
-    turbo4Color   = Text::FormatOpenplanetColor(S_Turbo4Color);
-    turbo5Color   = Text::FormatOpenplanetColor(S_Turbo5Color);
-
-#else
-    turboColor = Text::FormatOpenplanetColor(S_TurboColor);
-#endif
-
-}
-
-void ShowAllColors(const bool shouldHide) {
-    if (shouldHide)
-        return;
-
-    state.AccelPenalty = CurrentEffects::ActiveState::Active;
-    state.ForcedAccel  = CurrentEffects::ActiveState::Active;
-    state.NoBrakes     = CurrentEffects::ActiveState::Active;
-    state.NoEngine     = CurrentEffects::ActiveState::Active;
-    state.NoGrip       = CurrentEffects::ActiveState::Active;
-    state.NoSteer      = CurrentEffects::ActiveState::Active;
-
-#if TMNEXT
-    state.CruiseControl = CurrentEffects::ActiveState::Active;
-    state.Fragile       = CurrentEffects::ActiveState::Active;
-
-    int64 now = Time::Stamp;
-
-    if (now - lastAllColorsSwap >= 2) {
-        lastAllColorsSwap = now;
-
-        switch (state.ReactorBoostLevel) {
-            case 0:
-            case 2:  state.ReactorBoostLevel = ESceneVehicleVisReactorBoostLvl::Lvl1; break;
-            default: state.ReactorBoostLevel = ESceneVehicleVisReactorBoostLvl::Lvl2;
-        }
-
-        reactorIcon = (reactorIcon == Icons::ChevronDown) ? Icons::ChevronUp : Icons::ChevronDown;
-
-        switch (state.SlowMoLevel) {
-            case 0:
-            case 4:  state.SlowMoLevel = 1; break;
-            case 1:  state.SlowMoLevel = 2; break;
-            case 2:  state.SlowMoLevel = 3; break;
-            default: state.SlowMoLevel = 4;
-        }
-
-        switch (state.TurboLevel) {
-            case 0:
-            case 5:  state.TurboLevel = 1; break;
-            case 1:  state.TurboLevel = 2; break;
-            case 2:  state.TurboLevel = 3; break;
-            case 3:  state.TurboLevel = 4; break;
-            default: state.TurboLevel = 5;
-        }
-
-        switch (state.Vehicle) {
-            case 0:
-            case 2:  state.Vehicle = 1; break;
-            case 1:  state.Vehicle = 2; break;
-            default: state.Vehicle = 0;
-        }
-    }
-
-#else
-    state.TurboLevel = 1;
-#endif
 }
