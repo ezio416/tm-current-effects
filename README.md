@@ -9,6 +9,7 @@
 So many things can affect your car. So many things. Use this as a dependency if you want static, non-event-based details about the vehicle being looked at. Or just use it as it is, a little window that shows you everything you need to know.
 
 I want to give a special thank you to the following developers who have given me great insight and assistance on this project. Without their help, much of the chart below would not be filled in and I am very grateful.
+- Miss
 - XertroV
 - achepta
 - druduche

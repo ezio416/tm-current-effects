@@ -20,6 +20,14 @@ void RenderLegacy() {
 }
 
 void RenderLegacyWindow() {
+    if (g_state.viewMode == CurrentEffects::ViewMode::Replay) {
+        UI::Text("watching:");
+        UI::Text(g_state.name);
+    } else if (g_state.viewMode == CurrentEffects::ViewMode::Spectate) {
+        UI::Text("spectating:");
+        UI::Text(g_state.name);
+    }
+
     uint count = 0;
 
     for (uint i = 0; i < g_statuses.Length; i++) {
