@@ -21,8 +21,8 @@ void RenderLegacy() {
 
 void RenderLegacyWindow() {
     if (g_state.viewMode == CurrentEffects::ViewMode::Replay) {
-        UI::Text("watching:");
-        UI::Text(g_state.name);
+        UI::Text("watching replay:");
+        UI::Text(g_state.name.Length > 0 ? g_state.name : "(multiple)");
     } else if (g_state.viewMode == CurrentEffects::ViewMode::Spectate) {
         UI::Text("spectating:");
         UI::Text(g_state.name);
