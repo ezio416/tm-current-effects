@@ -7,19 +7,14 @@ namespace CurrentEffects {
     /*
     ghosts are visible
     */
-    import bool StatusGhostVisibility() from "CurrentEffects";
+    import bool StatusGhosts() from "CurrentEffects";
+
+    /*
+    the current view mode (solo, spectating, etc.)
+    */
+    import ViewMode StatusViewMode() from "CurrentEffects";
 
 #if TMNEXT
-
-    /*
-    nametags are visible
-    */
-    import bool StatusNametagVisibility() from "CurrentEffects";
-
-    /*
-    opponents are transparent, opaque, or off
-    */
-    import OpponentVis StatusOpponentVisibility() from "CurrentEffects";
 
     /*
     the plugin is running, whether or not it's safe
@@ -30,6 +25,84 @@ namespace CurrentEffects {
     it is safe to run the plugin with the current game version
     */
     import bool Safe() from "CurrentEffects";
+
+    /*
+    the current action key, if not watching a replay or spectating
+    */
+    import uint8 StatusActionKey() from "CurrentEffects";
+
+    /*
+    fragile effect is active
+    */
+    import bool StatusFragile() from "CurrentEffects";
+
+    /*
+    car is doing a launched respawn
+    */
+    import bool StatusLaunchRespawning() from "CurrentEffects";
+
+    /*
+    reactor ticks given
+    */
+    import uint StatusReactorDuration() from "CurrentEffects";
+
+    /*
+    ticks of reactor used
+    */
+    import uint StatusReactorElapsed() from "CurrentEffects";
+
+    /*
+    when reactor started
+    */
+    import uint StatusReactorStartTick() from "CurrentEffects";
+
+    /*
+    reactor ticks left
+    */
+    import uint StatusReactorRemaining() from "CurrentEffects";
+
+    /*
+    car is respawning
+    */
+    import bool StatusRespawning() from "CurrentEffects";
+
+    /*
+    slow-mo ticks given
+    */
+    import uint StatusSlowMoDuration() from "CurrentEffects";
+
+    /*
+    when slow-mo ends
+    */
+    import uint StatusSlowMoEndTick() from "CurrentEffects";
+
+    /*
+    slow-mo ticks left
+    */
+    import uint StatusSlowMoRemaining() from "CurrentEffects";
+
+    /*
+    car is doing a standing respawn
+    */
+    import bool StatusStandRespawning() from "CurrentEffects";
+
+#endif
+#if TMNEXT || MP4
+
+    /*
+    the ID of the entity we're looking at
+    */
+    import uint StatusEntityId() from "CurrentEffects";
+
+    /*
+    nametags are visible
+    */
+    import bool StatusNametags() from "CurrentEffects";
+
+    /*
+    opponents are transparent, opaque, or off
+    */
+    import OpponentVis StatusOpponents() from "CurrentEffects";
 
 #endif
 }
