@@ -41,6 +41,11 @@ abstract class Status {
     bool enabled = true;
     int  modes   = 0x0;
 
+    bool get_active() const {
+        throw("unimplemented");
+        return false;
+    }
+
     bool get_available() const final {
         return true
             and enabled
@@ -87,11 +92,19 @@ abstract class Handicap : Status {
 #if TMNEXT
 
 class ActionKey : Status {
+    bool get_active() const override {
+        return g_state.actionKey != 5;
+    }
+
     ActionKey() {
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
     }
 
     void RenderLegacy() const override {
+        if (S_HideInactive and !active) {
+            return;
+        }
+
         UI::Text(ColorActionKey() + Icons::Percent + " Action Key " + g_state.actionKey);
 
         vec3 color = S_OffColor;
@@ -128,12 +141,20 @@ class ActionKey : Status {
 }
 
 class CruiseControl : Status {
+    bool get_active() const override {
+        return g_state.cruiseControl;
+    }
+
     CruiseControl() {
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
             | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
     }
 
     void RenderLegacy() const override {
+        if (S_HideInactive and !active) {
+            return;
+        }
+
         UI::Text(ColorCruise() + Icons::Tachometer + " Cruise Control");
         RenderLegacyBar(g_state.cruiseControlSpeed, 1000.0f, S_CruiseColor);
     }
@@ -154,12 +175,20 @@ class CruiseControl : Status {
 }
 
 class Fragile : Status {
+    bool get_active() const override {
+        return g_state.fragile;
+    }
+
     Fragile() {
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
             | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
     }
 
     void RenderLegacy() const override {
+        if (S_HideInactive and !active) {
+            return;
+        }
+
         UI::Text(ColorFragile() + Icons::ChainBroken + " Fragile");
         RenderLegacyBar(g_state.fragileDamage, 1.0f, S_FragileColor);
     }
@@ -183,7 +212,15 @@ class Fragile : Status {
 #if TMNEXT || MP4
 
 class ForcedAccel : Handicap {
+    bool get_active() const override {
+        return g_state.forcedAccel;
+    }
+
     void RenderLegacy() const override {
+        if (S_HideInactive and !active) {
+            return;
+        }
+
 #if TMNEXT
         UI::Text(ColorForced() + Icons::Forward + " Forced Accel");
 #elif MP4
@@ -212,7 +249,15 @@ class ForcedAccel : Handicap {
 }
 
 class NoBrakes : Handicap {
+    bool get_active() const override {
+        return g_state.noBrakes;
+    }
+
     void RenderLegacy() const override {
+        if (S_HideInactive and !active) {
+            return;
+        }
+
         UI::Text(ColorNoBrakes() + Icons::ExclamationTriangle + " No Brakes");
     }
 
@@ -235,7 +280,15 @@ class NoBrakes : Handicap {
 #endif
 
 class NoEngine : Handicap {
+    bool get_active() const override {
+        return g_state.noEngine;
+    }
+
     void RenderLegacy() const override {
+        if (S_HideInactive and !active) {
+            return;
+        }
+
 #if TMNEXT
         UI::Text(ColorNoEngine() + Icons::PowerOff + " Engine Off");
 #else
@@ -266,7 +319,15 @@ class NoEngine : Handicap {
 #if TMNEXT || MP4
 
 class NoGrip : Handicap {
+    bool get_active() const override {
+        return g_state.noGrip;
+    }
+
     void RenderLegacy() const override {
+        if (S_HideInactive and !active) {
+            return;
+        }
+
         UI::Text(ColorNoGrip() + Icons::SnowflakeO + " No Grip");
     }
 
@@ -287,7 +348,15 @@ class NoGrip : Handicap {
 }
 
 class NoSteer : Handicap {
+    bool get_active() const override {
+        return g_state.noSteer;
+    }
+
     void RenderLegacy() const override {
+        if (S_HideInactive and !active) {
+            return;
+        }
+
         UI::Text(ColorNoSteer() + Icons::ArrowsH + " No Steering");
     }
 
@@ -311,13 +380,21 @@ class NoSteer : Handicap {
 #if TMNEXT
 
 class Reactor : Status {
+    bool get_active() const override {
+        return g_state.reactor;
+    }
+
     Reactor() {
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
             | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
     }
 
     void RenderLegacy() const override {
-        if (!g_state.reactor) {
+        if (!active) {
+            if (S_HideInactive) {
+                return;
+            }
+
             UI::Text(g_offColor + Icons::Rocket + " Reactor Boost");
             RenderLegacyBar(0.0f, 1.0f, S_OffColor);
             return;
@@ -380,13 +457,21 @@ class Reactor : Status {
 }
 
 class SlowMo : Status {
+    bool get_active() const override {
+        return g_state.slowMo;
+    }
+
     SlowMo() {
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
             | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
     }
 
     void RenderLegacy() const override {
-        if (!g_state.slowMo) {
+        if (!active) {
+            if (S_HideInactive) {
+                return;
+            }
+
             UI::Text(g_offColor + Icons::ClockO + " Slow-Mo");
             RenderLegacyBar(0.0f, 1.0f, S_OffColor);
             return;
@@ -441,6 +526,10 @@ class SlowMo : Status {
 #endif
 
 class Turbo : Status {
+    bool get_active() const override {
+        return g_state.turbo;
+    }
+
     Turbo() {
 #if TMNEXT
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay | CurrentEffects::ViewMode::Server;
@@ -452,7 +541,11 @@ class Turbo : Status {
     }
 
     void RenderLegacy() const override {
-        if (!g_state.turbo) {
+        if (!active) {
+            if (S_HideInactive) {
+                return;
+            }
+
             UI::Text(g_offColor + Icons::ArrowCircleUp + " Turbo");
             RenderLegacyBar(0.0f, 1.0f, S_OffColor);
             return;
@@ -505,6 +598,10 @@ class Turbo : Status {
 }
 
 class VehicleType : Status {
+    bool get_active() const override {
+        return g_state.vehicleType != CurrentEffects::VehicleType::Stadium;
+    }
+
     VehicleType() {
 #if TMNEXT
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
@@ -552,7 +649,9 @@ class VehicleType : Status {
                 break;
 #endif
             default:
-                UI::Text(g_offColor + Icons::Kenney::Car + " Stadium Car");
+                if (!S_HideInactive) {
+                    UI::Text(g_offColor + Icons::Kenney::Car + " Stadium Car");
+                }
         }
     }
 
@@ -597,11 +696,19 @@ class VehicleType : Status {
 #if TMNEXT
 
 class Water : Status {
+    bool get_active() const override {
+        return g_state.water != 0.0f;
+    }
+
     Water() {
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay | CurrentEffects::ViewMode::Server;
     }
 
     void RenderLegacy() const override {
+        if (S_HideInactive and !active) {
+            return;
+        }
+
         UI::Text(ColorWater() + Icons::Tint + " Water");
         RenderLegacyBar(g_state.water, 1.0f, S_WaterColor);
     }

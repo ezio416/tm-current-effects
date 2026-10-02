@@ -3,15 +3,28 @@ enum Style {
 }
 
 void RenderLegacy() {
-    uint count = 0;
+    uint available = 0;
     for (uint i = 0; i < g_statuses.Length; i++) {
         if (g_statuses[i].available) {
-            count++;
+            available++;
             break;
         }
     }
-    if (count == 0) {
+    if (available == 0) {
         return;
+    }
+
+    if (S_HideInactive) {
+        uint active = 0;
+        for (uint i = 0; i < g_statuses.Length; i++) {
+            if (g_statuses[i].active) {
+                active++;
+                break;
+            }
+        }
+        if (active == 0) {
+            return;
+        }
     }
 
     const int flags = UI::GetDefaultWindowFlags()

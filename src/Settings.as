@@ -1,8 +1,9 @@
 [Setting category="General" hidden] bool  S_Enabled        = true;
 [Setting category="General" hidden] bool  S_HideWithGame   = true;
 [Setting category="General" hidden] bool  S_HideWithOP     = false;
-[Setting category="General" hidden] bool  S_OverrideSafety = false;
+[Setting category="General" hidden] bool  S_HideInactive   = false;
 [Setting category="General" hidden] Style S_Style          = Style::Legacy;
+[Setting category="General" hidden] bool  S_OverrideSafety = false;
 
 
 [Setting category="Toggles" hidden] bool S_NoEngine  = true;
@@ -198,6 +199,7 @@ void SettingsTab_Statuses() {
         S_Enabled      = UI::Checkbox("Show window", S_Enabled);
         S_HideWithGame = UI::Checkbox("Show/hide with game UI", S_HideWithGame);
         S_HideWithOP   = UI::Checkbox("Show/hide with Openplanet UI", S_HideWithOP);
+        S_HideInactive = UI::Checkbox("Only show active statuses", S_HideInactive);
 
 #if TMNEXT
         if (!Safety::safe) {
