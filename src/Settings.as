@@ -1,7 +1,8 @@
-[Setting category="General" hidden] bool  S_Enabled      = true;
-[Setting category="General" hidden] bool  S_HideWithGame = true;
-[Setting category="General" hidden] bool  S_HideWithOP   = false;
-[Setting category="General" hidden] Style S_Style        = Style::Legacy;
+[Setting category="General" hidden] bool  S_Enabled        = true;
+[Setting category="General" hidden] bool  S_HideWithGame   = true;
+[Setting category="General" hidden] bool  S_HideWithOP     = false;
+[Setting category="General" hidden] bool  S_OverrideSafety = false;
+[Setting category="General" hidden] Style S_Style          = Style::Legacy;
 
 
 [Setting category="Toggles" hidden] bool S_NoEngine = true;
@@ -158,7 +159,7 @@ string g_lagoonColor;
 [Setting category="Font" hidden] int    S_FontSize = 16;
 
 
-[SettingsTab name="Visibility" icon="Eye" order=0]
+[SettingsTab name="Settings" icon="Cog" order=0]
 void SettingsTab_Statuses() {
     if (UI::Button("Reset general to default")) {
         Meta::PluginSetting@[]@ settings = PLUGIN_META.GetSettings();
@@ -174,6 +175,13 @@ void SettingsTab_Statuses() {
     S_Enabled      = UI::Checkbox("Show window", S_Enabled);
     S_HideWithGame = UI::Checkbox("Show/hide with game UI", S_HideWithGame);
     S_HideWithOP   = UI::Checkbox("Show/hide with Openplanet UI", S_HideWithOP);
+
+    if (!Safety::safe) {
+        S_OverrideSafety = UI::Checkbox(
+            "\\$fa0" + Icons::ExclamationCircle + " Override safety and run plugin " + Icons::ExclamationCircle,
+            S_OverrideSafety
+        );
+    }
 
     UI::Separator();
 

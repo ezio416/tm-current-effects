@@ -40,7 +40,7 @@ namespace Safety {
     }
 
     bool ShouldRun() {
-        return safe;// or S_OverrideSafety;
+        return safe or S_OverrideSafety;
     }
 }
 
