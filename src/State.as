@@ -1,5 +1,5 @@
 abstract class State {
-    CurrentEffects::Camera                           camera;
+    CurrentEffects::Camera               camera;
     bool                                 driving;
     bool                                 finished;
     string                               gameMode;
@@ -15,8 +15,8 @@ abstract class State {
     uint                                 ticks;
     bool                                 turbo;
     float                                turboTimer;
-    CurrentEffects::VehicleType                      vehicleType;
-    CurrentEffects::ViewMode                         viewMode;
+    CurrentEffects::VehicleType          vehicleType;
+    CurrentEffects::ViewMode             viewMode;
 
     State() {
         Reset();

@@ -15,7 +15,7 @@ class StateNext : State {
     bool                             noBrake;
     bool                             noGrip;
     bool                             noSteer;
-    CurrentEffects::OpponentVis                  opponentVis;
+    CurrentEffects::OpponentVis      opponentVis;
     uint64                           p_phy;
     bool                             reactor;
     uint                             reactorDuration;

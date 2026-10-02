@@ -83,7 +83,8 @@ abstract class Handicap : Status {
 
 class CruiseControl : Status {
     CruiseControl() {
-        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
+            | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
         g_cruiseColor = Text::FormatOpenplanetColor(S_CruiseColor);
     }
 
@@ -109,7 +110,8 @@ class CruiseControl : Status {
 
 class Fragile : Status {
     Fragile() {
-        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
+            | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
     }
 
     void RenderLegacy() const override {
@@ -247,7 +249,8 @@ class NoSteer : Handicap {
 
 class Reactor : Status {
     Reactor() {
-        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
+            | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
     }
 
     void RenderLegacy() const override {
@@ -315,7 +318,8 @@ class Reactor : Status {
 
 class SlowMo : Status {
     SlowMo() {
-        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
+            | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
     }
 
     void RenderLegacy() const override {
@@ -438,7 +442,8 @@ class Turbo : Status {
 class VehicleType : Status {
     VehicleType() {
 #if TMNEXT
-        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
+            | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
 #elif MP4
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
 #elif TURBO
@@ -448,22 +453,41 @@ class VehicleType : Status {
 
     void RenderLegacy() const override {
         switch (g_state.vehicleType) {
-            case CurrentEffects::VehicleType::Stadium: UI::Text(g_offColor    + Icons::Kenney::Car + " Stadium Car"); break;
 #if TMNEXT || MP4
-            case CurrentEffects::VehicleType::Snow:    UI::Text(g_snowColor   + Icons::Kenney::Car + " Snow Car");    break;
-            case CurrentEffects::VehicleType::Desert:  UI::Text(g_desertColor + Icons::Kenney::Car + " Desert Car");  break;
-            case CurrentEffects::VehicleType::Rally:   UI::Text(g_rallyColor  + Icons::Kenney::Car + " Rally Car");   break;
+            case CurrentEffects::VehicleType::Snow:
+                UI::Text(g_snowColor + Icons::Kenney::Car + " Snow Car");
+                break;
+            case CurrentEffects::VehicleType::Desert:
+                UI::Text(g_desertColor + Icons::Kenney::Car + " Desert Car");
+                break;
+            case CurrentEffects::VehicleType::Rally:
+                UI::Text(g_rallyColor  + Icons::Kenney::Car + " Rally Car");
+                break;
 #endif
 #if MP4
-            // case CurrentEffects::VehicleType::Island:  UI::Text(g_islandColor + Icons::Kenney::Car + " Island Car");  break;
-            case CurrentEffects::VehicleType::Bay:     UI::Text(g_desertColor + Icons::Kenney::Car + " Bay Car");     break;
-            // case CurrentEffects::VehicleType::Coast:   UI::Text(g_coastColor  + Icons::Kenney::Car + " Coast Car");   break;
+            // case CurrentEffects::VehicleType::Island:
+            //     UI::Text(g_islandColor + Icons::Kenney::Car + " Island Car");
+            //     break;
+            case CurrentEffects::VehicleType::Bay:
+                UI::Text(g_desertColor + Icons::Kenney::Car + " Bay Car");
+                break;
+            // case CurrentEffects::VehicleType::Coast:
+            //     UI::Text(g_coastColor  + Icons::Kenney::Car + " Coast Car");
+            //     break;
 #endif
 #if MP4 || TURBO
-            case CurrentEffects::VehicleType::Canyon:  UI::Text(g_canyonColor + Icons::Kenney::Car + " Canyon Car");  break;
-            case CurrentEffects::VehicleType::Valley:  UI::Text(g_valleyColor + Icons::Kenney::Car + " Valley Car");  break;
-            case CurrentEffects::VehicleType::Lagoon:  UI::Text(g_lagoonColor + Icons::Kenney::Car + " Lagoon Car");  break;
+            case CurrentEffects::VehicleType::Canyon:
+                UI::Text(g_canyonColor + Icons::Kenney::Car + " Canyon Car");
+                break;
+            case CurrentEffects::VehicleType::Valley:
+                UI::Text(g_valleyColor + Icons::Kenney::Car + " Valley Car");
+                break;
+            case CurrentEffects::VehicleType::Lagoon:
+                UI::Text(g_lagoonColor + Icons::Kenney::Car + " Lagoon Car");
+                break;
 #endif
+            default:
+                UI::Text(g_offColor + Icons::Kenney::Car + " Stadium Car");
         }
     }
 

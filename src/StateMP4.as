@@ -3,14 +3,14 @@
 StateMP4 g_state;
 
 class StateMP4 : State {
-    uint            entityId;
-    bool            forcedAccel;
-    bool            nametagVis;
-    bool            noBrake;
-    bool            noGrip;
-    bool            noSteer;
+    uint                        entityId;
+    bool                        forcedAccel;
+    bool                        nametagVis;
+    bool                        noBrake;
+    bool                        noGrip;
+    bool                        noSteer;
     CurrentEffects::OpponentVis opponentVis;
-    bool            spectateAuto;
+    bool                        spectateAuto;
 
     void RenderDebugRows() const override {
         State::RenderDebugRows();
@@ -70,7 +70,7 @@ class StateMP4 : State {
         nametagVis  = Playground.ForceDisplayNames;
         opponentVis = Danger::GetOpponentVisibility();
         sequence    = Playground.UIConfigs[0].UISequence;
-        ticks       = App.Network.PlaygroundClientScriptAPI.GameTime / 10 * 10;  // 100 ticks/s, round down game time
+        ticks       = App.Network.PlaygroundClientScriptAPI.GameTime / 10 * 10;
 
         switch (App.Network.PlaygroundClientScriptAPI.SettingsPlayerModelId.Value) {
             case 0x4000161f:
