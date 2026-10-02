@@ -3,6 +3,17 @@ enum Style {
 }
 
 void RenderLegacy() {
+    uint count = 0;
+    for (uint i = 0; i < g_statuses.Length; i++) {
+        if (g_statuses[i].available) {
+            count++;
+            break;
+        }
+    }
+    if (count == 0) {
+        return;
+    }
+
     const int flags = UI::GetDefaultWindowFlags()
         | UI::WindowFlags::AlwaysAutoResize
         | UI::WindowFlags::NoFocusOnAppearing
@@ -28,16 +39,9 @@ void RenderLegacyWindow() {
         UI::Text(g_state.name);
     }
 
-    uint count = 0;
-
     for (uint i = 0; i < g_statuses.Length; i++) {
         if (g_statuses[i].available) {
             g_statuses[i].RenderLegacy();
-            count++;
         }
-    }
-
-    if (count == 0) {
-        UI::Text("\\$f00all statuses disabled :(");
     }
 }
