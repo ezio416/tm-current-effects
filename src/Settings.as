@@ -260,6 +260,8 @@ void SettingsTab_Statuses() {
 }
 
 
+#if SIG_DEVELOPER
+
 [SettingsTab name="Debug" icon="Bug" order=66]
 void SettingsTab_Debug() {
     if (UI::BeginTable("##table-debug", 2, UI::TableFlags::RowBg | UI::TableFlags::ScrollY)) {
@@ -276,3 +278,5 @@ void SettingsTab_Debug() {
         UI::EndTable();
     }
 }
+
+#endif
