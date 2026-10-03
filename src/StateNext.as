@@ -310,18 +310,20 @@ class StateNext : State {
 
         brakePedal = Danger::GetBrakePedal(Vehicle);
 
-        launchRespawning = Danger::GetLaunchRespawning(Vehicle);
-        standRespawning = Danger::GetStandRespawning(Vehicle);
-        respawning = launchRespawning or standRespawning;
+        if (!finished) {
+            launchRespawning = Danger::GetLaunchRespawning(Vehicle);
+            standRespawning = Danger::GetStandRespawning(Vehicle);
+            respawning = launchRespawning or standRespawning;
 
-        if (startTick > ticks) {
-            respawnDuration = 1580;
-            respawnRemaining = startTick - ticks;
-        } else {
-            respawnDuration = 1000;
-            respawnEndTick = Danger::GetRespawnEndTick(Vehicle);
-            if (respawnEndTick != 0xffffffff and respawnEndTick > ticks) {
-                respawnRemaining = respawnEndTick - ticks;
+            if (startTick > ticks) {
+                respawnDuration = 1580;
+                respawnRemaining = startTick - ticks;
+            } else {
+                respawnDuration = 1000;
+                respawnEndTick = Danger::GetRespawnEndTick(Vehicle);
+                if (respawnEndTick != 0xffffffff and respawnEndTick > ticks) {
+                    respawnRemaining = respawnEndTick - ticks;
+                }
             }
         }
 
