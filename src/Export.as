@@ -37,6 +37,11 @@ namespace CurrentEffects {
     import uint8 StatusActionKey() from "CurrentEffects";
 
     /*
+    brake pedal is held
+    */
+    import bool StatusBrakePedal() from "CurrentEffects";
+
+    /*
     fragile effect is active
     */
     import bool StatusFragile() from "CurrentEffects";

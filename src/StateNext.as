@@ -4,6 +4,7 @@ StateNext g_state;
 
 class StateNext : State {
     uint8                            actionKey;
+    bool                             brakePedal;
     bool                             cruiseControl;
     float                            cruiseControlSpeed;
     uint                             entityId;
@@ -51,6 +52,7 @@ class StateNext : State {
         UI::SeparatorText("");
 
         _RenderDebugRow("actionKey",          ColorDebugInt(actionKey));
+        _RenderDebugRow("brakePedal",         ColorDebugBool(brakePedal));
         _RenderDebugRow("cruiseControl",      ColorDebugBool(cruiseControl));
         _RenderDebugRow("cruiseControlSpeed", ColorDebugFloat(cruiseControlSpeed));
         _RenderDebugRow("entityId",           ColorDebugString(Text::Format("0x%x", entityId)));
@@ -93,6 +95,7 @@ class StateNext : State {
         State::Reset();
 
         actionKey          = 0;
+        brakePedal         = false;
         cruiseControl      = false;
         cruiseControlSpeed = 0.0f;
         forcedAccel        = false;
@@ -304,6 +307,8 @@ class StateNext : State {
 
         steerLimit = Danger::GetSteerLimit(Vehicle);
         actionKey = int(steerLimit * 5.0f);
+
+        brakePedal = Danger::GetBrakePedal(Vehicle);
 
         launchRespawning = Danger::GetLaunchRespawning(Vehicle);
         standRespawning = Danger::GetStandRespawning(Vehicle);

@@ -29,6 +29,10 @@ namespace CurrentEffects {
         return g_state.actionKey;
     }
 
+    bool StatusBrakePedal() {
+        return g_state.brakePedal;
+    }
+
     bool StatusFragile() {
         return g_state.fragile;
     }

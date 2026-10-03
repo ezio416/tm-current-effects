@@ -17,6 +17,7 @@ namespace Danger {
     const uint16 O_TERMINAL_CUR_CAMERA        = GetMemberOffset("CGameTerminal", "GUIPlayer") + 0x14;
     const uint16 O_TERMINAL_GHOST_ENTITY_ID   = GetMemberOffset("CGameTerminal", "MediaAmbianceClipPlayer") + 0x6c;
     const uint16 O_TUNINGS_SLOWMO_DURATION    = 0x36e4;
+    const uint16 O_VEHICLE_BRAKE_PEDAL        = 0x9c;
     const uint16 O_VEHICLE_FRAGILE            = 0x1360;
     const uint16 O_VEHICLE_LAUNCH_RESPAWNING  = 0x1394;
     const uint16 O_VEHICLE_REACTOR_DURATION   = 0x13bc;
@@ -35,6 +36,14 @@ namespace Danger {
     const uint16 O_VISSTATE_HANDICAPS         = GetMemberOffset("CSceneVehicleVisState", "RaceStartTime") + 0x4;
     const uint16 O_VISSTATE_ITEM_MODEL_INDEX  = 0x8;
     const uint16 O_WRAPPER_OPPONENT_VIS       = GetMemberOffset("CGameUserProfileWrapper", "ProfileOld") + 0x38;
+
+    bool GetBrakePedal(CMwNod@ Vehicle) {
+        if (!Safety::ShouldRun()) {
+            return false;
+        }
+
+        return Dev::GetOffsetFloat(Vehicle, O_VEHICLE_BRAKE_PEDAL) == 1.0f;
+    }
 
     CurrentEffects::Camera GetCurrentCamera(CGameTerminal@ Terminal) {
         if (!Safety::ShouldRun()) {
