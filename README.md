@@ -100,7 +100,7 @@ bool Running();
 // it is safe to run the plugin with the current game version
 bool Safe();
 
-// the current action key, if not watching a replay or spectating
+// the current action key
 uint8 StatusActionKey();
 
 // brake pedal is held
