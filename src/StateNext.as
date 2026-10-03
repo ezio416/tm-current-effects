@@ -25,6 +25,7 @@ class StateNext : State {
     uint                             reactorStartTick;
     uint                             reactorRemaining;
     ESceneVehicleVisReactorBoostType reactorType;
+    uint                             respawnDuration;
     uint                             respawnEndTick;
     bool                             respawning;
     uint                             respawnRemaining;
@@ -71,6 +72,7 @@ class StateNext : State {
         _RenderDebugRow("reactorRemaining",   ColorDebugInt(reactorRemaining));
         _RenderDebugRow("reactorStartTick",   ColorDebugInt(reactorStartTick));
         _RenderDebugRow("reactorType",        ColorDebugReactorType(reactorType));
+        _RenderDebugRow("respawnDuration",    ColorDebugInt(respawnDuration));
         _RenderDebugRow("respawnEndTick",     ColorDebugInt(respawnEndTick));
         _RenderDebugRow("respawning",         ColorDebugBool(respawning));
         _RenderDebugRow("respawnRemaining",   ColorDebugInt(respawnRemaining));
@@ -112,6 +114,7 @@ class StateNext : State {
         reactorStartTick   = 0;
         reactorRemaining   = 0;
         reactorType        = ESceneVehicleVisReactorBoostType::None;
+        respawnDuration    = 0;
         respawnEndTick     = 0;
         respawning         = false;
         respawnRemaining   = 0;
@@ -306,9 +309,15 @@ class StateNext : State {
         standRespawning = Danger::GetStandRespawning(Vehicle);
         respawning = launchRespawning or standRespawning;
 
-        respawnEndTick = Danger::GetRespawnEndTick(Vehicle);
-        if (respawnEndTick != 0xffffffff and respawnEndTick > ticks) {
-            respawnRemaining = respawnEndTick - ticks;
+        if (startTick > ticks) {
+            respawnDuration = 1580;
+            respawnRemaining = startTick - ticks;
+        } else {
+            respawnDuration = 1000;
+            respawnEndTick = Danger::GetRespawnEndTick(Vehicle);
+            if (respawnEndTick != 0xffffffff and respawnEndTick > ticks) {
+                respawnRemaining = respawnEndTick - ticks;
+            }
         }
 
         if (!fragile) {

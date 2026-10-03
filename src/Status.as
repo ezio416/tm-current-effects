@@ -610,7 +610,8 @@ class Respawning : Status {
         } else if (g_state.standRespawning) {
             color = S_StandRespawnColor;
         }
-        RenderLegacyBar(float(g_state.respawnRemaining) * 0.001f, 1.0f, color);
+
+        RenderLegacyBar(float(g_state.respawnRemaining) / Math::Max(1, g_state.respawnDuration), 1.0f, color);
     }
 
     void RenderSettings() override {
