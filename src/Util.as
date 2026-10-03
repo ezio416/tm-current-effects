@@ -129,6 +129,10 @@ string ColorForced() {
     return g_state.forcedAccel ? g_forcedColor : g_offColor;
 }
 
+string ColorNametags() {
+    return g_state.nametagVis ? g_nametagsColor : g_offColor;
+}
+
 string ColorNoBrakes() {
     return g_state.noBrakes ? g_noBrakesColor : g_offColor;
 }
@@ -182,6 +186,7 @@ void SetColorStrings() {
 
     g_desertColor          = Text::FormatOpenplanetColor(S_DesertColor);
     g_forcedColor          = Text::FormatOpenplanetColor(S_ForcedColor);
+    g_nametagsColor        = Text::FormatOpenplanetColor(S_NametagsColor);
     g_noBrakesColor        = Text::FormatOpenplanetColor(S_NoBrakesColor);
     g_noGripColor          = Text::FormatOpenplanetColor(S_NoGripColor);
     g_noSteerColor         = Text::FormatOpenplanetColor(S_NoSteerColor);

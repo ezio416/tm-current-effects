@@ -20,6 +20,7 @@
 #endif
 #if TMNEXT || MP4
 [Setting category="Toggles" hidden] bool S_Forced    = true;
+[Setting category="Toggles" hidden] bool S_Nametags  = false;
 [Setting category="Toggles" hidden] bool S_NoBrakes  = true;
 [Setting category="Toggles" hidden] bool S_NoGrip    = true;
 [Setting category="Toggles" hidden] bool S_NoSteer   = true;
@@ -125,6 +126,10 @@ string g_turboColor;
 [Setting category="Colors" hidden]
 vec3 S_ForcedColor = vec3(0.0f, 1.0f, 0.0f);
 string g_forcedColor;
+
+[Setting category="Colors" hidden]
+vec3 S_NametagsColor = vec3(1.0f, 1.0f, 1.0f);
+string g_nametagsColor;
 
 [Setting category="Colors" hidden]
 vec3 S_NoBrakesColor = vec3(1.0f, 0.848f, 0.0f);

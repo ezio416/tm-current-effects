@@ -7,6 +7,7 @@ Status@[] g_statuses = {
     ForcedAccel(),
     Fragile(),
     Ghosts(),
+    Nametags(),
     NoBrakes(),
     NoGrip(),
     NoSteer(),
@@ -24,6 +25,7 @@ const Status@[] g_statuses = {
     Ghosts(),
     NoEngine(),
     ForcedAccel(),
+    Nametags(),
     NoBrakes(),
     NoGrip(),
     NoSteer(),
@@ -296,6 +298,44 @@ class Ghosts : Status {
 }
 
 #if TMNEXT || MP4
+
+class Nametags : Status {
+    bool get_active() const override {
+        return g_state.nametagVis;
+    }
+
+    Nametags() {
+#if TMNEXT
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
+            | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif MP4
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#endif
+    }
+
+    void RenderLegacy() const override {
+        if (S_HideInactive and !active) {
+            return;
+        }
+
+        UI::Text(ColorNametags() + Icons::Tag + " Nametags");
+    }
+
+    void RenderSettings() override {
+        UI::PushID(this);
+
+        Set(UI::Checkbox("Nametags", S_Nametags));
+
+        S_NametagsColor = UI::InputColor3("", S_NametagsColor);
+        g_nametagsColor = Text::FormatOpenplanetColor(S_NametagsColor);
+
+        UI::PopID();
+    }
+
+    void Set(const bool b) override {
+        enabled = S_Nametags = b;
+    }
+}
 
 class NoBrakes : Handicap {
     bool get_active() const override {
