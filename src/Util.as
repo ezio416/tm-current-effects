@@ -45,6 +45,10 @@ string ColorDebugViewMode(const CurrentEffects::ViewMode v) {
     return (v != CurrentEffects::ViewMode::Unknown ? COLOR_DEBUG_ON : COLOR_DEBUG_OFF) + tostring(v);
 }
 
+string ColorGhosts() {
+    return g_state.ghostVis ? g_ghostsColor : g_offColor;
+}
+
 string ColorNoEngine() {
     return g_state.noEngine ? g_noEngineColor : g_offColor;
 }
@@ -140,6 +144,7 @@ string ColorNoSteer() {
 #endif
 
 void SetColorStrings() {
+    g_ghostsColor   = Text::FormatOpenplanetColor(S_GhostsColor);
     g_offColor      = Text::FormatOpenplanetColor(S_OffColor);
     g_noEngineColor = Text::FormatOpenplanetColor(S_NoEngineColor);
 

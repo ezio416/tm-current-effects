@@ -6,6 +6,7 @@ Status@[] g_statuses = {
     NoEngine(),
     ForcedAccel(),
     Fragile(),
+    Ghosts(),
     NoBrakes(),
     NoGrip(),
     NoSteer(),
@@ -19,6 +20,7 @@ Status@[] g_statuses = {
 #elif MP4
 
 const Status@[] g_statuses = {
+    Ghosts(),
     NoEngine(),
     ForcedAccel(),
     NoBrakes(),
@@ -31,6 +33,7 @@ const Status@[] g_statuses = {
 #elif TURBO
 
 const Status@[] g_statuses = {
+    Ghosts(),
     NoEngine(),
     Turbo()
 };
@@ -93,7 +96,7 @@ abstract class Handicap : Status {
 
 class ActionKey : Status {
     bool get_active() const override {
-        return g_state.actionKey != 5;
+        return 0 < g_state.actionKey and g_state.actionKey < 5;
     }
 
     ActionKey() {
@@ -278,6 +281,46 @@ class NoBrakes : Handicap {
 }
 
 #endif
+
+class Ghosts : Status {
+    bool get_active() const override {
+        return g_state.ghostVis;
+    }
+
+    Ghosts() {
+#if TMNEXT
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
+            | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif MP4
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif TURBO
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#endif
+    }
+
+    void RenderLegacy() const override {
+        if (S_HideInactive and !active) {
+            return;
+        }
+
+        UI::Text(ColorGhosts() + Icons::SnapchatGhost + " Ghosts");
+    }
+
+    void RenderSettings() override {
+        UI::PushID(this);
+
+        Set(UI::Checkbox("Ghosts", S_Ghosts));
+
+        S_GhostsColor = UI::InputColor3("", S_GhostsColor);
+        g_ghostsColor = Text::FormatOpenplanetColor(S_GhostsColor);
+
+        UI::PopID();
+    }
+
+    void Set(const bool b) override {
+        enabled = S_Ghosts = b;
+    }
+}
 
 class NoEngine : Handicap {
     bool get_active() const override {

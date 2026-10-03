@@ -6,6 +6,7 @@
 [Setting category="General" hidden] bool  S_OverrideSafety = false;
 
 
+[Setting category="Toggles" hidden] bool S_Ghosts    = false;
 [Setting category="Toggles" hidden] bool S_NoEngine  = true;
 [Setting category="Toggles" hidden] bool S_Turbo     = true;
 [Setting category="Toggles" hidden] bool S_Vehicle   = true;
@@ -28,6 +29,10 @@
 [Setting category="Colors" hidden]
 vec3 S_OffColor = vec3(0.5f, 0.5f, 0.5f);
 string g_offColor;
+
+[Setting category="Colors" hidden]
+vec3 S_GhostsColor = vec3(1.0f, 1.0f, 1.0f);
+string g_ghostsColor;
 
 [Setting category="Colors" hidden]
 vec3 S_NoEngineColor = vec3(1.0f, 0.0f, 0.0f);
