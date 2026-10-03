@@ -5,16 +5,15 @@
 ![](https://img.shields.io/badge/Game-MP4-blue)
 ![](https://img.shields.io/badge/Game-Turbo-blue)
 
-# Current Effects
-So many things can affect your car. So many things. Use this as a dependency if you want static, non-event-based details about the vehicle being looked at. Or just use it as it is, a little window that shows you everything you need to know.
+![image](images/current-effects-1.png)
 
-I want to give a special thank you to the following developers who have given me great insight and assistance on this project. Without their help, much of the chart below would not be filled in and I am very grateful.
-- Miss
-- XertroV
-- achepta
-- druduche
-- Fort
-- Manama
+# Current Effects
+So many things can affect your car, ranging from an effect that kills your engine to one that makes you fly. It can be hard to keep track of it all, and now you don't have to! With a little window on your screen, you get a comprehensive overview of the things you need to worry about.
+- "Did I actually touch that fragile block?"
+- "When is my reactor going to run out?"
+- "How wet am I?"
+
+Not all statuses (the things we track) are available everywhere. Refer to the chart below to see what is and where. If you're a developer and want to add a checkmark somewhere, human-written PRs are always welcome.
 
 |status              |solo|replay|server|spectate|tm2 solo|tm2 server|tm2 spectate|turbo solo|turbo server|turbo spectate
 |:-:                 |:-: |:-:   |:-:   |:-:     |:-:     |:-:       |:-:         |:-:       |:-:         |:-:
@@ -69,10 +68,16 @@ I want to give a special thank you to the following developers who have given me
 |web services id     |✅|❌|✅|✅|❌|❌|❌|❌|❌|❌
 |water               |✅|✅|✅|❌|❌|❌|❌|❌|❌|❌
 
-\* when watching a replay or spectating, fragile only appears if at least one tire is partially worn
+- ⚠️ when watching a replay or spectating, fragile only appears if at least one tire is partially worn
+- ⚠️ when switching to/from alt cars, slow-mo duration may be wrong
+- ⚠️ vehicle type is probably wrong in envimix
 
-\* when switching to/from alt cars, slow-mo duration may be wrong
+## Thank You
 
-\* vehicle type is probably wrong in envimix
-
-![image](images/current-effects-1.png)
+I want to give a special thank you to the following developers who have given me great insight and assistance on this project. Without their research and help in testing, this plugin would be a shell of what it is now.
+- Miss
+- XertroV
+- achepta
+- druduche
+- Fort
+- Manama
