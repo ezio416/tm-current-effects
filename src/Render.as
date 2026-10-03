@@ -17,7 +17,7 @@ void RenderLegacy() {
     if (S_HideInactive) {
         uint active = 0;
         for (uint i = 0; i < g_statuses.Length; i++) {
-            if (g_statuses[i].active) {
+            if (g_statuses[i].active and g_statuses[i].enabled) {
                 active++;
                 break;
             }
