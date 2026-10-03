@@ -30,7 +30,8 @@ class StateTurbo : State {
         gameMode = cast<CTrackManiaNetworkServerInfo>(App.Network.ServerInfo).CurGameModeStr;
         ghostVis = Playground.IsBestRaceGhostVisible;
         sequence = Playground.UIConfigs[0].UISequence;
-        ticks    = App.Network.PlaygroundClientScriptAPI.GameTime / 10 * 10;
+        gameTime = App.Network.PlaygroundClientScriptAPI.GameTime;
+        ticks    = gameTime / 10 * 10;
 
         if (App.Challenge.CollectionName == "Canyon") {
             vehicleType = CurrentEffects::VehicleType::Canyon;
@@ -64,6 +65,9 @@ class StateTurbo : State {
             startTick = Player.RaceStartTime;
             if (startTick > 0) {
                 driving  = Player.RaceState == CTrackManiaPlayer::ERaceState::Running;
+                if (driving) {
+                    raceTime = gameTime - startTick;
+                }
                 finished = Player.RaceState == CTrackManiaPlayer::ERaceState::Finished;
                 spawning = Player.RaceState == CTrackManiaPlayer::ERaceState::BeforeStart;
             }

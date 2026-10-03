@@ -70,7 +70,8 @@ class StateMP4 : State {
         nametagVis  = Playground.ForceDisplayNames;
         opponentVis = Danger::GetOpponentVisibility();
         sequence    = Playground.UIConfigs[0].UISequence;
-        ticks       = App.Network.PlaygroundClientScriptAPI.GameTime / 10 * 10;
+        gameTime    = App.Network.PlaygroundClientScriptAPI.GameTime;
+        ticks       = gameTime / 10 * 10;
 
         switch (App.Network.PlaygroundClientScriptAPI.SettingsPlayerModelId.Value) {
             case 0x4000161f:
@@ -146,6 +147,9 @@ class StateMP4 : State {
             startTick = ScriptPlayer.RaceStartTime;
             if (startTick > 0) {
                 driving  = ScriptPlayer.RaceState == CTrackManiaScriptPlayer::ERaceState::Running;
+                if (driving) {
+                    raceTime = gameTime - startTick;
+                }
                 finished = ScriptPlayer.RaceState == CTrackManiaScriptPlayer::ERaceState::Finished;
                 spawning = ScriptPlayer.RaceState == CTrackManiaScriptPlayer::ERaceState::BeforeStart;
             }
