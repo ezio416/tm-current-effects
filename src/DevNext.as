@@ -21,6 +21,7 @@ namespace Danger {
     const uint16 O_VEHICLE_LAUNCH_RESPAWNING  = 0x1394;
     const uint16 O_VEHICLE_REACTOR_DURATION   = 0x13bc;
     const uint16 O_VEHICLE_REACTOR_START_TICK = 0x13b0;
+    const uint16 O_VEHICLE_RESPAWN_END_TICK   = 0x12dc;
     const uint16 O_VEHICLE_SLOWMO_END_TICK    = 0x1380;
     const uint16 O_VEHICLE_STAND_RESPAWNING   = 0x16e8;
     const uint16 O_VEHICLE_STEER_LIMIT        = 0x1720;
@@ -146,6 +147,14 @@ namespace Danger {
         }
 
         return Dev::GetOffsetUint32(Vehicle, O_VEHICLE_REACTOR_START_TICK);
+    }
+
+    uint GetRespawnEndTick(CMwNod@ Vehicle) {
+        if (!Safety::ShouldRun()) {
+            return 0;
+        }
+
+        return Dev::GetOffsetUint32(Vehicle, O_VEHICLE_RESPAWN_END_TICK);
     }
 
     uint GetSlowMoDuration(CMwNod@ Tunings) {

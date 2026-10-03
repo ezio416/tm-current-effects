@@ -25,7 +25,9 @@ class StateNext : State {
     uint                             reactorStartTick;
     uint                             reactorRemaining;
     ESceneVehicleVisReactorBoostType reactorType;
+    uint                             respawnEndTick;
     bool                             respawning;
+    uint                             respawnRemaining;
     bool                             slowMo;
     float                            slowMoCoefficient;
     uint                             slowMoDuration;
@@ -69,7 +71,9 @@ class StateNext : State {
         _RenderDebugRow("reactorRemaining",   ColorDebugInt(reactorRemaining));
         _RenderDebugRow("reactorStartTick",   ColorDebugInt(reactorStartTick));
         _RenderDebugRow("reactorType",        ColorDebugReactorType(reactorType));
+        _RenderDebugRow("respawnEndTick",     ColorDebugInt(respawnEndTick));
         _RenderDebugRow("respawning",         ColorDebugBool(respawning));
+        _RenderDebugRow("respawnRemaining",   ColorDebugInt(respawnRemaining));
         _RenderDebugRow("slowMo",             ColorDebugBool(slowMo));
         _RenderDebugRow("slowMoCoefficient",  ColorDebugFloat(slowMoCoefficient));
         _RenderDebugRow("slowMoLevel",        ColorDebugInt(slowMoLevel));
@@ -108,7 +112,9 @@ class StateNext : State {
         reactorStartTick   = 0;
         reactorRemaining   = 0;
         reactorType        = ESceneVehicleVisReactorBoostType::None;
+        respawnEndTick     = 0;
         respawning         = false;
+        respawnRemaining   = 0;
         slowMo             = false;
         slowMoCoefficient  = 0.0f;
         slowMoDuration     = 0;
@@ -299,6 +305,11 @@ class StateNext : State {
         launchRespawning = Danger::GetLaunchRespawning(Vehicle);
         standRespawning = Danger::GetStandRespawning(Vehicle);
         respawning = launchRespawning or standRespawning;
+
+        respawnEndTick = Danger::GetRespawnEndTick(Vehicle);
+        if (respawnEndTick != 0xffffffff and respawnEndTick > ticks) {
+            respawnRemaining = respawnEndTick - ticks;
+        }
 
         if (!fragile) {
             fragile = Danger::GetFragile(Vehicle);

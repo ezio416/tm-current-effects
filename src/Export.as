@@ -67,6 +67,11 @@ namespace CurrentEffects {
     import uint StatusReactorRemaining() from "CurrentEffects";
 
     /*
+    when the current respawn ends
+    */
+    import uint StatusRespawnEndTick() from "CurrentEffects";
+
+    /*
     car is respawning
     */
     import bool StatusRespawning() from "CurrentEffects";

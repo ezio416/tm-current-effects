@@ -53,6 +53,10 @@ namespace CurrentEffects {
         return g_state.reactorRemaining;
     }
 
+    uint StatusRespawnEndTick() {
+        return g_state.respawnEndTick;
+    }
+
     bool StatusRespawning() {
         return g_state.respawning;
     }

@@ -603,6 +603,14 @@ class Respawning : Status {
         }
 
         UI::Text(ColorRespawning() + Icons::Refresh + " Respawning");
+
+        vec3 color = S_OffColor;
+        if (g_state.launchRespawning) {
+            color = S_LaunchRespawnColor;
+        } else if (g_state.standRespawning) {
+            color = S_StandRespawnColor;
+        }
+        RenderLegacyBar(float(g_state.respawnRemaining) * 0.001f, 1.0f, color);
     }
 
     void RenderSettings() override {
