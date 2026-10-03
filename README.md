@@ -72,6 +72,147 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 - ⚠️ when switching to/from alt cars, slow-mo duration may be wrong
 - ⚠️ vehicle type is probably wrong in envimix
 
+## Exports
+`CurrentEffects` has a number of exports for you to use in your own plugins. When using these, it's important to note that CE is updated on the render loop, not the simulation loop.
+
+Plugin version 1.1 is planned to have a much more extensive export system so stay tuned!
+
+### Functions (all games)
+```asc
+// the current camera
+Camera StatusCamera();
+
+// ghosts are visible
+bool StatusGhosts();
+
+// the current vehicle type (stadium, canyon, etc.)
+VehicleType StatusVehicleType();
+
+// the current view mode (solo, spectating, etc.)
+ViewMode StatusViewMode();
+```
+
+### Functions (TM2020)
+```asc
+// the plugin is running, whether or not it's safe
+bool Running();
+
+// it is safe to run the plugin with the current game version
+bool Safe();
+
+// the current action key, if not watching a replay or spectating
+uint8 StatusActionKey();
+
+// brake pedal is held
+bool StatusBrakePedal();
+
+// fragile effect is active
+bool StatusFragile();
+
+// car is doing a launched respawn
+bool StatusLaunchRespawning();
+
+// race time of the player, to the thousandth
+uint StatusRaceTime();
+
+// reactor ticks given
+uint StatusReactorDuration();
+
+// ticks of reactor used
+uint StatusReactorElapsed();
+
+// when reactor started
+uint StatusReactorStartTick();
+
+// reactor ticks left
+uint StatusReactorRemaining();
+
+// when the current respawn ends
+uint StatusRespawnEndTick();
+
+// car is respawning
+bool StatusRespawning();
+
+// respawn ticks left
+uint StatusRespawnRemaining();
+
+// slow-mo ticks given
+uint StatusSlowMoDuration();
+
+// when slow-mo ends
+uint StatusSlowMoEndTick();
+
+// slow-mo ticks left
+uint StatusSlowMoRemaining();
+
+// car is doing a standing respawn
+bool StatusStandRespawning();
+```
+
+### Functions (TM2020/MP4)
+```asc
+// the ID of the entity we're looking at
+uint StatusEntityId();
+
+// nametags are visible
+bool StatusNametags();
+
+// opponents are transparent, opaque, or off
+OpponentVis StatusOpponents();
+```
+
+### Enums
+```asc
+enum Camera {
+    Unknown = -1,
+    Cam1,
+    Alt1,
+    Cam2,
+    Alt2,
+    Cam3,
+    Alt3,
+    Cam7,
+    Alt7,
+    Backwards,
+    SpecFollow,
+    SpecFollowAll,
+    SpecFree,
+    SpecReplay,
+}
+
+enum OpponentVis {
+    Unknown     = -1,
+    Off         = 0,
+    Transparent = 1,
+    Opaque      = 2,
+}
+
+enum VehicleType {
+    Unknown = -1,
+    Snow,
+    Desert,
+    Rally,
+    Island,
+    Bay,
+    Coast,
+    Stadium,
+    Canyon,
+    Human,
+    Valley,
+    Lagoon,
+    Traffic,
+}
+
+enum ViewMode {
+    Unknown     = -1,
+    Solo        = 0x1,
+    Replay      = 0x2,
+    Server      = 0x4,
+    Spectate    = 0x8,
+    SplitScreen = 0x10,
+}
+```
+
 ## Thank You
 
 I want to give a special thank you to the following developers who have given me great insight and assistance on this project. Without their research and help in testing, this plugin would be a shell of what it is now.
