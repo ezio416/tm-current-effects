@@ -32,7 +32,7 @@ namespace CurrentEffects {
     import bool Safe() from "CurrentEffects";
 
     /*
-    the current action key, if not watching a replay or spectating
+    the current action key
     */
     import uint8 StatusActionKey() from "CurrentEffects";
 
