@@ -5,66 +5,220 @@
 ![](https://img.shields.io/badge/Game-MP4-blue)
 ![](https://img.shields.io/badge/Game-Turbo-blue)
 
+![image](images/current-effects-1.png)
+
 # Current Effects
-The newest Trackmania has a number of special effects that can be applied to your car, including some helpers and many hinderances. It can be hard to keep track of what you currently have, especially in cases of LOL maps.
+So many things can affect your car, ranging from an effect that kills your engine to one that makes you fly. It can be hard to keep track of it all, and now you don't have to! With a little window on your screen, you get a comprehensive overview of the things you need to worry about.
+- "Did I actually touch that fragile block?"
+- "When is my reactor going to run out?"
+- "How wet am I?"
 
-For Maniaplanet, this will display all available effects, but can't yet distinguish between turbo levels.
+Not all statuses (the things we track) are available everywhere. Refer to the chart below to see what is and where. If you're a developer and want to add a checkmark somewhere, human-written PRs are always welcome.
 
-Showcase (older version): https://youtu.be/0rzvJQJC8gc
+|status              |solo|replay|server|spectate|tm2 solo|tm2 server|tm2 spectate|turbo solo|turbo server|turbo spectate
+|:-:                 |:-: |:-:   |:-:   |:-:     |:-:     |:-:       |:-:         |:-:       |:-:         |:-:
+|action key          |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
+|brake pedal         |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
+|camera              |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
+|cruise control      |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
+|cruise control speed|✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
+|driving             |✅|✅|✅|❌|✅|✅|✅|✅|✅|❌
+|engine off          |✅|❌|✅|✅|✅|✅|❌|✅|✅|❌
+|entity id           |✅|✅|✅|✅|✅|✅|✅|❌|❌|❌
+|finished            |✅|✅|✅|❌|✅|✅|✅|✅|✅|❌
+|forced acceleration |✅|❌|✅|✅|✅|✅|❌|❌|❌|❌
+|fragile             |✅|⚠️|✅|⚠️|❌|❌|❌|❌|❌|❌
+|fragile damage      |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
+|game mode           |✅|✅|✅|✅|✅|✅|✅|✅|✅|✅
+|ghost visibility    |✅|✅|✅|✅|✅|✅|✅|✅|✅|✅
+|launch respawning   |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
+|login               |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
+|name                |✅|✅|✅|✅|✅|✅|✅|✅|✅|❌
+|nametag visibility  |✅|✅|✅|✅|✅|✅|✅|❌|❌|❌
+|no brakes           |✅|❌|✅|✅|✅|✅|❌|❌|❌|❌
+|no grip             |✅|❌|✅|✅|✅|✅|❌|❌|❌|❌
+|no steering         |✅|❌|✅|✅|✅|✅|❌|❌|❌|❌
+|opponent visibility |✅|✅|✅|✅|✅|✅|✅|❌|❌|❌
+|race time           |✅|❌|✅|✅|❌|❌|❌|❌|❌|❌
+|reactor             |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
+|reactor duration    |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
+|reactor final timer |✅|❌|✅|✅|❌|❌|❌|❌|❌|❌
+|reactor level       |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
+|reactor remaining   |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
+|reactor type        |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
+|respawn duration    |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
+|respawn end tick    |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
+|respawning          |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
+|respawn remaining   |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
+|respawns            |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
+|sequence            |✅|✅|✅|✅|✅|✅|✅|✅|✅|✅
+|slow-mo             |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
+|slow-mo coefficient |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
+|slow-mo duration    |⚠️|❌|⚠️|❌|❌|❌|❌|❌|❌|❌
+|slow-mo level       |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
+|slow-mo remaining   |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
+|spawning            |✅|✅|✅|✅|✅|✅|✅|✅|✅|❌
+|stand respawning    |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
+|start tick          |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
+|ticks               |✅|✅|✅|✅|✅|✅|✅|✅|✅|✅
+|turbo               |✅|✅|✅|❌|✅|✅|❌|✅|✅|❌
+|turbo level         |✅|✅|✅|❌|❌|❌|❌|❌|❌|❌
+|turbo timer         |✅|✅|✅|❌|✅|✅|❌|✅|✅|❌
+|vehicle type        |✅|✅|✅|✅|⚠️|⚠️|⚠️|✅|✅|✅
+|web services id     |✅|❌|✅|✅|❌|❌|❌|❌|❌|❌
+|water               |✅|✅|✅|❌|❌|❌|❌|❌|❌|❌
 
-### Currently working:
-- Cruise Control
-- Engine Off (Free Wheeling in MP4)
-- Forced Acceleration (Fullspeed Ahead in MP4)
-- No Brakes
-- No Grip
-- No Steering
-- Reactor Boost (yellow/red, up/down, last-second timer)
-- Slow-Mo (all 4 levels)
-- Turbo (all 5 levels, timer)
-- Vehicle detection (Stadium/Snow/Rally)
-- Editor playtest
-- Playing on servers
-- Detecting when user is spectating or watching a replay
-
-### Partially working:
-- Viewing replays (most effects unsupported)
-- Spectating (some effects unsupported)
-- Acceleration penalty (very experimental, probably wrong)
-- Fragile (experimental, breaks in some instances (no pun intended))
-
-### Not working / not implemented:
-- Reactor Boost (full 6-second timer - the only reason I started this)
-- Slow-Mo (timer)
+- ⚠️ when watching a replay or spectating, fragile only appears if at least one tire is partially worn
+- ⚠️ when switching to/from alt cars, slow-mo duration may be wrong
+- ⚠️ vehicle type is probably wrong in envimix
 
 ## Exports
-Current Effects (CE) now allows you to use it as a dependency! To do so, include "CurrentEffects" in your `info.toml`'s dependency list. In order to use these exports, call `CurrentEffects::GetState()`. This returns a `CurrentEffects::State` object which cannot be instantiated on its own, but a null handle may be initialized globally. It is safe to keep this handle around indefinitely. Don't call this function globally, rather within one of your own functions to ensure the return is not null. Within this class are all the variables you will need, and anything that is not marked as a constant can be freely modified (currently only includes 2 settings). Many variables have a type of `CurrentEffects::ActiveState` which is a shared enum. It acts like a 3-state boolean, with `-1` indicating the effect is disabled (because the user is spectating or watching a replay), `0` indicating inactive, and `1` indicating active.
+`CurrentEffects` has a number of exports for you to use in your own plugins. When using these, it's important to note that CE is updated on the render loop, not the simulation loop.
 
-### Trackmania (2020) / Maniaplanet 4 / Trackmania Turbo
-- `const ActiveState NoEngine` - Whether Engine Off/Free Wheeling is active. Does not work when watching a replay.
-- `const int TurboLevel` - Current level of Turbo `0 - 5` (`-1` when disabled). Does not work when spectating. (TMNEXT) Optionally cast to `VehicleState::TurboLevel`. (MP4/Turbo) Only sets to `1` when active.
+Plugin version 1.1 is planned to have a much more extensive export system so stay tuned!
 
-### Trackmania (2020) / Maniaplanet 4
-- `const ActiveState ForcedAccel` - Whether Forced Acceleration/Fullspeed Ahead is active. Does not work when watching a replay.
-- `const ActiveState NoBrakes` - Whether No Brakes is active. Does not work when watching a replay.
-- `const ActiveState NoGrip` - Whether No Grip is active. Does not work when watching a replay.
-- `const ActiveState NoSteer` - Whether No Steering is active. Does not work when watching a replay.
-- `bool Experimental` - Whether experimental features are enabled.
-- `bool RunWhenHidden` - Whether CE will run in the background. You should set this to `true` when using CE as a dependency.
+### Functions (all games)
+```asc
+// the current camera
+Camera StatusCamera();
 
-### Trackmania (2020)-specific
-- `const ActiveState AccelPenalty` - (Experimental, probably wrong) Whether Acceleration Penalty is active. Does not work when spectating or watching a replay.
-- `const ActiveState CruiseControl` - Whether Cruise Control is active. Does not work when spectating.
-- `const ActiveState Fragile` - (Experimental) Whether Fragile is active. Does not work when watching a replay or spectating.
-- `const float ReactorBoostFinalTimer` - Timer that counts from `0.0 - 1.0` in the final second of Reactor Boost. Does not work when watching a replay.
-- `const ESceneVehicleVisReactorBoostLvl ReactorBoostLevel` - Current level of Reactor Boost.
-- `const ESceneVehicleVisReactorBoostType ReactorBoostType` - Current type of Reactor Boost.
-- `const int SlowMoLevel` - Current level of Slow-Mo `0 - 4`.
-- `const bool Spectating` - Whether the user is spectating another player.
-- `const float TurboTime` - Timer that counts from `0.0 - 1.0` as Turbo is running out. Does not work when spectating.
-- `const int Vehicle` - Current vehicle type (Stadium `0`, Snow `1`, Rally `2`). Optionally cast to `VehicleState::VehicleType` (once available).
-- `const bool WatchingReplay` - Whether the user is watching a replay.
+// ghosts are visible
+bool StatusGhosts();
 
-There are several more exported functions available, but they are deprecated and will be removed in a future update. As such, they are no longer documented. If you are already using these, switch to the new method of using `CurrentEffects::GetState()`.
+// the current vehicle type (stadium, canyon, etc.)
+VehicleType StatusVehicleType();
 
-![image](images/current-effects.png)
+// the current view mode (solo, spectating, etc.)
+ViewMode StatusViewMode();
+```
+
+### Functions (TM2020)
+```asc
+// the plugin is running, whether or not it's safe
+bool Running();
+
+// it is safe to run the plugin with the current game version
+bool Safe();
+
+// the current action key
+uint8 StatusActionKey();
+
+// brake pedal is held
+bool StatusBrakePedal();
+
+// fragile effect is active
+bool StatusFragile();
+
+// car is doing a launched respawn
+bool StatusLaunchRespawning();
+
+// race time of the player, to the thousandth
+uint StatusRaceTime();
+
+// reactor ticks given
+uint StatusReactorDuration();
+
+// ticks of reactor used
+uint StatusReactorElapsed();
+
+// when reactor started
+uint StatusReactorStartTick();
+
+// reactor ticks left
+uint StatusReactorRemaining();
+
+// when the current respawn ends
+uint StatusRespawnEndTick();
+
+// car is respawning
+bool StatusRespawning();
+
+// respawn ticks left
+uint StatusRespawnRemaining();
+
+// slow-mo ticks given
+uint StatusSlowMoDuration();
+
+// when slow-mo ends
+uint StatusSlowMoEndTick();
+
+// slow-mo ticks left
+uint StatusSlowMoRemaining();
+
+// car is doing a standing respawn
+bool StatusStandRespawning();
+```
+
+### Functions (TM2020/MP4)
+```asc
+// the ID of the entity we're looking at
+uint StatusEntityId();
+
+// nametags are visible
+bool StatusNametags();
+
+// opponents are transparent, opaque, or off
+OpponentVis StatusOpponents();
+```
+
+### Enums
+```asc
+enum Camera {
+    Unknown = -1,
+    Cam1,
+    Alt1,
+    Cam2,
+    Alt2,
+    Cam3,
+    Alt3,
+    Cam7,
+    Alt7,
+    Backwards,
+    SpecFollow,
+    SpecFollowAll,
+    SpecFree,
+    SpecReplay,
+}
+
+enum OpponentVis {
+    Unknown     = -1,
+    Off         = 0,
+    Transparent = 1,
+    Opaque      = 2,
+}
+
+enum VehicleType {
+    Unknown = -1,
+    Snow,
+    Desert,
+    Rally,
+    Island,
+    Bay,
+    Coast,
+    Stadium,
+    Canyon,
+    Human,
+    Valley,
+    Lagoon,
+    Traffic,
+}
+
+enum ViewMode {
+    Unknown     = -1,
+    Solo        = 0x1,
+    Replay      = 0x2,
+    Server      = 0x4,
+    Spectate    = 0x8,
+    SplitScreen = 0x10,
+}
+```
+
+## Thank You
+
+I want to give a special thank you to the following developers who have given me great insight and assistance on this project. Without their research and help in testing, this plugin would be a shell of what it is now.
+- Miss
+- XertroV
+- achepta
+- druduche
+- Fort
+- Manama
