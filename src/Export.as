@@ -52,6 +52,11 @@ namespace CurrentEffects {
     import bool StatusLaunchRespawning() from "CurrentEffects";
 
     /*
+    race time of the player, to the thousandth
+    */
+    import uint StatusRaceTime() from "CurrentEffects";
+
+    /*
     reactor ticks given
     */
     import uint StatusReactorDuration() from "CurrentEffects";

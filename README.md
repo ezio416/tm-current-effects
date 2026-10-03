@@ -40,6 +40,7 @@ I want to give a special thank you to the following developers who have given me
 |no grip             |✅|❌|✅|✅|✅|✅|❌|❌|❌|❌
 |no steering         |✅|❌|✅|✅|✅|✅|❌|❌|❌|❌
 |opponent visibility |✅|✅|✅|✅|✅|✅|✅|❌|❌|❌
+|race time           |✅|❌|✅|✅|❌|❌|❌|❌|❌|❌
 |reactor             |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
 |reactor duration    |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |reactor final timer |✅|❌|✅|✅|❌|❌|❌|❌|❌|❌

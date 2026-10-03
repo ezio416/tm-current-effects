@@ -164,7 +164,8 @@ class StateNext : State {
         opponentVis = Danger::GetOpponentVisibility(App.CurrentProfile);
         sequence    = Playground.UIConfigs[0].UISequence;
         finished    = sequence == CGamePlaygroundUIConfig::EUISequence::Finish;
-        ticks       = App.Network.PlaygroundClientScriptAPI.GameTime / 10 * 10;
+        gameTime    = App.Network.PlaygroundClientScriptAPI.GameTime;
+        ticks       = gameTime / 10 * 10;
 
         if (App.PlaygroundScript is null) {
             auto Player = cast<CSmPlayer>(Playground.GameTerminals[0].GUIPlayer);
@@ -292,6 +293,9 @@ class StateNext : State {
             and !finished
             and !spawning
         ;
+        if (gameTime > startTick) {
+            raceTime = gameTime - startTick;
+        }
 
         if (ScriptPlayer.Score !is null) {
             respawns = ScriptPlayer.Score.NbRespawnsRequested;

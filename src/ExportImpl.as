@@ -41,6 +41,10 @@ namespace CurrentEffects {
         return g_state.launchRespawning;
     }
 
+    uint StatusRaceTime() {
+        return g_state.raceTime;
+    }
+
     uint StatusReactorDuration() {
         return g_state.reactorDuration;
     }
