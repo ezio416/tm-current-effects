@@ -141,6 +141,14 @@ string ColorNoSteer() {
     return g_state.noSteer ? g_noSteerColor : g_offColor;
 }
 
+string ColorOpponents() {
+    switch (g_state.opponentVis) {
+        case CurrentEffects::OpponentVis::Opaque:      return g_opponentsOpaqueColor;
+        case CurrentEffects::OpponentVis::Transparent: return g_opponentsTransColor;
+        default:                                       return g_offColor;
+    }
+}
+
 #endif
 
 void SetColorStrings() {
@@ -172,28 +180,30 @@ void SetColorStrings() {
 #endif
 #if TMNEXT || MP4
 
-    g_desertColor   = Text::FormatOpenplanetColor(S_DesertColor);
-    g_forcedColor   = Text::FormatOpenplanetColor(S_ForcedColor);
-    g_noBrakesColor = Text::FormatOpenplanetColor(S_NoBrakesColor);
-    g_noGripColor   = Text::FormatOpenplanetColor(S_NoGripColor);
-    g_noSteerColor  = Text::FormatOpenplanetColor(S_NoSteerColor);
-    g_rallyColor    = Text::FormatOpenplanetColor(S_RallyColor);
-    g_snowColor     = Text::FormatOpenplanetColor(S_SnowColor);
+    g_desertColor          = Text::FormatOpenplanetColor(S_DesertColor);
+    g_forcedColor          = Text::FormatOpenplanetColor(S_ForcedColor);
+    g_noBrakesColor        = Text::FormatOpenplanetColor(S_NoBrakesColor);
+    g_noGripColor          = Text::FormatOpenplanetColor(S_NoGripColor);
+    g_noSteerColor         = Text::FormatOpenplanetColor(S_NoSteerColor);
+    g_opponentsOpaqueColor = Text::FormatOpenplanetColor(S_OpponentsOpaqueColor);
+    g_opponentsTransColor  = Text::FormatOpenplanetColor(S_OpponentsTransColor);
+    g_rallyColor           = Text::FormatOpenplanetColor(S_RallyColor);
+    g_snowColor            = Text::FormatOpenplanetColor(S_SnowColor);
 
 #endif
 #if MP4
 
-    // g_islandColor   = Text::FormatOpenplanetColor(S_IslandColor);
-    g_bayColor      = Text::FormatOpenplanetColor(S_BayColor);
-    // g_coastColor    = Text::FormatOpenplanetColor(S_CoastColor);
+    // g_islandColor = Text::FormatOpenplanetColor(S_IslandColor);
+    g_bayColor    = Text::FormatOpenplanetColor(S_BayColor);
+    // g_coastColor  = Text::FormatOpenplanetColor(S_CoastColor);
 
 #endif
 #if MP4 || TURBO
 
-    g_canyonColor    = Text::FormatOpenplanetColor(S_CanyonColor);
-    g_lagoonColor    = Text::FormatOpenplanetColor(S_LagoonColor);
-    g_turboColor     = Text::FormatOpenplanetColor(S_TurboColor);
-    g_valleyColor    = Text::FormatOpenplanetColor(S_ValleyColor);
+    g_canyonColor = Text::FormatOpenplanetColor(S_CanyonColor);
+    g_lagoonColor = Text::FormatOpenplanetColor(S_LagoonColor);
+    g_turboColor  = Text::FormatOpenplanetColor(S_TurboColor);
+    g_valleyColor = Text::FormatOpenplanetColor(S_ValleyColor);
 
 #endif
 }

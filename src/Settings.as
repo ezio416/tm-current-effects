@@ -23,11 +23,12 @@
 [Setting category="Toggles" hidden] bool S_NoBrakes  = true;
 [Setting category="Toggles" hidden] bool S_NoGrip    = true;
 [Setting category="Toggles" hidden] bool S_NoSteer   = true;
+[Setting category="Toggles" hidden] bool S_Opponents = false;
 #endif
 
 
 [Setting category="Colors" hidden]
-vec3 S_OffColor = vec3(0.5f, 0.5f, 0.5f);
+vec3 S_OffColor = vec3(0.35f, 0.35f, 0.35f);
 string g_offColor;
 
 [Setting category="Colors" hidden]
@@ -136,6 +137,14 @@ string g_noGripColor;
 [Setting category="Colors" hidden]
 vec3 S_NoSteerColor = vec3(0.951f, 0.0f, 1.0f);
 string g_noSteerColor;
+
+[Setting category="Colors" hidden]
+vec3 S_OpponentsOpaqueColor = vec3(1.0f, 1.0f, 1.0f);
+string g_opponentsOpaqueColor;
+
+[Setting category="Colors" hidden]
+vec3 S_OpponentsTransColor = vec3(0.6f, 0.6f, 0.6f);
+string g_opponentsTransColor;
 
 [Setting category="Colors" hidden]
 vec3 S_SnowColor = vec3(0.0f, 1.0f, 1.0f);

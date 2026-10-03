@@ -10,6 +10,7 @@ Status@[] g_statuses = {
     NoBrakes(),
     NoGrip(),
     NoSteer(),
+    Opponents(),
     Reactor(),
     SlowMo(),
     Turbo(),
@@ -26,6 +27,7 @@ const Status@[] g_statuses = {
     NoBrakes(),
     NoGrip(),
     NoSteer(),
+    Opponents(),
     Turbo(),
     VehicleType(),
 };
@@ -251,35 +253,6 @@ class ForcedAccel : Handicap {
     }
 }
 
-class NoBrakes : Handicap {
-    bool get_active() const override {
-        return g_state.noBrakes;
-    }
-
-    void RenderLegacy() const override {
-        if (S_HideInactive and !active) {
-            return;
-        }
-
-        UI::Text(ColorNoBrakes() + Icons::ExclamationTriangle + " No Brakes");
-    }
-
-    void RenderSettings() override {
-        UI::PushID(this);
-
-        Set(UI::Checkbox("No Brakes", S_NoBrakes));
-
-        S_NoBrakesColor = UI::InputColor3("", S_NoBrakesColor);
-        g_noBrakesColor = Text::FormatOpenplanetColor(S_NoBrakesColor);
-
-        UI::PopID();
-    }
-
-    void Set(const bool b) override {
-        enabled = S_NoBrakes = b;
-    }
-}
-
 #endif
 
 class Ghosts : Status {
@@ -321,6 +294,39 @@ class Ghosts : Status {
         enabled = S_Ghosts = b;
     }
 }
+
+#if TMNEXT || MP4
+
+class NoBrakes : Handicap {
+    bool get_active() const override {
+        return g_state.noBrakes;
+    }
+
+    void RenderLegacy() const override {
+        if (S_HideInactive and !active) {
+            return;
+        }
+
+        UI::Text(ColorNoBrakes() + Icons::ExclamationTriangle + " No Brakes");
+    }
+
+    void RenderSettings() override {
+        UI::PushID(this);
+
+        Set(UI::Checkbox("No Brakes", S_NoBrakes));
+
+        S_NoBrakesColor = UI::InputColor3("", S_NoBrakesColor);
+        g_noBrakesColor = Text::FormatOpenplanetColor(S_NoBrakesColor);
+
+        UI::PopID();
+    }
+
+    void Set(const bool b) override {
+        enabled = S_NoBrakes = b;
+    }
+}
+
+#endif
 
 class NoEngine : Handicap {
     bool get_active() const override {
@@ -416,6 +422,48 @@ class NoSteer : Handicap {
 
     void Set(const bool b) override {
         enabled = S_NoSteer = b;
+    }
+}
+
+class Opponents : Status {
+    bool get_active() const override {
+        return g_state.opponentVis == CurrentEffects::OpponentVis::Opaque
+            or g_state.opponentVis == CurrentEffects::OpponentVis::Transparent;
+    }
+
+    Opponents() {
+#if TMNEXT
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
+            | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif MP4
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#endif
+    }
+
+    void RenderLegacy() const override {
+        if (S_HideInactive and !active) {
+            return;
+        }
+
+        UI::Text(ColorOpponents() + Icons::Users + " Opponents");
+    }
+
+    void RenderSettings() override {
+        UI::PushID(this);
+
+        Set(UI::Checkbox("Opponents", S_Opponents));
+
+        S_OpponentsTransColor = UI::InputColor3("transparent", S_OpponentsTransColor);
+        g_opponentsTransColor = Text::FormatOpenplanetColor(S_OpponentsTransColor);
+
+        S_OpponentsOpaqueColor = UI::InputColor3("opaque", S_OpponentsOpaqueColor);
+        g_opponentsOpaqueColor = Text::FormatOpenplanetColor(S_OpponentsOpaqueColor);
+
+        UI::PopID();
+    }
+
+    void Set(const bool b) override {
+        enabled = S_Opponents = b;
     }
 }
 
