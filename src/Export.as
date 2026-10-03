@@ -77,6 +77,11 @@ namespace CurrentEffects {
     import bool StatusRespawning() from "CurrentEffects";
 
     /*
+    respawn ticks left
+    */
+    import uint StatusRespawnRemaining() from "CurrentEffects";
+
+    /*
     slow-mo ticks given
     */
     import uint StatusSlowMoDuration() from "CurrentEffects";

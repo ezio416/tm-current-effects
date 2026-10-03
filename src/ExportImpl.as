@@ -61,6 +61,10 @@ namespace CurrentEffects {
         return g_state.respawning;
     }
 
+    uint StatusRespawnRemaining() {
+        return g_state.respawnRemaining;
+    }
+
     uint StatusSlowMoDuration() {
         return g_state.slowMoDuration;
     }
