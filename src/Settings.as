@@ -11,12 +11,13 @@
 [Setting category="Toggles" hidden] bool S_Turbo     = true;
 [Setting category="Toggles" hidden] bool S_Vehicle   = true;
 #if TMNEXT
-[Setting category="Toggles" hidden] bool S_ActionKey = false;
-[Setting category="Toggles" hidden] bool S_Cruise    = true;
-[Setting category="Toggles" hidden] bool S_Fragile   = true;
-[Setting category="Toggles" hidden] bool S_Reactor   = true;
-[Setting category="Toggles" hidden] bool S_SlowMo    = true;
-[Setting category="Toggles" hidden] bool S_Water     = false;
+[Setting category="Toggles" hidden] bool S_ActionKey  = false;
+[Setting category="Toggles" hidden] bool S_Cruise     = true;
+[Setting category="Toggles" hidden] bool S_Fragile    = true;
+[Setting category="Toggles" hidden] bool S_Reactor    = true;
+[Setting category="Toggles" hidden] bool S_Respawning = false;
+[Setting category="Toggles" hidden] bool S_SlowMo     = true;
+[Setting category="Toggles" hidden] bool S_Water      = false;
 #endif
 #if TMNEXT || MP4
 [Setting category="Toggles" hidden] bool S_Forced    = true;
@@ -67,6 +68,10 @@ vec3 S_FragileColor = vec3(1.0f, 0.648f, 0.0f);
 string g_fragileColor;
 
 [Setting category="Colors" hidden]
+vec3 S_LaunchRespawnColor = vec3(0.0f, 1.0f, 0.0f);
+string g_launchRespawnColor;
+
+[Setting category="Colors" hidden]
 vec3 S_Reactor1Color = vec3(0.766f, 1.0f, 0.0f);
 string g_reactor1Color;
 
@@ -89,6 +94,10 @@ string g_slowMo3Color;
 [Setting category="Colors" hidden]
 vec3 S_SlowMo4Color = vec3(1.0f, 0.0f, 0.0f);
 string g_slowMo4Color;
+
+[Setting category="Colors" hidden]
+vec3 S_StandRespawnColor = vec3(1.0f, 0.0f, 0.0f);
+string g_standRespawnColor;
 
 [Setting category="Colors" hidden]
 vec3 S_Turbo1Color = vec3(1.0f, 1.0f, 0.0f);

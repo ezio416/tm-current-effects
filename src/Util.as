@@ -108,6 +108,12 @@ string ColorReactor() {
     }
 }
 
+string ColorRespawning() {
+    if (g_state.launchRespawning) return g_launchRespawnColor;
+    if (g_state.standRespawning)  return g_standRespawnColor;
+                                  return g_offColor;
+}
+
 string ColorSlowMo() {
     switch (g_state.slowMoLevel) {
         case 1:  return g_slowMo1Color;
@@ -162,24 +168,26 @@ void SetColorStrings() {
 
 #if TMNEXT
 
-    g_AK1Color      = Text::FormatOpenplanetColor(S_AK1Color);
-    g_AK2Color      = Text::FormatOpenplanetColor(S_AK2Color);
-    g_AK3Color      = Text::FormatOpenplanetColor(S_AK3Color);
-    g_AK4Color      = Text::FormatOpenplanetColor(S_AK4Color);
-    g_cruiseColor   = Text::FormatOpenplanetColor(S_CruiseColor);
-    g_fragileColor  = Text::FormatOpenplanetColor(S_FragileColor);
-    g_reactor1Color = Text::FormatOpenplanetColor(S_Reactor1Color);
-    g_reactor2Color = Text::FormatOpenplanetColor(S_Reactor2Color);
-    g_slowMo1Color  = Text::FormatOpenplanetColor(S_SlowMo1Color);
-    g_slowMo2Color  = Text::FormatOpenplanetColor(S_SlowMo2Color);
-    g_slowMo3Color  = Text::FormatOpenplanetColor(S_SlowMo3Color);
-    g_slowMo4Color  = Text::FormatOpenplanetColor(S_SlowMo4Color);
-    g_turbo1Color   = Text::FormatOpenplanetColor(S_Turbo1Color);
-    g_turbo2Color   = Text::FormatOpenplanetColor(S_Turbo2Color);
-    g_turbo3Color   = Text::FormatOpenplanetColor(S_Turbo3Color);
-    g_turbo4Color   = Text::FormatOpenplanetColor(S_Turbo4Color);
-    g_turbo5Color   = Text::FormatOpenplanetColor(S_Turbo5Color);
-    g_waterColor    = Text::FormatOpenplanetColor(S_WaterColor);
+    g_AK1Color           = Text::FormatOpenplanetColor(S_AK1Color);
+    g_AK2Color           = Text::FormatOpenplanetColor(S_AK2Color);
+    g_AK3Color           = Text::FormatOpenplanetColor(S_AK3Color);
+    g_AK4Color           = Text::FormatOpenplanetColor(S_AK4Color);
+    g_cruiseColor        = Text::FormatOpenplanetColor(S_CruiseColor);
+    g_fragileColor       = Text::FormatOpenplanetColor(S_FragileColor);
+    g_launchRespawnColor = Text::FormatOpenplanetColor(S_LaunchRespawnColor);
+    g_reactor1Color      = Text::FormatOpenplanetColor(S_Reactor1Color);
+    g_reactor2Color      = Text::FormatOpenplanetColor(S_Reactor2Color);
+    g_slowMo1Color       = Text::FormatOpenplanetColor(S_SlowMo1Color);
+    g_slowMo2Color       = Text::FormatOpenplanetColor(S_SlowMo2Color);
+    g_slowMo3Color       = Text::FormatOpenplanetColor(S_SlowMo3Color);
+    g_slowMo4Color       = Text::FormatOpenplanetColor(S_SlowMo4Color);
+    g_standRespawnColor  = Text::FormatOpenplanetColor(S_StandRespawnColor);
+    g_turbo1Color        = Text::FormatOpenplanetColor(S_Turbo1Color);
+    g_turbo2Color        = Text::FormatOpenplanetColor(S_Turbo2Color);
+    g_turbo3Color        = Text::FormatOpenplanetColor(S_Turbo3Color);
+    g_turbo4Color        = Text::FormatOpenplanetColor(S_Turbo4Color);
+    g_turbo5Color        = Text::FormatOpenplanetColor(S_Turbo5Color);
+    g_waterColor         = Text::FormatOpenplanetColor(S_WaterColor);
 
 #endif
 #if TMNEXT || MP4

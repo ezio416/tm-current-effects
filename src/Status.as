@@ -13,6 +13,7 @@ Status@[] g_statuses = {
     NoSteer(),
     Opponents(),
     Reactor(),
+    Respawning(),
     SlowMo(),
     Turbo(),
     VehicleType(),
@@ -584,6 +585,41 @@ class Reactor : Status {
 
     void Set(const bool b) override {
         enabled = S_Reactor = b;
+    }
+}
+
+class Respawning : Status {
+    bool get_active() const override {
+        return g_state.respawning;
+    }
+
+    Respawning() {
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
+    }
+
+    void RenderLegacy() const override {
+        if (S_HideInactive and !active) {
+            return;
+        }
+
+        UI::Text(ColorRespawning() + Icons::Refresh + " Respawning");
+    }
+
+    void RenderSettings() override {
+        UI::PushID(this);
+
+        Set(UI::Checkbox("Respawning", S_Respawning));
+
+        S_LaunchRespawnColor = UI::InputColor3("launched", S_LaunchRespawnColor);
+        g_launchRespawnColor = Text::FormatOpenplanetColor(S_LaunchRespawnColor);
+        S_StandRespawnColor = UI::InputColor3("standing", S_StandRespawnColor);
+        g_standRespawnColor = Text::FormatOpenplanetColor(S_StandRespawnColor);
+
+        UI::PopID();
+    }
+
+    void Set(const bool b) override {
+        enabled = S_Respawning = b;
     }
 }
 
