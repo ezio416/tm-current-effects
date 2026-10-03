@@ -75,4 +75,4 @@ I want to give a special thank you to the following developers who have given me
 
 \* vehicle type is probably wrong in envimix
 
-![image](images/current-effects.png)
+![image](images/current-effects-1.png)
