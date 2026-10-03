@@ -8,7 +8,7 @@
 
 namespace Danger {
     // addresses
-    const uint64 A_OPPONENT_VIS = Dev::BaseAddress() + 0x1b42bc8;  // global variable access, not ideal
+    const uint64 A_OPPONENT_VIS = Dev::BaseAddress() + 0x1b42bc8;  // static variable access, not ideal
 
     // offsets
     const uint16 O_CAMERA_SYSTEM_BW_CAMERA = 0xa0;
