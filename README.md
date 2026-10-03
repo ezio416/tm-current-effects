@@ -19,6 +19,7 @@ I want to give a special thank you to the following developers who have given me
 |status              |solo|replay|server|spectate|tm2 solo|tm2 server|tm2 spectate|turbo solo|turbo server|turbo spectate
 |:-:                 |:-: |:-:   |:-:   |:-:     |:-:     |:-:       |:-:         |:-:       |:-:         |:-:
 |action key          |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
+|brake pedal         |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |camera              |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
 |cruise control      |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
 |cruise control speed|✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
@@ -45,7 +46,10 @@ I want to give a special thank you to the following developers who have given me
 |reactor level       |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
 |reactor remaining   |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |reactor type        |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
+|respawn duration    |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
+|respawn end tick    |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |respawning          |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
+|respawn remaining   |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |respawns            |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
 |sequence            |✅|✅|✅|✅|✅|✅|✅|✅|✅|✅
 |slow-mo             |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
