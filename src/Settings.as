@@ -252,7 +252,7 @@ void SettingsTab_Statuses() {
         UI::TreePop();
     }
 
-    if (UI::TreeNode("Toggles and Colors", UI::TreeNodeFlags::Framed)) {
+    if (UI::TreeNode("Statuses", UI::TreeNodeFlags::Framed)) {
         if (UI::Button("Reset toggles to default")) {
             Meta::PluginSetting@[]@ settings = PLUGIN_META.GetSettings();
             for (uint i = 0; i < settings.Length; i++) {
