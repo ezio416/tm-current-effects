@@ -353,14 +353,13 @@ class StateNext : State {
 
         if (driving or finished) {
             wpCount = Danger::GetWaypointCount(Player);
-
             cpNum = finished ? mapCpCount : wpCount % (mapCpCount + 1);
+        }
 
-            switch (mapLapCount) {
-                case 0:  break;
-                case 1:  lapNum = 1; break;
-                default: lapNum = wpCount / (mapCpCount + 1) + 1;
-            }
+        switch (mapLapCount) {
+            case 0:  break;
+            case 1:  lapNum = 1; break;
+            default: lapNum = wpCount / (mapCpCount + 1) + 1;
         }
 
         if (ScriptPlayer.Score !is null) {
