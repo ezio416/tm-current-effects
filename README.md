@@ -35,6 +35,7 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |login               |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
 |map checkpoint count|✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
 |map lap count       |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
+|map waypoint count  |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
 |name                |✅|✅|✅|✅|✅|✅|✅|✅|✅|❌
 |nametag visibility  |✅|✅|✅|✅|✅|✅|✅|❌|❌|❌
 |no brakes           |✅|❌|✅|✅|✅|✅|❌|❌|❌|❌
