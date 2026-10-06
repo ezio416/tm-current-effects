@@ -5,12 +5,14 @@ StateNext g_state;
 class StateNext : State {
     uint8                            actionKey;
     bool                             brakePedal;
+    uint                             cpNum;
     bool                             cruiseControl;
     float                            cruiseControlSpeed;
     uint                             entityId;
     bool                             forcedAccel;
     bool                             fragile;
     float                            fragileDamage;
+    uint                             lapNum;
     bool                             launchRespawning;
     uint                             mapCpCount;
     uint                             mapLapCount;
@@ -57,12 +59,14 @@ class StateNext : State {
 
         _RenderDebugRow("actionKey",          ColorDebugInt(actionKey));
         _RenderDebugRow("brakePedal",         ColorDebugBool(brakePedal));
+        _RenderDebugRow("cpNum",              ColorDebugInt(cpNum));
         _RenderDebugRow("cruiseControl",      ColorDebugBool(cruiseControl));
         _RenderDebugRow("cruiseControlSpeed", ColorDebugFloat(cruiseControlSpeed));
         _RenderDebugRow("entityId",           ColorDebugString(Text::Format("0x%x", entityId)));
         _RenderDebugRow("forcedAccel",        ColorDebugBool(forcedAccel));
         _RenderDebugRow("fragile",            ColorDebugBool(fragile));
         _RenderDebugRow("fragileDamage",      ColorDebugFloat(fragileDamage));
+        _RenderDebugRow("lapNum",             ColorDebugInt(lapNum));
         _RenderDebugRow("launchRespawning",   ColorDebugBool(launchRespawning));
         _RenderDebugRow("mapCpCount",         ColorDebugInt(mapCpCount));
         _RenderDebugRow("mapLapCount",        ColorDebugInt(mapLapCount));
@@ -104,12 +108,14 @@ class StateNext : State {
 
         actionKey          = 0;
         brakePedal         = false;
+        cpNum              = 0;
         cruiseControl      = false;
         cruiseControlSpeed = 0.0f;
         forcedAccel        = false;
         fragile            = false;
         fragileDamage      = 0.0f;
         entityId           = 0;
+        lapNum             = 0;
         launchRespawning   = false;
         mapCpCount         = 0;
         mapLapCount        = 0;
@@ -347,6 +353,14 @@ class StateNext : State {
 
         if (driving or finished) {
             wpCount = Danger::GetWaypointCount(Player);
+
+            cpNum = finished ? mapCpCount : wpCount % (mapCpCount + 1);
+
+            switch (mapLapCount) {
+                case 0:  break;
+                case 1:  lapNum = 1; break;
+                default: lapNum = wpCount / (mapCpCount + 1) + 1;
+            }
         }
 
         if (ScriptPlayer.Score !is null) {

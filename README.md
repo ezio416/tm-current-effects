@@ -20,6 +20,7 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |action key          |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |brake pedal         |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |camera              |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
+|checkpoint number   |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |cruise control      |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
 |cruise control speed|✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
 |driving             |✅|✅|✅|❌|✅|✅|✅|✅|✅|❌
@@ -31,6 +32,7 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |fragile damage      |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |game mode           |✅|✅|✅|✅|✅|✅|✅|✅|✅|✅
 |ghost visibility    |✅|✅|✅|✅|✅|✅|✅|✅|✅|✅
+|lap number          |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |launch respawning   |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |login               |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
 |map checkpoint count|✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
