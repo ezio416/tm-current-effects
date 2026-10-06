@@ -40,6 +40,7 @@ class StateNext : State {
     float                            steerLimit;
     uint8                            turboLevel;
     float                            water;
+    uint                             wpCount;
     string                           wsid;
 
     void RenderDebugRows() const override {
@@ -88,6 +89,7 @@ class StateNext : State {
         _RenderDebugRow("steerLimit",         ColorDebugFloat(steerLimit));
         _RenderDebugRow("turboLevel",         ColorDebugInt(turboLevel));
         _RenderDebugRow("water",              ColorDebugFloat(water));
+        _RenderDebugRow("wpCount",            ColorDebugInt(wpCount));
         _RenderDebugRow("wsid",               ColorDebugString(wsid));
     }
 
@@ -131,6 +133,7 @@ class StateNext : State {
         steerLimit         = 0.0f;
         turboLevel         = 0;
         water              = 0.0f;
+        wpCount            = 0;
         wsid               = "";
     }
 
@@ -295,6 +298,10 @@ class StateNext : State {
         ;
         if (gameTime > startTick) {
             raceTime = gameTime - startTick;
+        }
+
+        if (driving or finished) {
+            wpCount = Danger::GetWaypointCount(Player);
         }
 
         if (ScriptPlayer.Score !is null) {

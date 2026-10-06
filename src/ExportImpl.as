@@ -89,6 +89,10 @@ namespace CurrentEffects {
         return g_state.standRespawning;
     }
 
+    uint StatusWaypointCount() {
+        return g_state.wpCount;
+    }
+
 #endif
 #if TMNEXT || MP4
 

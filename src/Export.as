@@ -111,6 +111,11 @@ namespace CurrentEffects {
     */
     import bool StatusStandRespawning() from "CurrentEffects";
 
+    /*
+    number of waypoints taken
+    */
+    import uint StatusWaypointCount() from "CurrentEffects";
+
 #endif
 #if TMNEXT || MP4
 

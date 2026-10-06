@@ -65,8 +65,9 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |turbo level         |✅|✅|✅|❌|❌|❌|❌|❌|❌|❌
 |turbo timer         |✅|✅|✅|❌|✅|✅|❌|✅|✅|❌
 |vehicle type        |✅|✅|✅|✅|⚠️|⚠️|⚠️|✅|✅|✅
-|web services id     |✅|❌|✅|✅|❌|❌|❌|❌|❌|❌
 |water               |✅|✅|✅|❌|❌|❌|❌|❌|❌|❌
+|waypoint count      |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
+|web services id     |✅|❌|✅|✅|❌|❌|❌|❌|❌|❌
 
 - ⚠️ when watching a replay or spectating, fragile only appears if at least one tire is partially worn
 - ⚠️ when switching to/from alt cars, slow-mo duration may be wrong

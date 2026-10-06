@@ -10,6 +10,7 @@ namespace Danger {
     // offsets
     const uint16 O_APP_VEHICLEMGR             = GetMemberOffset("CTrackMania", "GameScene") + 0x8;
     const uint16 O_CSMPLAYER_VEHICLE          = GetMemberOffset("CSmPlayer", "Score") + 0xb0;
+    const uint16 O_CSMPLAYER_WP_COUNT         = GetMemberOffset("CSmPlayer", "Score") - 0x3d8;  // also 3e8, 3f8
     const uint16 O_PROFILE_GHOST_VIS          = GetMemberOffset("CGameUserProfile", "Editor_ShowHelp") - 0x94;
     const uint16 O_PROFILE_NAMETAG_VIS        = GetMemberOffset("CGameUserProfile", "Editor_ShowHelp") - 0x78;
     const uint16 O_TERMINAL_ALT_CAMERA        = GetMemberOffset("CGameTerminal", "GUIPlayer") + 0x10;
@@ -252,6 +253,14 @@ namespace Danger {
         }
 
         return Dev::GetOffsetUint32(Terminal, O_TERMINAL_GHOST_ENTITY_ID);
+    }
+
+    uint GetWaypointCount(CSmPlayer@ Player) {
+        if (!Safety::ShouldRun()) {
+            return 0;
+        }
+
+        return Dev::GetOffsetUint32(Player, O_CSMPLAYER_WP_COUNT);
     }
 }
 
