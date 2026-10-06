@@ -5,18 +5,18 @@ StateNext g_state;
 class StateNext : State {
     uint8                            actionKey;
     bool                             brakePedal;
-    uint                             cpNum;
+    uint                             cpNum;  // TODO MP4/TURBO
     bool                             cruiseControl;
     float                            cruiseControlSpeed;
     uint                             entityId;
     bool                             forcedAccel;
     bool                             fragile;
     float                            fragileDamage;
-    uint                             lapNum;
+    uint                             lapNum;  // TODO MP4/TURBO
     bool                             launchRespawning;
-    uint                             mapCpCount;
-    uint                             mapLapCount;
-    uint                             mapWpCount;
+    uint                             mapCpCount;  // TODO MP4/TURBO
+    uint                             mapLapCount;  // TODO MP4/TURBO
+    uint                             mapWpCount;  // TODO MP4/TURBO
     bool                             nametagVis;
     bool                             noBrakes;
     bool                             noGrip;
@@ -45,7 +45,7 @@ class StateNext : State {
     float                            steerLimit;
     uint8                            turboLevel;
     float                            water;
-    uint                             wpCount;
+    uint                             wpCount;  // TODO MP4/TURBO
     string                           wsid;
 
     void RenderDebugRows() const override {
