@@ -12,6 +12,7 @@ class StateNext : State {
     bool                             fragile;
     float                            fragileDamage;
     bool                             launchRespawning;
+    uint                             mapLapCount;
     bool                             nametagVis;
     bool                             noBrakes;
     bool                             noGrip;
@@ -61,6 +62,7 @@ class StateNext : State {
         _RenderDebugRow("fragile",            ColorDebugBool(fragile));
         _RenderDebugRow("fragileDamage",      ColorDebugFloat(fragileDamage));
         _RenderDebugRow("launchRespawning",   ColorDebugBool(launchRespawning));
+        _RenderDebugRow("mapLapCount",        ColorDebugInt(mapLapCount));
         _RenderDebugRow("nametagVis",         ColorDebugBool(nametagVis));
         _RenderDebugRow("noBrakes",           ColorDebugBool(noBrakes));
         _RenderDebugRow("noGrip",             ColorDebugBool(noGrip));
@@ -105,6 +107,7 @@ class StateNext : State {
         fragileDamage      = 0.0f;
         entityId           = 0;
         launchRespawning   = false;
+        mapLapCount        = 0;
         nametagVis         = false;
         noBrakes           = false;
         noGrip             = false;
@@ -144,6 +147,7 @@ class StateNext : State {
 
         if (false
             or App.GameScene is null
+            or App.RootMap is null
             or App.CurrentProfile is null
             or App.CurrentProfile.ProfileNew is null
         ) {
@@ -159,6 +163,10 @@ class StateNext : State {
             or Playground.UIConfigs[0] is null
         ) {
             return;
+        }
+
+        if (App.RootMap.TMObjective_IsLapRace) {
+            mapLapCount = App.RootMap.TMObjective_NbLaps;
         }
 
         gameMode    = cast<CTrackManiaNetworkServerInfo>(App.Network.ServerInfo).CurGameModeStr;

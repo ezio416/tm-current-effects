@@ -33,6 +33,7 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |ghost visibility    |✅|✅|✅|✅|✅|✅|✅|✅|✅|✅
 |launch respawning   |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |login               |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
+|map lap count       |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
 |name                |✅|✅|✅|✅|✅|✅|✅|✅|✅|❌
 |nametag visibility  |✅|✅|✅|✅|✅|✅|✅|❌|❌|❌
 |no brakes           |✅|❌|✅|✅|✅|✅|❌|❌|❌|❌
