@@ -82,6 +82,10 @@ abstract class Status {
         throw("unimplemented");
     }
 
+    void Set() {
+        throw("unimplemented");
+    }
+
     void Set(const bool b) {
         throw("unimplemented");
     }
@@ -145,6 +149,10 @@ class ActionKey : Status {
         UI::PopID();
     }
 
+    void Set() override {
+        enabled = S_ActionKey;
+    }
+
     void Set(const bool b) override {
         enabled = S_ActionKey = b;
     }
@@ -176,6 +184,10 @@ class Checkpoints : Status {
         g_checkpointsColor = Text::FormatOpenplanetColor(S_CheckpointsColor);
 
         UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_Checkpoints;
     }
 
     void Set(const bool b) override {
@@ -212,6 +224,10 @@ class CruiseControl : Status {
         UI::PopID();
     }
 
+    void Set() override {
+        enabled = S_Cruise;
+    }
+
     void Set(const bool b) override {
         enabled = S_Cruise = b;
     }
@@ -246,6 +262,10 @@ class Fragile : Status {
         UI::PopID();
     }
 
+    void Set() override {
+        enabled = S_Fragile;
+    }
+
     void Set(const bool b) override {
         enabled = S_Fragile = b;
     }
@@ -277,6 +297,10 @@ class Laps : Status {
         g_lapsColor = Text::FormatOpenplanetColor(S_LapsColor);
 
         UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_Laps;
     }
 
     void Set(const bool b) override {
@@ -317,6 +341,10 @@ class ForcedAccel : Handicap {
         g_forcedColor = Text::FormatOpenplanetColor(S_ForcedColor);
 
         UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_Forced;
     }
 
     void Set(const bool b) override {
@@ -361,6 +389,10 @@ class Ghosts : Status {
         UI::PopID();
     }
 
+    void Set() override {
+        enabled = S_Ghosts;
+    }
+
     void Set(const bool b) override {
         enabled = S_Ghosts = b;
     }
@@ -401,6 +433,10 @@ class Nametags : Status {
         UI::PopID();
     }
 
+    void Set() override {
+        enabled = S_Nametags;
+    }
+
     void Set(const bool b) override {
         enabled = S_Nametags = b;
     }
@@ -428,6 +464,10 @@ class NoBrakes : Handicap {
         g_noBrakesColor = Text::FormatOpenplanetColor(S_NoBrakesColor);
 
         UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_NoBrakes;
     }
 
     void Set(const bool b) override {
@@ -469,6 +509,10 @@ class NoEngine : Handicap {
         UI::PopID();
     }
 
+    void Set() override {
+        enabled = S_NoEngine;
+    }
+
     void Set(const bool b) override {
         enabled = S_NoEngine = b;
     }
@@ -500,6 +544,10 @@ class NoGrip : Handicap {
         UI::PopID();
     }
 
+    void Set() override {
+        enabled = S_NoGrip;
+    }
+
     void Set(const bool b) override {
         enabled = S_NoGrip = b;
     }
@@ -527,6 +575,10 @@ class NoSteer : Handicap {
         g_noSteerColor = Text::FormatOpenplanetColor(S_NoSteerColor);
 
         UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_NoSteer;
     }
 
     void Set(const bool b) override {
@@ -569,6 +621,10 @@ class Opponents : Status {
         g_opponentsOpaqueColor = Text::FormatOpenplanetColor(S_OpponentsOpaqueColor);
 
         UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_Opponents;
     }
 
     void Set(const bool b) override {
@@ -651,6 +707,10 @@ class Reactor : Status {
         UI::PopID();
     }
 
+    void Set() override {
+        enabled = S_Reactor;
+    }
+
     void Set(const bool b) override {
         enabled = S_Reactor = b;
     }
@@ -693,6 +753,10 @@ class Respawning : Status {
         g_standRespawnColor = Text::FormatOpenplanetColor(S_StandRespawnColor);
 
         UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_Respawning;
     }
 
     void Set(const bool b) override {
@@ -760,6 +824,10 @@ class SlowMo : Status {
         g_slowMo4Color = Text::FormatOpenplanetColor(S_SlowMo4Color);
 
         UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_SlowMo;
     }
 
     void Set(const bool b) override {
@@ -834,6 +902,10 @@ class Turbo : Status {
 #endif
 
         UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_Turbo;
     }
 
     void Set(const bool b) override {
@@ -932,6 +1004,10 @@ class VehicleType : Status {
         UI::PopID();
     }
 
+    void Set() override {
+        enabled = S_Vehicle;
+    }
+
     void Set(const bool b) override {
         enabled = S_Vehicle = b;
     }
@@ -965,6 +1041,10 @@ class Water : Status {
         g_waterColor = Text::FormatOpenplanetColor(S_WaterColor);
 
         UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_Water;
     }
 
     void Set(const bool b) override {
