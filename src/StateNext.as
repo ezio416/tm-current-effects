@@ -12,7 +12,9 @@ class StateNext : State {
     bool                             fragile;
     float                            fragileDamage;
     bool                             launchRespawning;
+    uint                             mapCpCount;
     uint                             mapLapCount;
+    uint                             mapWpCount;
     bool                             nametagVis;
     bool                             noBrakes;
     bool                             noGrip;
@@ -62,7 +64,9 @@ class StateNext : State {
         _RenderDebugRow("fragile",            ColorDebugBool(fragile));
         _RenderDebugRow("fragileDamage",      ColorDebugFloat(fragileDamage));
         _RenderDebugRow("launchRespawning",   ColorDebugBool(launchRespawning));
+        _RenderDebugRow("mapCpCount",         ColorDebugInt(mapCpCount));
         _RenderDebugRow("mapLapCount",        ColorDebugInt(mapLapCount));
+        _RenderDebugRow("mapWpCount",         ColorDebugInt(mapWpCount));
         _RenderDebugRow("nametagVis",         ColorDebugBool(nametagVis));
         _RenderDebugRow("noBrakes",           ColorDebugBool(noBrakes));
         _RenderDebugRow("noGrip",             ColorDebugBool(noGrip));
@@ -107,7 +111,9 @@ class StateNext : State {
         fragileDamage      = 0.0f;
         entityId           = 0;
         launchRespawning   = false;
+        mapCpCount         = 0;
         mapLapCount        = 0;
+        mapWpCount         = 0;
         nametagVis         = false;
         noBrakes           = false;
         noGrip             = false;
@@ -157,6 +163,7 @@ class StateNext : State {
         auto Playground = cast<CSmArenaClient>(App.CurrentPlayground);
         if (false
             or Playground is null
+            or Playground.Arena is null
             or Playground.GameTerminals.Length == 0
             or Playground.GameTerminals[0] is null
             or Playground.UIConfigs.Length == 0
@@ -165,8 +172,38 @@ class StateNext : State {
             return;
         }
 
+        uint[] linked;
+
+        for (uint i = 0; i < Playground.Arena.MapLandmarks.Length; i++) {
+            CGameScriptMapLandmark@ Landmark = Playground.Arena.MapLandmarks[i];
+
+            if (Landmark.PlayerSpawn !is null) {
+                continue;
+            }
+
+            if (false
+                or Landmark.Waypoint is null
+                or Landmark.Waypoint.IsFinish
+            ) {
+                continue;
+            }
+
+            if (Landmark.Tag == "LinkedCheckpoint") {
+                if (linked.Find(Landmark.Order) == -1) {
+                    linked.InsertLast(Landmark.Order);
+                    mapCpCount++;
+                }
+                continue;
+            }
+
+            mapCpCount++;
+        }
+
+        mapWpCount = mapCpCount + 1;
+
         if (App.RootMap.TMObjective_IsLapRace) {
             mapLapCount = App.RootMap.TMObjective_NbLaps;
+            mapWpCount *= mapLapCount;
         }
 
         gameMode    = cast<CTrackManiaNetworkServerInfo>(App.Network.ServerInfo).CurGameModeStr;
