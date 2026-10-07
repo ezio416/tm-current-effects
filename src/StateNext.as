@@ -316,7 +316,7 @@ class StateNext : State {
         switch (mapLapCount) {
             case 0:  break;
             case 1:  lapNum = 1; break;
-            default: lapNum = wpCount / (mapCpCount + 1) + 1;
+            default: lapNum = finished ? mapLapCount : wpCount / (mapCpCount + 1) + 1;
         }
 
         if (ScriptPlayer.Score !is null) {
