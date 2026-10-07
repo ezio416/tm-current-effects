@@ -160,33 +160,7 @@ class StateNext : State {
             return;
         }
 
-        uint[] linked;
-
-        for (uint i = 0; i < Playground.Arena.MapLandmarks.Length; i++) {
-            CGameScriptMapLandmark@ Landmark = Playground.Arena.MapLandmarks[i];
-
-            if (Landmark.PlayerSpawn !is null) {
-                continue;
-            }
-
-            if (false
-                or Landmark.Waypoint is null
-                or Landmark.Waypoint.IsFinish
-            ) {
-                continue;
-            }
-
-            if (Landmark.Tag == "LinkedCheckpoint") {
-                if (linked.Find(Landmark.Order) == -1) {
-                    linked.InsertLast(Landmark.Order);
-                    mapCpCount++;
-                }
-                continue;
-            }
-
-            mapCpCount++;
-        }
-
+        mapCpCount = Danger::GetCheckpointCount(App.RootMap);
         mapWpCount = mapCpCount + 1;
 
         if (App.RootMap.TMObjective_IsLapRace) {

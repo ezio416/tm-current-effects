@@ -10,7 +10,8 @@ namespace Danger {
     // offsets
     const uint16 O_APP_VEHICLEMGR             = GetMemberOffset("CTrackMania", "GameScene") + 0x8;
     const uint16 O_CSMPLAYER_VEHICLE          = GetMemberOffset("CSmPlayer", "Score") + 0xb0;
-    const uint16 O_CSMPLAYER_WP_COUNT         = GetMemberOffset("CSmPlayer", "Score") - 0x3d8;  // also 3e8, 3f8
+    const uint16 O_CSMPLAYER_WP_COUNT         = GetMemberOffset("CSmPlayer", "Score") - 0x3d8;
+    const uint16 O_MAP_CP_COUNT               = GetMemberOffset("CGameCtnChallenge", "ScriptMetadata") + 0x98;
     const uint16 O_PROFILE_GHOST_VIS          = GetMemberOffset("CGameUserProfile", "Editor_ShowHelp") - 0x94;
     const uint16 O_PROFILE_NAMETAG_VIS        = GetMemberOffset("CGameUserProfile", "Editor_ShowHelp") - 0x78;
     const uint16 O_TERMINAL_ALT_CAMERA        = GetMemberOffset("CGameTerminal", "GUIPlayer") + 0x10;
@@ -44,6 +45,10 @@ namespace Danger {
         }
 
         return Dev::GetOffsetFloat(Vehicle, O_VEHICLE_BRAKE_PEDAL) == 1.0f;
+    }
+
+    uint GetCheckpointCount(CGameCtnChallenge@ Map) {
+        return Dev::GetOffsetUint32(Map, O_MAP_CP_COUNT);
     }
 
     CurrentEffects::Camera GetCurrentCamera(CGameTerminal@ Terminal) {

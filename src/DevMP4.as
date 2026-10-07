@@ -12,9 +12,9 @@ namespace Danger {
 
     // offsets
     const uint16 O_CAMERA_SYSTEM_BW_CAMERA = 0xa0;
-    const uint16 O_MAP_CP_COUNT            = GetMemberOffset("CGameCtnChallenge", "ScriptMetadata") + 0xb0;
     const uint16 O_CTMPLAYER_ENTITY_ID     = GetMemberOffset("CTrackManiaPlayer", "User") + 0x8;
     const uint16 O_CTMPLAYER_VIS           = GetMemberOffset("CTrackManiaPlayer", "ScriptAPI") - 0x10;
+    const uint16 O_MAP_CP_COUNT            = GetMemberOffset("CGameCtnChallenge", "ScriptMetadata") + 0xb0;
     const uint16 O_TERMINAL_ALT_CAMERA     = GetMemberOffset("CGameTerminal", "CameraSet") + 0x18;
     const uint16 O_TERMINAL_CUR_CAMERA     = GetMemberOffset("CGameTerminal", "CameraSet") + 0x10;
     const uint16 O_VIS_ENTITY_ID           = 0x0;
