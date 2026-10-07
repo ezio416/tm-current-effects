@@ -32,7 +32,7 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |fragile damage      |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |game mode           |✅|✅|✅|✅|✅|✅|✅|✅|✅|✅
 |ghost visibility    |✅|✅|✅|✅|✅|✅|✅|✅|✅|✅
-|lap number          |✅|❌|✅|❌|✅|✅|✅|✅|✅|❌
+|lap number          |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
 |launch respawning   |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |login               |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
 |map checkpoint count|✅|✅|✅|✅|✅|✅|✅|✅|✅|❌
@@ -44,7 +44,7 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |no grip             |✅|❌|✅|✅|✅|✅|❌|❌|❌|❌
 |no steering         |✅|❌|✅|✅|✅|✅|❌|❌|❌|❌
 |opponent visibility |✅|✅|✅|✅|✅|✅|✅|❌|❌|❌
-|race time           |✅|❌|✅|✅|✅|✅|✅|❌|❌|❌
+|race time           |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
 |reactor             |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
 |reactor duration    |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |reactor final timer |✅|❌|✅|✅|❌|❌|❌|❌|❌|❌
