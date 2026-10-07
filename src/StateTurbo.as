@@ -26,20 +26,19 @@ class StateTurbo : State {
             return;
         }
 
+        camera     = Danger::GetCurrentCamera(Playground.GameTerminals[0]);
+        gameMode   = cast<CTrackManiaNetworkServerInfo>(App.Network.ServerInfo).CurGameModeStr;
+        gameTime   = App.Network.PlaygroundClientScriptAPI.GameTime;
+        ghostVis   = Playground.IsBestRaceGhostVisible;
         mapCpCount = Danger::GetCheckpointCount(App.Challenge);
         mapWpCount = mapCpCount + 1;
+        sequence   = Playground.UIConfigs[0].UISequence;
+        ticks      = gameTime / 10 * 10;
 
         if (App.Challenge.TMObjective_IsLapRace) {
             mapLapCount = App.Challenge.TMObjective_NbLaps;
             mapWpCount *= mapLapCount;
         }
-
-        camera   = Danger::GetCurrentCamera(Playground.GameTerminals[0]);
-        gameMode = cast<CTrackManiaNetworkServerInfo>(App.Network.ServerInfo).CurGameModeStr;
-        ghostVis = Playground.IsBestRaceGhostVisible;
-        sequence = Playground.UIConfigs[0].UISequence;
-        gameTime = App.Network.PlaygroundClientScriptAPI.GameTime;
-        ticks    = gameTime / 10 * 10;
 
         if (App.Challenge.CollectionName == "Canyon") {
             vehicleType = CurrentEffects::VehicleType::Canyon;

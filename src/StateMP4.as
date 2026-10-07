@@ -64,22 +64,21 @@ class StateMP4 : State {
             return;
         }
 
-        mapCpCount = Danger::GetCheckpointCount(App.RootMap);
-        mapWpCount = mapCpCount + 1;
+        entityId    = VehicleState::GetViewingVisId();
+        gameMode    = cast<CTrackManiaNetworkServerInfo>(App.Network.ServerInfo).CurGameModeStr;
+        gameTime    = App.Network.PlaygroundClientScriptAPI.GameTime;
+        ghostVis    = Playground.IsBestRaceGhostVisible;
+        mapCpCount  = Danger::GetCheckpointCount(App.RootMap);
+        mapWpCount  = mapCpCount + 1;
+        nametagVis  = Playground.ForceDisplayNames;
+        opponentVis = Danger::GetOpponentVisibility();
+        sequence    = Playground.UIConfigs[0].UISequence;
+        ticks       = gameTime / 10 * 10;
 
         if (App.RootMap.TMObjective_IsLapRace) {
             mapLapCount = App.RootMap.TMObjective_NbLaps;
             mapWpCount *= mapLapCount;
         }
-
-        entityId    = VehicleState::GetViewingVisId();
-        gameMode    = cast<CTrackManiaNetworkServerInfo>(App.Network.ServerInfo).CurGameModeStr;
-        ghostVis    = Playground.IsBestRaceGhostVisible;
-        nametagVis  = Playground.ForceDisplayNames;
-        opponentVis = Danger::GetOpponentVisibility();
-        sequence    = Playground.UIConfigs[0].UISequence;
-        gameTime    = App.Network.PlaygroundClientScriptAPI.GameTime;
-        ticks       = gameTime / 10 * 10;
 
         switch (App.Network.PlaygroundClientScriptAPI.SettingsPlayerModelId.Value) {
             case 0x4000161f:
