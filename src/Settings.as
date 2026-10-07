@@ -6,28 +6,28 @@
 [Setting category="General" hidden] bool  S_OverrideSafety = false;
 
 
-[Setting category="Toggles" hidden] bool S_Ghosts    = false;
-[Setting category="Toggles" hidden] bool S_NoEngine  = true;
-[Setting category="Toggles" hidden] bool S_Turbo     = true;
-[Setting category="Toggles" hidden] bool S_Vehicle   = true;
+[Setting category="Toggles" hidden] bool S_Checkpoints = false;
+[Setting category="Toggles" hidden] bool S_Ghosts      = false;
+[Setting category="Toggles" hidden] bool S_Laps        = false;
+[Setting category="Toggles" hidden] bool S_NoEngine    = true;
+[Setting category="Toggles" hidden] bool S_Turbo       = true;
+[Setting category="Toggles" hidden] bool S_Vehicle     = true;
 #if TMNEXT
-[Setting category="Toggles" hidden] bool S_ActionKey   = false;
-[Setting category="Toggles" hidden] bool S_Cruise      = true;
-[Setting category="Toggles" hidden] bool S_Fragile     = true;
-[Setting category="Toggles" hidden] bool S_Reactor     = true;
-[Setting category="Toggles" hidden] bool S_Respawning  = false;
-[Setting category="Toggles" hidden] bool S_SlowMo      = true;
-[Setting category="Toggles" hidden] bool S_Water       = false;
+[Setting category="Toggles" hidden] bool S_ActionKey  = false;
+[Setting category="Toggles" hidden] bool S_Cruise     = true;
+[Setting category="Toggles" hidden] bool S_Fragile    = true;
+[Setting category="Toggles" hidden] bool S_Reactor    = true;
+[Setting category="Toggles" hidden] bool S_Respawning = false;
+[Setting category="Toggles" hidden] bool S_SlowMo     = true;
+[Setting category="Toggles" hidden] bool S_Water      = false;
 #endif
 #if TMNEXT || MP4
-[Setting category="Toggles" hidden] bool S_Checkpoints = false;
-[Setting category="Toggles" hidden] bool S_Forced      = true;
-[Setting category="Toggles" hidden] bool S_Laps        = false;
-[Setting category="Toggles" hidden] bool S_Nametags    = false;
-[Setting category="Toggles" hidden] bool S_NoBrakes    = true;
-[Setting category="Toggles" hidden] bool S_NoGrip      = true;
-[Setting category="Toggles" hidden] bool S_NoSteer     = true;
-[Setting category="Toggles" hidden] bool S_Opponents   = false;
+[Setting category="Toggles" hidden] bool S_Forced    = true;
+[Setting category="Toggles" hidden] bool S_Nametags  = false;
+[Setting category="Toggles" hidden] bool S_NoBrakes  = true;
+[Setting category="Toggles" hidden] bool S_NoGrip    = true;
+[Setting category="Toggles" hidden] bool S_NoSteer   = true;
+[Setting category="Toggles" hidden] bool S_Opponents = false;
 #endif
 
 
@@ -36,8 +36,16 @@ vec3 S_OffColor = vec3(0.35f, 0.35f, 0.35f);
 string g_offColor;
 
 [Setting category="Colors" hidden]
+vec3 S_CheckpointsColor = vec3(0.1f, 0.6f, 1.0f);
+string g_checkpointsColor;
+
+[Setting category="Colors" hidden]
 vec3 S_GhostsColor = vec3(1.0f, 1.0f, 1.0f);
 string g_ghostsColor;
+
+[Setting category="Colors" hidden]
+vec3 S_LapsColor = vec3(0.9f, 0.8f, 0.1f);
+string g_lapsColor;
 
 [Setting category="Colors" hidden]
 vec3 S_NoEngineColor = vec3(1.0f, 0.0f, 0.0f);
@@ -135,16 +143,8 @@ string g_turboColor;
 #if TMNEXT || MP4
 
 [Setting category="Colors" hidden]
-vec3 S_CheckpointsColor = vec3(0.1f, 0.6f, 1.0f);
-string g_checkpointsColor;
-
-[Setting category="Colors" hidden]
 vec3 S_ForcedColor = vec3(0.0f, 1.0f, 0.0f);
 string g_forcedColor;
-
-[Setting category="Colors" hidden]
-vec3 S_LapsColor = vec3(0.9f, 0.8f, 0.1f);
-string g_lapsColor;
 
 [Setting category="Colors" hidden]
 vec3 S_NametagsColor = vec3(1.0f, 1.0f, 1.0f);

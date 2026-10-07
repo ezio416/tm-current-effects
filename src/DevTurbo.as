@@ -8,7 +8,12 @@
 
 namespace Danger {
     // offsets
+    const uint16 O_MAP_CP_COUNT        = GetMemberOffset("CGameCtnChallenge", "ScriptMetadata") + 0x80;
     const uint16 O_TERMINAL_CUR_CAMERA = GetMemberOffset("CGameTerminal", "CameraSet") + 0xc;
+
+    uint GetCheckpointCount(CGameCtnChallenge@ Map) {
+        return Dev::GetOffsetUint32(Map, O_MAP_CP_COUNT);
+    }
 
     CurrentEffects::Camera GetCurrentCamera(CGameTerminal@ Terminal) {
         switch (Dev::GetOffsetUint32(Terminal, O_TERMINAL_CUR_CAMERA)) {

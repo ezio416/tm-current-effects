@@ -26,6 +26,14 @@ class StateTurbo : State {
             return;
         }
 
+        mapCpCount = Danger::GetCheckpointCount(App.Challenge);
+        mapWpCount = mapCpCount + 1;
+
+        if (App.Challenge.TMObjective_IsLapRace) {
+            mapLapCount = App.Challenge.TMObjective_NbLaps;
+            mapWpCount *= mapLapCount;
+        }
+
         camera   = Danger::GetCurrentCamera(Playground.GameTerminals[0]);
         gameMode = cast<CTrackManiaNetworkServerInfo>(App.Network.ServerInfo).CurGameModeStr;
         ghostVis = Playground.IsBestRaceGhostVisible;
@@ -62,14 +70,31 @@ class StateTurbo : State {
             name     = Player.Name;
             respawns = Player.NbRespawns;
 
+            if (mapLapCount > 0) {
+                lapNum = Player.CurLapIndex;
+            }
+
             startTick = Player.RaceStartTime;
             if (startTick > 0) {
                 driving  = Player.RaceState == CTrackManiaPlayer::ERaceState::Running;
                 if (driving) {
                     raceTime = gameTime - startTick;
                 }
+
                 finished = Player.RaceState == CTrackManiaPlayer::ERaceState::Finished;
                 spawning = Player.RaceState == CTrackManiaPlayer::ERaceState::BeforeStart;
+
+                if (driving or finished) {
+                    if (Player.CurRace !is null) {
+                        wpCount = Player.CurRace.Checkpoints.Length;
+                    }
+
+                    if (finished) {
+                        cpNum = mapCpCount;
+                    } else if (Player.CurLap !is null) {
+                        cpNum = Player.CurLap.Checkpoints.Length;
+                    }
+                }
             }
         }
 

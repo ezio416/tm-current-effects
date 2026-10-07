@@ -1,11 +1,16 @@
 abstract class State {
     CurrentEffects::Camera               camera;
+    uint                                 cpNum;
     bool                                 driving;
     bool                                 finished;
     string                               gameMode;
     uint                                 gameTime;
     bool                                 ghostVis;
+    uint                                 lapNum;
     string                               login;
+    uint                                 mapCpCount;
+    uint                                 mapLapCount;
+    uint                                 mapWpCount;
     string                               name;
     bool                                 noEngine;
     uint64                               p_vis;
@@ -19,6 +24,7 @@ abstract class State {
     float                                turboTimer;
     CurrentEffects::VehicleType          vehicleType;
     CurrentEffects::ViewMode             viewMode;
+    uint                                 wpCount;
 
     State() {
         Reset();
@@ -36,12 +42,17 @@ abstract class State {
 
     void RenderDebugRows() const {
         _RenderDebugRow("camera",      ColorDebugCamera(camera));
+        _RenderDebugRow("cpNum",       ColorDebugInt(cpNum));
         _RenderDebugRow("driving",     ColorDebugBool(driving));
         _RenderDebugRow("finished",    ColorDebugBool(finished));
         _RenderDebugRow("gameMode",    ColorDebugString(gameMode));
         _RenderDebugRow("gameTime",    ColorDebugInt(gameTime));
         _RenderDebugRow("ghostVis",    ColorDebugBool(ghostVis));
+        _RenderDebugRow("lapNum",      ColorDebugInt(lapNum));
         _RenderDebugRow("login",       ColorDebugString(login));
+        _RenderDebugRow("mapCpCount",  ColorDebugInt(mapCpCount));
+        _RenderDebugRow("mapLapCount", ColorDebugInt(mapLapCount));
+        _RenderDebugRow("mapWpCount",  ColorDebugInt(mapWpCount));
         _RenderDebugRow("name",        ColorDebugFormattedString(name));
         _RenderDebugRow("noEngine",    ColorDebugBool(noEngine));
         _RenderDebugRow("p_vis",       ColorDebugPointer(p_vis));
@@ -55,16 +66,22 @@ abstract class State {
         _RenderDebugRow("turboTimer",  ColorDebugFloat(turboTimer));
         _RenderDebugRow("vehicleType", ColorDebugVehicleType(vehicleType));
         _RenderDebugRow("viewMode",    ColorDebugViewMode(viewMode));
+        _RenderDebugRow("wpCount",     ColorDebugInt(wpCount));
     }
 
     void Reset() {
         camera      = CurrentEffects::Camera::Unknown;
+        cpNum       = 0;
         driving     = false;
         finished    = false;
         gameMode    = "";
         gameTime    = 0;
         ghostVis    = false;
+        lapNum      = 0;
         login       = "";
+        mapCpCount  = 0;
+        mapLapCount = 0;
+        mapWpCount  = 0;
         name        = "";
         noEngine    = false;
         p_vis       = 0x0;
@@ -78,6 +95,7 @@ abstract class State {
         turboTimer  = 0.0f;
         vehicleType = CurrentEffects::VehicleType::Unknown;
         viewMode    = CurrentEffects::ViewMode::Unknown;
+        wpCount     = 0;
     }
 
     void Update() {

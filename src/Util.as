@@ -162,9 +162,11 @@ string ColorOpponents() {
 #endif
 
 void SetColorStrings() {
-    g_ghostsColor   = Text::FormatOpenplanetColor(S_GhostsColor);
-    g_offColor      = Text::FormatOpenplanetColor(S_OffColor);
-    g_noEngineColor = Text::FormatOpenplanetColor(S_NoEngineColor);
+    g_checkpointsColor = Text::FormatOpenplanetColor(S_CheckpointsColor);
+    g_ghostsColor      = Text::FormatOpenplanetColor(S_GhostsColor);
+    g_lapsColor        = Text::FormatOpenplanetColor(S_LapsColor);
+    g_offColor         = Text::FormatOpenplanetColor(S_OffColor);
+    g_noEngineColor    = Text::FormatOpenplanetColor(S_NoEngineColor);
 
 #if TMNEXT
 
@@ -192,10 +194,8 @@ void SetColorStrings() {
 #endif
 #if TMNEXT || MP4
 
-    g_checkpointsColor     = Text::FormatOpenplanetColor(S_CheckpointsColor);
     g_desertColor          = Text::FormatOpenplanetColor(S_DesertColor);
     g_forcedColor          = Text::FormatOpenplanetColor(S_ForcedColor);
-    g_lapsColor            = Text::FormatOpenplanetColor(S_LapsColor);
     g_nametagsColor        = Text::FormatOpenplanetColor(S_NametagsColor);
     g_noBrakesColor        = Text::FormatOpenplanetColor(S_NoBrakesColor);
     g_noGripColor          = Text::FormatOpenplanetColor(S_NoGripColor);

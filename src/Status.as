@@ -42,8 +42,10 @@ const Status@[] g_statuses = {
 #elif TURBO
 
 const Status@[] g_statuses = {
+    Checkpoints(),
     NoEngine(),
     Ghosts(),
+    Laps(),
     Turbo()
 };
 
@@ -160,6 +162,53 @@ class ActionKey : Status {
     }
 }
 
+#endif
+
+class Checkpoints : Status {
+    bool get_active() const override {
+        return g_state.mapCpCount > 0;
+    }
+
+    Checkpoints() {
+#if TMNEXT
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
+#elif MP4
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif TURBO
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
+#endif
+    }
+
+    void RenderLegacy() const override {
+        if (!active) {
+            return;
+        }
+
+        UI::Text(g_checkpointsColor + Icons::HourglassO + " CP   " + g_state.cpNum + " / " + g_state.mapCpCount);  // TODO cp icon
+        RenderLegacyBar(g_state.cpNum, Math::Max(1, g_state.mapCpCount), S_CheckpointsColor);
+    }
+
+    void RenderSettings() override {
+        UI::PushID(this);
+
+        Set(UI::Checkbox("Checkpoints", S_Checkpoints));
+        S_CheckpointsColor = UI::InputColor3("", S_CheckpointsColor);
+        g_checkpointsColor = Text::FormatOpenplanetColor(S_CheckpointsColor);
+
+        UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_Checkpoints;
+    }
+
+    void Set(const bool b) override {
+        enabled = S_Checkpoints = b;
+    }
+}
+
+#if TMNEXT
+
 class CruiseControl : Status {
     bool get_active() const override {
         return g_state.cruiseControl;
@@ -239,47 +288,6 @@ class Fragile : Status {
 #endif
 #if TMNEXT || MP4
 
-class Checkpoints : Status {
-    bool get_active() const override {
-        return g_state.mapCpCount > 0;
-    }
-
-    Checkpoints() {
-#if TMNEXT
-        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
-#elif MP4
-        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
-#endif
-    }
-
-    void RenderLegacy() const override {
-        if (!active) {
-            return;
-        }
-
-        UI::Text(g_checkpointsColor + Icons::HourglassO + " CP   " + g_state.cpNum + " / " + g_state.mapCpCount);
-        RenderLegacyBar(g_state.cpNum, Math::Max(1, g_state.mapCpCount), S_CheckpointsColor);
-    }
-
-    void RenderSettings() override {
-        UI::PushID(this);
-
-        Set(UI::Checkbox("Checkpoints", S_Checkpoints));
-        S_CheckpointsColor = UI::InputColor3("", S_CheckpointsColor);
-        g_checkpointsColor = Text::FormatOpenplanetColor(S_CheckpointsColor);
-
-        UI::PopID();
-    }
-
-    void Set() override {
-        enabled = S_Checkpoints;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_Checkpoints = b;
-    }
-}
-
 class ForcedAccel : Handicap {
     bool get_active() const override {
         return g_state.forcedAccel;
@@ -318,47 +326,6 @@ class ForcedAccel : Handicap {
 
     void Set(const bool b) override {
         enabled = S_Forced = b;
-    }
-}
-
-class Laps : Status {
-    bool get_active() const override {
-        return g_state.mapLapCount > 0;
-    }
-
-    Laps() {
-#if TMNEXT
-        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
-#elif MP4
-        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
-#endif
-    }
-
-    void RenderLegacy() const override {
-        if (!active) {
-            return;
-        }
-
-        UI::Text(g_lapsColor + Icons::Retweet + " Lap   " + g_state.lapNum + " / " + g_state.mapLapCount);
-        RenderLegacyBar(g_state.lapNum, Math::Max(1, g_state.mapLapCount), S_LapsColor);
-    }
-
-    void RenderSettings() override {
-        UI::PushID(this);
-
-        Set(UI::Checkbox("Laps", S_Laps));
-        S_LapsColor = UI::InputColor3("", S_LapsColor);
-        g_lapsColor = Text::FormatOpenplanetColor(S_LapsColor);
-
-        UI::PopID();
-    }
-
-    void Set() override {
-        enabled = S_Laps;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_Laps = b;
     }
 }
 
@@ -405,6 +372,49 @@ class Ghosts : Status {
 
     void Set(const bool b) override {
         enabled = S_Ghosts = b;
+    }
+}
+
+class Laps : Status {
+    bool get_active() const override {
+        return g_state.mapLapCount > 0;
+    }
+
+    Laps() {
+#if TMNEXT
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
+#elif MP4
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif TURBO
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
+#endif
+    }
+
+    void RenderLegacy() const override {
+        if (!active) {
+            return;
+        }
+
+        UI::Text(g_lapsColor + Icons::Retweet + " Lap   " + g_state.lapNum + " / " + g_state.mapLapCount);
+        RenderLegacyBar(g_state.lapNum, Math::Max(1, g_state.mapLapCount), S_LapsColor);
+    }
+
+    void RenderSettings() override {
+        UI::PushID(this);
+
+        Set(UI::Checkbox("Laps", S_Laps));
+        S_LapsColor = UI::InputColor3("", S_LapsColor);
+        g_lapsColor = Text::FormatOpenplanetColor(S_LapsColor);
+
+        UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_Laps;
+    }
+
+    void Set(const bool b) override {
+        enabled = S_Laps = b;
     }
 }
 
