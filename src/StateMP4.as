@@ -3,20 +3,14 @@
 StateMP4 g_state;
 
 class StateMP4 : State {
-    uint                        cpNum;
     uint                        entityId;
     bool                        forcedAccel;
-    uint                        lapNum;
-    uint                        mapCpCount;
-    uint                        mapLapCount;
-    uint                        mapWpCount;
     bool                        nametagVis;
     bool                        noBrakes;
     bool                        noGrip;
     bool                        noSteer;
     CurrentEffects::OpponentVis opponentVis;
     bool                        spectateAuto;
-    uint                        wpCount;
 
     void RenderDebugRows() const override {
         State::RenderDebugRows();
@@ -27,39 +21,27 @@ class StateMP4 : State {
         UI::TableNextColumn();
         UI::SeparatorText("");
 
-        _RenderDebugRow("cpNum",        ColorDebugInt(cpNum));
         _RenderDebugRow("entityId",     ColorDebugString(Text::Format("0x%x", entityId)));
         _RenderDebugRow("forcedAccel",  ColorDebugBool(forcedAccel));
-        _RenderDebugRow("lapNum",       ColorDebugInt(lapNum));
-        _RenderDebugRow("mapCpCount",   ColorDebugInt(mapCpCount));
-        _RenderDebugRow("mapLapCount",  ColorDebugInt(mapLapCount));
-        _RenderDebugRow("mapWpCount",   ColorDebugInt(mapWpCount));
         _RenderDebugRow("nametagVis",   ColorDebugBool(nametagVis));
         _RenderDebugRow("noBrake",      ColorDebugBool(noBrakes));
         _RenderDebugRow("noGrip",       ColorDebugBool(noGrip));
         _RenderDebugRow("noSteer",      ColorDebugBool(noSteer));
         _RenderDebugRow("opponentVis",  ColorDebugOpponentVis(opponentVis));
         _RenderDebugRow("spectateAuto", ColorDebugBool(spectateAuto));
-        _RenderDebugRow("wpCount",      ColorDebugInt(wpCount));
     }
 
     void Reset() override {
         State::Reset();
 
-        cpNum        = 0;
         entityId     = 0x0;
         forcedAccel  = false;
-        lapNum       = 0;
-        mapCpCount   = 0;
-        mapLapCount  = 0;
-        mapWpCount   = 0;
         nametagVis   = false;
         noBrakes     = false;
         noGrip       = false;
         noSteer      = false;
         opponentVis  = CurrentEffects::OpponentVis::Unknown;
         spectateAuto = false;
-        wpCount      = 0;
     }
 
     void Update() override {

@@ -5,18 +5,13 @@ StateNext g_state;
 class StateNext : State {
     uint8                            actionKey;
     bool                             brakePedal;
-    uint                             cpNum;  // TODO MP4/TURBO
     bool                             cruiseControl;
     float                            cruiseControlSpeed;
     uint                             entityId;
     bool                             forcedAccel;
     bool                             fragile;
     float                            fragileDamage;
-    uint                             lapNum;  // TODO MP4/TURBO
     bool                             launchRespawning;
-    uint                             mapCpCount;  // TODO MP4/TURBO
-    uint                             mapLapCount;  // TODO MP4/TURBO
-    uint                             mapWpCount;  // TODO MP4/TURBO
     bool                             nametagVis;
     bool                             noBrakes;
     bool                             noGrip;
@@ -45,7 +40,6 @@ class StateNext : State {
     float                            steerLimit;
     uint8                            turboLevel;
     float                            water;
-    uint                             wpCount;  // TODO MP4/TURBO
     string                           wsid;
 
     void RenderDebugRows() const override {
@@ -59,18 +53,13 @@ class StateNext : State {
 
         _RenderDebugRow("actionKey",          ColorDebugInt(actionKey));
         _RenderDebugRow("brakePedal",         ColorDebugBool(brakePedal));
-        _RenderDebugRow("cpNum",              ColorDebugInt(cpNum));
         _RenderDebugRow("cruiseControl",      ColorDebugBool(cruiseControl));
         _RenderDebugRow("cruiseControlSpeed", ColorDebugFloat(cruiseControlSpeed));
         _RenderDebugRow("entityId",           ColorDebugString(Text::Format("0x%x", entityId)));
         _RenderDebugRow("forcedAccel",        ColorDebugBool(forcedAccel));
         _RenderDebugRow("fragile",            ColorDebugBool(fragile));
         _RenderDebugRow("fragileDamage",      ColorDebugFloat(fragileDamage));
-        _RenderDebugRow("lapNum",             ColorDebugInt(lapNum));
         _RenderDebugRow("launchRespawning",   ColorDebugBool(launchRespawning));
-        _RenderDebugRow("mapCpCount",         ColorDebugInt(mapCpCount));
-        _RenderDebugRow("mapLapCount",        ColorDebugInt(mapLapCount));
-        _RenderDebugRow("mapWpCount",         ColorDebugInt(mapWpCount));
         _RenderDebugRow("nametagVis",         ColorDebugBool(nametagVis));
         _RenderDebugRow("noBrakes",           ColorDebugBool(noBrakes));
         _RenderDebugRow("noGrip",             ColorDebugBool(noGrip));
@@ -99,7 +88,6 @@ class StateNext : State {
         _RenderDebugRow("steerLimit",         ColorDebugFloat(steerLimit));
         _RenderDebugRow("turboLevel",         ColorDebugInt(turboLevel));
         _RenderDebugRow("water",              ColorDebugFloat(water));
-        _RenderDebugRow("wpCount",            ColorDebugInt(wpCount));
         _RenderDebugRow("wsid",               ColorDebugString(wsid));
     }
 
@@ -108,18 +96,13 @@ class StateNext : State {
 
         actionKey          = 0;
         brakePedal         = false;
-        cpNum              = 0;
         cruiseControl      = false;
         cruiseControlSpeed = 0.0f;
         forcedAccel        = false;
         fragile            = false;
         fragileDamage      = 0.0f;
         entityId           = 0;
-        lapNum             = 0;
         launchRespawning   = false;
-        mapCpCount         = 0;
-        mapLapCount        = 0;
-        mapWpCount         = 0;
         nametagVis         = false;
         noBrakes           = false;
         noGrip             = false;
@@ -148,7 +131,6 @@ class StateNext : State {
         steerLimit         = 0.0f;
         turboLevel         = 0;
         water              = 0.0f;
-        wpCount            = 0;
         wsid               = "";
     }
 
