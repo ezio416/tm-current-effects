@@ -12,12 +12,17 @@ namespace Danger {
 
     // offsets
     const uint16 O_CAMERA_SYSTEM_BW_CAMERA = 0xa0;
-    const uint16 O_PLAYER_ENTITY_ID        = GetMemberOffset("CGamePlayer", "User") + 0x2ac;
-    const uint16 O_PLAYER_VIS              = GetMemberOffset("CGamePlayer", "User") + 0x2a0;
+    const uint16 O_MAP_CP_COUNT            = GetMemberOffset("CGameCtnChallenge", "ScriptMetadata") + 0xb0;
+    const uint16 O_CTMPLAYER_ENTITY_ID     = GetMemberOffset("CTrackManiaPlayer", "User") + 0x8;
+    const uint16 O_CTMPLAYER_VIS           = GetMemberOffset("CTrackManiaPlayer", "ScriptAPI") - 0x10;
     const uint16 O_TERMINAL_ALT_CAMERA     = GetMemberOffset("CGameTerminal", "CameraSet") + 0x18;
     const uint16 O_TERMINAL_CUR_CAMERA     = GetMemberOffset("CGameTerminal", "CameraSet") + 0x10;
     const uint16 O_VIS_ENTITY_ID           = 0x0;
     const uint16 O_VIS_TURBO_TIMER         = 0x608;  // should probably add this to VehicleState
+
+    uint GetCheckpointCount(CGameCtnChallenge@ Map) {
+        return Dev::GetOffsetUint32(Map, O_MAP_CP_COUNT);
+    }
 
     CurrentEffects::Camera GetCurrentCamera(CGameTerminal@ Terminal) {
         const uint cam = Dev::GetOffsetUint32(Terminal, O_TERMINAL_CUR_CAMERA);
@@ -44,7 +49,7 @@ namespace Danger {
     }
 
     uint GetEntityId(CGamePlayer@ Player) {
-        return Dev::GetOffsetUint32(Player, O_PLAYER_ENTITY_ID);
+        return Dev::GetOffsetUint32(Player, O_CTMPLAYER_ENTITY_ID);
     }
 
     uint GetEntityId(CSceneVehicleVis@ Vis) {
@@ -60,7 +65,7 @@ namespace Danger {
     }
 
     CSceneVehicleVis@ GetVis(CGamePlayer@ Player) {
-        return cast<CSceneVehicleVis>(Dev::GetOffsetNod(Player, O_PLAYER_VIS));
+        return cast<CSceneVehicleVis>(Dev::GetOffsetNod(Player, O_CTMPLAYER_VIS));
     }
 }
 

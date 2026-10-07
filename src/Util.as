@@ -172,10 +172,8 @@ void SetColorStrings() {
     g_AK2Color           = Text::FormatOpenplanetColor(S_AK2Color);
     g_AK3Color           = Text::FormatOpenplanetColor(S_AK3Color);
     g_AK4Color           = Text::FormatOpenplanetColor(S_AK4Color);
-    g_checkpointsColor   = Text::FormatOpenplanetColor(S_CheckpointsColor);
     g_cruiseColor        = Text::FormatOpenplanetColor(S_CruiseColor);
     g_fragileColor       = Text::FormatOpenplanetColor(S_FragileColor);
-    g_lapsColor          = Text::FormatOpenplanetColor(S_LapsColor);
     g_launchRespawnColor = Text::FormatOpenplanetColor(S_LaunchRespawnColor);
     g_reactor1Color      = Text::FormatOpenplanetColor(S_Reactor1Color);
     g_reactor2Color      = Text::FormatOpenplanetColor(S_Reactor2Color);
@@ -194,8 +192,10 @@ void SetColorStrings() {
 #endif
 #if TMNEXT || MP4
 
+    g_checkpointsColor     = Text::FormatOpenplanetColor(S_CheckpointsColor);
     g_desertColor          = Text::FormatOpenplanetColor(S_DesertColor);
     g_forcedColor          = Text::FormatOpenplanetColor(S_ForcedColor);
+    g_lapsColor            = Text::FormatOpenplanetColor(S_LapsColor);
     g_nametagsColor        = Text::FormatOpenplanetColor(S_NametagsColor);
     g_noBrakesColor        = Text::FormatOpenplanetColor(S_NoBrakesColor);
     g_noGripColor          = Text::FormatOpenplanetColor(S_NoGripColor);

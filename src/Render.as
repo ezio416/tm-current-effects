@@ -49,7 +49,7 @@ void RenderLegacyWindow() {
         UI::Text(g_state.name.Length > 0 ? g_state.name : "(multiple)");
     } else if (g_state.viewMode == CurrentEffects::ViewMode::Spectate) {
         UI::Text("spectating:");
-        UI::Text(g_state.name);
+        UI::Text(Text::StripFormatCodes(g_state.name));
     }
 
     for (uint i = 0; i < g_statuses.Length; i++) {

@@ -12,22 +12,22 @@
 [Setting category="Toggles" hidden] bool S_Vehicle   = true;
 #if TMNEXT
 [Setting category="Toggles" hidden] bool S_ActionKey   = false;
-[Setting category="Toggles" hidden] bool S_Checkpoints = false;
 [Setting category="Toggles" hidden] bool S_Cruise      = true;
 [Setting category="Toggles" hidden] bool S_Fragile     = true;
-[Setting category="Toggles" hidden] bool S_Laps        = false;
 [Setting category="Toggles" hidden] bool S_Reactor     = true;
 [Setting category="Toggles" hidden] bool S_Respawning  = false;
 [Setting category="Toggles" hidden] bool S_SlowMo      = true;
 [Setting category="Toggles" hidden] bool S_Water       = false;
 #endif
 #if TMNEXT || MP4
-[Setting category="Toggles" hidden] bool S_Forced    = true;
-[Setting category="Toggles" hidden] bool S_Nametags  = false;
-[Setting category="Toggles" hidden] bool S_NoBrakes  = true;
-[Setting category="Toggles" hidden] bool S_NoGrip    = true;
-[Setting category="Toggles" hidden] bool S_NoSteer   = true;
-[Setting category="Toggles" hidden] bool S_Opponents = false;
+[Setting category="Toggles" hidden] bool S_Checkpoints = false;
+[Setting category="Toggles" hidden] bool S_Forced      = true;
+[Setting category="Toggles" hidden] bool S_Laps        = false;
+[Setting category="Toggles" hidden] bool S_Nametags    = false;
+[Setting category="Toggles" hidden] bool S_NoBrakes    = true;
+[Setting category="Toggles" hidden] bool S_NoGrip      = true;
+[Setting category="Toggles" hidden] bool S_NoSteer     = true;
+[Setting category="Toggles" hidden] bool S_Opponents   = false;
 #endif
 
 
@@ -62,20 +62,12 @@ vec3 S_AK4Color = vec3(0.0f, 1.0f, 1.0f);
 string g_AK4Color;
 
 [Setting category="Colors" hidden]
-vec3 S_CheckpointsColor = vec3(0.1f, 0.6f, 1.0f);
-string g_checkpointsColor;
-
-[Setting category="Colors" hidden]
 vec3 S_CruiseColor = vec3(0.226f, 0.564f, 1.0f);
 string g_cruiseColor;
 
 [Setting category="Colors" hidden]
 vec3 S_FragileColor = vec3(1.0f, 0.648f, 0.0f);
 string g_fragileColor;
-
-[Setting category="Colors" hidden]
-vec3 S_LapsColor = vec3(0.9f, 0.8f, 0.1f);
-string g_lapsColor;
 
 [Setting category="Colors" hidden]
 vec3 S_LaunchRespawnColor = vec3(0.0f, 1.0f, 0.0f);
@@ -143,8 +135,16 @@ string g_turboColor;
 #if TMNEXT || MP4
 
 [Setting category="Colors" hidden]
+vec3 S_CheckpointsColor = vec3(0.1f, 0.6f, 1.0f);
+string g_checkpointsColor;
+
+[Setting category="Colors" hidden]
 vec3 S_ForcedColor = vec3(0.0f, 1.0f, 0.0f);
 string g_forcedColor;
+
+[Setting category="Colors" hidden]
+vec3 S_LapsColor = vec3(0.9f, 0.8f, 0.1f);
+string g_lapsColor;
 
 [Setting category="Colors" hidden]
 vec3 S_NametagsColor = vec3(1.0f, 1.0f, 1.0f);
