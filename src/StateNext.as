@@ -160,22 +160,24 @@ class StateNext : State {
             return;
         }
 
-        mapCpCount = Danger::GetCheckpointCount(App.RootMap);
-        mapWpCount = mapCpCount + 1;
+        gameMode    = cast<CTrackManiaNetworkServerInfo>(App.Network.ServerInfo).CurGameModeStr;
+        gameTime    = App.Network.PlaygroundClientScriptAPI.GameTime;
+        ghostVis    = Danger::GetGhostVisibility(App.CurrentProfile.ProfileNew);
+        mapCpCount  = Danger::GetCheckpointCount(App.RootMap);
+        mapWpCount  = mapCpCount + 1;
+        nametagVis  = Danger::GetNametagVisibility(App.CurrentProfile.ProfileNew);
+        opponentVis = Danger::GetOpponentVisibility(App.CurrentProfile);
+        sequence    = Playground.UIConfigs[0].UISequence;
+        ticks       = gameTime / 10 * 10;
+        wpCount     = Danger::GetWaypointCount(App.GameScene);
 
         if (App.RootMap.TMObjective_IsLapRace) {
             mapLapCount = App.RootMap.TMObjective_NbLaps;
             mapWpCount *= mapLapCount;
         }
 
-        gameMode    = cast<CTrackManiaNetworkServerInfo>(App.Network.ServerInfo).CurGameModeStr;
-        ghostVis    = Danger::GetGhostVisibility(App.CurrentProfile.ProfileNew);
-        nametagVis  = Danger::GetNametagVisibility(App.CurrentProfile.ProfileNew);
-        opponentVis = Danger::GetOpponentVisibility(App.CurrentProfile);
-        sequence    = Playground.UIConfigs[0].UISequence;
-        finished    = sequence == CGamePlaygroundUIConfig::EUISequence::Finish;
-        gameTime    = App.Network.PlaygroundClientScriptAPI.GameTime;
-        ticks       = gameTime / 10 * 10;
+        finished = wpCount == mapWpCount or sequence == CGamePlaygroundUIConfig::EUISequence::Finish;
+        cpNum    = finished ? mapCpCount : wpCount % (mapCpCount + 1);
 
         if (App.PlaygroundScript is null) {
             auto Player = cast<CSmPlayer>(Playground.GameTerminals[0].GUIPlayer);
@@ -298,19 +300,18 @@ class StateNext : State {
             and ScriptPlayer.Post == CSmScriptPlayer::EPost::Char
             and startTick > ticks
         ;
-        driving = true
-            and ScriptPlayer.Post == CSmScriptPlayer::EPost::CarDriver
-            and !finished
-            and !spawning
-        ;
         if (gameTime > startTick) {
             raceTime = gameTime - startTick;
         }
 
-        if (driving or finished) {
-            wpCount = Danger::GetWaypointCount(Player);
-            cpNum = finished ? mapCpCount : wpCount % (mapCpCount + 1);
-        }
+        driving = true
+            and (false
+                or viewMode == CurrentEffects::ViewMode::Spectate
+                or ScriptPlayer.Post == CSmScriptPlayer::EPost::CarDriver
+            )
+            and !finished
+            and !spawning
+        ;
 
         switch (mapLapCount) {
             case 0:  break;

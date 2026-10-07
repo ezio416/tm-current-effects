@@ -7,13 +7,18 @@
 // valid for game version 2026-02-02_17_51, 2026-07-22_18_27
 
 namespace Danger {
+    // indices
+    const uint I_SCENE_ARENAVISMGR = 56;
+
     // offsets
     const uint16 O_APP_VEHICLEMGR             = GetMemberOffset("CTrackMania", "GameScene") + 0x8;
+    const uint16 O_ARENAVISMGR_WP_COUNT       = 0x1318;
     const uint16 O_CSMPLAYER_VEHICLE          = GetMemberOffset("CSmPlayer", "Score") + 0xb0;
-    const uint16 O_CSMPLAYER_WP_COUNT         = GetMemberOffset("CSmPlayer", "Score") - 0x3d8;
     const uint16 O_MAP_CP_COUNT               = GetMemberOffset("CGameCtnChallenge", "ScriptMetadata") + 0x98;
     const uint16 O_PROFILE_GHOST_VIS          = GetMemberOffset("CGameUserProfile", "Editor_ShowHelp") - 0x94;
     const uint16 O_PROFILE_NAMETAG_VIS        = GetMemberOffset("CGameUserProfile", "Editor_ShowHelp") - 0x78;
+    const uint16 O_SCENE_MANAGER_COUNT        = 0x8;
+    const uint16 O_SCENE_MANAGERS             = 0x10;
     const uint16 O_TERMINAL_ALT_CAMERA        = GetMemberOffset("CGameTerminal", "GUIPlayer") + 0x10;
     const uint16 O_TERMINAL_BW_CAMERA         = GetMemberOffset("CGameTerminal", "MediaClipPlayer") - 0x2c;
     const uint16 O_TERMINAL_CUR_CAMERA        = GetMemberOffset("CGameTerminal", "GUIPlayer") + 0x14;
@@ -264,12 +269,22 @@ namespace Danger {
         return Dev::GetOffsetUint32(Terminal, O_TERMINAL_GHOST_ENTITY_ID);
     }
 
-    uint GetWaypointCount(CSmPlayer@ Player) {
+    uint GetWaypointCount(ISceneVis@ Scene) {
         if (!Safety::ShouldRun()) {
             return 0;
         }
 
-        return Dev::GetOffsetUint32(Player, O_CSMPLAYER_WP_COUNT);
+        const uint mgrCount = Dev::GetOffsetUint32(Scene, O_SCENE_MANAGER_COUNT);
+        if (I_SCENE_ARENAVISMGR >= mgrCount) {
+            return 0;
+        }
+
+        auto Mgr = Dev::GetOffsetNod(Scene, O_SCENE_MANAGERS + 0x8 * I_SCENE_ARENAVISMGR);
+        if (Mgr is null) {
+            return 0;
+        }
+
+        return Dev::GetOffsetUint32(Mgr, O_ARENAVISMGR_WP_COUNT);
     }
 }
 

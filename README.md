@@ -20,13 +20,13 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |action key          |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |brake pedal         |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |camera              |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
-|checkpoint number   |✅|❌|✅|❌|✅|✅|✅|✅|✅|❌
+|checkpoint number   |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
 |cruise control      |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
 |cruise control speed|✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
-|driving             |✅|✅|✅|❌|✅|✅|✅|✅|✅|❌
+|driving             |✅|✅|✅|✅|✅|✅|✅|✅|✅|❌
 |engine off          |✅|❌|✅|✅|✅|✅|❌|✅|✅|❌
 |entity id           |✅|✅|✅|✅|✅|✅|✅|❌|❌|❌
-|finished            |✅|✅|✅|❌|✅|✅|✅|✅|✅|❌
+|finished            |✅|✅|✅|✅|✅|✅|✅|✅|✅|❌
 |forced acceleration |✅|❌|✅|✅|✅|✅|❌|❌|❌|❌
 |fragile             |✅|⚠️|✅|⚠️|❌|❌|❌|❌|❌|❌
 |fragile damage      |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
@@ -71,7 +71,7 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |turbo timer         |✅|✅|✅|❌|✅|✅|❌|✅|✅|❌
 |vehicle type        |✅|✅|✅|✅|⚠️|⚠️|⚠️|✅|✅|✅
 |water               |✅|✅|✅|❌|❌|❌|❌|❌|❌|❌
-|waypoint count      |✅|❌|✅|❌|✅|✅|✅|✅|✅|❌
+|waypoint count      |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
 |web services id     |✅|❌|✅|✅|❌|❌|❌|❌|❌|❌
 
 - ⚠️ when watching a replay or spectating, fragile only appears if at least one tire is partially worn

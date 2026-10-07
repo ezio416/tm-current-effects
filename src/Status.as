@@ -171,7 +171,7 @@ class Checkpoints : Status {
 
     Checkpoints() {
 #if TMNEXT
-        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
 #elif MP4
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
 #elif TURBO
