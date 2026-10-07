@@ -48,6 +48,10 @@ namespace Danger {
     }
 
     uint GetCheckpointCount(CGameCtnChallenge@ Map) {
+        if (!Safety::ShouldRun()) {
+            return 0;
+        }
+
         return Dev::GetOffsetUint32(Map, O_MAP_CP_COUNT);
     }
 
