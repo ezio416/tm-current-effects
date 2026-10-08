@@ -102,7 +102,8 @@ class StateMP4 : State {
 
             CGamePlayer@ Me = Playground.GameTerminals[0].ControlledPlayer;
             if (Me !is null) {
-                _Update(cast<CTrackManiaPlayer>(Me), VehicleState::GetVis(App.GameScene, Me));
+                _UpdateWithPlayer(cast<CTrackManiaPlayer>(Me));
+                _UpdateWithVis(VehicleState::GetVis(App.GameScene, Me));
             }
 
         } else {
@@ -138,118 +139,140 @@ class StateMP4 : State {
                     == CGameTerminal::ESpectatorCameraTarget::_SpectatorCam_Auto;
             }
 
-            _Update(cast<CTrackManiaPlayer>(Player), VehicleState::GetVisStateWithId(entityId));
+            _UpdateWithPlayer(cast<CTrackManiaPlayer>(Player));
+            _UpdateWithVis(VehicleState::GetVisStateWithId(entityId));
         }
     }
 
-    private void _Update(CTrackManiaPlayer@ Player, CSceneVehicleVisState@ VisState) {
-        if (Player !is null and Player.User !is null) {
-            login    = Player.User.Login;
-            name     = Player.User.Name;
-            respawns = Player.NbRespawns;
+    private void _UpdateWithPlayer(CTrackManiaPlayer@ Player) {
+        if (false
+            or Player is null
+            or Player.User is null
+        ) {
+            return;
+        }
 
-            if (mapLapCount > 0) {
-                lapNum = Player.CurLapIndex;
-            }
+        login    = Player.User.Login;
+        name     = Player.User.Name;
+        respawns = Player.NbRespawns;
 
-            auto ScriptPlayer = cast<CTrackManiaScriptPlayer>(Player.ScriptAPI);
-            if (ScriptPlayer is null) {
-                return;
-            }
+        if (mapLapCount > 0) {
+            lapNum = Player.CurLapIndex;
+        }
 
-            startTick = ScriptPlayer.RaceStartTime;
-            if (startTick > 0) {
-                driving = ScriptPlayer.RaceState == CTrackManiaScriptPlayer::ERaceState::Running;
-                if (driving) {
-                    raceTime = gameTime - startTick;
-                }
+        auto ScriptPlayer = cast<CTrackManiaScriptPlayer>(Player.ScriptAPI);
+        if (ScriptPlayer is null) {
+            return;
+        }
 
-                finished = ScriptPlayer.RaceState == CTrackManiaScriptPlayer::ERaceState::Finished;
-                spawning = ScriptPlayer.RaceState == CTrackManiaScriptPlayer::ERaceState::BeforeStart;
+        startTick = ScriptPlayer.RaceStartTime;
+        if (startTick == 0) {
+            return;
+        }
 
-                if (finished) {
-                    cpNum = mapCpCount;
-                    lapNum = mapLapCount;
-                }
+        driving = ScriptPlayer.RaceState == CTrackManiaScriptPlayer::ERaceState::Running;
+        if (driving) {
+            raceTime = gameTime - startTick;
+        }
 
-                if (driving or finished) {
-                    if (ScriptPlayer.CurRace !is null) {
-                        wpCount = ScriptPlayer.CurRace.Checkpoints.Length;
-                        for (uint i = 0; i < wpCount; i++) {
-                            wpTimes.InsertLast(ScriptPlayer.CurRace.Checkpoints[i]);
-                        }
-                    }
+        finished = ScriptPlayer.RaceState == CTrackManiaScriptPlayer::ERaceState::Finished;
+        spawning = ScriptPlayer.RaceState == CTrackManiaScriptPlayer::ERaceState::BeforeStart;
 
-                    if (wpTimes.Length == 0) {
-                        cpTime = raceTime;
-                        lapTime = raceTime;
+        if (finished) {
+            cpNum = mapCpCount;
+            lapNum = mapLapCount;
+        }
 
-                    } else {
-                        lastWpTime = wpTimes[wpTimes.Length - 1];
+        if (true
+            and !driving
+            and !finished
+        ) {
+            return;
+        }
 
-                        if (finished) {
-                            raceTime = lastWpTime;
-                            cpTime = wpTimes[wpTimes.Length - 1] - (wpTimes.Length > 0 ? wpTimes[wpTimes.Length - 2] : 0);
-
-                        } else {
-                            if (raceTime > lastWpTime) {
-                                cpTime = raceTime - lastWpTime;
-                            }
-                        }
-
-                        if (ScriptPlayer.CurLap !is null) {
-                            if (!finished) {
-                                cpNum = ScriptPlayer.CurLap.Checkpoints.Length;
-                                for (uint i = 0; i < cpNum; i++) {
-                                    cpLapTimes.InsertLast(ScriptPlayer.CurLap.Checkpoints[i]);
-                                }
-                            }
-
-                            if (false
-                                or mapLapCount == 0
-                                or lapNum == 1
-                            ) {
-                                cpTimes = cpLapTimes;
-                                lapTime = raceTime;
-
-                            } else {
-                                for (uint i = (mapCpCount + 1) * (lapNum - 1); i < wpTimes.Length; i++) {
-                                    cpTimes.InsertLast(wpTimes[i]);
-                                }
-
-                                for (uint i = mapCpCount; i < wpTimes.Length; i += mapCpCount + 1) {
-                                    lapTimes.InsertLast(wpTimes[i]);
-                                }
-
-                                lastLapTime = wpTimes[(mapCpCount + 1) * (lapNum - 1) - 1];
-
-                                if (raceTime > lastLapTime) {
-                                    lapTime = raceTime - lastLapTime;
-                                }
-
-                                for (uint i = 0; i < lapTimes.Length; i++) {
-                                    lapLapTimes.InsertLast(lapTimes[i] - (i == 0 ? 0 : lapTimes[i - 1]));
-                                }
-                            }
-                        }
-                    }
-                }
+        if (ScriptPlayer.CurRace !is null) {
+            wpCount = ScriptPlayer.CurRace.Checkpoints.Length;
+            for (uint i = 0; i < wpCount; i++) {
+                wpTimes.InsertLast(ScriptPlayer.CurRace.Checkpoints[i]);
             }
         }
 
-        if (VisState !is null and VisState.m_vis !is null) {
-            noEngine    = VisState.ActiveEffects & 0x1  == 0x1;
-            forcedAccel = VisState.ActiveEffects & 0x2  == 0x2;
-            noBrakes    = VisState.ActiveEffects & 0x4  == 0x4;
-            noSteer     = VisState.ActiveEffects & 0x8  == 0x8;
-            noGrip      = VisState.ActiveEffects & 0x10 == 0x10;
+        if (wpTimes.Length == 0) {
+            cpTime = raceTime;
+            lapTime = raceTime;
+            return;
+        }
 
-            p_vis = Danger::GetPointer(VisState.m_vis);
+        lastWpTime = wpTimes[wpTimes.Length - 1];
 
-            turbo = VisState.TurboActive;
-            if (turbo) {
-                turboTimer = Danger::GetTurboTimer(VisState.m_vis);
+        if (finished) {
+            raceTime = lastWpTime;
+            cpTime = wpTimes[wpTimes.Length - 1] - (wpTimes.Length > 0 ? wpTimes[wpTimes.Length - 2] : 0);
+
+        } else {
+            if (raceTime > lastWpTime) {
+                cpTime = raceTime - lastWpTime;
             }
+        }
+
+        if (ScriptPlayer.CurLap is null) {
+            return;
+        }
+
+        if (!finished) {
+            cpNum = ScriptPlayer.CurLap.Checkpoints.Length;
+            for (uint i = 0; i < cpNum; i++) {
+                cpLapTimes.InsertLast(ScriptPlayer.CurLap.Checkpoints[i]);
+            }
+        }
+
+        if (false
+            or mapLapCount == 0
+            or lapNum == 1
+        ) {
+            cpTimes = cpLapTimes;
+            lapTime = raceTime;
+            return;
+        }
+
+        for (uint i = (mapCpCount + 1) * (lapNum - 1); i < wpTimes.Length; i++) {
+            cpTimes.InsertLast(wpTimes[i]);
+        }
+
+        for (uint i = mapCpCount; i < wpTimes.Length; i += mapCpCount + 1) {
+            lapTimes.InsertLast(wpTimes[i]);
+        }
+
+        lastLapTime = wpTimes[(mapCpCount + 1) * (lapNum - 1) - 1];
+
+        if (raceTime > lastLapTime) {
+            lapTime = raceTime - lastLapTime;
+        }
+
+        for (uint i = 0; i < lapTimes.Length; i++) {
+            lapLapTimes.InsertLast(lapTimes[i] - (i == 0 ? 0 : lapTimes[i - 1]));
+        }
+    }
+
+    private void _UpdateWithVis(CSceneVehicleVisState@ VisState) {
+        if (false
+            or VisState is null
+            or VisState.m_vis is null
+        ) {
+            return;
+        }
+
+        noEngine    = VisState.ActiveEffects & 0x1  == 0x1;
+        forcedAccel = VisState.ActiveEffects & 0x2  == 0x2;
+        noBrakes    = VisState.ActiveEffects & 0x4  == 0x4;
+        noSteer     = VisState.ActiveEffects & 0x8  == 0x8;
+        noGrip      = VisState.ActiveEffects & 0x10 == 0x10;
+
+        p_vis = Danger::GetPointer(VisState.m_vis);
+
+        turbo = VisState.TurboActive;
+        if (turbo) {
+            turboTimer = Danger::GetTurboTimer(VisState.m_vis);
         }
     }
 }
