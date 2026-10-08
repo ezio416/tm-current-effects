@@ -345,8 +345,6 @@ class StateNext : State {
         for (uint i = 0; i < lapTimes.Length; i++) {
             lapLapTimes.InsertLast(lapTimes[i] - (i == 0 ? 0 : lapTimes[i - 1]));
         }
-
-        // TODO cpTime and lapTime are 0 when finished
     }
 
     private void _UpdateWithLaps(const uint laps) {
