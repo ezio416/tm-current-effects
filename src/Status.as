@@ -55,11 +55,13 @@ const Status@[] g_statuses = {
 
 const Status@[] g_statuses = {
     Checkpoints(),
+    CheckpointTime(),
     Fps(),
     NoEngine(),
     GameMode(),
     Ghosts(),
     Laps(),
+    LapTime(),
     RaceTime(),
     Sequence(),
     Turbo()
@@ -234,7 +236,7 @@ class CheckpointTime : Status {
 #elif MP4
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
 #elif TURBO
-        ;  // TODO cp time turbo
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
 #endif
     }
 
@@ -572,7 +574,7 @@ class LapTime : Status {
 #elif MP4
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
 #elif TURBO
-        ;  // TODO lap time turbo
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
 #endif
     }
 

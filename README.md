@@ -21,7 +21,7 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |brake pedal         |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |camera              |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
 |checkpoint number   |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
-|checkpoint times    |✅|❌|✅|❌|✅|✅|✅|❌|❌|❌
+|checkpoint times    |✅|❌|✅|❌|✅|✅|✅|✅|❌|❌
 |cruise control      |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
 |cruise control speed|✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
 |driving             |✅|✅|✅|✅|✅|✅|✅|✅|✅|❌
@@ -35,7 +35,7 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |game mode           |✅|✅|✅|✅|✅|✅|✅|✅|✅|✅
 |ghost visibility    |✅|✅|✅|✅|✅|✅|✅|✅|✅|✅
 |lap number          |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
-|lap times           |✅|❌|✅|❌|✅|✅|✅|❌|❌|❌
+|lap times           |✅|❌|✅|❌|✅|✅|✅|✅|❌|❌
 |launch respawning   |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |login               |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
 |map checkpoint count|✅|✅|✅|✅|✅|✅|✅|✅|✅|❌
@@ -75,7 +75,7 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |vehicle type        |✅|✅|✅|✅|⚠️|⚠️|⚠️|✅|✅|✅
 |water               |✅|✅|✅|❌|❌|❌|❌|❌|❌|❌
 |waypoint count      |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
-|waypoint times      |✅|❌|✅|❌|✅|✅|✅|❌|❌|❌
+|waypoint times      |✅|❌|✅|❌|✅|✅|✅|✅|❌|❌
 |web services id     |✅|❌|✅|✅|❌|❌|❌|❌|❌|❌
 
 - ⚠️ when watching a replay or spectating, fragile only appears if at least one tire is partially worn
