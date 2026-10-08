@@ -8,6 +8,7 @@ abstract class State {
     uint                                 gameTime;
     bool                                 ghostVis;
     uint                                 lapNum;
+    uint                                 lastWpTime;
     string                               login;
     uint                                 mapCpCount;
     uint                                 mapLapCount;
@@ -27,6 +28,7 @@ abstract class State {
     CurrentEffects::VehicleType          vehicleType;
     CurrentEffects::ViewMode             viewMode;
     uint                                 wpCount;
+    uint[]                               wpTimes;
 
     State() {
         Reset();
@@ -52,6 +54,7 @@ abstract class State {
         _RenderDebugRow("gameTime",    ColorDebugInt(gameTime));
         _RenderDebugRow("ghostVis",    ColorDebugBool(ghostVis));
         _RenderDebugRow("lapNum",      ColorDebugInt(lapNum));
+        _RenderDebugRow("lastWpTime",  ColorDebugInt(lastWpTime));
         _RenderDebugRow("login",       ColorDebugString(login));
         _RenderDebugRow("mapCpCount",  ColorDebugInt(mapCpCount));
         _RenderDebugRow("mapLapCount", ColorDebugInt(mapLapCount));
@@ -71,6 +74,7 @@ abstract class State {
         _RenderDebugRow("vehicleType", ColorDebugVehicleType(vehicleType));
         _RenderDebugRow("viewMode",    ColorDebugViewMode(viewMode));
         _RenderDebugRow("wpCount",     ColorDebugInt(wpCount));
+        _RenderDebugRow("wpTimes",     ColorDebugArrayUint32(wpTimes));
     }
 
     void Reset() {
@@ -83,6 +87,7 @@ abstract class State {
         gameTime    = 0;
         ghostVis    = false;
         lapNum      = 0;
+        lastWpTime  = 0;
         login       = "";
         mapCpCount  = 0;
         mapLapCount = 0;
@@ -102,6 +107,7 @@ abstract class State {
         vehicleType = CurrentEffects::VehicleType::Unknown;
         viewMode    = CurrentEffects::ViewMode::Unknown;
         wpCount     = 0;
+        wpTimes     = {};
     }
 
     void Update() {

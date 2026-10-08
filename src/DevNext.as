@@ -12,8 +12,10 @@ namespace Danger {
 
     // offsets
     const uint16 O_APP_VEHICLEMGR             = GetMemberOffset("CTrackMania", "GameScene") + 0x8;
+    const uint16 O_ARENA_CURRENT_REPLAY       = GetMemberOffset("CSmArena", "Rules") + 0xb8;
     const uint16 O_ARENARULES_LAP_COUNT       = GetMemberOffset("CSmArenaRules", "RulesMode") - 0x30;
     const uint16 O_ARENAVISMGR_WP_COUNT       = 0x1318;
+    const uint16 O_GHOST_CP_BUFFER            = GetMemberOffset("CGameCtnGhost", "NbRespawns") + 0x8;
     const uint16 O_MAP_CP_COUNT               = GetMemberOffset("CGameCtnChallenge", "ScriptMetadata") + 0x98;
     const uint16 O_PLAYER_VEHICLE             = GetMemberOffset("CSmPlayer", "Score") + 0xb0;
     const uint16 O_PROFILE_GHOST_VIS          = GetMemberOffset("CGameUserProfile", "Editor_ShowHelp") - 0x94;
@@ -294,6 +296,60 @@ namespace Danger {
         }
 
         return Dev::GetOffsetUint32(Mgr, O_ARENAVISMGR_WP_COUNT);
+    }
+
+    uint[] GetWaypointTimes(CSmArena@ Arena, const string&in name) {
+        if (false
+            or name.Length == 0
+            or !Safety::ShouldRun()
+        ) {
+            return {};
+        }
+
+        auto Replay = cast<CGameCtnReplayRecord>(Dev::GetOffsetNod(Arena, O_ARENA_CURRENT_REPLAY));
+        if (false
+            or Replay is null
+            or Replay.Ghosts.Length == 0
+        ) {
+            return {};
+        }
+
+        CGameCtnGhost@ Ghost;
+        for (int i = Replay.Ghosts.Length - 1; i >= 0; i--) {
+            if (Replay.Ghosts[i].GhostNickname == name) {
+                @Ghost = Replay.Ghosts[i];
+                break;
+            }
+        }
+
+        if (Ghost is null) {
+            return {};
+        }
+
+        return GetWaypointTimes(Ghost);
+    }
+
+    uint[] GetWaypointTimes(CGameCtnGhost@ Ghost) {
+        if (!Safety::ShouldRun()) {
+            return {};
+        }
+
+        const uint bufLen = Dev::GetOffsetUint32(Ghost, O_GHOST_CP_BUFFER + 0x8);
+        if (bufLen == 0) {
+            return {};
+        }
+
+        auto buf = Dev::GetOffsetNod(Ghost, O_GHOST_CP_BUFFER);
+        if (buf is null) {
+            return {};
+        }
+
+        uint[] ret;
+        for (uint i = 0; i < bufLen; i++) {
+            ret.InsertLast(Dev::GetOffsetUint32(buf, i * 0x8 + 0x4));
+        }
+
+        return ret;
     }
 }
 

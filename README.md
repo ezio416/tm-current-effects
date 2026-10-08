@@ -33,6 +33,7 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |game mode           |✅|✅|✅|✅|✅|✅|✅|✅|✅|✅
 |ghost visibility    |✅|✅|✅|✅|✅|✅|✅|✅|✅|✅
 |lap number          |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
+|last waypoint time  |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |launch respawning   |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |login               |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
 |map checkpoint count|✅|✅|✅|✅|✅|✅|✅|✅|✅|❌
@@ -72,6 +73,7 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |vehicle type        |✅|✅|✅|✅|⚠️|⚠️|⚠️|✅|✅|✅
 |water               |✅|✅|✅|❌|❌|❌|❌|❌|❌|❌
 |waypoint count      |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
+|waypoint times      |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |web services id     |✅|❌|✅|✅|❌|❌|❌|❌|❌|❌
 
 - ⚠️ when watching a replay or spectating, fragile only appears if at least one tire is partially worn

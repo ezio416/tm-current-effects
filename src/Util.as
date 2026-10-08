@@ -1,6 +1,19 @@
 const string COLOR_DEBUG_OFF = "\\$f00";
 const string COLOR_DEBUG_ON  = "\\$0f0";
 
+string ColorDebugArrayUint32(const uint[]&in a) {
+    string ret = "< ";
+
+    for (uint i = 0; i < a.Length; i++) {
+        ret += ColorDebugInt(a[i]);
+        if (i < a.Length - 1) {
+            ret += "\\$g, ";
+        }
+    }
+
+    return ret + "\\$g >";
+}
+
 string ColorDebugBool(const bool b) {
     return (b ? COLOR_DEBUG_ON : COLOR_DEBUG_OFF) + b;
 }

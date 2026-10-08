@@ -284,6 +284,30 @@ class StateNext : State {
             }
         }
 
+        _UpdateTimes(Playground.Arena);
+    }
+
+    private void _UpdateTimes(CSmArena@ Arena) {
+        if (false
+            or name.Length == 0
+            or viewMode == CurrentEffects::ViewMode::Replay
+            or viewMode == CurrentEffects::ViewMode::Spectate
+        ) {
+            return;
+        }
+
+        wpTimes = Danger::GetWaypointTimes(Arena, name);
+        if (wpTimes.Length == 0) {
+            return;
+        }
+
+        lastWpTime = wpTimes[wpTimes.Length - 1];
+
+        if (finished) {
+            raceTime = lastWpTime;
+        }
+    }
+
     private void _UpdateWithLaps(const uint laps) {
         mapLapCount = laps;
         if (mapLapCount == 0) {
