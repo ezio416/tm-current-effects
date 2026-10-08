@@ -325,13 +325,6 @@ class StateNext : State {
             lapTimes.InsertLast(wpTimes[i]);
         }
 
-        /*
-        a few important notes about the data after this point:
-        - anything that relies on "lastLapTime" will be off by a few ms
-        - the game seems to add a consistent offset (0-9) when calculating lap times
-        - this value changes for each lap and hasn't been found yet
-        */
-
         lastLapTime = wpTimes[(mapCpCount + 1) * (lapNum - 1) - 1];
 
         if (raceTime > lastLapTime) {
