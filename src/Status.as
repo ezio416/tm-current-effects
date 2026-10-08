@@ -17,6 +17,7 @@ Status@[] g_statuses = {
     Opponents(),
     Reactor(),
     Respawning(),
+    Sequence(),
     SlowMo(),
     Turbo(),
     VehicleType(),
@@ -37,6 +38,7 @@ const Status@[] g_statuses = {
     NoGrip(),
     NoSteer(),
     Opponents(),
+    Sequence(),
     Turbo(),
     VehicleType(),
 };
@@ -49,6 +51,7 @@ const Status@[] g_statuses = {
     NoEngine(),
     Ghosts(),
     Laps(),
+    Sequence(),
     Turbo()
 };
 
@@ -813,7 +816,7 @@ class Respawning : Status {
 
         S_LaunchRespawnColor = UI::InputColor3("launched", S_LaunchRespawnColor);
         g_launchRespawnColor = Text::FormatOpenplanetColor(S_LaunchRespawnColor);
-        S_StandRespawnColor = UI::InputColor3("standing", S_StandRespawnColor);
+        S_StandRespawnColor = UI::InputColor3("standstill", S_StandRespawnColor);
         g_standRespawnColor = Text::FormatOpenplanetColor(S_StandRespawnColor);
 
         UI::PopID();
@@ -827,6 +830,50 @@ class Respawning : Status {
         enabled = S_Respawning = b;
     }
 }
+
+#endif
+
+class Sequence : Status {
+    bool get_active() const override {
+        return true;
+    }
+
+    Sequence() {
+#if TMNEXT
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
+            | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif MP4
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif TURBO
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#endif
+    }
+
+    void RenderLegacy() const override {
+        UI::Text(g_sequenceColor + Icons::Film + " " + tostring(g_state.sequence));
+    }
+
+    void RenderSettings() override {
+        UI::PushID(this);
+
+        Set(UI::Checkbox("Sequence", S_Sequence));
+
+        S_SequenceColor = UI::InputColor3("", S_SequenceColor);
+        g_sequenceColor = Text::FormatOpenplanetColor(S_SequenceColor);
+
+        UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_Sequence;
+    }
+
+    void Set(const bool b) override {
+        enabled = S_Sequence = b;
+    }
+}
+
+#if TMNEXT
 
 class SlowMo : Status {
     bool get_active() const override {
