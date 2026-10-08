@@ -193,7 +193,7 @@ class Checkpoints : Status {
             return;
         }
 
-        UI::Text(g_checkpointsColor + Icons::HourglassO + " CP: " + g_state.cpNum + " / " + g_state.mapCpCount);  // TODO cp icon
+        UI::Text(g_checkpointsColor + Icons::Undo + " CP: " + g_state.cpNum + " / " + g_state.mapCpCount);
         RenderLegacyBar(g_state.cpNum, Math::Max(1, g_state.mapCpCount), S_CheckpointsColor);
     }
 
