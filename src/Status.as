@@ -32,12 +32,14 @@ Status@[] g_statuses = {
 
 const Status@[] g_statuses = {
     Checkpoints(),
+    CheckpointTime(),
     NoEngine(),
     Fps(),
     ForcedAccel(),
     GameMode(),
     Ghosts(),
     Laps(),
+    LapTime(),
     Nametags(),
     NoBrakes(),
     NoGrip(),
@@ -230,7 +232,7 @@ class CheckpointTime : Status {
 #if TMNEXT
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
 #elif MP4
-        ;  // TODO cp time mp4
+        modes = CurrentEffects::ViewMode::Solo;
 #elif TURBO
         ;  // TODO cp time turbo
 #endif
@@ -568,7 +570,7 @@ class LapTime : Status {
 #if TMNEXT
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
 #elif MP4
-        ;  // TODO lap time mp4
+        modes = CurrentEffects::ViewMode::Solo;
 #elif TURBO
         ;  // TODO lap time turbo
 #endif

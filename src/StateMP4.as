@@ -167,15 +167,71 @@ class StateMP4 : State {
                 finished = ScriptPlayer.RaceState == CTrackManiaScriptPlayer::ERaceState::Finished;
                 spawning = ScriptPlayer.RaceState == CTrackManiaScriptPlayer::ERaceState::BeforeStart;
 
+                if (finished) {
+                    cpNum = mapCpCount;
+                    lapNum = mapLapCount;
+                }
+
                 if (driving or finished) {
                     if (ScriptPlayer.CurRace !is null) {
                         wpCount = ScriptPlayer.CurRace.Checkpoints.Length;
+                        for (uint i = 0; i < wpCount; i++) {
+                            wpTimes.InsertLast(ScriptPlayer.CurRace.Checkpoints[i]);
+                        }
                     }
 
-                    if (finished) {
-                        cpNum = mapCpCount;
-                    } else if (ScriptPlayer.CurLap !is null) {
-                        cpNum = ScriptPlayer.CurLap.Checkpoints.Length;
+                    if (wpTimes.Length == 0) {
+                        cpTime = raceTime;
+                        lapTime = raceTime;
+
+                    } else {
+                        lastWpTime = wpTimes[wpTimes.Length - 1];
+
+                        if (finished) {
+                            raceTime = lastWpTime;
+                            cpTime = wpTimes[wpTimes.Length - 1] - (wpTimes.Length > 0 ? wpTimes[wpTimes.Length - 2] : 0);
+
+                        } else {
+                            if (raceTime > lastWpTime) {
+                                cpTime = raceTime - lastWpTime;
+                            }
+                        }
+
+                        if (ScriptPlayer.CurLap !is null) {
+                            if (!finished) {
+                                cpNum = ScriptPlayer.CurLap.Checkpoints.Length;
+                                for (uint i = 0; i < cpNum; i++) {
+                                    cpLapTimes.InsertLast(ScriptPlayer.CurLap.Checkpoints[i]);
+                                }
+                            }
+
+                            if (false
+                                or mapLapCount == 0
+                                or lapNum == 1
+                            ) {
+                                cpTimes = cpLapTimes;
+                                lapTime = raceTime;
+
+                            } else {
+                                for (uint i = (mapCpCount + 1) * (lapNum - 1); i < wpTimes.Length; i++) {
+                                    cpTimes.InsertLast(wpTimes[i]);
+                                }
+
+                                for (uint i = mapCpCount; i < wpTimes.Length; i += mapCpCount + 1) {
+                                    lapTimes.InsertLast(wpTimes[i]);
+                                }
+
+                                lastLapTime = wpTimes[(mapCpCount + 1) * (lapNum - 1) - 1];
+
+                                if (raceTime > lastLapTime) {
+                                    lapTime = raceTime - lastLapTime;
+                                }
+
+                                for (uint i = 0; i < lapTimes.Length; i++) {
+                                    lapLapTimes.InsertLast(lapTimes[i] - (i == 0 ? 0 : lapTimes[i - 1]));
+                                }
+                            }
+                        }
                     }
                 }
             }
