@@ -12,6 +12,7 @@
 [Setting category="Toggles" hidden] bool S_Ghosts      = false;
 [Setting category="Toggles" hidden] bool S_Laps        = false;
 [Setting category="Toggles" hidden] bool S_NoEngine    = true;
+[Setting category="Toggles" hidden] bool S_RaceTime    = false;
 [Setting category="Toggles" hidden] bool S_Sequence    = false;
 [Setting category="Toggles" hidden] bool S_Turbo       = true;
 [Setting category="Toggles" hidden] bool S_Vehicle     = true;
@@ -61,6 +62,10 @@ string g_lapsColor;
 [Setting category="Colors" hidden]
 vec3 S_NoEngineColor = vec3(1.0f, 0.0f, 0.0f);
 string g_noEngineColor;
+
+[Setting category="Colors" hidden]
+vec3 S_RaceTimeColor = vec3(1.0f, 1.0f, 1.0f);
+string g_raceTimeColor;
 
 [Setting category="Colors" hidden]
 vec3 S_SequenceColor = vec3(1.0f, 1.0f, 1.0f);

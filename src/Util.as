@@ -169,6 +169,7 @@ void SetColorStrings() {
     g_lapsColor        = Text::FormatOpenplanetColor(S_LapsColor);
     g_noEngineColor    = Text::FormatOpenplanetColor(S_NoEngineColor);
     g_offColor         = Text::FormatOpenplanetColor(S_OffColor);
+    g_raceTimeColor    = Text::FormatOpenplanetColor(S_RaceTimeColor);
     g_sequenceColor    = Text::FormatOpenplanetColor(S_SequenceColor);
 
 #if TMNEXT

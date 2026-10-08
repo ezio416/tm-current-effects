@@ -16,6 +16,7 @@ Status@[] g_statuses = {
     NoGrip(),
     NoSteer(),
     Opponents(),
+    RaceTime(),
     Reactor(),
     Respawning(),
     Sequence(),
@@ -40,6 +41,7 @@ const Status@[] g_statuses = {
     NoGrip(),
     NoSteer(),
     Opponents(),
+    RaceTime(),
     Sequence(),
     Turbo(),
     VehicleType(),
@@ -54,6 +56,7 @@ const Status@[] g_statuses = {
     GameMode(),
     Ghosts(),
     Laps(),
+    RaceTime(),
     Sequence(),
     Turbo()
 };
@@ -879,6 +882,49 @@ class Respawning : Status {
 }
 
 #endif
+
+class RaceTime : Status {
+    bool get_active() const override {
+        return g_state.raceTime > 0;
+    }
+
+    RaceTime() {
+#if TMNEXT
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif MP4
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif TURBO
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
+#endif
+    }
+
+    void RenderLegacy() const override {
+        if (S_HideInactive and !active) {
+            return;
+        }
+
+        UI::Text(g_raceTimeColor + Icons::Flag + " " + Time::Format(g_state.raceTime));
+    }
+
+    void RenderSettings() override {
+        UI::PushID(this);
+
+        Set(UI::Checkbox("Race Time", S_RaceTime));
+
+        S_RaceTimeColor = UI::InputColor3("", S_RaceTimeColor);
+        g_raceTimeColor = Text::FormatOpenplanetColor(S_RaceTimeColor);
+
+        UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_RaceTime;
+    }
+
+    void Set(const bool b) override {
+        enabled = S_RaceTime = b;
+    }
+}
 
 class Sequence : Status {
     bool get_active() const override {
