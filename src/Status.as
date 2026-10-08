@@ -3,6 +3,7 @@
 Status@[] g_statuses = {
     ActionKey(),
     Checkpoints(),
+    CheckpointTime(),
     CruiseControl(),
     NoEngine(),
     ForcedAccel(),
@@ -11,6 +12,7 @@ Status@[] g_statuses = {
     GameMode(),
     Ghosts(),
     Laps(),
+    LapTime(),
     Nametags(),
     NoBrakes(),
     NoGrip(),
@@ -216,6 +218,48 @@ class Checkpoints : Status {
 
     void Set(const bool b) override {
         enabled = S_Checkpoints = b;
+    }
+}
+
+class CheckpointTime : Status {
+    bool get_active() const override {
+        return g_state.mapCpCount > 0;
+    }
+
+    CheckpointTime() {
+#if TMNEXT
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
+#elif MP4
+        ;  // TODO cp time mp4
+#elif TURBO
+        ;  // TODO cp time turbo
+#endif
+    }
+
+    void RenderLegacy() const override {
+        if (!active) {
+            return;
+        }
+
+        UI::Text(g_checkpointTimeColor + Icons::FlagO + " " + Time::Format(g_state.cpTime));
+    }
+
+    void RenderSettings() override {
+        UI::PushID(this);
+
+        Set(UI::Checkbox("Checkpoint Time", S_CheckpointTime));
+        S_CheckpointTimeColor = UI::InputColor3("", S_CheckpointTimeColor);
+        g_checkpointTimeColor = Text::FormatOpenplanetColor(S_CheckpointTimeColor);
+
+        UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_CheckpointTime;
+    }
+
+    void Set(const bool b) override {
+        enabled = S_CheckpointTime = b;
     }
 }
 
@@ -512,6 +556,48 @@ class Laps : Status {
 
     void Set(const bool b) override {
         enabled = S_Laps = b;
+    }
+}
+
+class LapTime : Status {
+    bool get_active() const override {
+        return g_state.mapLapCount > 0;
+    }
+
+    LapTime() {
+#if TMNEXT
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
+#elif MP4
+        ;  // TODO lap time mp4
+#elif TURBO
+        ;  // TODO lap time turbo
+#endif
+    }
+
+    void RenderLegacy() const override {
+        if (!active) {
+            return;
+        }
+
+        UI::Text(g_lapTimeColor + Icons::FlagCheckered + " " + Time::Format(g_state.lapTime));
+    }
+
+    void RenderSettings() override {
+        UI::PushID(this);
+
+        Set(UI::Checkbox("Lap Time", S_LapTime));
+        S_LapTimeColor = UI::InputColor3("", S_LapTimeColor);
+        g_lapTimeColor = Text::FormatOpenplanetColor(S_LapTimeColor);
+
+        UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_LapTime;
+    }
+
+    void Set(const bool b) override {
+        enabled = S_LapTime = b;
     }
 }
 

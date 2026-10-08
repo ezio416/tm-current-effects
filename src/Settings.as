@@ -6,16 +6,18 @@
 [Setting category="General" hidden] bool  S_OverrideSafety = false;
 
 
-[Setting category="Toggles" hidden] bool S_Checkpoints = false;
-[Setting category="Toggles" hidden] bool S_Fps         = false;
-[Setting category="Toggles" hidden] bool S_GameMode    = false;
-[Setting category="Toggles" hidden] bool S_Ghosts      = false;
-[Setting category="Toggles" hidden] bool S_Laps        = false;
-[Setting category="Toggles" hidden] bool S_NoEngine    = true;
-[Setting category="Toggles" hidden] bool S_RaceTime    = false;
-[Setting category="Toggles" hidden] bool S_Sequence    = false;
-[Setting category="Toggles" hidden] bool S_Turbo       = true;
-[Setting category="Toggles" hidden] bool S_Vehicle     = true;
+[Setting category="Toggles" hidden] bool S_Checkpoints    = false;
+[Setting category="Toggles" hidden] bool S_CheckpointTime = false;
+[Setting category="Toggles" hidden] bool S_Fps            = false;
+[Setting category="Toggles" hidden] bool S_GameMode       = false;
+[Setting category="Toggles" hidden] bool S_Ghosts         = false;
+[Setting category="Toggles" hidden] bool S_Laps           = false;
+[Setting category="Toggles" hidden] bool S_LapTime        = false;
+[Setting category="Toggles" hidden] bool S_NoEngine       = true;
+[Setting category="Toggles" hidden] bool S_RaceTime       = false;
+[Setting category="Toggles" hidden] bool S_Sequence       = false;
+[Setting category="Toggles" hidden] bool S_Turbo          = true;
+[Setting category="Toggles" hidden] bool S_Vehicle        = true;
 #if TMNEXT
 [Setting category="Toggles" hidden] bool S_ActionKey  = false;
 [Setting category="Toggles" hidden] bool S_Cruise     = true;
@@ -44,6 +46,10 @@ vec3 S_CheckpointsColor = vec3(0.1f, 0.6f, 1.0f);
 string g_checkpointsColor;
 
 [Setting category="Colors" hidden]
+vec3 S_CheckpointTimeColor = vec3(0.1f, 0.6f, 1.0f);
+string g_checkpointTimeColor;
+
+[Setting category="Colors" hidden]
 vec3 S_FpsColor = vec3(1.0f, 1.0f, 1.0f);
 string g_fpsColor;
 
@@ -60,11 +66,15 @@ vec3 S_LapsColor = vec3(0.9f, 0.8f, 0.1f);
 string g_lapsColor;
 
 [Setting category="Colors" hidden]
+vec3 S_LapTimeColor = vec3(0.9f, 0.8f, 0.1f);
+string g_lapTimeColor;
+
+[Setting category="Colors" hidden]
 vec3 S_NoEngineColor = vec3(1.0f, 0.0f, 0.0f);
 string g_noEngineColor;
 
 [Setting category="Colors" hidden]
-vec3 S_RaceTimeColor = vec3(1.0f, 1.0f, 1.0f);
+vec3 S_RaceTimeColor = vec3(1.0f, 0.3f, 0.3f);
 string g_raceTimeColor;
 
 [Setting category="Colors" hidden]

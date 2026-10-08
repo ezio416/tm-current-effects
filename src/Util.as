@@ -175,15 +175,17 @@ string ColorOpponents() {
 #endif
 
 void SetColorStrings() {
-    g_checkpointsColor = Text::FormatOpenplanetColor(S_CheckpointsColor);
-    g_fpsColor         = Text::FormatOpenplanetColor(S_FpsColor);
-    g_gameModeColor    = Text::FormatOpenplanetColor(S_GameModeColor);
-    g_ghostsColor      = Text::FormatOpenplanetColor(S_GhostsColor);
-    g_lapsColor        = Text::FormatOpenplanetColor(S_LapsColor);
-    g_noEngineColor    = Text::FormatOpenplanetColor(S_NoEngineColor);
-    g_offColor         = Text::FormatOpenplanetColor(S_OffColor);
-    g_raceTimeColor    = Text::FormatOpenplanetColor(S_RaceTimeColor);
-    g_sequenceColor    = Text::FormatOpenplanetColor(S_SequenceColor);
+    g_checkpointsColor    = Text::FormatOpenplanetColor(S_CheckpointsColor);
+    g_checkpointTimeColor = Text::FormatOpenplanetColor(S_CheckpointTimeColor);
+    g_fpsColor            = Text::FormatOpenplanetColor(S_FpsColor);
+    g_gameModeColor       = Text::FormatOpenplanetColor(S_GameModeColor);
+    g_ghostsColor         = Text::FormatOpenplanetColor(S_GhostsColor);
+    g_lapsColor           = Text::FormatOpenplanetColor(S_LapsColor);
+    g_lapTimeColor        = Text::FormatOpenplanetColor(S_LapTimeColor);
+    g_noEngineColor       = Text::FormatOpenplanetColor(S_NoEngineColor);
+    g_offColor            = Text::FormatOpenplanetColor(S_OffColor);
+    g_raceTimeColor       = Text::FormatOpenplanetColor(S_RaceTimeColor);
+    g_sequenceColor       = Text::FormatOpenplanetColor(S_SequenceColor);
 
 #if TMNEXT
 
