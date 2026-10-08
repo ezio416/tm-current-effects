@@ -303,6 +303,7 @@ class StateNext : State {
 
         if (finished) {
             raceTime = lastWpTime;
+            cpTime = wpTimes[wpTimes.Length - 1] - (wpTimes.Length > 0 ? wpTimes[wpTimes.Length - 2] : 0);
         } else if (raceTime > lastWpTime) {
             cpTime = raceTime - lastWpTime;
         }
