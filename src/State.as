@@ -1,13 +1,20 @@
 abstract class State {
     CurrentEffects::Camera               camera;
+    uint[]                               cpLapTimes;
     uint                                 cpNum;
+    uint                                 cpTime;
+    uint[]                               cpTimes;
     bool                                 driving;
     bool                                 finished;
     float                                fps;
     string                               gameMode;
     uint                                 gameTime;
     bool                                 ghostVis;
+    uint[]                               lapLapTimes;
     uint                                 lapNum;
+    uint                                 lapTime;
+    uint[]                               lapTimes;
+    uint                                 lastLapTime;
     uint                                 lastWpTime;
     string                               login;
     uint                                 mapCpCount;
@@ -46,14 +53,21 @@ abstract class State {
 
     void RenderDebugRows() const {
         _RenderDebugRow("camera",      ColorDebugCamera(camera));
+        _RenderDebugRow("cpLapTimes",  ColorDebugArrayUint32(cpLapTimes));
         _RenderDebugRow("cpNum",       ColorDebugInt(cpNum));
+        _RenderDebugRow("cpTime",      ColorDebugInt(cpTime));
+        _RenderDebugRow("cpTimes",     ColorDebugArrayUint32(cpTimes));
         _RenderDebugRow("driving",     ColorDebugBool(driving));
         _RenderDebugRow("finished",    ColorDebugBool(finished));
         _RenderDebugRow("fps",         ColorDebugFloat(fps));
         _RenderDebugRow("gameMode",    ColorDebugString(gameMode));
         _RenderDebugRow("gameTime",    ColorDebugInt(gameTime));
         _RenderDebugRow("ghostVis",    ColorDebugBool(ghostVis));
+        _RenderDebugRow("lapLapTimes", ColorDebugArrayUint32(lapLapTimes));
         _RenderDebugRow("lapNum",      ColorDebugInt(lapNum));
+        _RenderDebugRow("lapTime",     ColorDebugInt(lapTime));
+        _RenderDebugRow("lapTimes",    ColorDebugArrayUint32(lapTimes));
+        _RenderDebugRow("lastLapTime", ColorDebugInt(lastLapTime));
         _RenderDebugRow("lastWpTime",  ColorDebugInt(lastWpTime));
         _RenderDebugRow("login",       ColorDebugString(login));
         _RenderDebugRow("mapCpCount",  ColorDebugInt(mapCpCount));
@@ -79,14 +93,21 @@ abstract class State {
 
     void Reset() {
         camera      = CurrentEffects::Camera::Unknown;
+        cpLapTimes  = {};
         cpNum       = 0;
+        cpTime      = 0;
+        cpTimes     = {};
         driving     = false;
         finished    = false;
         fps         = 0.0f;
         gameMode    = "";
         gameTime    = 0;
         ghostVis    = false;
+        lapLapTimes = {};
         lapNum      = 0;
+        lapTime     = 0;
+        lapTimes    = {};
+        lastLapTime = 0;
         lastWpTime  = 0;
         login       = "";
         mapCpCount  = 0;

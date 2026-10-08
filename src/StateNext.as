@@ -298,13 +298,55 @@ class StateNext : State {
 
         wpTimes = Danger::GetWaypointTimes(Arena, name);
         if (wpTimes.Length == 0) {
+            cpTime = raceTime;
             return;
         }
 
-        lastWpTime = wpTimes[wpTimes.Length - 1];
-
         if (finished) {
             raceTime = lastWpTime;
+        }
+
+        lastWpTime = wpTimes[wpTimes.Length - 1];
+        if (raceTime > lastWpTime) {
+            cpTime = raceTime - lastWpTime;
+        }
+
+        if (false
+            or mapLapCount == 0
+            or lapNum == 1
+        ) {
+            cpTimes = cpLapTimes = wpTimes;
+            lapTime = raceTime;
+            return;
+        }
+
+        for (uint i = (mapCpCount + 1) * (lapNum - 1); i < wpTimes.Length; i++) {
+            cpTimes.InsertLast(wpTimes[i]);
+        }
+
+        for (uint i = mapCpCount; i < wpTimes.Length; i += mapCpCount + 1) {
+            lapTimes.InsertLast(wpTimes[i]);
+        }
+
+        /*
+        a few important notes about the data after this point:
+        - anything that relies on "lastLapTime" will be off by a few ms
+        - the game seems to add a consistent offset (0-9) when calculating lap times
+        - this value changes for each lap and hasn't been found yet
+        */
+
+        lastLapTime = wpTimes[(mapCpCount + 1) * (lapNum - 1) - 1];
+
+        if (raceTime > lastLapTime) {
+            lapTime = raceTime - lastLapTime;
+        }
+
+        for (uint i = 0; i < cpTimes.Length; i++) {
+            cpLapTimes.InsertLast(cpTimes[i] - lastLapTime);
+        }
+
+        for (uint i = 0; i < lapTimes.Length; i++) {
+            lapLapTimes.InsertLast(lapTimes[i] - (i == 0 ? 0 : lapTimes[i - 1]));
         }
     }
 

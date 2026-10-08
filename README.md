@@ -21,6 +21,7 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |brake pedal         |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |camera              |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
 |checkpoint number   |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
+|checkpoint times    |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |cruise control      |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
 |cruise control speed|✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
 |driving             |✅|✅|✅|✅|✅|✅|✅|✅|✅|❌
@@ -33,7 +34,7 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |game mode           |✅|✅|✅|✅|✅|✅|✅|✅|✅|✅
 |ghost visibility    |✅|✅|✅|✅|✅|✅|✅|✅|✅|✅
 |lap number          |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
-|last waypoint time  |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
+|lap times           |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |launch respawning   |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |login               |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
 |map checkpoint count|✅|✅|✅|✅|✅|✅|✅|✅|✅|❌
