@@ -134,4 +134,85 @@ abstract class State {
     void Update() {
         throw("State::Update() unimplemented");
     }
+
+#if MP4 || TURBO
+
+    protected void _UpdateWaypointTimes(CTmRaceResultNod@ CurRace, CTmRaceResultNod@ CurLap) {
+        if (finished) {
+            cpNum = mapCpCount;
+            lapNum = mapLapCount;
+        }
+
+        if (true
+            and !driving
+            and !finished
+        ) {
+            return;
+        }
+
+        if (CurRace !is null) {
+            wpCount = CurRace.Checkpoints.Length;
+            for (uint i = 0; i < wpCount; i++) {
+                wpTimes.InsertLast(CurRace.Checkpoints[i]);
+            }
+        }
+
+        if (wpTimes.Length == 0) {
+            cpTime = raceTime;
+            lapTime = raceTime;
+            return;
+        }
+
+        lastWpTime = wpTimes[wpTimes.Length - 1];
+
+        if (finished) {
+            raceTime = lastWpTime;
+            cpTime = wpTimes[wpTimes.Length - 1] - (wpTimes.Length > 0 ? wpTimes[wpTimes.Length - 2] : 0);
+
+        } else {
+            if (raceTime > lastWpTime) {
+                cpTime = raceTime - lastWpTime;
+            }
+        }
+
+        if (CurLap is null) {
+            return;
+        }
+
+        if (!finished) {
+            cpNum = CurLap.Checkpoints.Length;
+            for (uint i = 0; i < cpNum; i++) {
+                cpLapTimes.InsertLast(CurLap.Checkpoints[i]);
+            }
+        }
+
+        if (false
+            or mapLapCount == 0
+            or lapNum == 1
+        ) {
+            cpTimes = cpLapTimes;
+            lapTime = raceTime;
+            return;
+        }
+
+        for (uint i = (mapCpCount + 1) * (lapNum - 1); i < wpTimes.Length; i++) {
+            cpTimes.InsertLast(wpTimes[i]);
+        }
+
+        for (uint i = mapCpCount; i < wpTimes.Length; i += mapCpCount + 1) {
+            lapTimes.InsertLast(wpTimes[i]);
+        }
+
+        lastLapTime = wpTimes[(mapCpCount + 1) * (lapNum - 1) - 1];
+
+        if (raceTime > lastLapTime) {
+            lapTime = raceTime - lastLapTime;
+        }
+
+        for (uint i = 0; i < lapTimes.Length; i++) {
+            lapLapTimes.InsertLast(lapTimes[i] - (i == 0 ? 0 : lapTimes[i - 1]));
+        }
+    }
+
+#endif
 }
