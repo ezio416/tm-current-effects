@@ -8,6 +8,7 @@ Status@[] g_statuses = {
     ForcedAccel(),
     Fps(),
     Fragile(),
+    GameMode(),
     Ghosts(),
     Laps(),
     Nametags(),
@@ -31,6 +32,7 @@ const Status@[] g_statuses = {
     NoEngine(),
     Fps(),
     ForcedAccel(),
+    GameMode(),
     Ghosts(),
     Laps(),
     Nametags(),
@@ -49,6 +51,7 @@ const Status@[] g_statuses = {
     Checkpoints(),
     Fps(),
     NoEngine(),
+    GameMode(),
     Ghosts(),
     Laps(),
     Sequence(),
@@ -375,6 +378,50 @@ class Fps : Status {
 
     void Set(const bool b) override {
         enabled = S_Fps = b;
+    }
+}
+
+class GameMode : Status {
+    bool get_active() const override {
+        return g_state.gameMode.Length > 0;
+    }
+
+    GameMode() {
+#if TMNEXT
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
+            | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif MP4
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif TURBO
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#endif
+    }
+
+    void RenderLegacy() const override {
+        if (S_HideInactive and !active) {
+            return;
+        }
+
+        UI::Text(g_gameModeColor + Icons::Gamepad + " " + g_state.gameMode);
+    }
+
+    void RenderSettings() override {
+        UI::PushID(this);
+
+        Set(UI::Checkbox("Game Mode", S_GameMode));
+
+        S_GameModeColor = UI::InputColor3("", S_GameModeColor);
+        g_gameModeColor = Text::FormatOpenplanetColor(S_GameModeColor);
+
+        UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_GameMode;
+    }
+
+    void Set(const bool b) override {
+        enabled = S_GameMode = b;
     }
 }
 
