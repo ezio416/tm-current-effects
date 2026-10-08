@@ -326,7 +326,7 @@ void SettingsTab_Debug() {
         UI::PushStyleColor(UI::Col::TableRowBgAlt, vec4(vec3(), 0.5f));
 
         UI::TableSetupScrollFreeze(0, 1);
-        UI::TableSetupColumn("name");
+        UI::TableSetupColumn("name",  UI::TableColumnFlags::WidthFixed, UI::GetScale() * 150.0f);
         UI::TableSetupColumn("value", UI::TableColumnFlags::WidthStretch);
         UI::TableHeadersRow();
 
