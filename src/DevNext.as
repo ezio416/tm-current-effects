@@ -13,8 +13,8 @@ namespace Danger {
     // offsets
     const uint16 O_APP_VEHICLEMGR             = GetMemberOffset("CTrackMania", "GameScene") + 0x8;
     const uint16 O_ARENAVISMGR_WP_COUNT       = 0x1318;
-    const uint16 O_CSMPLAYER_VEHICLE          = GetMemberOffset("CSmPlayer", "Score") + 0xb0;
     const uint16 O_MAP_CP_COUNT               = GetMemberOffset("CGameCtnChallenge", "ScriptMetadata") + 0x98;
+    const uint16 O_PLAYER_VEHICLE             = GetMemberOffset("CSmPlayer", "Score") + 0xb0;
     const uint16 O_PROFILE_GHOST_VIS          = GetMemberOffset("CGameUserProfile", "Editor_ShowHelp") - 0x94;
     const uint16 O_PROFILE_NAMETAG_VIS        = GetMemberOffset("CGameUserProfile", "Editor_ShowHelp") - 0x78;
     const uint16 O_SCENE_MANAGER_COUNT        = 0x8;
@@ -223,13 +223,13 @@ namespace Danger {
 
     CMwNod@ GetVehicle(CSmPlayer@ Player, const uint8 index) {
         if (false
-            or !Safety::ShouldRun()
             or index > 4  // stadium, snow, rally, desert
+            or !Safety::ShouldRun()
         ) {
             return null;
         }
 
-        return Dev::GetOffsetNod(Player, O_CSMPLAYER_VEHICLE + index * 0x10);
+        return Dev::GetOffsetNod(Player, O_PLAYER_VEHICLE + index * 0x10);
     }
 
     CMwNod@ GetVehicleSecondary(const CurrentEffects::VehicleType type) {  // prefer not to use this one
