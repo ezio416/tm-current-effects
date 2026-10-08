@@ -155,6 +155,7 @@ class StateNext : State {
         if (false
             or Playground is null
             or Playground.Arena is null
+            or Playground.Arena.Rules is null
             or Playground.GameTerminals.Length == 0
             or Playground.GameTerminals[0] is null
             or Playground.UIConfigs.Length == 0
@@ -175,14 +176,6 @@ class StateNext : State {
         sequence    = Playground.UIConfigs[0].UISequence;
         ticks       = gameTime / 10 * 10;
         wpCount     = Danger::GetWaypointCount(App.GameScene);
-
-        if (App.RootMap.TMObjective_IsLapRace) {
-            mapLapCount = App.RootMap.TMObjective_NbLaps;
-            mapWpCount *= mapLapCount;
-        }
-
-        finished = wpCount == mapWpCount or sequence == CGamePlaygroundUIConfig::EUISequence::Finish;
-        cpNum    = finished ? mapCpCount : wpCount % (mapCpCount + 1);
 
         if (App.PlaygroundScript is null) {
             auto Player = cast<CSmPlayer>(Playground.GameTerminals[0].GUIPlayer);
@@ -220,6 +213,10 @@ class StateNext : State {
                 }
             }
 
+            if (App.RootMap.TMObjective_IsLapRace) {
+                _UpdateWithLaps(Danger::GetLapCount(Playground.Arena.Rules));  // must update before player
+            }
+
             if (Player !is null) {
                 _UpdateWithPlayer(Player);
                 _UpdateWithVis(VehicleState::GetVis(App.GameScene, Player));
@@ -236,6 +233,10 @@ class StateNext : State {
             if (Playground.GameTerminals[0].GUIPlayer !is null) {
                 viewMode = CurrentEffects::ViewMode::Solo;
                 camera = Danger::GetCurrentCamera(Playground.GameTerminals[0]);
+
+                if (App.RootMap.TMObjective_IsLapRace) {
+                    _UpdateWithLaps(App.RootMap.TMObjective_NbLaps);  // must update before player
+                }
 
                 auto Player = cast<CSmPlayer>(Playground.GameTerminals[0].ControlledPlayer);
                 if (Player is null) {
@@ -282,6 +283,16 @@ class StateNext : State {
                 }
             }
         }
+
+    private void _UpdateWithLaps(const uint laps) {
+        mapLapCount = laps;
+        if (mapLapCount == 0) {
+            return;
+        }
+
+        mapWpCount *= mapLapCount;
+        finished    = wpCount == mapWpCount or sequence == CGamePlaygroundUIConfig::EUISequence::Finish;
+        cpNum       = finished ? mapCpCount : wpCount % (mapCpCount + 1);
     }
 
     private void _UpdateWithPlayer(CSmPlayer@ Player) {

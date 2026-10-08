@@ -12,6 +12,7 @@ namespace Danger {
 
     // offsets
     const uint16 O_APP_VEHICLEMGR             = GetMemberOffset("CTrackMania", "GameScene") + 0x8;
+    const uint16 O_ARENARULES_LAP_COUNT       = GetMemberOffset("CSmArenaRules", "RulesMode") - 0x30;
     const uint16 O_ARENAVISMGR_WP_COUNT       = 0x1318;
     const uint16 O_MAP_CP_COUNT               = GetMemberOffset("CGameCtnChallenge", "ScriptMetadata") + 0x98;
     const uint16 O_PLAYER_VEHICLE             = GetMemberOffset("CSmPlayer", "Score") + 0xb0;
@@ -123,6 +124,14 @@ namespace Danger {
         }
 
         return Dev::GetOffsetUint8(Vis, O_VISSTATE_ITEM_MODEL_INDEX);
+    }
+
+    uint GetLapCount(CSmArenaRules@ Rules) {
+        if (!Safety::ShouldRun()) {
+            return 0;
+        }
+
+        return Dev::GetOffsetUint32(Rules, O_ARENARULES_LAP_COUNT);
     }
 
     bool GetLaunchRespawning(CMwNod@ Vehicle) {
