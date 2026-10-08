@@ -284,10 +284,6 @@ class StateNext : State {
             }
         }
 
-        _UpdateTimes(Playground.Arena);
-    }
-
-    private void _UpdateTimes(CSmArena@ Arena) {
         if (false
             or name.Length == 0
             or viewMode == CurrentEffects::ViewMode::Replay
@@ -296,19 +292,18 @@ class StateNext : State {
             return;
         }
 
-        wpTimes = Danger::GetWaypointTimes(Arena, name);
+        wpTimes = Danger::GetWaypointTimes(Playground.Arena, name);
         if (wpTimes.Length == 0) {
             cpTime = raceTime;
             lapTime = raceTime;
             return;
         }
 
+        lastWpTime = wpTimes[wpTimes.Length - 1];
+
         if (finished) {
             raceTime = lastWpTime;
-        }
-
-        lastWpTime = wpTimes[wpTimes.Length - 1];
-        if (raceTime > lastWpTime) {
+        } else if (raceTime > lastWpTime) {
             cpTime = raceTime - lastWpTime;
         }
 
@@ -349,6 +344,8 @@ class StateNext : State {
         for (uint i = 0; i < lapTimes.Length; i++) {
             lapLapTimes.InsertLast(lapTimes[i] - (i == 0 ? 0 : lapTimes[i - 1]));
         }
+
+        // TODO cpTime and lapTime are 0 when finished
     }
 
     private void _UpdateWithLaps(const uint laps) {
