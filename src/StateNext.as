@@ -299,6 +299,7 @@ class StateNext : State {
         wpTimes = Danger::GetWaypointTimes(Arena, name);
         if (wpTimes.Length == 0) {
             cpTime = raceTime;
+            lapTime = raceTime;
             return;
         }
 
