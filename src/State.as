@@ -3,6 +3,7 @@ abstract class State {
     uint                                 cpNum;
     bool                                 driving;
     bool                                 finished;
+    float                                fps;
     string                               gameMode;
     uint                                 gameTime;
     bool                                 ghostVis;
@@ -11,6 +12,7 @@ abstract class State {
     uint                                 mapCpCount;
     uint                                 mapLapCount;
     uint                                 mapWpCount;
+    uint                                 maxFps;
     string                               name;
     bool                                 noEngine;
     uint64                               p_vis;
@@ -45,6 +47,7 @@ abstract class State {
         _RenderDebugRow("cpNum",       ColorDebugInt(cpNum));
         _RenderDebugRow("driving",     ColorDebugBool(driving));
         _RenderDebugRow("finished",    ColorDebugBool(finished));
+        _RenderDebugRow("fps",         ColorDebugFloat(fps));
         _RenderDebugRow("gameMode",    ColorDebugString(gameMode));
         _RenderDebugRow("gameTime",    ColorDebugInt(gameTime));
         _RenderDebugRow("ghostVis",    ColorDebugBool(ghostVis));
@@ -53,6 +56,7 @@ abstract class State {
         _RenderDebugRow("mapCpCount",  ColorDebugInt(mapCpCount));
         _RenderDebugRow("mapLapCount", ColorDebugInt(mapLapCount));
         _RenderDebugRow("mapWpCount",  ColorDebugInt(mapWpCount));
+        _RenderDebugRow("maxFps",      ColorDebugInt(maxFps));
         _RenderDebugRow("name",        ColorDebugFormattedString(name));
         _RenderDebugRow("noEngine",    ColorDebugBool(noEngine));
         _RenderDebugRow("p_vis",       ColorDebugPointer(p_vis));
@@ -74,6 +78,7 @@ abstract class State {
         cpNum       = 0;
         driving     = false;
         finished    = false;
+        fps         = 0.0f;
         gameMode    = "";
         gameTime    = 0;
         ghostVis    = false;
@@ -82,6 +87,7 @@ abstract class State {
         mapCpCount  = 0;
         mapLapCount = 0;
         mapWpCount  = 0;
+        maxFps      = 0;
         name        = "";
         noEngine    = false;
         p_vis       = 0x0;

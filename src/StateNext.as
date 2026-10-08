@@ -144,6 +144,9 @@ class StateNext : State {
             or App.RootMap is null
             or App.CurrentProfile is null
             or App.CurrentProfile.ProfileNew is null
+            or App.Viewport is null
+            or App.Viewport.SystemConfig is null
+            or App.Viewport.SystemConfig.Display is null
         ) {
             return;
         }
@@ -160,11 +163,13 @@ class StateNext : State {
             return;
         }
 
+        fps         = App.Viewport.AverageFps;
         gameMode    = cast<CTrackManiaNetworkServerInfo>(App.Network.ServerInfo).CurGameModeStr;
         gameTime    = App.Network.PlaygroundClientScriptAPI.GameTime;
         ghostVis    = Danger::GetGhostVisibility(App.CurrentProfile.ProfileNew);
         mapCpCount  = Danger::GetCheckpointCount(App.RootMap);
         mapWpCount  = mapCpCount + 1;
+        maxFps      = App.Viewport.SystemConfig.Display.MaxFps;
         nametagVis  = Danger::GetNametagVisibility(App.CurrentProfile.ProfileNew);
         opponentVis = Danger::GetOpponentVisibility(App.CurrentProfile);
         sequence    = Playground.UIConfigs[0].UISequence;

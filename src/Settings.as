@@ -7,6 +7,7 @@
 
 
 [Setting category="Toggles" hidden] bool S_Checkpoints = false;
+[Setting category="Toggles" hidden] bool S_Fps         = false;
 [Setting category="Toggles" hidden] bool S_Ghosts      = false;
 [Setting category="Toggles" hidden] bool S_Laps        = false;
 [Setting category="Toggles" hidden] bool S_NoEngine    = true;
@@ -38,6 +39,10 @@ string g_offColor;
 [Setting category="Colors" hidden]
 vec3 S_CheckpointsColor = vec3(0.1f, 0.6f, 1.0f);
 string g_checkpointsColor;
+
+[Setting category="Colors" hidden]
+vec3 S_FpsColor = vec3(1.0f, 1.0f, 1.0f);
+string g_fpsColor;
 
 [Setting category="Colors" hidden]
 vec3 S_GhostsColor = vec3(1.0f, 1.0f, 1.0f);

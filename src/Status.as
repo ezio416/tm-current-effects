@@ -6,6 +6,7 @@ Status@[] g_statuses = {
     CruiseControl(),
     NoEngine(),
     ForcedAccel(),
+    Fps(),
     Fragile(),
     Ghosts(),
     Laps(),
@@ -27,6 +28,7 @@ Status@[] g_statuses = {
 const Status@[] g_statuses = {
     Checkpoints(),
     NoEngine(),
+    Fps(),
     ForcedAccel(),
     Ghosts(),
     Laps(),
@@ -43,6 +45,7 @@ const Status@[] g_statuses = {
 
 const Status@[] g_statuses = {
     Checkpoints(),
+    Fps(),
     NoEngine(),
     Ghosts(),
     Laps(),
@@ -184,7 +187,7 @@ class Checkpoints : Status {
             return;
         }
 
-        UI::Text(g_checkpointsColor + Icons::HourglassO + " CP   " + g_state.cpNum + " / " + g_state.mapCpCount);  // TODO cp icon
+        UI::Text(g_checkpointsColor + Icons::HourglassO + " CP: " + g_state.cpNum + " / " + g_state.mapCpCount);  // TODO cp icon
         RenderLegacyBar(g_state.cpNum, Math::Max(1, g_state.mapCpCount), S_CheckpointsColor);
     }
 
@@ -331,6 +334,47 @@ class ForcedAccel : Handicap {
 
 #endif
 
+class Fps : Status {
+    bool get_active() const override {
+        return true;
+    }
+
+    Fps() {
+#if TMNEXT
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
+            | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif MP4
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif TURBO
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#endif
+    }
+
+    void RenderLegacy() const override {
+        UI::Text(g_fpsColor + Icons::VideoCamera + " FPS: " + int(Math::Round(g_state.fps)));
+        RenderLegacyBar(g_state.fps, g_state.maxFps, S_FpsColor);
+    }
+
+    void RenderSettings() override {
+        UI::PushID(this);
+
+        Set(UI::Checkbox("Framerate", S_Fps));
+
+        S_FpsColor = UI::InputColor3("", S_FpsColor);
+        g_fpsColor = Text::FormatOpenplanetColor(S_FpsColor);
+
+        UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_Fps;
+    }
+
+    void Set(const bool b) override {
+        enabled = S_Fps = b;
+    }
+}
+
 class Ghosts : Status {
     bool get_active() const override {
         return g_state.ghostVis;
@@ -395,7 +439,7 @@ class Laps : Status {
             return;
         }
 
-        UI::Text(g_lapsColor + Icons::Retweet + " Lap   " + g_state.lapNum + " / " + g_state.mapLapCount);
+        UI::Text(g_lapsColor + Icons::Retweet + " Lap: " + g_state.lapNum + " / " + g_state.mapLapCount);
         RenderLegacyBar(g_state.lapNum, Math::Max(1, g_state.mapLapCount), S_LapsColor);
     }
 
