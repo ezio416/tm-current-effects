@@ -64,12 +64,14 @@ class StateMP4 : State {
             return;
         }
 
+        fps         = App.Viewport.AverageFps;
         entityId    = VehicleState::GetViewingVisId();
         gameMode    = cast<CTrackManiaNetworkServerInfo>(App.Network.ServerInfo).CurGameModeStr;
         gameTime    = App.Network.PlaygroundClientScriptAPI.GameTime;
         ghostVis    = Playground.IsBestRaceGhostVisible;
         mapCpCount  = Danger::GetCheckpointCount(App.RootMap);
         mapWpCount  = mapCpCount + 1;
+        maxFps      = App.Viewport.SystemConfig.Display.MaxFps;
         nametagVis  = Playground.ForceDisplayNames;
         opponentVis = Danger::GetOpponentVisibility();
         sequence    = Playground.UIConfigs[0].UISequence;
