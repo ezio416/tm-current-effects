@@ -232,7 +232,7 @@ class CheckpointTime : Status {
 #if TMNEXT
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
 #elif MP4
-        modes = CurrentEffects::ViewMode::Solo;
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
 #elif TURBO
         ;  // TODO cp time turbo
 #endif
@@ -570,7 +570,7 @@ class LapTime : Status {
 #if TMNEXT
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
 #elif MP4
-        modes = CurrentEffects::ViewMode::Solo;
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
 #elif TURBO
         ;  // TODO lap time turbo
 #endif
