@@ -369,7 +369,7 @@ class ForcedAccel : Handicap {
         UI::PushID(this);
 
 #if TMNEXT
-        Set(UI::Checkbox("Forced Accel", S_Forced));
+        Set(UI::Checkbox("Forced Acceleration", S_Forced));
 #elif MP4
         Set(UI::Checkbox("Fullspeed Ahead", S_Forced));
 #endif
