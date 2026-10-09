@@ -336,7 +336,7 @@ class ExeVersion : Status {
             return;
         }
 
-        UI::Text(g_exeVersionColor + Icons::InfoCircle + " " + g_state.exeVersion);
+        UI::Text(g_exeVersionColor + Icons::Cogs + " " + g_state.exeVersion);
     }
 
     void RenderSettings() override {
@@ -680,7 +680,7 @@ class MapUid : Status {
             return;
         }
 
-        UI::Text(g_mapUidColor + Icons::InfoCircle + " " + g_state.mapUid);
+        UI::Text(g_mapUidColor + Icons::Map + " " + g_state.mapUid);
     }
 
     void RenderSettings() override {
