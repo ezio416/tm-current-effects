@@ -229,7 +229,7 @@ void SetColorStrings() {
 #endif
 #if MP4
 
-    // g_islandColor = Text::FormatOpenplanetColor(S_IslandColor);
+    g_islandColor = Text::FormatOpenplanetColor(S_IslandColor);
     g_bayColor    = Text::FormatOpenplanetColor(S_BayColor);
     // g_coastColor  = Text::FormatOpenplanetColor(S_CoastColor);
 

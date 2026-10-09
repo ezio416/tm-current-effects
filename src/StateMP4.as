@@ -97,6 +97,7 @@ class StateMP4 : State {
             case 0x40003cc5: vehicleType = CurrentEffects::VehicleType::Snow;    break;
             case 0x40001f21:
             case 0x40004aad: vehicleType = CurrentEffects::VehicleType::Desert;  break;
+            case 0x4000585b: vehicleType = CurrentEffects::VehicleType::Island;  break;
             case 0x40001fc2:
             case 0x40003b84: vehicleType = CurrentEffects::VehicleType::Bay;     break;
             case 0x40004852: vehicleType = CurrentEffects::VehicleType::Stadium; break;

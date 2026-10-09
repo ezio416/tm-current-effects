@@ -1335,9 +1335,9 @@ class VehicleType : Status {
                 break;
 #endif
 #if MP4
-            // case CurrentEffects::VehicleType::Island:
-            //     UI::Text(g_islandColor + Icons::Kenney::Car + " Island Car");
-            //     break;
+            case CurrentEffects::VehicleType::Island:
+                UI::Text(g_islandColor + Icons::Kenney::Car + " Island Car");
+                break;
             case CurrentEffects::VehicleType::Bay:
                 UI::Text(g_desertColor + Icons::Kenney::Car + " Bay Car");
                 break;
@@ -1377,8 +1377,8 @@ class VehicleType : Status {
         g_rallyColor = Text::FormatOpenplanetColor(S_RallyColor);
 #endif
 #if MP4
-        // S_IslandColor = UI::InputColor3("island", S_IslandColor);
-        // g_islandColor = Text::FormatOpenplanetColor(S_IslandColor);
+        S_IslandColor = UI::InputColor3("island", S_IslandColor);
+        g_islandColor = Text::FormatOpenplanetColor(S_IslandColor);
         S_BayColor = UI::InputColor3("bay", S_BayColor);
         g_bayColor = Text::FormatOpenplanetColor(S_BayColor);
         // S_CoastColor = UI::InputColor3("coast", S_CoastColor);

@@ -225,9 +225,9 @@ string g_rallyColor;
 #endif
 #if MP4
 
-// [Setting category="Colors" hidden]
-// vec3 S_IslandColor = vec3();
-// string g_islandColor;
+[Setting category="Colors" hidden]
+vec3 S_IslandColor = vec3(0.2f, 1.0f, 0.6f);
+string g_islandColor;
 
 [Setting category="Colors" hidden]
 vec3 S_BayColor = vec3(0.0f, 0.2f, 1.0f);
