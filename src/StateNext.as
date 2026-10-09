@@ -218,7 +218,9 @@ class StateNext : State {
             }
 
             if (App.RootMap.TMObjective_IsLapRace) {
-                _UpdateWithLaps(Danger::GetLapCount(Playground.Arena.Rules));  // must update before player
+                _UpdateWithLaps(Danger::GetLapCount(Playground.Arena.Rules));
+            } else {
+                _UpdateWithLaps(0);
             }
 
             if (Player !is null) {
@@ -239,7 +241,9 @@ class StateNext : State {
                 camera = Danger::GetCurrentCamera(Playground.GameTerminals[0]);
 
                 if (App.RootMap.TMObjective_IsLapRace) {
-                    _UpdateWithLaps(App.RootMap.TMObjective_NbLaps);  // must update before player
+                    _UpdateWithLaps(App.RootMap.TMObjective_NbLaps);
+                } else {
+                    _UpdateWithLaps(0);
                 }
 
                 auto Player = cast<CSmPlayer>(Playground.GameTerminals[0].ControlledPlayer);
@@ -316,6 +320,7 @@ class StateNext : State {
             or mapLapCount == 0
             or lapNum == 1
         ) {
+            cpNum = Math::Min(wpTimes.Length, mapCpCount);
             cpTimes = cpLapTimes = wpTimes;
             lapTime = raceTime;
             return;
@@ -346,13 +351,13 @@ class StateNext : State {
 
     private void _UpdateWithLaps(const uint laps) {
         mapLapCount = laps;
-        if (mapLapCount == 0) {
-            return;
+
+        if (mapLapCount > 0) {
+            mapWpCount *= mapLapCount;
         }
 
-        mapWpCount *= mapLapCount;
-        finished    = wpCount == mapWpCount or sequence == CGamePlaygroundUIConfig::EUISequence::Finish;
-        cpNum       = finished ? mapCpCount : wpCount % (mapCpCount + 1);
+        finished = wpCount == mapWpCount or sequence == CGamePlaygroundUIConfig::EUISequence::Finish;
+        cpNum    = finished ? mapCpCount : wpCount % (mapCpCount + 1);
     }
 
     private void _UpdateWithPlayer(CSmPlayer@ Player) {
