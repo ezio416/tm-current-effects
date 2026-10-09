@@ -83,7 +83,7 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 - ⚠️ mediatracker-locked cameras are not detected in tm2
 - ⚠️ when watching a replay or spectating, fragile only appears if at least one tire is partially worn
 - ⚠️ when switching to/from alt cars, slow-mo duration may be wrong
-- ⚠️ when spectating in envimix, vehicle type might be wrong
+- ⚠️ when spectating in envimix, vehicle type may be wrong
 
 ## Exports
 `CurrentEffects` has a number of exports for you to use in your own plugins. When using these, it's important to note that CE is updated on the render loop, not the simulation loop.
