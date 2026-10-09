@@ -72,9 +72,9 @@ class StateMP4 : State {
             return;
         }
 
+        entityId    = VehicleState::GetViewingVisId();
         exeVersion  = App.ManiaPlanetScriptAPI.ExeVersion;
         fps         = App.Viewport.AverageFps;
-        entityId    = VehicleState::GetViewingVisId();
         gameMode    = cast<CTrackManiaNetworkServerInfo>(App.Network.ServerInfo).CurGameModeStr;
         gameTime    = App.Network.PlaygroundClientScriptAPI.GameTime;
         ghostVis    = Playground.IsBestRaceGhostVisible;
@@ -94,20 +94,37 @@ class StateMP4 : State {
 
         switch (App.Network.PlaygroundClientScriptAPI.SettingsPlayerModelId.Value) {
             case 0x4000161f:
-            case 0x40003cc5: vehicleType = CurrentEffects::VehicleType::Snow;    break;
+            case 0x400020b7:
+            case 0x40003cc5:
+            case 0x40005b77: vehicleType = CurrentEffects::VehicleType::Snow;    break;
+            case 0x40000da7:
             case 0x40001f21:
+            case 0x40002d54:
             case 0x40004aad: vehicleType = CurrentEffects::VehicleType::Desert;  break;
-            case 0x4000585b: vehicleType = CurrentEffects::VehicleType::Island;  break;
+            case 0x400002d8:
+            case 0x40003a66:
+            case 0x40010801: vehicleType = CurrentEffects::VehicleType::Rally;   break;
+            case 0x400049a4:
+            case 0x4000585b:
+            case 0x40005915: vehicleType = CurrentEffects::VehicleType::Island;  break;
+            case 0x40001232:
+            case 0x40001589:
             case 0x40001fc2:
             case 0x40003b84: vehicleType = CurrentEffects::VehicleType::Bay;     break;
+            case 0x4000123b:
+            case 0x40003e93: vehicleType = CurrentEffects::VehicleType::Coast;   break;
             case 0x40004852: vehicleType = CurrentEffects::VehicleType::Stadium; break;
             case 0x40001bc0: vehicleType = CurrentEffects::VehicleType::Human;   break;
             case 0x40004899: vehicleType = CurrentEffects::VehicleType::Canyon;  break;
             case 0x40004ec8: vehicleType = CurrentEffects::VehicleType::Valley;  break;
+            case 0x40001edc:
             case 0x40004edc: vehicleType = CurrentEffects::VehicleType::Lagoon;  break;
+            case 0x40000665: vehicleType = CurrentEffects::VehicleType::Traffic; break;
         }
 
         if (App.PlaygroundScript !is null) {
+            // TODO mp4 replay "ViewGhost" game mode
+
             camera   = Danger::GetCurrentCamera(Playground.GameTerminals[0]);
             viewMode = CurrentEffects::ViewMode::Solo;
 

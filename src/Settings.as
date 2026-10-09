@@ -230,12 +230,16 @@ vec3 S_IslandColor = vec3(0.2f, 1.0f, 0.6f);
 string g_islandColor;
 
 [Setting category="Colors" hidden]
-vec3 S_BayColor = vec3(0.0f, 0.2f, 1.0f);
+vec3 S_BayColor = vec3(0.0f, 0.4f, 1.0f);
 string g_bayColor;
 
-// [Setting category="Colors" hidden]
-// vec3 S_CoastColor = vec3();
-// string g_coastColor;
+[Setting category="Colors" hidden]
+vec3 S_CoastColor = vec3(1.0f, 0.86f, 0.53f);
+string g_coastColor;
+
+[Setting category="Colors" hidden]
+vec3 S_TrafficColor = vec3(1.0f, 0.9f, 0.2f);
+string g_trafficColor;
 
 #endif
 #if MP4 || TURBO
@@ -249,7 +253,7 @@ vec3 S_ValleyColor = vec3(0.1f, 0.8f, 0.1f);
 string g_valleyColor;
 
 [Setting category="Colors" hidden]
-vec3 S_LagoonColor = vec3(0.0f, 0.2f, 1.0f);
+vec3 S_LagoonColor = vec3(0.0f, 0.4f, 1.0f);
 string g_lagoonColor;
 
 #endif

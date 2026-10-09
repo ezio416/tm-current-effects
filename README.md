@@ -19,7 +19,7 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |:-:                 |:-: |:-:   |:-:   |:-:     |:-:     |:-:       |:-:         |:-:       |:-:         |:-:
 |action key          |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |brake pedal         |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
-|camera              |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
+|camera              |✅|❌|✅|✅|⚠️|⚠️|✅|✅|✅|❌
 |checkpoint number   |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
 |checkpoint times    |✅|❌|✅|❌|✅|✅|✅|✅|✅|❌
 |cruise control      |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
@@ -74,15 +74,16 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |turbo               |✅|✅|✅|❌|✅|✅|❌|✅|✅|❌
 |turbo level         |✅|✅|✅|❌|❌|❌|❌|❌|❌|❌
 |turbo timer         |✅|✅|✅|❌|✅|✅|❌|✅|✅|❌
-|vehicle type        |✅|✅|✅|✅|⚠️|⚠️|⚠️|✅|✅|✅
+|vehicle type        |✅|✅|✅|✅|✅|✅|⚠️|✅|✅|✅
 |water               |✅|✅|✅|❌|❌|❌|❌|❌|❌|❌
 |waypoint count      |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
 |waypoint times      |✅|❌|✅|❌|✅|✅|✅|✅|✅|❌
 |web services id     |✅|❌|✅|✅|❌|❌|❌|❌|❌|❌
 
+- ⚠️ mediatracker-locked cameras are not detected in tm2
 - ⚠️ when watching a replay or spectating, fragile only appears if at least one tire is partially worn
 - ⚠️ when switching to/from alt cars, slow-mo duration may be wrong
-- ⚠️ vehicle type is probably wrong in envimix
+- ⚠️ when spectating in envimix, vehicle type might be wrong
 
 ## Exports
 `CurrentEffects` has a number of exports for you to use in your own plugins. When using these, it's important to note that CE is updated on the render loop, not the simulation loop.

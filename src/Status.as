@@ -1331,7 +1331,7 @@ class VehicleType : Status {
                 UI::Text(g_desertColor + Icons::Kenney::Car + " Desert Car");
                 break;
             case CurrentEffects::VehicleType::Rally:
-                UI::Text(g_rallyColor  + Icons::Kenney::Car + " Rally Car");
+                UI::Text(g_rallyColor + Icons::Kenney::Car + " Rally Car");
                 break;
 #endif
 #if MP4
@@ -1339,11 +1339,14 @@ class VehicleType : Status {
                 UI::Text(g_islandColor + Icons::Kenney::Car + " Island Car");
                 break;
             case CurrentEffects::VehicleType::Bay:
-                UI::Text(g_desertColor + Icons::Kenney::Car + " Bay Car");
+                UI::Text(g_bayColor + Icons::Kenney::Car + " Bay Car");
                 break;
-            // case CurrentEffects::VehicleType::Coast:
-            //     UI::Text(g_coastColor  + Icons::Kenney::Car + " Coast Car");
-            //     break;
+            case CurrentEffects::VehicleType::Coast:
+                UI::Text(g_coastColor + Icons::Kenney::Car + " Coast Car");
+                break;
+            case CurrentEffects::VehicleType::Traffic:
+                UI::Text(g_trafficColor + Icons::Kenney::Car + " Traffic Car");
+                break;
 #endif
 #if MP4 || TURBO
             case CurrentEffects::VehicleType::Canyon:
@@ -1381,8 +1384,10 @@ class VehicleType : Status {
         g_islandColor = Text::FormatOpenplanetColor(S_IslandColor);
         S_BayColor = UI::InputColor3("bay", S_BayColor);
         g_bayColor = Text::FormatOpenplanetColor(S_BayColor);
-        // S_CoastColor = UI::InputColor3("coast", S_CoastColor);
-        // g_coastColor = Text::FormatOpenplanetColor(S_CoastColor);
+        S_CoastColor = UI::InputColor3("coast", S_CoastColor);
+        g_coastColor = Text::FormatOpenplanetColor(S_CoastColor);
+        S_TrafficColor = UI::InputColor3("traffic", S_TrafficColor);
+        g_trafficColor = Text::FormatOpenplanetColor(S_TrafficColor);
 #endif
 #if MP4 || TURBO
         S_CanyonColor = UI::InputColor3("canyon", S_CanyonColor);
