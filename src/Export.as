@@ -1,390 +1,238 @@
 namespace CurrentEffects {
-    /*
-    the current camera
-    */
+    // the current camera
     import Camera StatusCamera() from "CurrentEffects";
 
-    /*
-    times of taken checkpoints on the current lap, referencing the start of the lap
-    */
+    // times of taken checkpoints on the current lap, referencing the start of the lap
     import uint[] StatusCheckpointLapTimes() from "CurrentEffects";
 
-    /*
-    number of checkpoints taken
-    */
+    // number of checkpoints taken
     import uint StatusCheckpointNumber() from "CurrentEffects";
 
-    /*
-    time spent on the current checkpoint
-    */
+    // time spent on the current checkpoint
     import uint StatusCheckpointTime() from "CurrentEffects";
 
-    /*
-    times of taken checkpoints on the current lap
-    */
+    // times of taken checkpoints on the current lap
     import uint[] StatusCheckpointTimes() from "CurrentEffects";
 
-    /*
-    player is driving
-    */
+    // player is driving
     import bool StatusDriving() from "CurrentEffects";
 
-    /*
-    executable version of the game
-    */
+    // executable version of the game
     import string StatusExeVersion() from "CurrentEffects";
 
-    /*
-    player is finished
-    */
+    // player is finished
     import bool StatusFinished() from "CurrentEffects";
 
-    /*
-    framerate
-    */
+    // framerate
     import float StatusFps() from "CurrentEffects";
 
-    /*
-    game mode
-    */
+    // game mode
     import string StatusGameMode() from "CurrentEffects";
 
-    /*
-    running time of the playground to the 0.001s
-    */
+    // running time of the playground to the 0.001s
     import uint StatusGameTime() from "CurrentEffects";
 
-    /*
-    ghosts are visible
-    */
+    // ghosts are visible
     import bool StatusGhosts() from "CurrentEffects";
 
-    /*
-    times of finished laps, referencing the start of the lap
-    */
+    // times of finished laps, referencing the start of the lap
     import uint[] StatusLapLapTimes() from "CurrentEffects";
 
-    /*
-    number of the current lap
-    */
+    // number of the current lap
     import uint StatusLapNumber() from "CurrentEffects";
 
-    /*
-    time spent on the current lap
-    */
+    // time spent on the current lap
     import uint StatusLapTime() from "CurrentEffects";
 
-    /*
-    times of finished laps
-    */
+    // times of finished laps
     import uint[] StatusLapTimes() from "CurrentEffects";
 
-    /*
-    time of last lap finished
-    */
+    // time of last lap finished
     import uint StatusLastLapTime() from "CurrentEffects";
 
-    /*
-    time of the last waypoint taken
-    */
+    // time of the last waypoint taken
     import uint StatusLastWaypointTime() from "CurrentEffects";
 
-    /*
-    login of the player
-    */
+    // login of the player
     import string StatusLogin() from "CurrentEffects";
 
-    /*
-    number of collectable checkpoints in the map
-    */
+    // number of collectable checkpoints in the map
     import uint StatusMapCheckpointCount() from "CurrentEffects";
 
-    /*
-    number of laps in the map
-    */
+    // number of laps in the map
     import uint StatusMapLapCount() from "CurrentEffects";
 
-    /*
-    game-generated unique ID of the current map
-    */
+    // game-generated unique ID of the current map
     import string StatusMapUid() from "CurrentEffects";
 
-    /*
-    number of collectable waypoints in the map
-    */
+    // number of collectable waypoints in the map
     import uint StatusMapWaypointCount() from "CurrentEffects";
 
-    /*
-    maximum framerate specified by game settings
-    */
+    // maximum framerate specified by game settings
     import uint StatusMaxFps() from "CurrentEffects";
 
-    /*
-    name of the player
-    */
+    // name of the player
     import string StatusName() from "CurrentEffects";
 
-    /*
-    engine off/free wheeling effect is active
-    */
+    // engine off/free wheeling effect is active
     import bool StatusNoEngine() from "CurrentEffects";
 
-    /*
-    race time of the player to the 0.001s
-    */
+    // race time of the player to the 0.001s
     import uint StatusRaceTime() from "CurrentEffects";
 
-    /*
-    number of respawns
-    */
+    // number of respawns
     import uint StatusRespawns() from "CurrentEffects";
 
-    /*
-    current UI sequence
-    */
+    // current UI sequence
     import CGamePlaygroundUIConfig::EUISequence StatusSequence() from "CurrentEffects";
 
-    /*
-    the player is spawning at the start of the race
-    */
+    // the player is spawning at the start of the race
     import bool StatusSpawning() from "CurrentEffects";
 
-    /*
-    start tick of the player
-    */
+    // start tick of the player
     import uint StatusStartTick() from "CurrentEffects";
 
-    /*
-    number of ticks simulated in the playground
-    */
+    // number of ticks simulated in the playground
     import uint StatusTicks() from "CurrentEffects";
 
-    /*
-    turbo effect is active
-    */
+    // turbo effect is active
     import bool StatusTurbo() from "CurrentEffects";
 
-    /*
-    amount of time with turbo left, but not always in seconds
-    */
+    // amount of time with turbo left, but not always in seconds
     import float StatusTurboTimer() from "CurrentEffects";
 
-    /*
-    the current vehicle type (stadium, canyon, etc.)
-    */
+    // the current vehicle type (stadium, canyon, etc.)
     import VehicleType StatusVehicleType() from "CurrentEffects";
 
-    /*
-    the current view mode (solo, spectating, etc.)
-    */
+    // the current view mode (solo, spectating, etc.)
     import ViewMode StatusViewMode() from "CurrentEffects";
 
-    /*
-    number of waypoints taken
-    */
+    // number of waypoints taken
     import uint StatusWaypointCount() from "CurrentEffects";
 
-    /*
-    times of collected waypoints
-    */
+    // times of collected waypoints
     import uint[] StatusWaypointTimes()  from "CurrentEffects";
 
 #if TMNEXT
 
-    /*
-    the plugin is running, whether or not it's safe
-    */
+    // the plugin is running, whether or not it's safe
     import bool Running() from "CurrentEffects";
 
-    /*
-    it is safe to run the plugin with the current game version
-    */
+    // it is safe to run the plugin with the current game version
     import bool Safe() from "CurrentEffects";
 
-    /*
-    the current action key
-    */
+    // the current action key
     import uint8 StatusActionKey() from "CurrentEffects";
 
-    /*
-    brake pedal is held
-    */
+    // brake pedal is held
     import bool StatusBrakePedal() from "CurrentEffects";
 
-    /*
-    cruise control effect is active
-    */
+    // cruise control effect is active
     import bool StatusCruiseControl() from "CurrentEffects";
 
-    /*
-    front speed locked by cruise control
-    */
+    // front speed locked by cruise control
     import float StatusCruiseControlSpeed() from "CurrentEffects";
 
-    /*
-    fragile effect is active
-    */
+    // fragile effect is active
     import bool StatusFragile() from "CurrentEffects";
 
-    /*
-    car is doing a launched respawn
-    */
+    // car is doing a launched respawn
     import bool StatusLaunchRespawning() from "CurrentEffects";
 
-    /*
-    reactor effect is active
-    */
+    // reactor effect is active
     import bool StatusReactor() from "CurrentEffects";
 
-    /*
-    reactor ticks given
-    */
+    // reactor ticks given
     import uint StatusReactorDuration() from "CurrentEffects";
 
-    /*
-    ticks of reactor used
-    */
+    // ticks of reactor used
     import uint StatusReactorElapsed() from "CurrentEffects";
 
-    /*
-    timer counts from 0.0-1.0 in final second of reactor
-    */
+    // timer counts from 0.0-1.0 in final second of reactor
     import float StatusReactorFinalTimer() from "CurrentEffects";
 
-    /*
-    level of reactor
-    */
+    // level of reactor
     import ESceneVehicleVisReactorBoostLvl StatusReactorLevel() from "CurrentEffects";
 
-    /*
-    when reactor started
-    */
+    // when reactor started
     import uint StatusReactorStartTick() from "CurrentEffects";
 
-    /*
-    reactor ticks left
-    */
+    // reactor ticks left
     import uint StatusReactorRemaining() from "CurrentEffects";
 
-    /*
-    type of reactor
-    */
+    // type of reactor
     import ESceneVehicleVisReactorBoostType StatusReactorType() from "CurrentEffects";
 
-    /*
-    how long respawning takes
-    */
+    // how long respawning takes
     import uint StatusRespawnDuration() from "CurrentEffects";
 
-    /*
-    when the current respawn ends
-    */
+    // when the current respawn ends
     import uint StatusRespawnEndTick() from "CurrentEffects";
 
-    /*
-    car is respawning
-    */
+    // car is respawning
     import bool StatusRespawning() from "CurrentEffects";
 
-    /*
-    respawn ticks left
-    */
+    // respawn ticks left
     import uint StatusRespawnRemaining() from "CurrentEffects";
 
-    /*
-    slow-mo effect is active
-    */
+    // slow-mo effect is active
     import bool StatusSlowMo() from "CurrentEffects";
 
-    /*
-    time factor used by slow-mo
-    */
+    // time factor used by slow-mo
     import float StatusSlowMoCoefficient() from "CurrentEffects";
 
-    /*
-    slow-mo ticks given
-    */
+    // slow-mo ticks given
     import uint StatusSlowMoDuration() from "CurrentEffects";
 
-    /*
-    when slow-mo ends
-    */
+    // when slow-mo ends
     import uint StatusSlowMoEndTick() from "CurrentEffects";
 
-    /*
-    level of slow-mo
-    */
+    // level of slow-mo
     import uint8 StatusSlowMoLevel() from "CurrentEffects";
 
-    /*
-    slow-mo ticks left
-    */
+    // slow-mo ticks left
     import uint StatusSlowMoRemaining() from "CurrentEffects";
 
-    /*
-    car is doing a standing respawn
-    */
+    // car is doing a standing respawn
     import bool StatusStandRespawning() from "CurrentEffects";
 
-    /*
-    level of turbo
-    */
+    // level of turbo
     import uint StatusTurboLevel() from "CurrentEffects";
 
-    /*
-    percentage of wetness
-    */
+    // percentage of wetness
     import float StatusWater() from "CurrentEffects";
 
-    /*
-    online ID of the player
-    */
+    // online ID of the player
     import string StatusWebServicesUserId() from "CurrentEffects";
 
 #endif
 #if MP4
 
-    /*
-    spectating target mode is set to automatic
-    */
+    // spectating target mode is set to automatic
     import bool StatusSpectateAuto() from "CurrentEffects";
 
 #endif
 #if TMNEXT || MP4
 
-    /*
-    the ID of the entity we're looking at
-    */
+    // the ID of the entity we're looking at
     import uint StatusEntityId() from "CurrentEffects";
 
-    /*
-    forced accel/fullspeed ahead effect is active
-    */
+    // forced accel/fullspeed ahead effect is active
     import bool StatusForcedAcceleration() from "CurrentEffects";
 
-    /*
-    nametags are visible
-    */
+    // nametags are visible
     import bool StatusNametags() from "CurrentEffects";
 
-    /*
-    no brakes effect is active
-    */
+    // no brakes effect is active
     import bool StatusNoBrakes() from "CurrentEffects";
 
-    /*
-    no grip effect is active
-    */
+    // no grip effect is active
     import bool StatusNoGrip() from "CurrentEffects";
 
-    /*
-    no steering effect is active
-    */
+    // no steering effect is active
     import bool StatusNoSteering() from "CurrentEffects";
 
-    /*
-    opponents are transparent, opaque, or off
-    */
+    // opponents are transparent, opaque, or off
     import OpponentVis StatusOpponents() from "CurrentEffects";
 
 #endif
