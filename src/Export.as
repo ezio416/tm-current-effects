@@ -111,7 +111,7 @@ namespace CurrentEffects {
     import uint StatusWaypointCount() from "CurrentEffects";
 
     // times of collected waypoints
-    import uint[] StatusWaypointTimes()  from "CurrentEffects";
+    import uint[] StatusWaypointTimes() from "CurrentEffects";
 
 #if TMNEXT
 

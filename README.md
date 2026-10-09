@@ -93,85 +93,241 @@ Plugin version 1.1 is planned to have a much more extensive export system so sta
 ### Functions (all games)
 ```asc
 // the current camera
-Camera StatusCamera();
+Camera StatusCamera()
+
+// times of taken checkpoints on the current lap, referencing the start of the lap
+uint[] StatusCheckpointLapTimes()
+
+// number of checkpoints taken
+uint StatusCheckpointNumber()
+
+// time spent on the current checkpoint
+uint StatusCheckpointTime()
+
+// times of taken checkpoints on the current lap
+uint[] StatusCheckpointTimes()
+
+// player is driving
+bool StatusDriving()
+
+// executable version of the game
+string StatusExeVersion()
+
+// player is finished
+bool StatusFinished()
+
+// framerate
+float StatusFps()
+
+// game mode
+string StatusGameMode()
+
+// running time of the playground to the 0.001s
+uint StatusGameTime()
 
 // ghosts are visible
-bool StatusGhosts();
+bool StatusGhosts()
+
+// times of finished laps, referencing the start of the lap
+uint[] StatusLapLapTimes()
+
+// number of the current lap
+uint StatusLapNumber()
+
+// time spent on the current lap
+uint StatusLapTime()
+
+// times of finished laps
+uint[] StatusLapTimes()
+
+// time of last lap finished
+uint StatusLastLapTime()
+
+// time of the last waypoint taken
+uint StatusLastWaypointTime()
+
+// login of the player
+string StatusLogin()
+
+// number of collectable checkpoints in the map
+uint StatusMapCheckpointCount()
+
+// number of laps in the map
+uint StatusMapLapCount()
+
+// game-generated unique ID of the current map
+string StatusMapUid()
+
+// number of collectable waypoints in the map
+uint StatusMapWaypointCount()
+
+// maximum framerate specified by game settings
+uint StatusMaxFps()
+
+// name of the player
+string StatusName()
+
+// engine off/free wheeling effect is active
+bool StatusNoEngine()
+
+// race time of the player to the 0.001s
+uint StatusRaceTime()
+
+// number of respawns
+uint StatusRespawns()
+
+// current UI sequence
+CGamePlaygroundUIConfig::EUISequence StatusSequence()
+
+// the player is spawning at the start of the race
+bool StatusSpawning()
+
+// start tick of the player
+uint StatusStartTick()
+
+// number of ticks simulated in the playground
+uint StatusTicks()
+
+// turbo effect is active
+bool StatusTurbo()
+
+// amount of time with turbo left, but not always in seconds
+float StatusTurboTimer()
 
 // the current vehicle type (stadium, canyon, etc.)
-VehicleType StatusVehicleType();
+VehicleType StatusVehicleType()
 
 // the current view mode (solo, spectating, etc.)
-ViewMode StatusViewMode();
+ViewMode StatusViewMode()
+
+// number of waypoints taken
+uint StatusWaypointCount()
+
+// times of collected waypoints
+uint[] StatusWaypointTimes()
 ```
 
 ### Functions (TM2020)
 ```asc
 // the plugin is running, whether or not it's safe
-bool Running();
+bool Running()
 
 // it is safe to run the plugin with the current game version
-bool Safe();
+bool Safe()
 
 // the current action key
-uint8 StatusActionKey();
+uint8 StatusActionKey()
 
 // brake pedal is held
-bool StatusBrakePedal();
+bool StatusBrakePedal()
+
+// cruise control effect is active
+bool StatusCruiseControl()
+
+// front speed locked by cruise control
+float StatusCruiseControlSpeed()
 
 // fragile effect is active
-bool StatusFragile();
+bool StatusFragile()
 
 // car is doing a launched respawn
-bool StatusLaunchRespawning();
+bool StatusLaunchRespawning()
 
-// race time of the player, to the thousandth
-uint StatusRaceTime();
+// reactor effect is active
+bool StatusReactor()
 
 // reactor ticks given
-uint StatusReactorDuration();
+uint StatusReactorDuration()
 
 // ticks of reactor used
-uint StatusReactorElapsed();
+uint StatusReactorElapsed()
+
+// timer counts from 0.0-1.0 in final second of reactor
+float StatusReactorFinalTimer()
+
+// level of reactor
+ESceneVehicleVisReactorBoostLvl StatusReactorLevel()
 
 // when reactor started
-uint StatusReactorStartTick();
+uint StatusReactorStartTick()
 
 // reactor ticks left
-uint StatusReactorRemaining();
+uint StatusReactorRemaining()
+
+// type of reactor
+ESceneVehicleVisReactorBoostType StatusReactorType()
+
+// how long respawning takes
+uint StatusRespawnDuration()
 
 // when the current respawn ends
-uint StatusRespawnEndTick();
+uint StatusRespawnEndTick()
 
 // car is respawning
-bool StatusRespawning();
+bool StatusRespawning()
 
 // respawn ticks left
-uint StatusRespawnRemaining();
+uint StatusRespawnRemaining()
+
+// slow-mo effect is active
+bool StatusSlowMo()
+
+// time factor used by slow-mo
+float StatusSlowMoCoefficient()
 
 // slow-mo ticks given
-uint StatusSlowMoDuration();
+uint StatusSlowMoDuration()
 
 // when slow-mo ends
-uint StatusSlowMoEndTick();
+uint StatusSlowMoEndTick()
+
+// level of slow-mo
+uint8 StatusSlowMoLevel()
 
 // slow-mo ticks left
-uint StatusSlowMoRemaining();
+uint StatusSlowMoRemaining()
 
 // car is doing a standing respawn
-bool StatusStandRespawning();
+bool StatusStandRespawning()
+
+// level of turbo
+uint StatusTurboLevel()
+
+// percentage of wetness
+float StatusWater()
+
+// online ID of the player
+string StatusWebServicesUserId()
+```
+
+### Functions (MP4)
+```asc
+// spectating target mode is set to automatic
+bool StatusSpectateAuto()
 ```
 
 ### Functions (TM2020/MP4)
 ```asc
 // the ID of the entity we're looking at
-uint StatusEntityId();
+uint StatusEntityId()
+
+// forced accel/fullspeed ahead effect is active
+bool StatusForcedAcceleration()
 
 // nametags are visible
-bool StatusNametags();
+bool StatusNametags()
+
+// no brakes effect is active
+bool StatusNoBrakes()
+
+// no grip effect is active
+bool StatusNoGrip()
+
+// no steering effect is active
+bool StatusNoSteering()
 
 // opponents are transparent, opaque, or off
-OpponentVis StatusOpponents();
+OpponentVis StatusOpponents()
 ```
 
 ### Enums
