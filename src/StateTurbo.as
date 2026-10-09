@@ -32,6 +32,7 @@ class StateTurbo : State {
         gameTime   = App.Network.PlaygroundClientScriptAPI.GameTime;
         ghostVis   = Playground.IsBestRaceGhostVisible;
         mapCpCount = Danger::GetCheckpointCount(App.Challenge);
+        mapUid     = App.Challenge.EdChallengeId;
         mapWpCount = mapCpCount + 1;
         maxFps     = App.Viewport.SystemConfig.Display.MaxFps;
         sequence   = Playground.UIConfigs[0].UISequence;

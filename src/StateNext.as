@@ -169,6 +169,7 @@ class StateNext : State {
         gameTime    = App.Network.PlaygroundClientScriptAPI.GameTime;
         ghostVis    = Danger::GetGhostVisibility(App.CurrentProfile.ProfileNew);
         mapCpCount  = Danger::GetCheckpointCount(App.RootMap);
+        mapUid      = App.RootMap.EdChallengeId;
         mapWpCount  = mapCpCount + 1;
         maxFps      = App.Viewport.SystemConfig.Display.MaxFps;
         nametagVis  = Danger::GetNametagVisibility(App.CurrentProfile.ProfileNew);

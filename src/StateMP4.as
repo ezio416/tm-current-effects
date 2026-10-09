@@ -70,6 +70,7 @@ class StateMP4 : State {
         gameTime    = App.Network.PlaygroundClientScriptAPI.GameTime;
         ghostVis    = Playground.IsBestRaceGhostVisible;
         mapCpCount  = Danger::GetCheckpointCount(App.RootMap);
+        mapUid      = App.RootMap.EdChallengeId;
         mapWpCount  = mapCpCount + 1;
         maxFps      = App.Viewport.SystemConfig.Display.MaxFps;
         nametagVis  = Playground.ForceDisplayNames;

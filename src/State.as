@@ -19,6 +19,7 @@ abstract class State {
     string                               login;
     uint                                 mapCpCount;
     uint                                 mapLapCount;
+    string                               mapUid;
     uint                                 mapWpCount;
     uint                                 maxFps;
     string                               name;
@@ -72,6 +73,7 @@ abstract class State {
         _RenderDebugRow("login",       ColorDebugString(login));
         _RenderDebugRow("mapCpCount",  ColorDebugInt(mapCpCount));
         _RenderDebugRow("mapLapCount", ColorDebugInt(mapLapCount));
+        _RenderDebugRow("mapUid",      ColorDebugString(mapUid));
         _RenderDebugRow("mapWpCount",  ColorDebugInt(mapWpCount));
         _RenderDebugRow("maxFps",      ColorDebugInt(maxFps));
         _RenderDebugRow("name",        ColorDebugFormattedString(name));
@@ -112,6 +114,7 @@ abstract class State {
         login       = "";
         mapCpCount  = 0;
         mapLapCount = 0;
+        mapUid      = "";
         mapWpCount  = 0;
         maxFps      = 0;
         name        = "";

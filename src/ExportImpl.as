@@ -79,6 +79,10 @@ namespace CurrentEffects {
         return g_state.mapLapCount;
     }
 
+    string StatusMapUid() {
+        return g_state.mapUid;
+    }
+
     uint StatusMapWaypointCount() {
         return g_state.mapWpCount;
     }

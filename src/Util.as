@@ -182,6 +182,7 @@ void SetColorStrings() {
     g_ghostsColor         = Text::FormatOpenplanetColor(S_GhostsColor);
     g_lapsColor           = Text::FormatOpenplanetColor(S_LapsColor);
     g_lapTimeColor        = Text::FormatOpenplanetColor(S_LapTimeColor);
+    g_mapUidColor         = Text::FormatOpenplanetColor(S_MapUidColor);
     g_noEngineColor       = Text::FormatOpenplanetColor(S_NoEngineColor);
     g_offColor            = Text::FormatOpenplanetColor(S_OffColor);
     g_raceTimeColor       = Text::FormatOpenplanetColor(S_RaceTimeColor);

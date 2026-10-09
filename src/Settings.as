@@ -13,6 +13,7 @@
 [Setting category="Toggles" hidden] bool S_Ghosts         = false;
 [Setting category="Toggles" hidden] bool S_Laps           = false;
 [Setting category="Toggles" hidden] bool S_LapTime        = false;
+[Setting category="Toggles" hidden] bool S_MapUid         = false;
 [Setting category="Toggles" hidden] bool S_NoEngine       = true;
 [Setting category="Toggles" hidden] bool S_RaceTime       = false;
 [Setting category="Toggles" hidden] bool S_Sequence       = false;
@@ -68,6 +69,10 @@ string g_lapsColor;
 [Setting category="Colors" hidden]
 vec3 S_LapTimeColor = vec3(0.9f, 0.8f, 0.1f);
 string g_lapTimeColor;
+
+[Setting category="Colors" hidden]
+vec3 S_MapUidColor = vec3(1.0f, 1.0f, 1.0f);
+string g_mapUidColor;
 
 [Setting category="Colors" hidden]
 vec3 S_NoEngineColor = vec3(1.0f, 0.0f, 0.0f);
