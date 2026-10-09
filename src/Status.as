@@ -6,6 +6,7 @@ Status@[] g_statuses = {
     CheckpointTime(),
     CruiseControl(),
     NoEngine(),
+    ExeVersion(),
     ForcedAccel(),
     Fps(),
     Fragile(),
@@ -34,9 +35,10 @@ Status@[] g_statuses = {
 const Status@[] g_statuses = {
     Checkpoints(),
     CheckpointTime(),
-    NoEngine(),
-    Fps(),
+    ExeVersion(),
     ForcedAccel(),
+    Fps(),
+    NoEngine(),
     GameMode(),
     Ghosts(),
     Laps(),
@@ -58,6 +60,7 @@ const Status@[] g_statuses = {
 const Status@[] g_statuses = {
     Checkpoints(),
     CheckpointTime(),
+    ExeVersion(),
     Fps(),
     NoEngine(),
     GameMode(),
@@ -309,6 +312,54 @@ class CruiseControl : Status {
         enabled = S_Cruise = b;
     }
 }
+
+#endif
+
+class ExeVersion : Status {
+    bool get_active() const override {
+        return g_state.exeVersion.Length > 0;
+    }
+
+    ExeVersion() {
+#if TMNEXT
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
+            | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif MP4
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif TURBO
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#endif
+    }
+
+    void RenderLegacy() const override {
+        if (S_HideInactive and !active) {
+            return;
+        }
+
+        UI::Text(g_exeVersionColor + Icons::InfoCircle + " " + g_state.exeVersion);
+    }
+
+    void RenderSettings() override {
+        UI::PushID(this);
+
+        Set(UI::Checkbox("Executable Version", S_ExeVersion));
+
+        S_ExeVersionColor = UI::InputColor3("", S_ExeVersionColor);
+        g_exeVersionColor = Text::FormatOpenplanetColor(S_ExeVersionColor);
+
+        UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_ExeVersion;
+    }
+
+    void Set(const bool b) override {
+        enabled = S_ExeVersion = b;
+    }
+}
+
+#if TMNEXT
 
 class Fragile : Status {
     bool get_active() const override {

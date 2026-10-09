@@ -49,7 +49,15 @@ class StateMP4 : State {
 
         auto App = cast<CTrackMania>(GetApp());
 
-        if (App.GameScene is null) {
+        if (false
+            or App.GameScene is null
+            or App.ManiaPlanetScriptAPI is null
+            or App.RootMap is null
+            or App.Viewport is null
+            or App.Viewport.SystemConfig is null
+            or App.Viewport.SystemConfig.Display is null
+            or App.Network.PlaygroundClientScriptAPI is null
+        ) {
             return;
         }
 
@@ -64,6 +72,7 @@ class StateMP4 : State {
             return;
         }
 
+        exeVersion  = App.ManiaPlanetScriptAPI.ExeVersion;
         fps         = App.Viewport.AverageFps;
         entityId    = VehicleState::GetViewingVisId();
         gameMode    = cast<CTrackManiaNetworkServerInfo>(App.Network.ServerInfo).CurGameModeStr;

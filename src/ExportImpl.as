@@ -23,6 +23,10 @@ namespace CurrentEffects {
         return g_state.driving;
     }
 
+    string StatusExeVersion() {
+        return g_state.exeVersion;
+    }
+
     bool StatusFinished() {
         return g_state.finished;
     }

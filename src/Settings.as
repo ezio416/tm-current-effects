@@ -8,6 +8,7 @@
 
 [Setting category="Toggles" hidden] bool S_Checkpoints    = false;
 [Setting category="Toggles" hidden] bool S_CheckpointTime = false;
+[Setting category="Toggles" hidden] bool S_ExeVersion     = false;
 [Setting category="Toggles" hidden] bool S_Fps            = false;
 [Setting category="Toggles" hidden] bool S_GameMode       = false;
 [Setting category="Toggles" hidden] bool S_Ghosts         = false;
@@ -49,6 +50,10 @@ string g_checkpointsColor;
 [Setting category="Colors" hidden]
 vec3 S_CheckpointTimeColor = vec3(0.1f, 0.6f, 1.0f);
 string g_checkpointTimeColor;
+
+[Setting category="Colors" hidden]
+vec3 S_ExeVersionColor = vec3(1.0f, 1.0f, 1.0f);
+string g_exeVersionColor;
 
 [Setting category="Colors" hidden]
 vec3 S_FpsColor = vec3(1.0f, 1.0f, 1.0f);

@@ -27,6 +27,7 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |driving             |✅|✅|✅|✅|✅|✅|✅|✅|✅|❌
 |engine off          |✅|❌|✅|✅|✅|✅|❌|✅|✅|❌
 |entity id           |✅|✅|✅|✅|✅|✅|✅|❌|❌|❌
+|exe version         |✅|✅|✅|✅|✅|✅|✅|✅|✅|✅
 |finished            |✅|✅|✅|✅|✅|✅|✅|✅|✅|❌
 |forced acceleration |✅|❌|✅|✅|✅|✅|❌|❌|❌|❌
 |fragile             |✅|⚠️|✅|⚠️|❌|❌|❌|❌|❌|❌

@@ -10,7 +10,12 @@ class StateTurbo : State {
 
         if (false
             or App.GameScene is null
+            or App.ManiaPlanetScriptAPI is null
             or App.Challenge is null
+            or App.Viewport is null
+            or App.Viewport.SystemConfig is null
+            or App.Viewport.SystemConfig.Display is null
+            or App.Network.PlaygroundClientScriptAPI is null
         ) {
             return;
         }
@@ -27,6 +32,7 @@ class StateTurbo : State {
         }
 
         camera     = Danger::GetCurrentCamera(Playground.GameTerminals[0]);
+        exeVersion = App.ManiaPlanetScriptAPI.ExeVersion;
         fps        = App.Viewport.AverageFps;
         gameMode   = cast<CTrackManiaNetworkServerInfo>(App.Network.ServerInfo).CurGameModeStr;
         gameTime   = App.Network.PlaygroundClientScriptAPI.GameTime;

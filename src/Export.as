@@ -30,6 +30,11 @@ namespace CurrentEffects {
     import bool StatusDriving() from "CurrentEffects";
 
     /*
+    executable version of the game
+    */
+    import string StatusExeVersion() from "CurrentEffects";
+
+    /*
     player is finished
     */
     import bool StatusFinished() from "CurrentEffects";

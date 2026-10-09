@@ -177,6 +177,7 @@ string ColorOpponents() {
 void SetColorStrings() {
     g_checkpointsColor    = Text::FormatOpenplanetColor(S_CheckpointsColor);
     g_checkpointTimeColor = Text::FormatOpenplanetColor(S_CheckpointTimeColor);
+    g_exeVersionColor     = Text::FormatOpenplanetColor(S_ExeVersionColor);
     g_fpsColor            = Text::FormatOpenplanetColor(S_FpsColor);
     g_gameModeColor       = Text::FormatOpenplanetColor(S_GameModeColor);
     g_ghostsColor         = Text::FormatOpenplanetColor(S_GhostsColor);

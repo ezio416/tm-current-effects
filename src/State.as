@@ -5,6 +5,7 @@ abstract class State {
     uint                                 cpTime;
     uint[]                               cpTimes;
     bool                                 driving;
+    string                               exeVersion;
     bool                                 finished;
     float                                fps;
     string                               gameMode;
@@ -59,6 +60,7 @@ abstract class State {
         _RenderDebugRow("cpTime",      ColorDebugInt(cpTime));
         _RenderDebugRow("cpTimes",     ColorDebugArrayUint32(cpTimes));
         _RenderDebugRow("driving",     ColorDebugBool(driving));
+        _RenderDebugRow("exeVersion",  ColorDebugString(exeVersion));
         _RenderDebugRow("finished",    ColorDebugBool(finished));
         _RenderDebugRow("fps",         ColorDebugFloat(fps));
         _RenderDebugRow("gameMode",    ColorDebugString(gameMode));
@@ -100,6 +102,7 @@ abstract class State {
         cpTime      = 0;
         cpTimes     = {};
         driving     = false;
+        exeVersion  = "";
         finished    = false;
         fps         = 0.0f;
         gameMode    = "";
