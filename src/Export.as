@@ -107,7 +107,7 @@ namespace CurrentEffects {
     /*
     game-generated unique ID of the current map
     */
-    import uint StatusMapUid() from "CurrentEffects";
+    import string StatusMapUid() from "CurrentEffects";
 
     /*
     number of collectable waypoints in the map
