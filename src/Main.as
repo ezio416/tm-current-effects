@@ -13,7 +13,7 @@ void Main() {
 }
 
 void OnSettingsChanged() {
-    SetColorStrings();
+    SetSecondarySettings();
 
     for (uint i = 0; i < g_statuses.Length; i++) {
         g_statuses[i].Set();

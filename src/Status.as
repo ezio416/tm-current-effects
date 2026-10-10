@@ -4,6 +4,9 @@ Status@[] g_statuses = {
     ActionKey(),
     Checkpoints(),
     CheckpointTime(),
+    Clock(1),
+    Clock(2),
+    Clock(3),
     CruiseControl(),
     NoEngine(),
     ExeVersion(),
@@ -35,6 +38,9 @@ Status@[] g_statuses = {
 const Status@[] g_statuses = {
     Checkpoints(),
     CheckpointTime(),
+    Clock(1),
+    Clock(2),
+    Clock(3),
     ExeVersion(),
     ForcedAccel(),
     Fps(),
@@ -60,6 +66,9 @@ const Status@[] g_statuses = {
 const Status@[] g_statuses = {
     Checkpoints(),
     CheckpointTime(),
+    Clock(1),
+    Clock(2),
+    Clock(3),
     ExeVersion(),
     Fps(),
     NoEngine(),
@@ -270,6 +279,151 @@ class CheckpointTime : Status {
 
     void Set(const bool b) override {
         enabled = S_CheckpointTime = b;
+    }
+}
+
+class Clock : Status {
+    int num = -1;
+
+    bool get_active() const override {
+        switch (num) {
+            case 1: return g_clock1FormatValid;
+            case 2: return g_clock2FormatValid;
+            case 3: return g_clock3FormatValid;
+        }
+        return false;  // impossible, for compiler
+    }
+
+    Clock(const int num) {
+#if TMNEXT
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
+            | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif MP4
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif TURBO
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#endif
+
+        switch (num) {
+            case 1: case 2: case 3:
+                this.num = num;
+                break;
+            default:
+                throw("invalid clock number: " + num);
+        }
+    }
+
+    void RenderLegacy() const override {
+        if (!active) {
+            return;
+        }
+
+        switch (num) {
+            case 1: UI::Text(g_clock1Color + Icons::ClockO + " " + Time::FormatString(S_Clock1Format)); break;
+            case 2: UI::Text(g_clock2Color + Icons::ClockO + " " + Time::FormatString(S_Clock2Format)); break;
+            case 3: UI::Text(g_clock3Color + Icons::ClockO + " " + Time::FormatString(S_Clock3Format)); break;
+        }
+    }
+
+    void RenderSettings() override {
+        UI::PushID(this);
+
+        bool changed;
+
+        switch (num) {
+            case 1:
+                Set(UI::Checkbox("Clock 1", S_Clock1));
+
+                S_Clock1Format = UI::InputText("format", S_Clock1Format, changed);
+                if (changed) {
+                    g_clock1FormatValid = VerifyTimeFormat(S_Clock1Format);
+                }
+
+                UI::SameLine();
+                if (UI::Button("reset")) {
+                    PLUGIN_META.GetSetting("S_Clock1Format").Reset();
+                    g_clock1FormatValid = VerifyTimeFormat(S_Clock1Format);
+                }
+
+                if (g_clock1FormatValid) {
+                    UI::Text("preview: " + Time::FormatString(S_Clock1Format));
+                } else {
+                    UI::Text("\\$f33invalid time format");
+                }
+
+                S_Clock1Color = UI::InputColor3("", S_Clock1Color);
+                g_clock1Color = Text::FormatOpenplanetColor(S_Clock1Color);
+
+                break;
+
+            case 2:
+                Set(UI::Checkbox("Clock 2", S_Clock2));
+
+                S_Clock2Format = UI::InputText("format", S_Clock2Format, changed);
+                if (changed) {
+                    g_clock2FormatValid = VerifyTimeFormat(S_Clock2Format);
+                }
+
+                UI::SameLine();
+                if (UI::Button("reset")) {
+                    PLUGIN_META.GetSetting("S_Clock2Format").Reset();
+                    g_clock2FormatValid = VerifyTimeFormat(S_Clock2Format);
+                }
+
+                if (g_clock2FormatValid) {
+                    UI::Text("preview: " + Time::FormatString(S_Clock2Format));
+                } else {
+                    UI::Text("\\$f33invalid time format");
+                }
+
+                S_Clock2Color = UI::InputColor3("", S_Clock2Color);
+                g_clock2Color = Text::FormatOpenplanetColor(S_Clock2Color);
+
+                break;
+
+            case 3:
+                Set(UI::Checkbox("Clock 3", S_Clock3));
+
+                S_Clock3Format = UI::InputText("format", S_Clock3Format, changed);
+                if (changed) {
+                    g_clock3FormatValid = VerifyTimeFormat(S_Clock3Format);
+                }
+
+                UI::SameLine();
+                if (UI::Button("reset")) {
+                    PLUGIN_META.GetSetting("S_Clock3Format").Reset();
+                    g_clock3FormatValid = VerifyTimeFormat(S_Clock3Format);
+                }
+
+                if (g_clock3FormatValid) {
+                    UI::Text("preview: " + Time::FormatString(S_Clock3Format));
+                } else {
+                    UI::Text("\\$f33invalid time format");
+                }
+
+                S_Clock3Color = UI::InputColor3("", S_Clock3Color);
+                g_clock3Color = Text::FormatOpenplanetColor(S_Clock3Color);
+
+                break;
+        }
+
+        UI::PopID();
+    }
+
+    void Set() override {
+        switch (num) {
+            case 1: enabled = S_Clock1; break;
+            case 2: enabled = S_Clock2; break;
+            case 3: enabled = S_Clock3; break;
+        }
+    }
+
+    void Set(const bool b) override {
+        switch (num) {
+            case 1: enabled = S_Clock1 = b; break;
+            case 2: enabled = S_Clock2 = b; break;
+            case 3: enabled = S_Clock3 = b; break;
+        }
     }
 }
 

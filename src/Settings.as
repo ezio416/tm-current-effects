@@ -8,6 +8,9 @@
 
 [Setting category="Toggles" hidden] bool S_Checkpoints    = false;
 [Setting category="Toggles" hidden] bool S_CheckpointTime = false;
+[Setting category="Toggles" hidden] bool S_Clock1         = false;
+[Setting category="Toggles" hidden] bool S_Clock2         = false;
+[Setting category="Toggles" hidden] bool S_Clock3         = false;
 [Setting category="Toggles" hidden] bool S_ExeVersion     = false;
 [Setting category="Toggles" hidden] bool S_Fps            = false;
 [Setting category="Toggles" hidden] bool S_GameMode       = false;
@@ -50,6 +53,18 @@ string g_checkpointsColor;
 [Setting category="Colors" hidden]
 vec3 S_CheckpointTimeColor = vec3(0.1f, 0.6f, 1.0f);
 string g_checkpointTimeColor;
+
+[Setting category="Colors" hidden]
+vec3 S_Clock1Color = vec3(1.0f, 0.5f, 0.1f);
+string g_clock1Color;
+
+[Setting category="Colors" hidden]
+vec3 S_Clock2Color = vec3(1.0f, 0.9f, 0.1f);
+string g_clock2Color;
+
+[Setting category="Colors" hidden]
+vec3 S_Clock3Color = vec3(0.7f, 1.0f, 0.1f);
+string g_clock3Color;
 
 [Setting category="Colors" hidden]
 vec3 S_ExeVersionColor = vec3(1.0f, 1.0f, 1.0f);
@@ -262,6 +277,19 @@ string g_lagoonColor;
 [Setting category="Font" hidden] Font   S_Font     = Font::DroidSans;
 [Setting category="Font" hidden] string S_SystemFont;
 [Setting category="Font" hidden] int    S_FontSize = 16;
+
+
+[Setting hidden]
+string S_Clock1Format = "%A";
+bool g_clock1FormatValid = false;
+
+[Setting hidden]
+string S_Clock2Format = "%F";
+bool g_clock2FormatValid = false;
+
+[Setting hidden]
+string S_Clock3Format = "%X";
+bool g_clock3FormatValid = false;
 
 
 [SettingsTab name="Settings" icon="Cog" order=0]

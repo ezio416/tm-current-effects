@@ -1,5 +1,6 @@
-const string COLOR_DEBUG_OFF = "\\$f00";
-const string COLOR_DEBUG_ON  = "\\$0f0";
+const string COLOR_DEBUG_OFF   = "\\$f00";
+const string COLOR_DEBUG_ON    = "\\$0f0";
+const string TIME_FORMAT_REGEX = "(%[^aAbBcCdDeFgGhHIjmMnprRStTuUVwWxXyYzZ%])|([^%]%(%%)*$)";
 
 string ColorDebugArrayUint32(const uint[]&in a) {
     string ret = "< ";
@@ -174,9 +175,16 @@ string ColorOpponents() {
 
 #endif
 
-void SetColorStrings() {
+void SetSecondarySettings() {
+    g_clock1FormatValid = VerifyTimeFormat(S_Clock1Format);
+    g_clock2FormatValid = VerifyTimeFormat(S_Clock2Format);
+    g_clock3FormatValid = VerifyTimeFormat(S_Clock3Format);
+
     g_checkpointsColor    = Text::FormatOpenplanetColor(S_CheckpointsColor);
     g_checkpointTimeColor = Text::FormatOpenplanetColor(S_CheckpointTimeColor);
+    g_clock1Color         = Text::FormatOpenplanetColor(S_Clock1Color);
+    g_clock2Color         = Text::FormatOpenplanetColor(S_Clock2Color);
+    g_clock3Color         = Text::FormatOpenplanetColor(S_Clock3Color);
     g_exeVersionColor     = Text::FormatOpenplanetColor(S_ExeVersionColor);
     g_fpsColor            = Text::FormatOpenplanetColor(S_FpsColor);
     g_gameModeColor       = Text::FormatOpenplanetColor(S_GameModeColor);
@@ -243,4 +251,13 @@ void SetColorStrings() {
     g_valleyColor = Text::FormatOpenplanetColor(S_ValleyColor);
 
 #endif
+}
+
+// prevents most crashes
+bool VerifyTimeFormat(const string&in format) {
+    return true
+        and format != "%"
+        and format != "%%%"  // any further odd number of only % will crash
+        and !Regex::Contains(format, TIME_FORMAT_REGEX)
+    ;
 }
