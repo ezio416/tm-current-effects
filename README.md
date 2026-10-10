@@ -52,6 +52,7 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |opponent visibility |✅|✅|✅|✅|✅|✅|✅|❌|❌|❌
 |pause menu shown    |✅|✅|✅|✅|✅|✅|✅|✅|✅|✅
 |ping                |❌|❌|✅|✅|❌|✅|✅|❌|✅|✅
+|quit overlay        |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
 |race time           |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
 |reactor             |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
 |reactor duration    |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
@@ -64,6 +65,7 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |respawning          |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |respawn remaining   |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |respawns            |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
+|settings overlay    |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
 |sequence            |✅|✅|✅|✅|✅|✅|✅|✅|✅|✅
 |slow-mo             |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
 |slow-mo coefficient |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌

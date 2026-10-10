@@ -18,6 +18,7 @@ class StateNext : State {
     bool                             noSteer;
     CurrentEffects::OpponentVis      opponentVis;
     uint64                           p_phy;
+    bool                             quitOverlay;
     bool                             reactor;
     uint                             reactorDuration;
     uint                             reactorElapsed;
@@ -36,6 +37,7 @@ class StateNext : State {
     uint                             slowMoEndTick;
     uint8                            slowMoLevel;
     uint                             slowMoRemaining;
+    bool                             settingsOverlay;
     bool                             standRespawning;
     float                            steerLimit;
     uint8                            turboLevel;
@@ -66,6 +68,7 @@ class StateNext : State {
         _RenderDebugRow("noSteer",            ColorDebugBool(noSteer));
         _RenderDebugRow("opponentVis",        ColorDebugOpponentVis(opponentVis));
         _RenderDebugRow("p_phy",              ColorDebugPointer(p_phy));
+        _RenderDebugRow("quitOverlay",        ColorDebugBool(quitOverlay));
         _RenderDebugRow("reactor",            ColorDebugBool(reactor));
         _RenderDebugRow("reactorDuration",    ColorDebugInt(reactorDuration));
         _RenderDebugRow("reactorElapsed",     ColorDebugInt(reactorElapsed));
@@ -78,6 +81,7 @@ class StateNext : State {
         _RenderDebugRow("respawnEndTick",     ColorDebugInt(respawnEndTick));
         _RenderDebugRow("respawning",         ColorDebugBool(respawning));
         _RenderDebugRow("respawnRemaining",   ColorDebugInt(respawnRemaining));
+        _RenderDebugRow("settingsOverlay",    ColorDebugBool(settingsOverlay));
         _RenderDebugRow("slowMo",             ColorDebugBool(slowMo));
         _RenderDebugRow("slowMoCoefficient",  ColorDebugFloat(slowMoCoefficient));
         _RenderDebugRow("slowMoLevel",        ColorDebugInt(slowMoLevel));
@@ -109,6 +113,7 @@ class StateNext : State {
         noSteer            = false;
         opponentVis        = CurrentEffects::OpponentVis::Unknown;
         p_phy              = 0x0;
+        quitOverlay        = false;
         reactor            = false;
         reactorDuration    = 0;
         reactorElapsed     = 0;
@@ -121,6 +126,7 @@ class StateNext : State {
         respawnEndTick     = 0;
         respawning         = false;
         respawnRemaining   = 0;
+        settingsOverlay    = false;
         slowMo             = false;
         slowMoCoefficient  = 0.0f;
         slowMoDuration     = 0;
@@ -183,6 +189,38 @@ class StateNext : State {
         ticks       = gameTime / 10 * 10;
         titlepack   = "Trackmania";
         wpCount     = Danger::GetWaypointCount(App.GameScene);
+
+        for (uint i = App.Viewport.Overlays.Length; i --> 0;) {
+            if (settingsOverlay and quitOverlay) {
+                break;
+            }
+
+            CHmsZoneOverlay@ Overlay = App.Viewport.Overlays[i];
+            if (false
+                or Overlay is null
+                or Overlay.m_CorpusVisibles.Length == 0
+            ) {
+                continue;
+            }
+
+            if (true
+                and !settingsOverlay
+                and Overlay.m_CorpusVisibles.Length > 300
+            ) {
+                settingsOverlay = true;
+                continue;
+            }
+
+            if (true
+                and Overlay.m_CorpusVisibles[0] !is null
+                and Overlay.m_CorpusVisibles[0].Item !is null
+                and Overlay.m_CorpusVisibles[0].Item.IsVisible
+                and Overlay.m_CorpusVisibles[0].Item.SceneMobil !is null
+                and Overlay.m_CorpusVisibles[0].Item.SceneMobil.IdName == "FrameConfirmQuit"
+            ) {
+                quitOverlay = true;
+            }
+        }
 
         if (App.PlaygroundScript is null) {
             ping = App.Network.LatestGamePing;
