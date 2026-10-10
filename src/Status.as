@@ -1,3 +1,5 @@
+const string TIME_FORMAT_REFERENCE_LINK = "https://cplusplus.com/reference/ctime/strftime/";
+
 #if TMNEXT
 
 Status@[] g_statuses = {
@@ -325,6 +327,14 @@ class Clock : Status {
         }
     }
 
+    private void _RenderTimeFormatReferenceButton() {
+        if (UI::Button("reference")) {
+            OpenBrowserURL(TIME_FORMAT_REFERENCE_LINK);
+        }
+
+        UI::SetItemTooltip(TIME_FORMAT_REFERENCE_LINK);
+    }
+
     void RenderSettings() override {
         UI::PushID(this);
 
@@ -344,6 +354,9 @@ class Clock : Status {
                     PLUGIN_META.GetSetting("S_Clock1Format").Reset();
                     g_clock1FormatValid = VerifyTimeFormat(S_Clock1Format);
                 }
+
+                UI::SameLine();
+                _RenderTimeFormatReferenceButton();
 
                 if (g_clock1FormatValid) {
                     UI::Text("preview: " + Time::FormatString(S_Clock1Format));
@@ -370,6 +383,9 @@ class Clock : Status {
                     g_clock2FormatValid = VerifyTimeFormat(S_Clock2Format);
                 }
 
+                UI::SameLine();
+                _RenderTimeFormatReferenceButton();
+
                 if (g_clock2FormatValid) {
                     UI::Text("preview: " + Time::FormatString(S_Clock2Format));
                 } else {
@@ -394,6 +410,9 @@ class Clock : Status {
                     PLUGIN_META.GetSetting("S_Clock3Format").Reset();
                     g_clock3FormatValid = VerifyTimeFormat(S_Clock3Format);
                 }
+
+                UI::SameLine();
+                _RenderTimeFormatReferenceButton();
 
                 if (g_clock3FormatValid) {
                     UI::Text("preview: " + Time::FormatString(S_Clock3Format));
