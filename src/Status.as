@@ -349,7 +349,6 @@ class Clock : Status {
                     g_clock1FormatValid = VerifyTimeFormat(S_Clock1Format);
                 }
 
-                UI::SameLine();
                 if (UI::Button("reset")) {
                     PLUGIN_META.GetSetting("S_Clock1Format").Reset();
                     g_clock1FormatValid = VerifyTimeFormat(S_Clock1Format);
@@ -358,6 +357,7 @@ class Clock : Status {
                 UI::SameLine();
                 _RenderTimeFormatReferenceButton();
 
+                UI::SameLine();
                 if (g_clock1FormatValid) {
                     UI::Text("preview: " + Time::FormatString(S_Clock1Format));
                 } else {
@@ -377,7 +377,6 @@ class Clock : Status {
                     g_clock2FormatValid = VerifyTimeFormat(S_Clock2Format);
                 }
 
-                UI::SameLine();
                 if (UI::Button("reset")) {
                     PLUGIN_META.GetSetting("S_Clock2Format").Reset();
                     g_clock2FormatValid = VerifyTimeFormat(S_Clock2Format);
@@ -386,6 +385,7 @@ class Clock : Status {
                 UI::SameLine();
                 _RenderTimeFormatReferenceButton();
 
+                UI::SameLine();
                 if (g_clock2FormatValid) {
                     UI::Text("preview: " + Time::FormatString(S_Clock2Format));
                 } else {
@@ -405,7 +405,6 @@ class Clock : Status {
                     g_clock3FormatValid = VerifyTimeFormat(S_Clock3Format);
                 }
 
-                UI::SameLine();
                 if (UI::Button("reset")) {
                     PLUGIN_META.GetSetting("S_Clock3Format").Reset();
                     g_clock3FormatValid = VerifyTimeFormat(S_Clock3Format);
@@ -414,6 +413,7 @@ class Clock : Status {
                 UI::SameLine();
                 _RenderTimeFormatReferenceButton();
 
+                UI::SameLine();
                 if (g_clock3FormatValid) {
                     UI::Text("preview: " + Time::FormatString(S_Clock3Format));
                 } else {
