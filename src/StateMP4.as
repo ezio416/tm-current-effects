@@ -51,6 +51,7 @@ class StateMP4 : State {
 
         if (false
             or App.GameScene is null
+            or App.LoadedManiaTitle is null
             or App.ManiaPlanetScriptAPI is null
             or App.RootMap is null
             or App.Viewport is null
@@ -79,13 +80,16 @@ class StateMP4 : State {
         gameTime    = App.Network.PlaygroundClientScriptAPI.GameTime;
         ghostVis    = Playground.IsBestRaceGhostVisible;
         mapCpCount  = Danger::GetCheckpointCount(App.RootMap);
+        mapType     = App.RootMap.MapType;
         mapUid      = App.RootMap.EdChallengeId;
         mapWpCount  = mapCpCount + 1;
         maxFps      = App.Viewport.SystemConfig.Display.MaxFps;
         nametagVis  = Playground.ForceDisplayNames;
         opponentVis = Danger::GetOpponentVisibility();
+        pauseMenu   = App.Network.PlaygroundClientScriptAPI.IsInGameMenuDisplayed;
         sequence    = Playground.UIConfigs[0].UISequence;
         ticks       = gameTime / 10 * 10;
+        titlepack   = App.LoadedManiaTitle.TitleId;
 
         if (App.RootMap.TMObjective_IsLapRace) {
             mapLapCount = App.RootMap.TMObjective_NbLaps;
@@ -135,6 +139,8 @@ class StateMP4 : State {
             }
 
         } else {
+            ping = App.Network.LatestGamePing;
+
             viewMode = CurrentEffects::ViewMode::Server;
 
             CGamePlayer@ Player;
