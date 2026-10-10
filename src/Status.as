@@ -19,6 +19,7 @@ Status@[] g_statuses = {
     Ghosts(),
     Laps(),
     LapTime(),
+    MapType(),
     MapUid(),
     Nametags(),
     NoBrakes(),
@@ -51,6 +52,7 @@ const Status@[] g_statuses = {
     Ghosts(),
     Laps(),
     LapTime(),
+    MapType(),
     MapUid(),
     Nametags(),
     NoBrakes(),
@@ -78,6 +80,7 @@ const Status@[] g_statuses = {
     Ghosts(),
     Laps(),
     LapTime(),
+    MapType(),
     MapUid(),
     RaceTime(),
     Sequence(),
@@ -829,6 +832,50 @@ class LapTime : Status {
 
     void Set(const bool b) override {
         enabled = S_LapTime = b;
+    }
+}
+
+class MapType : Status {
+    bool get_active() const override {
+        return g_state.mapType.Length > 0;
+    }
+
+    MapType() {
+#if TMNEXT
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
+            | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif MP4
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif TURBO
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#endif
+    }
+
+    void RenderLegacy() const override {
+        if (S_HideInactive and !active) {
+            return;
+        }
+
+        UI::Text(g_mapTypeColor + Icons::MapO + " " + g_state.mapType);
+    }
+
+    void RenderSettings() override {
+        UI::PushID(this);
+
+        Set(UI::Checkbox("Map Type", S_MapType));
+
+        S_MapTypeColor = UI::InputColor3("", S_MapTypeColor);
+        g_mapTypeColor = Text::FormatOpenplanetColor(S_MapTypeColor);
+
+        UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_MapType;
+    }
+
+    void Set(const bool b) override {
+        enabled = S_MapType = b;
     }
 }
 
