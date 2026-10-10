@@ -41,6 +41,7 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |login               |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
 |map checkpoint count|✅|✅|✅|✅|✅|✅|✅|✅|✅|❌
 |map lap count       |✅|✅|✅|✅|✅|✅|✅|✅|✅|❌
+|map type            |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
 |map uid             |✅|✅|✅|✅|✅|✅|✅|✅|✅|✅
 |map waypoint count  |✅|✅|✅|✅|✅|✅|✅|✅|✅|❌
 |name                |✅|✅|✅|✅|✅|✅|✅|✅|✅|❌
@@ -49,6 +50,8 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |no grip             |✅|❌|✅|✅|✅|✅|❌|❌|❌|❌
 |no steering         |✅|❌|✅|✅|✅|✅|❌|❌|❌|❌
 |opponent visibility |✅|✅|✅|✅|✅|✅|✅|❌|❌|❌
+|pause menu shown    |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
+|ping                |❌|❌|✅|✅|❌|❌|❌|❌|❌|❌
 |race time           |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
 |reactor             |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
 |reactor duration    |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
@@ -71,6 +74,7 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 |stand respawning    |✅|❌|✅|❌|❌|❌|❌|❌|❌|❌
 |start tick          |✅|❌|✅|✅|✅|✅|✅|✅|✅|❌
 |ticks               |✅|✅|✅|✅|✅|✅|✅|✅|✅|✅
+|titlepack           |✅|✅|✅|✅|❌|❌|❌|❌|❌|❌
 |turbo               |✅|✅|✅|❌|✅|✅|❌|✅|✅|❌
 |turbo level         |✅|✅|✅|❌|❌|❌|❌|❌|❌|❌
 |turbo timer         |✅|✅|✅|❌|✅|✅|❌|✅|✅|❌

@@ -172,13 +172,17 @@ class StateNext : State {
         gameTime    = App.Network.PlaygroundClientScriptAPI.GameTime;
         ghostVis    = Danger::GetGhostVisibility(App.CurrentProfile.ProfileNew);
         mapCpCount  = Danger::GetCheckpointCount(App.RootMap);
+        mapType     = App.RootMap.MapType;
         mapUid      = App.RootMap.EdChallengeId;
         mapWpCount  = mapCpCount + 1;
         maxFps      = App.Viewport.SystemConfig.Display.MaxFps;
         nametagVis  = Danger::GetNametagVisibility(App.CurrentProfile.ProfileNew);
         opponentVis = Danger::GetOpponentVisibility(App.CurrentProfile);
+        pauseMenu   = App.Network.PlaygroundClientScriptAPI.IsInGameMenuDisplayed;
+        ping        = App.Network.LatestGamePing;
         sequence    = Playground.UIConfigs[0].UISequence;
         ticks       = gameTime / 10 * 10;
+        titlepack   = "Trackmania";
         wpCount     = Danger::GetWaypointCount(App.GameScene);
 
         if (App.PlaygroundScript is null) {
