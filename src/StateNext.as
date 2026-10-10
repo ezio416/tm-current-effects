@@ -179,13 +179,14 @@ class StateNext : State {
         nametagVis  = Danger::GetNametagVisibility(App.CurrentProfile.ProfileNew);
         opponentVis = Danger::GetOpponentVisibility(App.CurrentProfile);
         pauseMenu   = App.Network.PlaygroundClientScriptAPI.IsInGameMenuDisplayed;
-        ping        = App.Network.LatestGamePing;
         sequence    = Playground.UIConfigs[0].UISequence;
         ticks       = gameTime / 10 * 10;
         titlepack   = "Trackmania";
         wpCount     = Danger::GetWaypointCount(App.GameScene);
 
         if (App.PlaygroundScript is null) {
+            ping = App.Network.LatestGamePing;
+
             auto Player = cast<CSmPlayer>(Playground.GameTerminals[0].GUIPlayer);
 
             if (Player is Playground.GameTerminals[0].ControlledPlayer) {
