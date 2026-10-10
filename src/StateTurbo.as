@@ -10,6 +10,7 @@ class StateTurbo : State {
 
         if (false
             or App.GameScene is null
+            or App.LoadedManiaTitle is null
             or App.ManiaPlanetScriptAPI is null
             or App.Challenge is null
             or App.Viewport is null
@@ -25,6 +26,8 @@ class StateTurbo : State {
             or Playground is null
             or Playground.GameTerminals.Length != 1
             or Playground.GameTerminals[0] is null
+            or Playground.Interface is null
+            or Playground.Interface.ManialinkPage is null
             or Playground.UIConfigs.Length == 0
             or Playground.UIConfigs[0] is null
         ) {
@@ -38,11 +41,14 @@ class StateTurbo : State {
         gameTime   = App.Network.PlaygroundClientScriptAPI.GameTime;
         ghostVis   = Playground.IsBestRaceGhostVisible;
         mapCpCount = Danger::GetCheckpointCount(App.Challenge);
+        mapType    = App.Challenge.MapType;
         mapUid     = App.Challenge.EdChallengeId;
         mapWpCount = mapCpCount + 1;
         maxFps     = App.Viewport.SystemConfig.Display.MaxFps;
+        pauseMenu  = Playground.Interface.ManialinkPage.IsFocused;
         sequence   = Playground.UIConfigs[0].UISequence;
         ticks      = gameTime / 10 * 10;
+        titlepack  = App.LoadedManiaTitle.TitleId;
 
         if (App.Challenge.TMObjective_IsLapRace) {
             mapLapCount = App.Challenge.TMObjective_NbLaps;
@@ -66,6 +72,7 @@ class StateTurbo : State {
             viewMode = CurrentEffects::ViewMode::Solo;
         } else {
             viewMode = CurrentEffects::ViewMode::Server;
+            ping = App.Network.LatestGamePing;
             // TODO turbo spectating (but I don't want to)
         }
     }
