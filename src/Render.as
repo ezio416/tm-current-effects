@@ -27,11 +27,14 @@ void RenderLegacy() {
         }
     }
 
-    const int flags = UI::GetDefaultWindowFlags()
+    int flags = UI::GetDefaultWindowFlags()
         | UI::WindowFlags::AlwaysAutoResize
         | UI::WindowFlags::NoFocusOnAppearing
         | UI::WindowFlags::NoTitleBar
     ;
+    if (!UI::IsOverlayShown()) {
+        flags |= UI::WindowFlags::NoMove;
+    }
 
     const vec4 styleFrameBg  = UI::GetStyleColor(UI::Col::FrameBg);
     const vec4 styleText     = UI::GetStyleColor(UI::Col::Text);
