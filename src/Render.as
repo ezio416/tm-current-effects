@@ -36,13 +36,15 @@ void RenderLegacy() {
         flags |= UI::WindowFlags::NoMove;
     }
 
-    const vec4 styleFrameBg  = UI::GetStyleColor(UI::Col::FrameBg);
-    const vec4 styleText     = UI::GetStyleColor(UI::Col::Text);
-    const vec4 styleWindowBg = UI::GetStyleColor(UI::Col::WindowBg);
+    if (S_Opacity != 1.0f) {
+        const vec4 styleFrameBg  = UI::GetStyleColor(UI::Col::FrameBg);
+        const vec4 styleText     = UI::GetStyleColor(UI::Col::Text);
+        const vec4 styleWindowBg = UI::GetStyleColor(UI::Col::WindowBg);
 
-    UI::PushStyleColor(UI::Col::FrameBg,  vec4(styleFrameBg.xyz,  Math::Min(S_Opacity, styleFrameBg.w)));
-    UI::PushStyleColor(UI::Col::Text,     vec4(styleText.xyz,     Math::Min(S_Opacity, styleText.w)));
-    UI::PushStyleColor(UI::Col::WindowBg, vec4(styleWindowBg.xyz, Math::Min(S_Opacity, styleWindowBg.w)));
+        UI::PushStyleColor(UI::Col::FrameBg,  vec4(styleFrameBg.xyz,  Math::Min(S_Opacity, styleFrameBg.w)));
+        UI::PushStyleColor(UI::Col::Text,     vec4(styleText.xyz,     Math::Min(S_Opacity, styleText.w)));
+        UI::PushStyleColor(UI::Col::WindowBg, vec4(styleWindowBg.xyz, Math::Min(S_Opacity, styleWindowBg.w)));
+    }
 
     if (UI::Begin(PLUGIN_TITLE + "###main-" + PLUGIN_META.ID, S_Enabled, flags)) {
         UI::PushFont(g_font, S_FontSize);
@@ -53,7 +55,9 @@ void RenderLegacy() {
         UI::End();
     } catch { }
 
-    UI::PopStyleColor(3);
+    if (S_Opacity != 1.0f) {
+        UI::PopStyleColor(3);
+    }
 }
 
 void RenderLegacyWindow() {
