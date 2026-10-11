@@ -33,6 +33,14 @@ void RenderLegacy() {
         | UI::WindowFlags::NoTitleBar
     ;
 
+    const vec4 styleFrameBg  = UI::GetStyleColor(UI::Col::FrameBg);
+    const vec4 styleText     = UI::GetStyleColor(UI::Col::Text);
+    const vec4 styleWindowBg = UI::GetStyleColor(UI::Col::WindowBg);
+
+    UI::PushStyleColor(UI::Col::FrameBg,  vec4(styleFrameBg.xyz,  Math::Min(S_Opacity, styleFrameBg.w)));
+    UI::PushStyleColor(UI::Col::Text,     vec4(styleText.xyz,     Math::Min(S_Opacity, styleText.w)));
+    UI::PushStyleColor(UI::Col::WindowBg, vec4(styleWindowBg.xyz, Math::Min(S_Opacity, styleWindowBg.w)));
+
     if (UI::Begin(PLUGIN_TITLE + "###main-" + PLUGIN_META.ID, S_Enabled, flags)) {
         UI::PushFont(g_font, S_FontSize);
         RenderLegacyWindow();
@@ -41,6 +49,8 @@ void RenderLegacy() {
     try {  // UI assertion fails when last item has progress bar but it's fine
         UI::End();
     } catch { }
+
+    UI::PopStyleColor(3);
 }
 
 void RenderLegacyWindow() {

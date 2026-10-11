@@ -132,7 +132,7 @@ abstract class Status {
         const vec2 pos = UI::GetCursorPos();
         const float scale = UI::GetScale();
         UI::SetCursorPos(vec2(pos.x, pos.y - scale * 5.0f));
-        UI::PushStyleColor(UI::Col::PlotHistogram, vec4(color, 1.0f));
+        UI::PushStyleColor(UI::Col::PlotHistogram, vec4(color, S_Opacity));
         UI::ProgressBar(num / max, vec2(-1.0f, scale * 2.0f));
         UI::PopStyleColor();
         UI::SetCursorPos(pos);
