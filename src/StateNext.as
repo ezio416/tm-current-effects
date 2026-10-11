@@ -261,7 +261,10 @@ class StateNext : State {
             }
 
             if (App.RootMap.TMObjective_IsLapRace) {
-                _UpdateWithLaps(Danger::GetLapCount(Playground.Arena.Rules));
+                const uint laps = Danger::GetLapCount(Playground.Arena.Rules);
+                // lap count on totd server was over 400k, not sure what happened
+                // just use a reasonable value here
+                _UpdateWithLaps(laps < 1000 ? laps : App.RootMap.TMObjective_NbLaps);
             } else {
                 _UpdateWithLaps(0);
             }
