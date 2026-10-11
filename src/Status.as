@@ -199,7 +199,7 @@ class ActionKey : Status {
 
         _Indent();
 
-        bar = S_ActionKeyBar = UI::Checkbox("progress bar", bar);
+        bar = S_ActionKeyBar = UI::Checkbox("Percentage", bar);
 
         S_AK1Color = UI::InputColor3("1 - 20%", S_AK1Color);
         g_AK1Color = Text::FormatOpenplanetColor(S_AK1Color);
@@ -258,7 +258,7 @@ class Checkpoints : Status {
 
         _Indent();
 
-        bar = S_CheckpointsBar = UI::Checkbox("progress bar", bar);
+        bar = S_CheckpointsBar = UI::Checkbox("Progress Bar", bar);
 
         S_CheckpointsColor = UI::InputColor3("", S_CheckpointsColor);
         g_checkpointsColor = Text::FormatOpenplanetColor(S_CheckpointsColor);
@@ -523,7 +523,7 @@ class CruiseControl : Status {
 
         _Indent();
 
-        bar = S_CruiseBar = UI::Checkbox("progress bar", bar);
+        bar = S_CruiseBar = UI::Checkbox("Speed Percentage", bar);
 
         S_CruiseColor = UI::InputColor3("", S_CruiseColor);
         g_cruiseColor = Text::FormatOpenplanetColor(S_CruiseColor);
@@ -669,7 +669,7 @@ class Fps : Status {
 
         _Indent();
 
-        bar = S_FpsBar = UI::Checkbox("progress bar", bar);
+        bar = S_FpsBar = UI::Checkbox("Percentage", bar);
 
         S_FpsColor = UI::InputColor3("", S_FpsColor);
         g_fpsColor = Text::FormatOpenplanetColor(S_FpsColor);
@@ -716,7 +716,7 @@ class Fragile : Status {
 
         _Indent();
 
-        bar = S_FragileBar = UI::Checkbox("progress bar", bar);
+        bar = S_FragileBar = UI::Checkbox("Damage Percentage", bar);
 
         S_FragileColor = UI::InputColor3("", S_FragileColor);
         g_fragileColor = Text::FormatOpenplanetColor(S_FragileColor);
@@ -864,7 +864,7 @@ class Laps : Status {
 
         _Indent();
 
-        bar = S_LapsBar = UI::Checkbox("progress bar", bar);
+        bar = S_LapsBar = UI::Checkbox("Progress Bar", bar);
 
         S_LapsColor = UI::InputColor3("", S_LapsColor);
         g_lapsColor = Text::FormatOpenplanetColor(S_LapsColor);
@@ -1405,7 +1405,7 @@ class Reactor : Status {
 
         _Indent();
 
-        bar = S_ReactorBar = UI::Checkbox("progress bar", bar);
+        bar = S_ReactorBar = UI::Checkbox("Timer", bar);
 
         S_Reactor1Color = UI::InputColor3("level 1", S_Reactor1Color);
         g_reactor1Color = Text::FormatOpenplanetColor(S_Reactor1Color);
@@ -1459,7 +1459,7 @@ class Respawning : Status {
 
         _Indent();
 
-        bar = S_RespawningBar = UI::Checkbox("progress bar", bar);
+        bar = S_RespawningBar = UI::Checkbox("Timer", bar);
 
         S_LaunchRespawnColor = UI::InputColor3("launched", S_LaunchRespawnColor);
         g_launchRespawnColor = Text::FormatOpenplanetColor(S_LaunchRespawnColor);
@@ -1580,7 +1580,7 @@ class SlowMo : Status {
 
         _Indent();
 
-        bar = S_SlowMoBar = UI::Checkbox("progress bar", bar);
+        bar = S_SlowMoBar = UI::Checkbox("Timer", bar);
 
         S_SlowMo1Color = UI::InputColor3("level 1", S_SlowMo1Color);
         g_slowMo1Color = Text::FormatOpenplanetColor(S_SlowMo1Color);
@@ -1657,7 +1657,7 @@ class Turbo : Status {
 
         _Indent();
 
-        bar = S_TurboBar = UI::Checkbox("progress bar", bar);
+        bar = S_TurboBar = UI::Checkbox("Timer", bar);
 
 #if TMNEXT
         S_Turbo1Color = UI::InputColor3("normal", S_Turbo1Color);
@@ -1825,7 +1825,7 @@ class Water : Status {
 
         _Indent();
 
-        bar = S_WaterBar = UI::Checkbox("progress bar", bar);
+        bar = S_WaterBar = UI::Checkbox("Percentage", bar);
 
         S_WaterColor = UI::InputColor3("", S_WaterColor);
         g_waterColor = Text::FormatOpenplanetColor(S_WaterColor);
