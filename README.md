@@ -13,7 +13,7 @@ So many things can affect your car, ranging from an effect that kills your engin
 - "When is my reactor going to run out?"
 - "How wet am I?"
 
-Not all statuses (the things we track) are available everywhere. Refer to the chart below to see what is and where. If you're a developer and want to add a checkmark somewhere, human-written PRs are always welcome.
+Not all statuses (the things we track) are available everywhere. Refer to the chart below to see what is and where.
 
 |status              |solo|replay|server|spectate|tm2 solo|tm2 server|tm2 spectate|turbo solo|turbo server|turbo spectate
 |:-:                 |:-: |:-:   |:-:   |:-:     |:-:     |:-:       |:-:         |:-:       |:-:         |:-:
@@ -90,6 +90,24 @@ Not all statuses (the things we track) are available everywhere. Refer to the ch
 - ⚠️ when watching a replay or spectating, fragile only appears if at least one tire is partially worn
 - ⚠️ when switching to/from alt cars, slow-mo duration may be wrong
 - ⚠️ when spectating in envimix, vehicle type may be wrong
+
+## Discoveries
+If you're a developer and want to add a checkmark somewhere, human-written PRs are always welcome. Read my contributing rules.
+
+There are some values in particular I'm trying to find a short, static path to:
+- mediatracker-locked camera
+- PB ghost waypoint times
+- respawning (MP4/Turbo)
+- spectating respawning
+- spectating waypoint times
+- watching replay name when 2+
+- watching replay respawning
+- watching replay waypoint times
+- any research with TM Forever
+
+By short, I mean fewer than ~3 blind offset/pointer jumps. Longer paths, if they work, are acceptable, however they are not ideal or preferred. I want to maintain the best chance of this plugin working through game updates (however few they may be) with minimal maintainance work.
+
+By static, I mean the value should be accessible if the plugin is loaded on any arbitrary frame. Nothing is event-based - no intercepts, no hooks, and no keeping of any state values between frames.
 
 ## Exports
 `CurrentEffects` has a number of exports for you to use in your own plugins. When using these, it's important to note that CE is updated on the render loop, not the simulation loop.
