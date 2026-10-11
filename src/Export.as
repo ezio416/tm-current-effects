@@ -62,6 +62,9 @@ namespace CurrentEffects {
     // number of laps in the map
     import uint StatusMapLapCount() from "CurrentEffects";
 
+    // type of the current map
+    import string StatusMapType() from "CurrentEffects";
+
     // game-generated unique ID of the current map
     import string StatusMapUid() from "CurrentEffects";
 
@@ -76,6 +79,12 @@ namespace CurrentEffects {
 
     // engine off/free wheeling effect is active
     import bool StatusNoEngine() from "CurrentEffects";
+
+    // the pause menu is shown
+    import bool StatusPauseMenu() from "CurrentEffects";
+
+    // the ping (in ms) when on a server
+    import int StatusPing() from "CurrentEffects";
 
     // race time of the player to the 0.001s
     import uint StatusRaceTime() from "CurrentEffects";
@@ -94,6 +103,9 @@ namespace CurrentEffects {
 
     // number of ticks simulated in the playground
     import uint StatusTicks() from "CurrentEffects";
+
+    // name of the current loaded titlepack
+    import string StatusTitlepack() from "CurrentEffects";
 
     // turbo effect is active
     import bool StatusTurbo() from "CurrentEffects";
@@ -136,8 +148,14 @@ namespace CurrentEffects {
     // fragile effect is active
     import bool StatusFragile() from "CurrentEffects";
 
+    // percentage of fragile damage
+    import float StatusFragileDamage() from "CurrentEffects";
+
     // car is doing a launched respawn
     import bool StatusLaunchRespawning() from "CurrentEffects";
+
+    // the "quit game" overlay is shown
+    import bool StatusQuitOverlay() from "CurrentEffects";
 
     // reactor effect is active
     import bool StatusReactor() from "CurrentEffects";
@@ -174,6 +192,9 @@ namespace CurrentEffects {
 
     // respawn ticks left
     import uint StatusRespawnRemaining() from "CurrentEffects";
+
+    // the special settings overlay is shown
+    import bool StatusSettingsOverlay() from "CurrentEffects";
 
     // slow-mo effect is active
     import bool StatusSlowMo() from "CurrentEffects";

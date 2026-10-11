@@ -83,6 +83,10 @@ namespace CurrentEffects {
         return g_state.mapLapCount;
     }
 
+    string StatusMapType() {
+        return g_state.mapType;
+    }
+
     string StatusMapUid() {
         return g_state.mapUid;
     }
@@ -101,6 +105,14 @@ namespace CurrentEffects {
 
     bool StatusNoEngine() {
         return g_state.noEngine;
+    }
+
+    bool StatusPauseMenu() {
+        return g_state.pauseMenu;
+    }
+
+    int StatusPing() {
+        return g_state.ping;
     }
 
     uint StatusRaceTime() {
@@ -125,6 +137,10 @@ namespace CurrentEffects {
 
     uint StatusTicks() {
         return g_state.ticks;
+    }
+
+    string StatusTitlepack() {
+        return g_state.titlepack;
     }
 
     bool StatusTurbo() {
@@ -181,8 +197,16 @@ namespace CurrentEffects {
         return g_state.fragile;
     }
 
+    float StatusFragileDamage() {
+        return g_state.fragileDamage;
+    }
+
     bool StatusLaunchRespawning() {
         return g_state.launchRespawning;
+    }
+
+    bool StatusQuitOverlay() {
+        return g_state.quitOverlay;
     }
 
     bool StatusReactor() {
@@ -218,7 +242,7 @@ namespace CurrentEffects {
     }
 
     uint StatusRespawnDuration() {
-        return g_state.reactorDuration;
+        return g_state.respawnDuration;
     }
 
     uint StatusRespawnEndTick() {
@@ -231,6 +255,10 @@ namespace CurrentEffects {
 
     uint StatusRespawnRemaining() {
         return g_state.respawnRemaining;
+    }
+
+    bool StatusSettingsOverlay() {
+        return g_state.settingsOverlay;
     }
 
     bool StatusSlowMo() {

@@ -31,13 +31,13 @@ class StateNext : State {
     uint                             respawnEndTick;
     bool                             respawning;
     uint                             respawnRemaining;
+    bool                             settingsOverlay;
     bool                             slowMo;
     float                            slowMoCoefficient;
     uint                             slowMoDuration;
     uint                             slowMoEndTick;
     uint8                            slowMoLevel;
     uint                             slowMoRemaining;
-    bool                             settingsOverlay;
     bool                             standRespawning;
     float                            steerLimit;
     uint8                            turboLevel;
