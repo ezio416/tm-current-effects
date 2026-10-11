@@ -2,20 +2,24 @@
 [Setting category="General" hidden] bool  S_HideWithGame   = true;
 [Setting category="General" hidden] bool  S_HideWithOP     = false;
 [Setting category="General" hidden] bool  S_HideInactive   = false;
+[Setting category="General" hidden] bool  S_Icons          = true;
 [Setting category="General" hidden] Style S_Style          = Style::Legacy;
 [Setting category="General" hidden] bool  S_OverrideSafety = false;
 
 
 [Setting category="Toggles" hidden] bool S_Checkpoints    = false;
+[Setting category="Toggles" hidden] bool S_CheckpointsBar = true;
 [Setting category="Toggles" hidden] bool S_CheckpointTime = false;
 [Setting category="Toggles" hidden] bool S_Clock1         = false;
 [Setting category="Toggles" hidden] bool S_Clock2         = false;
 [Setting category="Toggles" hidden] bool S_Clock3         = false;
 [Setting category="Toggles" hidden] bool S_ExeVersion     = false;
 [Setting category="Toggles" hidden] bool S_Fps            = false;
+[Setting category="Toggles" hidden] bool S_FpsBar         = true;
 [Setting category="Toggles" hidden] bool S_GameMode       = false;
 [Setting category="Toggles" hidden] bool S_Ghosts         = false;
 [Setting category="Toggles" hidden] bool S_Laps           = false;
+[Setting category="Toggles" hidden] bool S_LapsBar        = true;
 [Setting category="Toggles" hidden] bool S_LapTime        = false;
 [Setting category="Toggles" hidden] bool S_MapType        = false;
 [Setting category="Toggles" hidden] bool S_MapUid         = false;
@@ -23,15 +27,23 @@
 [Setting category="Toggles" hidden] bool S_RaceTime       = false;
 [Setting category="Toggles" hidden] bool S_Sequence       = false;
 [Setting category="Toggles" hidden] bool S_Turbo          = true;
+[Setting category="Toggles" hidden] bool S_TurboBar       = true;
 [Setting category="Toggles" hidden] bool S_Vehicle        = true;
 #if TMNEXT
-[Setting category="Toggles" hidden] bool S_ActionKey  = false;
-[Setting category="Toggles" hidden] bool S_Cruise     = true;
-[Setting category="Toggles" hidden] bool S_Fragile    = true;
-[Setting category="Toggles" hidden] bool S_Reactor    = true;
-[Setting category="Toggles" hidden] bool S_Respawning = false;
-[Setting category="Toggles" hidden] bool S_SlowMo     = true;
-[Setting category="Toggles" hidden] bool S_Water      = false;
+[Setting category="Toggles" hidden] bool S_ActionKey     = false;
+[Setting category="Toggles" hidden] bool S_ActionKeyBar  = true;
+[Setting category="Toggles" hidden] bool S_Cruise        = true;
+[Setting category="Toggles" hidden] bool S_CruiseBar     = true;
+[Setting category="Toggles" hidden] bool S_Fragile       = true;
+[Setting category="Toggles" hidden] bool S_FragileBar    = true;
+[Setting category="Toggles" hidden] bool S_Reactor       = true;
+[Setting category="Toggles" hidden] bool S_ReactorBar    = true;
+[Setting category="Toggles" hidden] bool S_Respawning    = false;
+[Setting category="Toggles" hidden] bool S_RespawningBar = true;
+[Setting category="Toggles" hidden] bool S_SlowMo        = true;
+[Setting category="Toggles" hidden] bool S_SlowMoBar     = true;
+[Setting category="Toggles" hidden] bool S_Water         = false;
+[Setting category="Toggles" hidden] bool S_WaterBar      = true;
 #endif
 #if TMNEXT || MP4
 [Setting category="Toggles" hidden] bool S_Forced    = true;
@@ -315,6 +327,7 @@ void SettingsTab_Statuses() {
         S_HideWithGame = UI::Checkbox("Show/hide with game UI", S_HideWithGame);
         S_HideWithOP   = UI::Checkbox("Show/hide with Openplanet UI", S_HideWithOP);
         S_HideInactive = UI::Checkbox("Only show active statuses", S_HideInactive);
+        S_Icons        = UI::Checkbox("Show icons", S_Icons);
 
 #if TMNEXT
         if (!Safety::safe) {
@@ -340,6 +353,18 @@ void SettingsTab_Statuses() {
     }
 
     if (UI::TreeNode("Statuses", UI::TreeNodeFlags::Framed)) {
+        if (UI::Button("Turn everything on")) {
+            Meta::PluginSetting@[]@ settings = PLUGIN_META.GetSettings();
+            for (uint i = 0; i < settings.Length; i++) {
+                if (settings[i].Category == "Toggles") {
+                    settings[i].WriteBool(true);
+                }
+            }
+
+            OnSettingsChanged();
+        }
+
+        UI::SameLine();
         if (UI::Button("Reset toggles to default")) {
             Meta::PluginSetting@[]@ settings = PLUGIN_META.GetSettings();
             for (uint i = 0; i < settings.Length; i++) {

@@ -84,12 +84,13 @@ const Status@[] g_statuses = {
     MapUid(),
     RaceTime(),
     Sequence(),
-    Turbo()
+    Turbo(),
 };
 
 #endif
 
 abstract class Status {
+    bool bar     = true;
     bool enabled = true;
     int  modes   = 0x0;
 
@@ -106,11 +107,28 @@ abstract class Status {
         ;
     }
 
+    protected void _Dedent() const {
+        UI::Indent(-30.0f);
+    }
+
+    protected string _Icon() const {
+        throw("unimplemented");
+        return "";
+    }
+
+    protected void _Indent() const {
+        UI::Indent(30.0f);
+    }
+
     void RenderLegacy() const {
         throw("unimplemented");
     }
 
-    protected void RenderLegacyBar(const float num, const float max, const vec3&in color) const final {
+    protected void _RenderLegacyBar(const float num, const float max, const vec3&in color) const final {
+        if (!bar) {
+            return;
+        }
+
         const vec2 pos = UI::GetCursorPos();
         const float scale = UI::GetScale();
         UI::SetCursorPos(vec2(pos.x, pos.y - scale * 5.0f));
@@ -125,10 +143,6 @@ abstract class Status {
     }
 
     void Set() {
-        throw("unimplemented");
-    }
-
-    void Set(const bool b) {
         throw("unimplemented");
     }
 }
@@ -156,12 +170,16 @@ class ActionKey : Status {
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::Percent + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (S_HideInactive and !active) {
             return;
         }
 
-        UI::Text(ColorActionKey() + Icons::Percent + " Action Key " + g_state.actionKey);
+        UI::Text(ColorActionKey() + _Icon() + "Action Key " + g_state.actionKey);
 
         vec3 color = S_OffColor;
         switch (g_state.actionKey) {
@@ -171,13 +189,17 @@ class ActionKey : Status {
             case 4: color = S_AK4Color; break;
         }
 
-        RenderLegacyBar(g_state.steerLimit, 1.0f, color);
+        _RenderLegacyBar(g_state.steerLimit, 1.0f, color);
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Action Key", S_ActionKey));
+        enabled = S_ActionKey = UI::Checkbox("Action Key", enabled);
+
+        _Indent();
+
+        bar = S_ActionKeyBar = UI::Checkbox("progress bar", bar);
 
         S_AK1Color = UI::InputColor3("1 - 20%", S_AK1Color);
         g_AK1Color = Text::FormatOpenplanetColor(S_AK1Color);
@@ -188,15 +210,14 @@ class ActionKey : Status {
         S_AK4Color = UI::InputColor3("4 - 80%", S_AK4Color);
         g_AK4Color = Text::FormatOpenplanetColor(S_AK4Color);
 
+        _Dedent();
+
         UI::PopID();
     }
 
     void Set() override {
+        bar     = S_ActionKeyBar;
         enabled = S_ActionKey;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_ActionKey = b;
     }
 }
 
@@ -217,31 +238,39 @@ class Checkpoints : Status {
 #endif
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::Undo + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (!active) {
             return;
         }
 
-        UI::Text(g_checkpointsColor + Icons::Undo + " CP: " + g_state.cpNum + " / " + g_state.mapCpCount);
-        RenderLegacyBar(g_state.cpNum, Math::Max(1, g_state.mapCpCount), S_CheckpointsColor);
+        UI::Text(g_checkpointsColor + _Icon() + "CP: " + g_state.cpNum + " / " + g_state.mapCpCount);
+        _RenderLegacyBar(g_state.cpNum, Math::Max(1, g_state.mapCpCount), S_CheckpointsColor);
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Checkpoints", S_Checkpoints));
+        enabled = S_Checkpoints = UI::Checkbox("Checkpoints", enabled);
+
+        _Indent();
+
+        bar = S_CheckpointsBar = UI::Checkbox("progress bar", bar);
+
         S_CheckpointsColor = UI::InputColor3("", S_CheckpointsColor);
         g_checkpointsColor = Text::FormatOpenplanetColor(S_CheckpointsColor);
+
+        _Dedent();
 
         UI::PopID();
     }
 
     void Set() override {
+        bar     = S_CheckpointsBar;
         enabled = S_Checkpoints;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_Checkpoints = b;
     }
 }
 
@@ -260,30 +289,35 @@ class CheckpointTime : Status {
 #endif
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::FlagO + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (!active) {
             return;
         }
 
-        UI::Text(g_checkpointTimeColor + Icons::FlagO + " " + Time::Format(g_state.cpTime));
+        UI::Text(g_checkpointTimeColor + _Icon() + Time::Format(g_state.cpTime));
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Checkpoint Time", S_CheckpointTime));
+        enabled = S_CheckpointTime = UI::Checkbox("Checkpoint Time", enabled);
+
+        _Indent();
+
         S_CheckpointTimeColor = UI::InputColor3("", S_CheckpointTimeColor);
         g_checkpointTimeColor = Text::FormatOpenplanetColor(S_CheckpointTimeColor);
+
+        _Dedent();
 
         UI::PopID();
     }
 
     void Set() override {
         enabled = S_CheckpointTime;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_CheckpointTime = b;
     }
 }
 
@@ -318,24 +352,20 @@ class Clock : Status {
         }
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::ClockO + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (!active) {
             return;
         }
 
         switch (num) {
-            case 1: UI::Text(g_clock1Color + Icons::ClockO + " " + Time::FormatString(S_Clock1Format)); break;
-            case 2: UI::Text(g_clock2Color + Icons::ClockO + " " + Time::FormatString(S_Clock2Format)); break;
-            case 3: UI::Text(g_clock3Color + Icons::ClockO + " " + Time::FormatString(S_Clock3Format)); break;
+            case 1: UI::Text(g_clock1Color + _Icon() + Time::FormatString(S_Clock1Format)); break;
+            case 2: UI::Text(g_clock2Color + _Icon() + Time::FormatString(S_Clock2Format)); break;
+            case 3: UI::Text(g_clock3Color + _Icon() + Time::FormatString(S_Clock3Format)); break;
         }
-    }
-
-    private void _RenderTimeFormatReferenceButton() {
-        if (UI::Button("reference")) {
-            OpenBrowserURL(TIME_FORMAT_REFERENCE_LINK);
-        }
-
-        UI::SetItemTooltip(TIME_FORMAT_REFERENCE_LINK);
     }
 
     void RenderSettings() override {
@@ -345,7 +375,9 @@ class Clock : Status {
 
         switch (num) {
             case 1:
-                Set(UI::Checkbox("Clock 1", S_Clock1));
+                enabled = S_Clock1 = UI::Checkbox("Clock 1", enabled);
+
+                _Indent();
 
                 S_Clock1Format = UI::InputText("format", S_Clock1Format, changed);
                 if (changed) {
@@ -370,10 +402,14 @@ class Clock : Status {
                 S_Clock1Color = UI::InputColor3("", S_Clock1Color);
                 g_clock1Color = Text::FormatOpenplanetColor(S_Clock1Color);
 
+                _Dedent();
+
                 break;
 
             case 2:
-                Set(UI::Checkbox("Clock 2", S_Clock2));
+                enabled = S_Clock2 = UI::Checkbox("Clock 2", enabled);
+
+                _Indent();
 
                 S_Clock2Format = UI::InputText("format", S_Clock2Format, changed);
                 if (changed) {
@@ -398,10 +434,14 @@ class Clock : Status {
                 S_Clock2Color = UI::InputColor3("", S_Clock2Color);
                 g_clock2Color = Text::FormatOpenplanetColor(S_Clock2Color);
 
+                _Dedent();
+
                 break;
 
             case 3:
-                Set(UI::Checkbox("Clock 3", S_Clock3));
+                enabled = S_Clock3 = UI::Checkbox("Clock 3", enabled);
+
+                _Indent();
 
                 S_Clock3Format = UI::InputText("format", S_Clock3Format, changed);
                 if (changed) {
@@ -426,10 +466,20 @@ class Clock : Status {
                 S_Clock3Color = UI::InputColor3("", S_Clock3Color);
                 g_clock3Color = Text::FormatOpenplanetColor(S_Clock3Color);
 
+                _Dedent();
+
                 break;
         }
 
         UI::PopID();
+    }
+
+    private void _RenderTimeFormatReferenceButton() {
+        if (UI::Button("reference")) {
+            OpenBrowserURL(TIME_FORMAT_REFERENCE_LINK);
+        }
+
+        UI::SetItemTooltip(TIME_FORMAT_REFERENCE_LINK);
     }
 
     void Set() override {
@@ -437,14 +487,6 @@ class Clock : Status {
             case 1: enabled = S_Clock1; break;
             case 2: enabled = S_Clock2; break;
             case 3: enabled = S_Clock3; break;
-        }
-    }
-
-    void Set(const bool b) override {
-        switch (num) {
-            case 1: enabled = S_Clock1 = b; break;
-            case 2: enabled = S_Clock2 = b; break;
-            case 3: enabled = S_Clock3 = b; break;
         }
     }
 }
@@ -461,31 +503,38 @@ class CruiseControl : Status {
             | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::Tachometer + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (S_HideInactive and !active) {
             return;
         }
 
-        UI::Text(ColorCruise() + Icons::Tachometer + " Cruise Control");
-        RenderLegacyBar(g_state.cruiseControlSpeed, 1000.0f, S_CruiseColor);
+        UI::Text(ColorCruise() + _Icon() + "Cruise Control");
+        _RenderLegacyBar(g_state.cruiseControlSpeed, 1000.0f, S_CruiseColor);
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Cruise Control", S_Cruise));
+        enabled = S_Cruise = UI::Checkbox("Cruise Control", enabled);
+
+        _Indent();
+
+        bar = S_CruiseBar = UI::Checkbox("progress bar", bar);
+
         S_CruiseColor = UI::InputColor3("", S_CruiseColor);
         g_cruiseColor = Text::FormatOpenplanetColor(S_CruiseColor);
+
+        _Dedent();
 
         UI::PopID();
     }
 
     void Set() override {
         enabled = S_Cruise;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_Cruise = b;
     }
 }
 
@@ -507,21 +556,29 @@ class ExeVersion : Status {
 #endif
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::Cogs + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (S_HideInactive and !active) {
             return;
         }
 
-        UI::Text(g_exeVersionColor + Icons::Cogs + " " + g_state.exeVersion);
+        UI::Text(g_exeVersionColor + _Icon() + g_state.exeVersion);
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Executable Version", S_ExeVersion));
+        enabled = S_ExeVersion = UI::Checkbox("Executable Version", enabled);
+
+        _Indent();
 
         S_ExeVersionColor = UI::InputColor3("", S_ExeVersionColor);
         g_exeVersionColor = Text::FormatOpenplanetColor(S_ExeVersionColor);
+
+        _Dedent();
 
         UI::PopID();
     }
@@ -529,53 +586,8 @@ class ExeVersion : Status {
     void Set() override {
         enabled = S_ExeVersion;
     }
-
-    void Set(const bool b) override {
-        enabled = S_ExeVersion = b;
-    }
 }
 
-#if TMNEXT
-
-class Fragile : Status {
-    bool get_active() const override {
-        return g_state.fragile;
-    }
-
-    Fragile() {
-        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
-            | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
-    }
-
-    void RenderLegacy() const override {
-        if (S_HideInactive and !active) {
-            return;
-        }
-
-        UI::Text(ColorFragile() + Icons::ChainBroken + " Fragile");
-        RenderLegacyBar(g_state.fragileDamage, 1.0f, S_FragileColor);
-    }
-
-    void RenderSettings() override {
-        UI::PushID(this);
-
-        Set(UI::Checkbox("Fragile", S_Fragile));
-        S_FragileColor = UI::InputColor3("", S_FragileColor);
-        g_fragileColor = Text::FormatOpenplanetColor(S_FragileColor);
-
-        UI::PopID();
-    }
-
-    void Set() override {
-        enabled = S_Fragile;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_Fragile = b;
-    }
-}
-
-#endif
 #if TMNEXT || MP4
 
 class ForcedAccel : Handicap {
@@ -583,15 +595,19 @@ class ForcedAccel : Handicap {
         return g_state.forcedAccel;
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::Forward + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (S_HideInactive and !active) {
             return;
         }
 
 #if TMNEXT
-        UI::Text(ColorForced() + Icons::Forward + " Forced Accel");
+        UI::Text(ColorForced() + _Icon() + "Forced Accel");
 #elif MP4
-        UI::Text(ColorForced() + Icons::Forward + " Fullspeed Ahead");
+        UI::Text(ColorForced() + _Icon() + "Fullspeed Ahead");
 #endif
     }
 
@@ -599,23 +615,23 @@ class ForcedAccel : Handicap {
         UI::PushID(this);
 
 #if TMNEXT
-        Set(UI::Checkbox("Forced Acceleration", S_Forced));
+        enabled = S_Forced = UI::Checkbox("Forced Acceleration", enabled);
 #elif MP4
-        Set(UI::Checkbox("Fullspeed Ahead", S_Forced));
+        enabled = S_Forced = UI::Checkbox("Fullspeed Ahead", enabled);
 #endif
+
+        _Indent();
 
         S_ForcedColor = UI::InputColor3("", S_ForcedColor);
         g_forcedColor = Text::FormatOpenplanetColor(S_ForcedColor);
+
+        _Dedent();
 
         UI::PopID();
     }
 
     void Set() override {
         enabled = S_Forced;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_Forced = b;
     }
 }
 
@@ -637,18 +653,28 @@ class Fps : Status {
 #endif
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::VideoCamera + " " : "";
+    }
+
     void RenderLegacy() const override {
-        UI::Text(g_fpsColor + Icons::VideoCamera + " FPS: " + int(Math::Round(g_state.fps)));
-        RenderLegacyBar(g_state.fps, g_state.maxFps, S_FpsColor);
+        UI::Text(g_fpsColor + _Icon() + "FPS: " + int(Math::Round(g_state.fps)));
+        _RenderLegacyBar(g_state.fps, g_state.maxFps, S_FpsColor);
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Framerate", S_Fps));
+        enabled = S_Fps = UI::Checkbox("Framerate", enabled);
+
+        _Indent();
+
+        bar = S_FpsBar = UI::Checkbox("progress bar", bar);
 
         S_FpsColor = UI::InputColor3("", S_FpsColor);
         g_fpsColor = Text::FormatOpenplanetColor(S_FpsColor);
+
+        _Dedent();
 
         UI::PopID();
     }
@@ -656,11 +682,56 @@ class Fps : Status {
     void Set() override {
         enabled = S_Fps;
     }
+}
 
-    void Set(const bool b) override {
-        enabled = S_Fps = b;
+#if TMNEXT
+
+class Fragile : Status {
+    bool get_active() const override {
+        return g_state.fragile;
+    }
+
+    Fragile() {
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay
+            | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+    }
+
+    string _Icon() const override {
+        return S_Icons ? Icons::ChainBroken + " " : "";
+    }
+
+    void RenderLegacy() const override {
+        if (S_HideInactive and !active) {
+            return;
+        }
+
+        UI::Text(ColorFragile() + _Icon() + "Fragile");
+        _RenderLegacyBar(g_state.fragileDamage, 1.0f, S_FragileColor);
+    }
+
+    void RenderSettings() override {
+        UI::PushID(this);
+
+        enabled = S_Fragile = UI::Checkbox("Fragile", enabled);
+
+        _Indent();
+
+        bar = S_FragileBar = UI::Checkbox("progress bar", bar);
+
+        S_FragileColor = UI::InputColor3("", S_FragileColor);
+        g_fragileColor = Text::FormatOpenplanetColor(S_FragileColor);
+
+        _Dedent();
+
+        UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_Fragile;
     }
 }
+
+#endif
 
 class GameMode : Status {
     bool get_active() const override {
@@ -678,31 +749,35 @@ class GameMode : Status {
 #endif
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::Gamepad + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (S_HideInactive and !active) {
             return;
         }
 
-        UI::Text(g_gameModeColor + Icons::Gamepad + " " + g_state.gameMode);
+        UI::Text(g_gameModeColor + _Icon() + g_state.gameMode);
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Game Mode", S_GameMode));
+        enabled = S_GameMode = UI::Checkbox("Game Mode", enabled);
+
+        _Indent();
 
         S_GameModeColor = UI::InputColor3("", S_GameModeColor);
         g_gameModeColor = Text::FormatOpenplanetColor(S_GameModeColor);
+
+        _Dedent();
 
         UI::PopID();
     }
 
     void Set() override {
         enabled = S_GameMode;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_GameMode = b;
     }
 }
 
@@ -722,31 +797,35 @@ class Ghosts : Status {
 #endif
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::SnapchatGhost + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (S_HideInactive and !active) {
             return;
         }
 
-        UI::Text(ColorGhosts() + Icons::SnapchatGhost + " Ghosts");
+        UI::Text(ColorGhosts() + _Icon() + "Ghosts");
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Ghosts", S_Ghosts));
+        enabled = S_Ghosts = UI::Checkbox("Ghosts", enabled);
+
+        _Indent();
 
         S_GhostsColor = UI::InputColor3("", S_GhostsColor);
         g_ghostsColor = Text::FormatOpenplanetColor(S_GhostsColor);
+
+        _Dedent();
 
         UI::PopID();
     }
 
     void Set() override {
         enabled = S_Ghosts;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_Ghosts = b;
     }
 }
 
@@ -765,31 +844,38 @@ class Laps : Status {
 #endif
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::Retweet + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (!active) {
             return;
         }
 
-        UI::Text(g_lapsColor + Icons::Retweet + " Lap: " + g_state.lapNum + " / " + g_state.mapLapCount);
-        RenderLegacyBar(g_state.lapNum, Math::Max(1, g_state.mapLapCount), S_LapsColor);
+        UI::Text(g_lapsColor + _Icon() + "Lap: " + g_state.lapNum + " / " + g_state.mapLapCount);
+        _RenderLegacyBar(g_state.lapNum, Math::Max(1, g_state.mapLapCount), S_LapsColor);
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Laps", S_Laps));
+        enabled = S_Laps = UI::Checkbox("Laps", enabled);
+
+        _Indent();
+
+        bar = S_LapsBar = UI::Checkbox("progress bar", bar);
+
         S_LapsColor = UI::InputColor3("", S_LapsColor);
         g_lapsColor = Text::FormatOpenplanetColor(S_LapsColor);
+
+        _Dedent();
 
         UI::PopID();
     }
 
     void Set() override {
         enabled = S_Laps;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_Laps = b;
     }
 }
 
@@ -808,30 +894,35 @@ class LapTime : Status {
 #endif
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::FlagCheckered + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (!active) {
             return;
         }
 
-        UI::Text(g_lapTimeColor + Icons::FlagCheckered + " " + Time::Format(g_state.lapTime));
+        UI::Text(g_lapTimeColor + _Icon() + Time::Format(g_state.lapTime));
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Lap Time", S_LapTime));
+        enabled = S_LapTime = UI::Checkbox("Lap Time", enabled);
+
+        _Indent();
+
         S_LapTimeColor = UI::InputColor3("", S_LapTimeColor);
         g_lapTimeColor = Text::FormatOpenplanetColor(S_LapTimeColor);
+
+        _Dedent();
 
         UI::PopID();
     }
 
     void Set() override {
         enabled = S_LapTime;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_LapTime = b;
     }
 }
 
@@ -851,31 +942,35 @@ class MapType : Status {
 #endif
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::MapO + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (S_HideInactive and !active) {
             return;
         }
 
-        UI::Text(g_mapTypeColor + Icons::MapO + " " + g_state.mapType);
+        UI::Text(g_mapTypeColor + _Icon() + g_state.mapType);
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Map Type", S_MapType));
+        enabled = S_MapType = UI::Checkbox("Map Type", enabled);
+
+        _Indent();
 
         S_MapTypeColor = UI::InputColor3("", S_MapTypeColor);
         g_mapTypeColor = Text::FormatOpenplanetColor(S_MapTypeColor);
+
+        _Dedent();
 
         UI::PopID();
     }
 
     void Set() override {
         enabled = S_MapType;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_MapType = b;
     }
 }
 
@@ -895,31 +990,35 @@ class MapUid : Status {
 #endif
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::Map + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (S_HideInactive and !active) {
             return;
         }
 
-        UI::Text(g_mapUidColor + Icons::Map + " " + g_state.mapUid);
+        UI::Text(g_mapUidColor + _Icon() + g_state.mapUid);
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Map UID", S_MapUid));
+        enabled = S_MapUid = UI::Checkbox("Map UID", enabled);
+
+        _Indent();
 
         S_MapUidColor = UI::InputColor3("", S_MapUidColor);
         g_mapUidColor = Text::FormatOpenplanetColor(S_MapUidColor);
+
+        _Dedent();
 
         UI::PopID();
     }
 
     void Set() override {
         enabled = S_MapUid;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_MapUid = b;
     }
 }
 
@@ -939,31 +1038,35 @@ class Nametags : Status {
 #endif
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::Tag + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (S_HideInactive and !active) {
             return;
         }
 
-        UI::Text(ColorNametags() + Icons::Tag + " Nametags");
+        UI::Text(ColorNametags() + _Icon() + "Nametags");
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Nametags", S_Nametags));
+        enabled = S_Nametags = UI::Checkbox("Nametags", enabled);
+
+        _Indent();
 
         S_NametagsColor = UI::InputColor3("", S_NametagsColor);
         g_nametagsColor = Text::FormatOpenplanetColor(S_NametagsColor);
+
+        _Dedent();
 
         UI::PopID();
     }
 
     void Set() override {
         enabled = S_Nametags;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_Nametags = b;
     }
 }
 
@@ -972,31 +1075,35 @@ class NoBrakes : Handicap {
         return g_state.noBrakes;
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::ExclamationTriangle + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (S_HideInactive and !active) {
             return;
         }
 
-        UI::Text(ColorNoBrakes() + Icons::ExclamationTriangle + " No Brakes");
+        UI::Text(ColorNoBrakes() + _Icon() + "No Brakes");
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("No Brakes", S_NoBrakes));
+        enabled = S_NoBrakes = UI::Checkbox("No Brakes", enabled);
+
+        _Indent();
 
         S_NoBrakesColor = UI::InputColor3("", S_NoBrakesColor);
         g_noBrakesColor = Text::FormatOpenplanetColor(S_NoBrakesColor);
+
+        _Dedent();
 
         UI::PopID();
     }
 
     void Set() override {
         enabled = S_NoBrakes;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_NoBrakes = b;
     }
 }
 
@@ -1007,15 +1114,19 @@ class NoEngine : Handicap {
         return g_state.noEngine;
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::PowerOff + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (S_HideInactive and !active) {
             return;
         }
 
 #if TMNEXT
-        UI::Text(ColorNoEngine() + Icons::PowerOff + " Engine Off");
+        UI::Text(ColorNoEngine() + _Icon() + "Engine Off");
 #else
-        UI::Text(ColorNoEngine() + Icons::PowerOff + " Free Wheeling");
+        UI::Text(ColorNoEngine() + _Icon() + "Free Wheeling");
 #endif
     }
 
@@ -1023,23 +1134,23 @@ class NoEngine : Handicap {
         UI::PushID(this);
 
 #if TMNEXT
-        Set(UI::Checkbox("Engine Off", S_NoEngine));
+        enabled = S_NoEngine = UI::Checkbox("Engine Off", enabled);
 #else
-        Set(UI::Checkbox("Free Wheeling", S_NoEngine));
+        enabled = S_NoEngine = UI::Checkbox("Free Wheeling", enabled);
 #endif
+
+        _Indent();
 
         S_NoEngineColor = UI::InputColor3("", S_NoEngineColor);
         g_noEngineColor = Text::FormatOpenplanetColor(S_NoEngineColor);
+
+        _Dedent();
 
         UI::PopID();
     }
 
     void Set() override {
         enabled = S_NoEngine;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_NoEngine = b;
     }
 }
 
@@ -1050,31 +1161,35 @@ class NoGrip : Handicap {
         return g_state.noGrip;
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::SnowflakeO + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (S_HideInactive and !active) {
             return;
         }
 
-        UI::Text(ColorNoGrip() + Icons::SnowflakeO + " No Grip");
+        UI::Text(ColorNoGrip() + _Icon() + "No Grip");
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("No Grip", S_NoGrip));
+        enabled = S_NoGrip = UI::Checkbox("No Grip", enabled);
+
+        _Indent();
 
         S_NoGripColor = UI::InputColor3("", S_NoGripColor);
         g_noGripColor = Text::FormatOpenplanetColor(S_NoGripColor);
+
+        _Dedent();
 
         UI::PopID();
     }
 
     void Set() override {
         enabled = S_NoGrip;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_NoGrip = b;
     }
 }
 
@@ -1083,31 +1198,35 @@ class NoSteer : Handicap {
         return g_state.noSteer;
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::ArrowsH + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (S_HideInactive and !active) {
             return;
         }
 
-        UI::Text(ColorNoSteer() + Icons::ArrowsH + " No Steering");
+        UI::Text(ColorNoSteer() + _Icon() + "No Steering");
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("No Steering", S_NoSteer));
+        enabled = S_NoSteer = UI::Checkbox("No Steering", enabled);
+
+        _Indent();
 
         S_NoSteerColor = UI::InputColor3("", S_NoSteerColor);
         g_noSteerColor = Text::FormatOpenplanetColor(S_NoSteerColor);
+
+        _Dedent();
 
         UI::PopID();
     }
 
     void Set() override {
         enabled = S_NoSteer;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_NoSteer = b;
     }
 }
 
@@ -1126,18 +1245,24 @@ class Opponents : Status {
 #endif
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::Users + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (S_HideInactive and !active) {
             return;
         }
 
-        UI::Text(ColorOpponents() + Icons::Users + " Opponents");
+        UI::Text(ColorOpponents() + _Icon() + "Opponents");
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Opponents", S_Opponents));
+        enabled = S_Opponents = UI::Checkbox("Opponents", enabled);
+
+        _Indent();
 
         S_OpponentsTransColor = UI::InputColor3("transparent", S_OpponentsTransColor);
         g_opponentsTransColor = Text::FormatOpenplanetColor(S_OpponentsTransColor);
@@ -1145,19 +1270,65 @@ class Opponents : Status {
         S_OpponentsOpaqueColor = UI::InputColor3("opaque", S_OpponentsOpaqueColor);
         g_opponentsOpaqueColor = Text::FormatOpenplanetColor(S_OpponentsOpaqueColor);
 
+        _Dedent();
+
         UI::PopID();
     }
 
     void Set() override {
         enabled = S_Opponents;
     }
-
-    void Set(const bool b) override {
-        enabled = S_Opponents = b;
-    }
 }
 
 #endif
+
+class RaceTime : Status {
+    bool get_active() const override {
+        return g_state.raceTime > 0;
+    }
+
+    RaceTime() {
+#if TMNEXT
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif MP4
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
+#elif TURBO
+        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
+#endif
+    }
+
+    string _Icon() const override {
+        return S_Icons ? Icons::Flag + " " : "";
+    }
+
+    void RenderLegacy() const override {
+        if (S_HideInactive and !active) {
+            return;
+        }
+
+        UI::Text(g_raceTimeColor + _Icon() + Time::Format(g_state.raceTime));
+    }
+
+    void RenderSettings() override {
+        UI::PushID(this);
+
+        enabled = S_RaceTime = UI::Checkbox("Race Time", enabled);
+
+        _Indent();
+
+        S_RaceTimeColor = UI::InputColor3("", S_RaceTimeColor);
+        g_raceTimeColor = Text::FormatOpenplanetColor(S_RaceTimeColor);
+
+        _Dedent();
+
+        UI::PopID();
+    }
+
+    void Set() override {
+        enabled = S_RaceTime;
+    }
+}
+
 #if TMNEXT
 
 class Reactor : Status {
@@ -1170,15 +1341,9 @@ class Reactor : Status {
             | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
     }
 
-    void RenderLegacy() const override {
-        if (!active) {
-            if (S_HideInactive) {
-                return;
-            }
-
-            UI::Text(g_offColor + Icons::Rocket + " Reactor Boost");
-            RenderLegacyBar(0.0f, 1.0f, S_OffColor);
-            return;
+    string _Icon() const override {
+        if (!S_Icons) {
+            return "";
         }
 
         string reactorIcon = Icons::Rocket;
@@ -1189,7 +1354,21 @@ class Reactor : Status {
                 reactorIcon = Icons::ChevronDown; break;
         }
 
-        UI::Text(ColorReactor() + reactorIcon + " Reactor Boost");
+        return reactorIcon + " ";
+    }
+
+    void RenderLegacy() const override {
+        if (!active) {
+            if (S_HideInactive) {
+                return;
+            }
+
+            UI::Text(g_offColor + _Icon() + "Reactor Boost");
+            _RenderLegacyBar(0.0f, 1.0f, S_OffColor);
+            return;
+        }
+
+        UI::Text(ColorReactor() + _Icon() + "Reactor Boost");
 
         float f;
 
@@ -1216,28 +1395,30 @@ class Reactor : Status {
                 color = S_Reactor2Color; break;
         }
 
-        RenderLegacyBar(f, 1.0f, color);
+        _RenderLegacyBar(f, 1.0f, color);
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Reactor Boost", S_Reactor));
+        enabled = S_Reactor = UI::Checkbox("Reactor Boost", enabled);
+
+        _Indent();
+
+        bar = S_ReactorBar = UI::Checkbox("progress bar", bar);
 
         S_Reactor1Color = UI::InputColor3("level 1", S_Reactor1Color);
         g_reactor1Color = Text::FormatOpenplanetColor(S_Reactor1Color);
         S_Reactor2Color = UI::InputColor3("level 2", S_Reactor2Color);
         g_reactor2Color = Text::FormatOpenplanetColor(S_Reactor2Color);
 
+        _Dedent();
+
         UI::PopID();
     }
 
     void Set() override {
         enabled = S_Reactor;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_Reactor = b;
     }
 }
 
@@ -1250,12 +1431,16 @@ class Respawning : Status {
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::Refresh + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (S_HideInactive and !active) {
             return;
         }
 
-        UI::Text(ColorRespawning() + Icons::Refresh + " Respawning");
+        UI::Text(ColorRespawning() + _Icon() + "Respawning");
 
         vec3 color = S_OffColor;
         if (g_state.launchRespawning) {
@@ -1264,18 +1449,24 @@ class Respawning : Status {
             color = S_StandRespawnColor;
         }
 
-        RenderLegacyBar(float(g_state.respawnRemaining) / Math::Max(1, g_state.respawnDuration), 1.0f, color);
+        _RenderLegacyBar(float(g_state.respawnRemaining) / Math::Max(1, g_state.respawnDuration), 1.0f, color);
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Respawning", S_Respawning));
+        enabled = S_Respawning = UI::Checkbox("Respawning", enabled);
+
+        _Indent();
+
+        bar = S_RespawningBar = UI::Checkbox("progress bar", bar);
 
         S_LaunchRespawnColor = UI::InputColor3("launched", S_LaunchRespawnColor);
         g_launchRespawnColor = Text::FormatOpenplanetColor(S_LaunchRespawnColor);
         S_StandRespawnColor = UI::InputColor3("standstill", S_StandRespawnColor);
         g_standRespawnColor = Text::FormatOpenplanetColor(S_StandRespawnColor);
+
+        _Dedent();
 
         UI::PopID();
     }
@@ -1283,56 +1474,9 @@ class Respawning : Status {
     void Set() override {
         enabled = S_Respawning;
     }
-
-    void Set(const bool b) override {
-        enabled = S_Respawning = b;
-    }
 }
 
 #endif
-
-class RaceTime : Status {
-    bool get_active() const override {
-        return g_state.raceTime > 0;
-    }
-
-    RaceTime() {
-#if TMNEXT
-        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
-#elif MP4
-        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
-#elif TURBO
-        modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Server;
-#endif
-    }
-
-    void RenderLegacy() const override {
-        if (S_HideInactive and !active) {
-            return;
-        }
-
-        UI::Text(g_raceTimeColor + Icons::Flag + " " + Time::Format(g_state.raceTime));
-    }
-
-    void RenderSettings() override {
-        UI::PushID(this);
-
-        Set(UI::Checkbox("Race Time", S_RaceTime));
-
-        S_RaceTimeColor = UI::InputColor3("", S_RaceTimeColor);
-        g_raceTimeColor = Text::FormatOpenplanetColor(S_RaceTimeColor);
-
-        UI::PopID();
-    }
-
-    void Set() override {
-        enabled = S_RaceTime;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_RaceTime = b;
-    }
-}
 
 class Sequence : Status {
     bool get_active() const override {
@@ -1350,27 +1494,31 @@ class Sequence : Status {
 #endif
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::Film + " " : "";
+    }
+
     void RenderLegacy() const override {
-        UI::Text(g_sequenceColor + Icons::Film + " " + tostring(g_state.sequence));
+        UI::Text(g_sequenceColor + _Icon() + tostring(g_state.sequence));
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Sequence", S_Sequence));
+        enabled = S_Sequence = UI::Checkbox("Sequence", enabled);
+
+        _Indent();
 
         S_SequenceColor = UI::InputColor3("", S_SequenceColor);
         g_sequenceColor = Text::FormatOpenplanetColor(S_SequenceColor);
+
+        _Dedent();
 
         UI::PopID();
     }
 
     void Set() override {
         enabled = S_Sequence;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_Sequence = b;
     }
 }
 
@@ -1386,18 +1534,22 @@ class SlowMo : Status {
             | CurrentEffects::ViewMode::Server | CurrentEffects::ViewMode::Spectate;
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::ClockO + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (!active) {
             if (S_HideInactive) {
                 return;
             }
 
-            UI::Text(g_offColor + Icons::ClockO + " Slow-Mo");
-            RenderLegacyBar(0.0f, 1.0f, S_OffColor);
+            UI::Text(g_offColor + _Icon() + "Slow-Mo");
+            _RenderLegacyBar(0.0f, 1.0f, S_OffColor);
             return;
         }
 
-        UI::Text(ColorSlowMo() + Icons::ClockO + " Slow-Mo");
+        UI::Text(ColorSlowMo() + _Icon() + "Slow-Mo");
 
         vec3 color = S_OffColor;
         switch (g_state.slowMoLevel) {
@@ -1418,13 +1570,17 @@ class SlowMo : Status {
             }
         }
 
-        RenderLegacyBar(f, 1.0f, color);
+        _RenderLegacyBar(f, 1.0f, color);
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Slow-Mo", S_SlowMo));
+        enabled = S_SlowMo = UI::Checkbox("Slow-Mo", enabled);
+
+        _Indent();
+
+        bar = S_SlowMoBar = UI::Checkbox("progress bar", bar);
 
         S_SlowMo1Color = UI::InputColor3("level 1", S_SlowMo1Color);
         g_slowMo1Color = Text::FormatOpenplanetColor(S_SlowMo1Color);
@@ -1435,15 +1591,13 @@ class SlowMo : Status {
         S_SlowMo4Color = UI::InputColor3("level 4", S_SlowMo4Color);
         g_slowMo4Color = Text::FormatOpenplanetColor(S_SlowMo4Color);
 
+        _Dedent();
+
         UI::PopID();
     }
 
     void Set() override {
         enabled = S_SlowMo;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_SlowMo = b;
     }
 }
 
@@ -1464,18 +1618,22 @@ class Turbo : Status {
 #endif
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::ArrowCircleUp + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (!active) {
             if (S_HideInactive) {
                 return;
             }
 
-            UI::Text(g_offColor + Icons::ArrowCircleUp + " Turbo");
-            RenderLegacyBar(0.0f, 1.0f, S_OffColor);
+            UI::Text(g_offColor + _Icon() + "Turbo");
+            _RenderLegacyBar(0.0f, 1.0f, S_OffColor);
             return;
         }
 
-        UI::Text(ColorTurbo() + Icons::ArrowCircleUp + " Turbo");
+        UI::Text(ColorTurbo() + _Icon() + "Turbo");
 
 #if TMNEXT
         vec3 color;
@@ -1486,16 +1644,20 @@ class Turbo : Status {
             case 4: color = S_Turbo4Color; break;
             case 5: color = S_Turbo5Color; break;
         }
-        RenderLegacyBar(1.0f - g_state.turboTimer, 1.0f, color);
+        _RenderLegacyBar(1.0f - g_state.turboTimer, 1.0f, color);
 #else
-        RenderLegacyBar(1.0f - g_state.turboTimer, 1.0f, S_TurboColor);
+        _RenderLegacyBar(1.0f - g_state.turboTimer, 1.0f, S_TurboColor);
 #endif
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Turbo", S_Turbo));
+        enabled = S_Turbo = UI::Checkbox("Turbo", enabled);
+
+        _Indent();
+
+        bar = S_TurboBar = UI::Checkbox("progress bar", bar);
 
 #if TMNEXT
         S_Turbo1Color = UI::InputColor3("normal", S_Turbo1Color);
@@ -1513,15 +1675,13 @@ class Turbo : Status {
         g_turboColor = Text::FormatOpenplanetColor(S_TurboColor);
 #endif
 
+        _Dedent();
+
         UI::PopID();
     }
 
     void Set() override {
         enabled = S_Turbo;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_Turbo = b;
     }
 }
 
@@ -1541,47 +1701,51 @@ class VehicleType : Status {
 #endif
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::Kenney::Car + " " : "";
+    }
+
     void RenderLegacy() const override {
         switch (g_state.vehicleType) {
 #if TMNEXT || MP4
             case CurrentEffects::VehicleType::Snow:
-                UI::Text(g_snowColor + Icons::Kenney::Car + " Snow Car");
+                UI::Text(g_snowColor + _Icon() + "Snow Car");
                 break;
             case CurrentEffects::VehicleType::Desert:
-                UI::Text(g_desertColor + Icons::Kenney::Car + " Desert Car");
+                UI::Text(g_desertColor + _Icon() + "Desert Car");
                 break;
             case CurrentEffects::VehicleType::Rally:
-                UI::Text(g_rallyColor + Icons::Kenney::Car + " Rally Car");
+                UI::Text(g_rallyColor + _Icon() + "Rally Car");
                 break;
 #endif
 #if MP4
             case CurrentEffects::VehicleType::Island:
-                UI::Text(g_islandColor + Icons::Kenney::Car + " Island Car");
+                UI::Text(g_islandColor + _Icon() + "Island Car");
                 break;
             case CurrentEffects::VehicleType::Bay:
-                UI::Text(g_bayColor + Icons::Kenney::Car + " Bay Car");
+                UI::Text(g_bayColor + _Icon() + "Bay Car");
                 break;
             case CurrentEffects::VehicleType::Coast:
-                UI::Text(g_coastColor + Icons::Kenney::Car + " Coast Car");
+                UI::Text(g_coastColor + _Icon() + "Coast Car");
                 break;
             case CurrentEffects::VehicleType::Traffic:
-                UI::Text(g_trafficColor + Icons::Kenney::Car + " Traffic Car");
+                UI::Text(g_trafficColor + _Icon() + "Traffic Car");
                 break;
 #endif
 #if MP4 || TURBO
             case CurrentEffects::VehicleType::Canyon:
-                UI::Text(g_canyonColor + Icons::Kenney::Car + " Canyon Car");
+                UI::Text(g_canyonColor + _Icon() + "Canyon Car");
                 break;
             case CurrentEffects::VehicleType::Valley:
-                UI::Text(g_valleyColor + Icons::Kenney::Car + " Valley Car");
+                UI::Text(g_valleyColor + _Icon() + "Valley Car");
                 break;
             case CurrentEffects::VehicleType::Lagoon:
-                UI::Text(g_lagoonColor + Icons::Kenney::Car + " Lagoon Car");
+                UI::Text(g_lagoonColor + _Icon() + "Lagoon Car");
                 break;
 #endif
             default:
                 if (!S_HideInactive) {
-                    UI::Text(g_offColor + Icons::Kenney::Car + " Stadium Car");
+                    UI::Text(g_offColor + _Icon() + "Stadium Car");
                 }
         }
     }
@@ -1589,7 +1753,9 @@ class VehicleType : Status {
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Vehicle Type", S_Vehicle));
+        enabled = S_Vehicle = UI::Checkbox("Vehicle Type", enabled);
+
+        _Indent();
 
 #if TMNEXT || MP4
         S_SnowColor = UI::InputColor3("snow", S_SnowColor);
@@ -1618,15 +1784,13 @@ class VehicleType : Status {
         g_lagoonColor = Text::FormatOpenplanetColor(S_LagoonColor);
 #endif
 
+        _Dedent();
+
         UI::PopID();
     }
 
     void Set() override {
         enabled = S_Vehicle;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_Vehicle = b;
     }
 }
 
@@ -1641,31 +1805,38 @@ class Water : Status {
         modes = CurrentEffects::ViewMode::Solo | CurrentEffects::ViewMode::Replay | CurrentEffects::ViewMode::Server;
     }
 
+    string _Icon() const override {
+        return S_Icons ? Icons::Tint + " " : "";
+    }
+
     void RenderLegacy() const override {
         if (S_HideInactive and !active) {
             return;
         }
 
-        UI::Text(ColorWater() + Icons::Tint + " Water");
-        RenderLegacyBar(g_state.water, 1.0f, S_WaterColor);
+        UI::Text(ColorWater() + _Icon() + "Water");
+        _RenderLegacyBar(g_state.water, 1.0f, S_WaterColor);
     }
 
     void RenderSettings() override {
         UI::PushID(this);
 
-        Set(UI::Checkbox("Water", S_Water));
+        enabled = S_Water = UI::Checkbox("Water", enabled);
+
+        _Indent();
+
+        bar = S_WaterBar = UI::Checkbox("progress bar", bar);
+
         S_WaterColor = UI::InputColor3("", S_WaterColor);
         g_waterColor = Text::FormatOpenplanetColor(S_WaterColor);
+
+        _Dedent();
 
         UI::PopID();
     }
 
     void Set() override {
         enabled = S_Water;
-    }
-
-    void Set(const bool b) override {
-        enabled = S_Water = b;
     }
 }
 
