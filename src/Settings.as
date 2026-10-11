@@ -347,6 +347,7 @@ void SettingsTab_Statuses() {
         if (UI::Button("Reset font to default")) {
             PLUGIN_META.GetSetting("S_Font").Reset();
             PLUGIN_META.GetSetting("S_FontSize").Reset();
+            ChangeFont();
         }
 
         RenderFontSettings();
