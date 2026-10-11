@@ -254,11 +254,26 @@ void SetSecondarySettings() {
 #endif
 }
 
-// prevents most crashes
+// should prevent all crashes
 bool VerifyTimeFormat(const string&in format) {
-    return true
-        and format != "%"
-        and format != "%%%"  // any further odd number of only % will crash
-        and !Regex::Contains(format, TIME_FORMAT_REGEX)
-    ;
+    if (format.Length == 0) {
+        return false;
+    }
+
+    if (format.Length % 2 == 1) {
+        bool bad = true;
+
+        for (int i = 0; i < format.Length; i++) {
+            if (format[i] != 0x25) {  // %
+                bad = false;
+                break;
+            }
+        }
+
+        if (bad) {
+            return false;
+        }
+    }
+
+    return !Regex::Contains(format, TIME_FORMAT_REGEX);
 }
