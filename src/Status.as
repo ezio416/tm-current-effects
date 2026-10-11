@@ -474,7 +474,7 @@ class Clock : Status {
         UI::PopID();
     }
 
-    private void _RenderTimeFormatReferenceButton() {
+    private void _RenderTimeFormatReferenceButton() const {
         if (UI::Button(Icons::ExternalLinkSquare + " reference")) {
             OpenBrowserURL(TIME_FORMAT_REFERENCE_LINK);
         }
