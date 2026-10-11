@@ -179,6 +179,9 @@ uint StatusMapCheckpointCount();
 // number of laps in the map
 uint StatusMapLapCount();
 
+// type of the current map
+string StatusMapType();
+
 // game-generated unique ID of the current map
 string StatusMapUid();
 
@@ -193,6 +196,12 @@ string StatusName();
 
 // engine off/free wheeling effect is active
 bool StatusNoEngine();
+
+// the pause menu is shown
+bool StatusPauseMenu();
+
+// the ping (in ms) when on a server
+int StatusPing();
 
 // race time of the player to the 0.001s
 uint StatusRaceTime();
@@ -211,6 +220,9 @@ uint StatusStartTick();
 
 // number of ticks simulated in the playground
 uint StatusTicks();
+
+// name of the current loaded titlepack
+string StatusTitlepack();
 
 // turbo effect is active
 bool StatusTurbo();
@@ -254,8 +266,14 @@ float StatusCruiseControlSpeed();
 // fragile effect is active
 bool StatusFragile();
 
+// percentage of fragile damage
+float StatusFragileDamage();
+
 // car is doing a launched respawn
 bool StatusLaunchRespawning();
+
+// the "quit game" overlay is shown
+bool StatusQuitOverlay();
 
 // reactor effect is active
 bool StatusReactor();
@@ -292,6 +310,9 @@ bool StatusRespawning();
 
 // respawn ticks left
 uint StatusRespawnRemaining();
+
+// the special settings overlay is shown
+bool StatusSettingsOverlay();
 
 // slow-mo effect is active
 bool StatusSlowMo();
