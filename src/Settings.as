@@ -355,6 +355,8 @@ void SettingsTab_Statuses() {
     }
 
     if (UI::TreeNode("Statuses", UI::TreeNodeFlags::Framed)) {
+        UI::BeginChild("##child-statuses");
+
         if (UI::Button("Turn everything on")) {
             Meta::PluginSetting@[]@ settings = PLUGIN_META.GetSettings();
             for (uint i = 0; i < settings.Length; i++) {
@@ -397,6 +399,7 @@ void SettingsTab_Statuses() {
             g_statuses[i].RenderSettings();
         }
 
+        UI::EndChild();
         UI::TreePop();
     }
 }
