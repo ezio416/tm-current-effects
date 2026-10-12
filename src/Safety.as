@@ -89,7 +89,40 @@ namespace Safety {
 
     void NotifyUnsafe() {
         if (!notified) {
-            UI::ShowNotification(PLUGIN_TITLE, NOTIFY_MSG, NOTIFY_COLOR, 15000);
+            Meta::Plugin@[]@ plugins = Meta::AllPlugins();
+            dictionary dependents;
+
+            for (uint i = 0; i < plugins.Length; i++) {
+                if (plugins[i] is PLUGIN_META) {
+                    continue;
+                }
+
+                for (uint j = 0; j < plugins[i].Dependencies.Length; j++) {
+                    if (plugins[i].Dependencies[j] == PLUGIN_META.ID) {
+                        dependents.Set(plugins[i].Name, 0);
+                        break;
+                    }
+                }
+
+                for (uint j = 0; j < plugins[i].OptionalDependencies.Length; j++) {
+                    if (plugins[i].OptionalDependencies[j] == PLUGIN_META.ID) {
+                        dependents.Set(plugins[i].Name, 0);
+                        break;
+                    }
+                }
+            }
+
+            if (dependents.IsEmpty()) {
+                UI::ShowNotification(PLUGIN_TITLE, NOTIFY_MSG, NOTIFY_COLOR, 15000);
+            } else {
+                string extra = " There are some dependent plugins which may be affected too:";
+                string[]@ keys = dependents.GetKeys();
+                for (uint i = 0; i < keys.Length; i++) {
+                    extra += "\n  - " + keys[i];
+                }
+                UI::ShowNotification(PLUGIN_TITLE, NOTIFY_MSG + extra, NOTIFY_COLOR, 15000);
+            }
+
             notified = true;
         }
     }
