@@ -1,5 +1,5 @@
 const string  PLUGIN_COLOR = "\\$f00";
-const string  PLUGIN_ICON  = Icons::Code;
+const string  PLUGIN_ICON  = Icons::React;
 Meta::Plugin@ PLUGIN_META  = Meta::ExecutingPlugin();
 const string  PLUGIN_TITLE = PLUGIN_COLOR + PLUGIN_ICON + "\\$g " + PLUGIN_META.Name;
 
