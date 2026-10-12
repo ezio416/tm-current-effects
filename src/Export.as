@@ -127,6 +127,9 @@ namespace CurrentEffects {
 
 #if TMNEXT
 
+    // the current controllable camera
+    import CGameControlCamera@ GetControlCamera() from "CurrentEffects";
+
     // the plugin is running, whether or not it's safe
     import bool Running() from "CurrentEffects";
 

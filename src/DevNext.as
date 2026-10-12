@@ -11,10 +11,12 @@ namespace Danger {
     const uint I_SCENE_ARENAVISMGR = 56;
 
     // offsets
+    const uint16 O_APP_CAMERA_CONTROL         = GetMemberOffset("CTrackMania", "GameScene") + 0x10;
     const uint16 O_APP_VEHICLEMGR             = GetMemberOffset("CTrackMania", "GameScene") + 0x8;
     const uint16 O_ARENA_CURRENT_REPLAY       = GetMemberOffset("CSmArena", "Rules") + 0xb8;
     const uint16 O_ARENARULES_LAP_COUNT       = GetMemberOffset("CSmArenaRules", "RulesMode") - 0x30;
     const uint16 O_ARENAVISMGR_WP_COUNT       = 0x1318;
+    const uint16 O_CAMERA_CONTROL_ACTIVE      = 0x80;
     const uint16 O_GHOST_CP_BUFFER            = GetMemberOffset("CGameCtnGhost", "NbRespawns") + 0x8;
     const uint16 O_MAP_CP_COUNT               = GetMemberOffset("CGameCtnChallenge", "ScriptMetadata") + 0x98;
     const uint16 O_PLAYER_VEHICLE             = GetMemberOffset("CSmPlayer", "Score") + 0xb0;
@@ -61,6 +63,22 @@ namespace Danger {
         }
 
         return Dev::GetOffsetUint32(Map, O_MAP_CP_COUNT);
+    }
+
+    CGameControlCamera@ GetControlCamera() {
+        auto App = cast<CTrackMania>(GetApp());
+
+        auto CameraControl = Dev::GetOffsetNod(App, O_APP_CAMERA_CONTROL);
+        if (CameraControl is null) {
+            return null;
+        }
+
+        auto ActiveCamera = Dev::GetOffsetNod(CameraControl, O_CAMERA_CONTROL_ACTIVE);
+        if (ActiveCamera is null) {
+            return null;
+        }
+
+        return cast<CGameControlCamera>(ActiveCamera);
     }
 
     CurrentEffects::Camera GetCurrentCamera(CGameTerminal@ Terminal) {

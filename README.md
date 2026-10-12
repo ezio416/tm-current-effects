@@ -245,6 +245,9 @@ uint[] StatusWaypointTimes();
 
 ### Functions (TM2020)
 ```asc
+// the current controllable camera
+CGameControlCamera@ GetControlCamera();
+
 // the plugin is running, whether or not it's safe
 bool Running();
 

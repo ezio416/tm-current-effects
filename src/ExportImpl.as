@@ -169,6 +169,10 @@ namespace CurrentEffects {
 
 #if TMNEXT
 
+    CGameControlCamera@ GetControlCamera() {
+        return Danger::GetControlCamera();
+    }
+
     bool Running() {
         return Safety::ShouldRun();
     }
