@@ -66,6 +66,10 @@ namespace Danger {
     }
 
     CGameControlCamera@ GetControlCamera() {
+        if (!Safety::ShouldRun()) {
+            return null;
+        }
+
         auto App = cast<CTrackMania>(GetApp());
 
         auto CameraControl = Dev::GetOffsetNod(App, O_APP_CAMERA_CONTROL);
