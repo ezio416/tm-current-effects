@@ -117,7 +117,7 @@ Plugin version 1.1 is planned to have a much more extensive export system so sta
 ### Functions (all games)
 ```asc
 // the current camera
-Camera StatusCamera();
+CurrentEffects::Camera StatusCamera();
 
 // times of taken checkpoints on the current lap, referencing the start of the lap
 uint[] StatusCheckpointLapTimes();
@@ -231,10 +231,10 @@ bool StatusTurbo();
 float StatusTurboTimer();
 
 // the current vehicle type (stadium, canyon, etc.)
-VehicleType StatusVehicleType();
+CurrentEffects::VehicleType StatusVehicleType();
 
 // the current view mode (solo, spectating, etc.)
-ViewMode StatusViewMode();
+CurrentEffects::ViewMode StatusViewMode();
 
 // number of waypoints taken
 uint StatusWaypointCount();
@@ -375,7 +375,7 @@ bool StatusNoGrip();
 bool StatusNoSteering();
 
 // opponents are transparent, opaque, or off
-OpponentVis StatusOpponents();
+CurrentEffects::OpponentVis StatusOpponents();
 ```
 
 ### Enums
