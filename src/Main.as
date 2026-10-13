@@ -8,7 +8,17 @@ void Main() {
     OnSettingsChanged();
 
 #if TMNEXT
+
     Safety::CheckAsync();
+
+    if (S_OverrideVersion.Length > 0) {
+        if (S_OverrideVersion == GetApp().SystemPlatform.ExeVersion) {
+            Safety::runAnyway = true;
+        } else {
+            S_OverrideVersion = "";
+        }
+    }
+
 #endif
 }
 
@@ -23,7 +33,7 @@ void OnSettingsChanged() {
 void Render() {
     if (false
         or !S_Enabled
-        or g_state.p_vis == 0x0
+        or g_state.viewMode == CurrentEffects::ViewMode::Unknown
         or (true
             and S_HideWithGame
             and !UI::IsGameUIVisible()

@@ -1,7 +1,7 @@
 #if TMNEXT
 
 namespace Safety {
-    const vec4 NOTIFY_COLOR = vec4(0.9f, 0.4f, 0.0f, 0.8f);
+    const vec4 NOTIFY_COLOR = vec4(0.9f, 0.5f, 0.0f, 0.8f);
     const string NOTIFY_MSG = "Looks like your game got an update! This plugin will have limited functionality until "
         "the developer updates it. If you want to risk crashing your game, you can override this safety check in the "
         "settings.";
@@ -10,22 +10,22 @@ namespace Safety {
         "2026-07-22_18_27"
     };
 
-    bool   checked            = false;
-    bool   checkingApi        = false;
-    bool   notified           = false;
-    bool   safe               = false;
+    bool   checkingApi = false;
+    bool   notified    = false;
+    uint   retries     = 0;
+    bool   runAnyway   = false;
+    bool   safe        = false;
     string version;
-    uint   versionSafeRetries = 0;
 
     void CheckAsync() {
-        if (checked) {
+        if (safe) {
             return;
         }
 
         version = GetApp().SystemPlatform.ExeVersion;
 
         if (SAFE_GAME_VERSIONS.Find(version) != -1) {
-            checked = safe = true;
+            safe = true;
             return;
         }
 
@@ -64,6 +64,7 @@ namespace Safety {
                 if (response.HasKey(pluginVersion)) {
                     if (response[pluginVersion].HasKey(version) && bool(response[pluginVersion][version])) {
                         checkingApi = false;
+                        safe = true;
                         trace("GetStatusFromOpenplanet good");
                         return true;
                     } else {
@@ -113,14 +114,14 @@ namespace Safety {
             }
 
             if (dependents.IsEmpty()) {
-                UI::ShowNotification(PLUGIN_TITLE, NOTIFY_MSG, NOTIFY_COLOR, 15000);
+                UI::ShowNotification(PLUGIN_TITLE, NOTIFY_MSG, NOTIFY_COLOR, 20000);
             } else {
-                string extra = " There are some dependent plugins which may be affected too:";
+                string extra = " There are also some dependent plugins which may be affected:";
                 string[]@ keys = dependents.GetKeys();
                 for (uint i = 0; i < keys.Length; i++) {
                     extra += "\n  - " + keys[i];
                 }
-                UI::ShowNotification(PLUGIN_TITLE, NOTIFY_MSG + extra, NOTIFY_COLOR, 15000);
+                UI::ShowNotification(PLUGIN_TITLE, NOTIFY_MSG + extra, NOTIFY_COLOR, 20000);
             }
 
             notified = true;
@@ -134,7 +135,7 @@ namespace Safety {
 
         sleep(1000);
 
-        if (versionSafeRetries++ > 5) {
+        if (retries++ > 5) {
             warn("not retrying GetStatusFromOpenplanet anymore, too many failures");
             checkingApi = false;
             return false;
@@ -147,7 +148,7 @@ namespace Safety {
     }
 
     bool ShouldRun() {
-        return safe or S_OverrideSafety;
+        return safe or runAnyway;
     }
 }
 

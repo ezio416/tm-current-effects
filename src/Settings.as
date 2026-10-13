@@ -1,11 +1,11 @@
-[Setting category="General" hidden] bool  S_Enabled        = true;
-[Setting category="General" hidden] bool  S_HideInactive   = false;
-[Setting category="General" hidden] bool  S_HideWithGame   = true;
-[Setting category="General" hidden] bool  S_HideWithOP     = false;
-[Setting category="General" hidden] bool  S_Icons          = true;
-[Setting category="General" hidden] float S_Opacity        = 1.0f;
-[Setting category="General" hidden] bool  S_OverrideSafety = false;
-[Setting category="General" hidden] Style S_Style          = Style::Legacy;
+[Setting category="General" hidden] bool   S_Enabled      = true;
+[Setting category="General" hidden] bool   S_HideInactive = false;
+[Setting category="General" hidden] bool   S_HideWithGame = true;
+[Setting category="General" hidden] bool   S_HideWithOP   = false;
+[Setting category="General" hidden] bool   S_Icons        = true;
+[Setting category="General" hidden] float  S_Opacity      = 1.0f;
+[Setting category="General" hidden] string S_OverrideVersion;
+[Setting category="General" hidden] Style  S_Style        = Style::Legacy;
 
 
 [Setting category="Toggles" hidden] bool S_Checkpoints    = false;
@@ -332,12 +332,33 @@ void SettingsTab_Statuses() {
         S_Opacity      = UI::SliderFloat("Window opacity", S_Opacity, 0.05f, 1.0f, "%.2f", UI::SliderFlags::NoInput);
 
 #if TMNEXT
+
         if (!Safety::safe) {
-            S_OverrideSafety = UI::Checkbox(
-                "\\$fa0" + Icons::ExclamationCircle + " Override safety and run plugin " + Icons::ExclamationCircle,
-                S_OverrideSafety
+            Safety::runAnyway = UI::Checkbox(
+                "\\$fa0Override safety and run plugin anyway",
+                Safety::runAnyway
             );
+
+            if (Safety::runAnyway) {
+                UI::Indent(30.0f);
+
+                const string exeVersion = GetApp().SystemPlatform.ExeVersion;
+
+                S_OverrideVersion = UI::Checkbox(
+                    "\\$fa0Remember this game version (" + exeVersion + ")",
+                    S_OverrideVersion.Length > 0
+                )
+                    ? exeVersion
+                    : ""
+                ;
+
+                UI::Indent(-30.0f);
+
+            } else {
+                S_OverrideVersion = "";
+            }
         }
+
 #endif
 
         UI::TreePop();

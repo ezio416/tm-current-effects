@@ -175,7 +175,10 @@ class ActionKey : Status {
     }
 
     void RenderLegacy() const override {
-        if (S_HideInactive and !active) {
+        if (false
+            or !Safety::ShouldRun()
+            or (S_HideInactive and !active)
+        ) {
             return;
         }
 
@@ -247,6 +250,12 @@ class Checkpoints : Status {
             return;
         }
 
+#if TMNEXT
+        if (!Safety::ShouldRun()) {
+            return;
+        }
+#endif
+
         UI::Text(g_checkpointsColor + _Icon() + "CP: " + g_state.cpNum + " / " + g_state.mapCpCount);
         _RenderLegacyBar(g_state.cpNum, Math::Max(1, g_state.mapCpCount), S_CheckpointsColor);
     }
@@ -297,6 +306,12 @@ class CheckpointTime : Status {
         if (!active) {
             return;
         }
+
+#if TMNEXT
+        if (!Safety::ShouldRun()) {
+            return;
+        }
+#endif
 
         UI::Text(g_checkpointTimeColor + _Icon() + Time::Format(g_state.cpTime));
     }
@@ -806,6 +821,12 @@ class Ghosts : Status {
             return;
         }
 
+#if TMNEXT
+        if (!Safety::ShouldRun()) {
+            return;
+        }
+#endif
+
         UI::Text(ColorGhosts() + _Icon() + "Ghosts");
     }
 
@@ -852,6 +873,12 @@ class Laps : Status {
         if (!active) {
             return;
         }
+
+#if TMNEXT
+        if (!Safety::ShouldRun()) {
+            return;
+        }
+#endif
 
         UI::Text(g_lapsColor + _Icon() + "Lap: " + g_state.lapNum + " / " + g_state.mapLapCount);
         _RenderLegacyBar(g_state.lapNum, Math::Max(1, g_state.mapLapCount), S_LapsColor);
@@ -902,6 +929,12 @@ class LapTime : Status {
         if (!active) {
             return;
         }
+
+#if TMNEXT
+        if (!Safety::ShouldRun()) {
+            return;
+        }
+#endif
 
         UI::Text(g_lapTimeColor + _Icon() + Time::Format(g_state.lapTime));
     }
@@ -1046,6 +1079,12 @@ class Nametags : Status {
         if (S_HideInactive and !active) {
             return;
         }
+
+#if TMNEXT
+        if (!Safety::ShouldRun()) {
+            return;
+        }
+#endif
 
         UI::Text(ColorNametags() + _Icon() + "Nametags");
     }
@@ -1254,6 +1293,12 @@ class Opponents : Status {
             return;
         }
 
+#if TMNEXT
+        if (!Safety::ShouldRun()) {
+            return;
+        }
+#endif
+
         UI::Text(ColorOpponents() + _Icon() + "Opponents");
     }
 
@@ -1436,7 +1481,10 @@ class Respawning : Status {
     }
 
     void RenderLegacy() const override {
-        if (S_HideInactive and !active) {
+        if (false
+            or !Safety::ShouldRun()
+            or (S_HideInactive and !active)
+        ) {
             return;
         }
 
@@ -1545,11 +1593,19 @@ class SlowMo : Status {
             }
 
             UI::Text(g_offColor + _Icon() + "Slow-Mo");
-            _RenderLegacyBar(0.0f, 1.0f, S_OffColor);
+
+            if (Safety::ShouldRun()) {
+                _RenderLegacyBar(0.0f, 1.0f, S_OffColor);
+            }
+
             return;
         }
 
         UI::Text(ColorSlowMo() + _Icon() + "Slow-Mo");
+
+        if (!Safety::ShouldRun()) {
+            return;
+        }
 
         vec3 color = S_OffColor;
         switch (g_state.slowMoLevel) {
@@ -1560,14 +1616,11 @@ class SlowMo : Status {
         }
 
         float f = 0.0f;
-
-        if (Safety::ShouldRun()) {
-            switch (g_state.viewMode) {
-                case CurrentEffects::ViewMode::Solo:
-                case CurrentEffects::ViewMode::Server:
-                    f = float(g_state.slowMoRemaining) / Math::Max(1, g_state.slowMoDuration);
-                    break;
-            }
+        switch (g_state.viewMode) {
+            case CurrentEffects::ViewMode::Solo:
+            case CurrentEffects::ViewMode::Server:
+                f = float(g_state.slowMoRemaining) / Math::Max(1, g_state.slowMoDuration);
+                break;
         }
 
         _RenderLegacyBar(f, 1.0f, color);

@@ -53,6 +53,9 @@ class StateNext : State {
         UI::TableNextColumn();
         UI::SeparatorText("");
 
+        _RenderDebugRow("Safety::runAnyway",  ColorDebugBool(Safety::runAnyway));
+        _RenderDebugRow("Safety::safe",       ColorDebugBool(Safety::safe));
+
         _RenderDebugRow("actionKey",          ColorDebugInt(actionKey));
         _RenderDebugRow("brakePedal",         ColorDebugBool(brakePedal));
         _RenderDebugRow("cruiseControl",      ColorDebugBool(cruiseControl));
