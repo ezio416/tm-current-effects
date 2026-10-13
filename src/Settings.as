@@ -342,13 +342,11 @@ void SettingsTab_Statuses() {
             if (Safety::runAnyway) {
                 UI::Indent(30.0f);
 
-                const string exeVersion = GetApp().SystemPlatform.ExeVersion;
-
                 S_OverrideVersion = UI::Checkbox(
-                    "\\$fa0Remember this game version (" + exeVersion + ")",
+                    "\\$fa0Remember this game version (" + Safety::version + ")",
                     S_OverrideVersion.Length > 0
                 )
-                    ? exeVersion
+                    ? Safety::version
                     : ""
                 ;
 
