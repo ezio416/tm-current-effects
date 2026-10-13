@@ -217,7 +217,7 @@ namespace CurrentEffects {
     // slow-mo ticks left
     import uint StatusSlowMoRemaining() from "CurrentEffects";
 
-    // car is doing a standing respawn
+    // car is doing a standstill respawn
     import bool StatusStandRespawning() from "CurrentEffects";
 
     // level of turbo

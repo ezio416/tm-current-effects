@@ -335,7 +335,7 @@ uint8 StatusSlowMoLevel();
 // slow-mo ticks left
 uint StatusSlowMoRemaining();
 
-// car is doing a standing respawn
+// car is doing a standstill respawn
 bool StatusStandRespawning();
 
 // level of turbo
