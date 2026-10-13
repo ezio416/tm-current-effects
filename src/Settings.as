@@ -343,10 +343,10 @@ void SettingsTab_Statuses() {
                 UI::Indent(30.0f);
 
                 S_OverrideVersion = UI::Checkbox(
-                    "\\$fa0Remember this game version (" + Safety::version + ")",
+                    "\\$fa0Remember this game version (" + Safety::gameVersion + ")",
                     S_OverrideVersion.Length > 0
                 )
-                    ? Safety::version
+                    ? Safety::gameVersion
                     : ""
                 ;
 

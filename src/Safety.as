@@ -9,142 +9,113 @@ namespace Safety {
         "2026-02-02_17_51",
         "2026-07-22_18_27"
     };
+    const string VERSION_COMPAT_URL = "https://api.openplanet.dev/plugin/currenteffects/config/version-compat";
 
-    bool   checkingApi = false;
-    bool   notified    = false;
-    uint   retries     = 0;
-    bool   runAnyway   = false;
-    bool   safe        = false;
-    string version;
+    string gameVersion;
+    bool   notified  = false;
+    bool   runAnyway = false;
+    bool   safe      = false;
 
     void CheckAsync() {
         if (safe) {
             return;
         }
 
-        version = GetApp().SystemPlatform.ExeVersion;
+        gameVersion = GetApp().SystemPlatform.ExeVersion;
 
-        if (SAFE_GAME_VERSIONS.Find(version) != -1) {
+        if (SAFE_GAME_VERSIONS.Find(gameVersion) != -1) {
             safe = true;
             return;
         }
 
-        if (!GetStatusFromOpenplanetAsync()) {
+        if (!GetVersionCompatAsync()) {
             NotifyUnsafe();
         }
     }
 
-    bool GetStatusFromOpenplanetAsync() {
-        if (checkingApi) {
-            return false;
-        }
+    bool GetVersionCompatAsync() {
+        trace("GetVersionCompatAsync: starting");
 
-        checkingApi = true;
-
-        trace("GetStatusFromOpenplanet starting");
-
-        Net::HttpRequest@ req = Net::HttpGet("https://api.openplanet.dev/plugin/currenteffects/config/version-compat");
-        while (!req.Finished()) {
-            yield();
-        }
-
-        int code = req.ResponseCode();
-        if (code != 200) {
-            warn("GetStatusFromOpenplanet error: code: " + code
-                + "; error: " + req.Error() + "; body: " + req.String());
-            checkingApi = false;
-            return RetryGetStatusAsync();
-        }
-
-        try {
-            string pluginVersion = Meta::ExecutingPlugin().Version;
-            Json::Value@ response = Json::Parse(req.String());
-
-            if (response.GetType() == Json::Type::Object) {
-                if (response.HasKey(pluginVersion)) {
-                    if (response[pluginVersion].HasKey(version) && bool(response[pluginVersion][version])) {
-                        checkingApi = false;
-                        safe = true;
-                        trace("GetStatusFromOpenplanet good");
-                        return true;
-                    } else {
-                        warn("GetStatusFromOpenplanet warning: game version " + version
-                            + " not marked good with plugin version " + pluginVersion);
-                    }
-                } else {
-                    warn("GetStatusFromOpenplanet warning: plugin version " + pluginVersion + " not specified");
-                }
-            } else {
-                warn("GetStatusFromOpenplanet error: wrong JSON type received");
+        uint retries = 0;
+        while (retries++ < 5) {
+            Net::HttpRequest@ req = Net::HttpGet(VERSION_COMPAT_URL);
+            while (!req.Finished()) {
+                yield();
             }
 
-            checkingApi = false;
-            return false;
+            const int code = req.ResponseCode();
+            if (code != 200) {
+                warn("GetVersionCompatAsync: bad response (" + code + "): " + req.String());
+                warn("retrying in a second...");
+                sleep(1000);
+                continue;
+            }
 
-        } catch {
-            warn("GetStatusFromOpenplanet exception: " + getExceptionInfo());
-            checkingApi = false;
-            return RetryGetStatusAsync();
+            try {
+                if (bool(req.Json()[PLUGIN_META.Version][gameVersion])) {
+                    trace("GetVersionCompatAsync: plugin version " + PLUGIN_META.Version
+                        + " still works on game version " + gameVersion);
+                    safe = true;
+                    return true;
+                } else {
+                    warn("GetVersionCompatAsync: game version (" + gameVersion
+                        + ") not marked good with plugin version (" + PLUGIN_META.Version + ")");
+                    return false;
+                }
+
+            } catch {
+                error("GetVersionCompatAsync: exception: " + getExceptionInfo());
+                error("response: " + req.String());
+                warn("retrying in a second...");
+                sleep(1000);
+                continue;
+            }
         }
+
+        error("GetVersionCompatAsync: retried too many times");
+        return false;
     }
 
     void NotifyUnsafe() {
-        if (!notified) {
-            Meta::Plugin@[]@ plugins = Meta::AllPlugins();
-            dictionary dependents;
+        if (notified) {
+            return;
+        }
 
-            for (uint i = 0; i < plugins.Length; i++) {
-                if (plugins[i] is PLUGIN_META) {
-                    continue;
-                }
+        Meta::Plugin@[]@ plugins = Meta::AllPlugins();
+        dictionary dependents;
 
-                for (uint j = 0; j < plugins[i].Dependencies.Length; j++) {
-                    if (plugins[i].Dependencies[j] == PLUGIN_META.ID) {
-                        dependents.Set(plugins[i].Name, 0);
-                        break;
-                    }
-                }
+        for (uint i = 0; i < plugins.Length; i++) {
+            if (plugins[i] is PLUGIN_META) {
+                continue;
+            }
 
-                for (uint j = 0; j < plugins[i].OptionalDependencies.Length; j++) {
-                    if (plugins[i].OptionalDependencies[j] == PLUGIN_META.ID) {
-                        dependents.Set(plugins[i].Name, 0);
-                        break;
-                    }
+            for (uint j = 0; j < plugins[i].Dependencies.Length; j++) {
+                if (plugins[i].Dependencies[j] == PLUGIN_META.ID) {
+                    dependents.Set(plugins[i].Name, 0);
+                    break;
                 }
             }
 
-            if (dependents.IsEmpty()) {
-                UI::ShowNotification(PLUGIN_TITLE, NOTIFY_MSG, NOTIFY_COLOR, 20000);
-            } else {
-                string extra = " There are also some dependent plugins which may be affected:";
-                string[]@ keys = dependents.GetKeys();
-                for (uint i = 0; i < keys.Length; i++) {
-                    extra += "\n  - " + keys[i];
+            for (uint j = 0; j < plugins[i].OptionalDependencies.Length; j++) {
+                if (plugins[i].OptionalDependencies[j] == PLUGIN_META.ID) {
+                    dependents.Set(plugins[i].Name, 0);
+                    break;
                 }
-                UI::ShowNotification(PLUGIN_TITLE, NOTIFY_MSG + extra, NOTIFY_COLOR, 20000);
             }
-
-            notified = true;
-        }
-    }
-
-    bool RetryGetStatusAsync() {
-        checkingApi = true;
-
-        trace("retrying GetStatusFromOpenplanet in 1000 ms");
-
-        sleep(1000);
-
-        if (retries++ > 5) {
-            warn("not retrying GetStatusFromOpenplanet anymore, too many failures");
-            checkingApi = false;
-            return false;
         }
 
-        trace("retrying GetStatusFromOpenplanet...");
+        if (dependents.IsEmpty()) {
+            UI::ShowNotification(PLUGIN_TITLE, NOTIFY_MSG, NOTIFY_COLOR, 20000);
+        } else {
+            string extra = " There are also some dependent plugins which may be affected:";
+            string[]@ keys = dependents.GetKeys();
+            for (uint i = 0; i < keys.Length; i++) {
+                extra += "\n  - " + keys[i];
+            }
+            UI::ShowNotification(PLUGIN_TITLE, NOTIFY_MSG + extra, NOTIFY_COLOR, 20000);
+        }
 
-        checkingApi = false;
-        return GetStatusFromOpenplanetAsync();
+        notified = true;
     }
 
     bool ShouldRun() {
