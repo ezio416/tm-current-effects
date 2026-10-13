@@ -9,7 +9,7 @@ namespace Safety {
         "2026-02-02_17_51",
         "2026-07-22_18_27"
     };
-    const string VERSION_COMPAT_URL = "https://api.openplanet.dev/plugin/currenteffects/config/version-compat";
+    const string VERSION_COMPAT_URL = "https://api.openplanet.dev/plugin/currenteffects/config/versions";
 
     string gameVersion;
     bool   notified  = false;
@@ -50,18 +50,9 @@ namespace Safety {
                 continue;
             }
 
+            Json::Value@ response;
             try {
-                if (bool(req.Json()[PLUGIN_META.Version][gameVersion])) {
-                    trace("GetVersionCompatAsync: plugin version " + PLUGIN_META.Version
-                        + " still works on game version " + gameVersion);
-                    safe = true;
-                    return true;
-                } else {
-                    warn("GetVersionCompatAsync: game version (" + gameVersion
-                        + ") not marked good with plugin version (" + PLUGIN_META.Version + ")");
-                    return false;
-                }
-
+                @response = req.Json();
             } catch {
                 error("GetVersionCompatAsync: exception: " + getExceptionInfo());
                 error("response: " + req.String());
@@ -69,6 +60,27 @@ namespace Safety {
                 sleep(1000);
                 continue;
             }
+
+            if (false
+                or response.GetType() != Json::Type::Object
+                or response[gameVersion].GetType() != Json::Type::Object
+            ) {
+                warn("GetVersionCompatAsync: unrecognized game version: " + gameVersion);
+                return false;
+            }
+
+            if (false
+                or response[gameVersion][PLUGIN_META.Version].GetType() != Json::Type::Boolean
+                or !bool(response[gameVersion][PLUGIN_META.Version])
+            ) {
+                warn("GetVersionCompatAsync: outdated plugin version: " + PLUGIN_META.Version);
+                return false;
+            }
+
+            trace("GetVersionCompatAsync: plugin version " + PLUGIN_META.Version
+                + " still works on game version " + gameVersion);
+            safe = true;
+            return true;
         }
 
         error("GetVersionCompatAsync: retried too many times");
