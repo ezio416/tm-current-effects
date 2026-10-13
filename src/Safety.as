@@ -36,8 +36,7 @@ namespace Safety {
     bool GetVersionCompatAsync() {
         trace("GetVersionCompatAsync: starting");
 
-        uint retries = 0;
-        while (retries++ < 5) {
+        for (uint i = 5; i --> 0;) {
             Net::HttpRequest@ req = Net::HttpGet(VERSION_COMPAT_URL);
             while (!req.Finished()) {
                 yield();
