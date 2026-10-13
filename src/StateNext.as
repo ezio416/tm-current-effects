@@ -422,6 +422,15 @@ class StateNext : State {
             return;
         }
 
+        // safe but doesn't detect engine off + forced accel
+        if (!Safety::ShouldRun()) {
+            forcedAccel = ScriptPlayer.HandicapForceGasDuration   > 0;
+            noBrakes    = ScriptPlayer.HandicapNoBrakesDuration   > 0;
+            noEngine    = ScriptPlayer.HandicapNoGasDuration      > 0;
+            noGrip      = ScriptPlayer.HandicapNoGripDuration     > 0;
+            noSteer     = ScriptPlayer.HandicapNoSteeringDuration > 0;
+        }
+
         startTick = ScriptPlayer.StartTime;
         spawning = true
             and ScriptPlayer.Post == CSmScriptPlayer::EPost::Char
@@ -532,12 +541,14 @@ class StateNext : State {
             fragile = true;
         }
 
-        const uint8 handicaps = Danger::GetHandicaps(Vis.AsyncState);
-        noEngine    = handicaps & 0x1  == 0x1;
-        forcedAccel = handicaps & 0x2  == 0x2;
-        noBrakes    = handicaps & 0x4  == 0x4;
-        noSteer     = handicaps & 0x8  == 0x8;
-        noGrip      = handicaps & 0x10 == 0x10;
+        if (Safety::ShouldRun()) {
+            const uint8 handicaps = Danger::GetHandicaps(Vis.AsyncState);
+            noEngine    = handicaps & 0x1  == 0x1;
+            forcedAccel = handicaps & 0x2  == 0x2;
+            noBrakes    = handicaps & 0x4  == 0x4;
+            noSteer     = handicaps & 0x8  == 0x8;
+            noGrip      = handicaps & 0x10 == 0x10;
+        }
 
         reactorLevel = Vis.AsyncState.ReactorBoostLvl;
         reactorType = Vis.AsyncState.ReactorBoostType;
