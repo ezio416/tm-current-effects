@@ -18,9 +18,14 @@ namespace CurrentEffects {
 
     shared enum OpponentVis {
         Unknown     = -1,
-        Off         = 0,  // while already default enum behavior, since
-        Transparent = 1,  // we directly create an enum instance from
-        Opaque      = 2,  // the game's value, it's good to be explicit
+        Off         = 0,
+#if TMNEXT
+        Transparent = 1,
+        Opaque      = 2,
+#elif MP4
+        Opaque      = 1,
+        Transparent = 2,
+#endif
     }
 
     shared enum VehicleType {
