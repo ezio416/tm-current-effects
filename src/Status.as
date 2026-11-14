@@ -125,7 +125,11 @@ abstract class Status {
     }
 
     protected void _RenderLegacyBar(const float num, const float max, const vec3&in color) const final {
-        if (!bar) {
+        if (false
+            or !bar
+            or max <= 0.0f
+            or max < num
+        ) {
             return;
         }
 
