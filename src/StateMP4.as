@@ -174,7 +174,7 @@ class StateMP4 : State {
             }
 
             _UpdateWithPlayer(cast<CTrackManiaPlayer>(Player));
-            _UpdateWithVisState(VehicleState::GetVisStateWithId(entityId));
+            _UpdateWithVisState(VehicleState::GetVisFromId(entityId));
         }
     }
 
