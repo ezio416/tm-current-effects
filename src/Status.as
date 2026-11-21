@@ -128,7 +128,7 @@ abstract class Status {
         if (false
             or !bar
             or max <= 0.0f
-            or max < num
+            // or max < num
         ) {
             return;
         }
@@ -677,8 +677,9 @@ class Fps : Status {
     }
 
     void RenderLegacy() const override {
-        UI::Text(g_fpsColor + _Icon() + "FPS: " + int(Math::Round(g_state.fps)));
-        _RenderLegacyBar(g_state.fps, g_state.maxFps, S_FpsColor);
+        const float fps = Math::Round(g_state.fps);
+        UI::Text(g_fpsColor + _Icon() + "FPS: " + int(fps));
+        _RenderLegacyBar(fps, g_state.maxFps, S_FpsColor);
     }
 
     void RenderSettings() override {
