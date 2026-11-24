@@ -112,8 +112,6 @@ By static, I mean the value should be accessible if the plugin is loaded on any 
 ## Exports
 `CurrentEffects` has a number of exports for you to use in your own plugins. When using these, it's important to note that CE is updated on the render loop, not the simulation loop.
 
-Plugin version 1.1 is planned to have a much more extensive export system so stay tuned!
-
 ### Functions (all games)
 ```asc
 // the current camera
